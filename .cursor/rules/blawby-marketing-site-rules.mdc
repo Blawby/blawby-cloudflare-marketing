@@ -1,0 +1,244 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Blawby Marketing Site Rules
+
+## Core Features
+- Built with Next.js and Tailwind CSS
+- Comprehensive SEO optimization required for all pages
+- Cloudflare Pages deployment ready
+- MDX support for content
+- Responsive design
+- Dark mode support
+
+# Blawby Marketing Site Rules
+
+## React Component Rules
+
+### Key Management
+1. Never use duplicate keys in lists or arrays of components
+   ```typescript
+   // ❌ BAD - Duplicate keys
+   const sections = [
+     { key: 'rights', title: 'Our Rights' },
+     { key: 'rights', title: 'Your Rights' }
+   ];
+
+   // ✅ GOOD - Unique keys
+   const sections = [
+     { key: 'our-rights', title: 'Our Rights' },
+     { key: 'your-rights', title: 'Your Rights' }
+   ];
+   ```
+
+2. Use unique identifiers for keys:
+   - Prefer using UUIDs or incrementing IDs for dynamic content
+   - Use descriptive slugs for static content
+   - Never use array index as key for dynamic lists
+   - Combine parent and child identifiers for nested lists
+
+3. Key Generation Guidelines:
+   ```typescript
+   // For static content
+   const key = `${section.id}-${subsection.id}`;
+
+   // For dynamic content
+   const key = crypto.randomUUID();
+   
+   // For nested content
+   const key = `${parentId}-${childId}`;
+   ```
+
+4. Table of Contents Key Rules:
+   - Use unique slugs for each heading
+   - Include heading level in key for nested headings
+   - Combine parent heading with child for sub-sections
+   ```typescript
+   const tocKey = `toc-${level}-${slug}`;
+   const nestedKey = `${parentSlug}-${childSlug}`;
+   ```
+
+## MDX Content Rules
+
+### Heading Structure
+1. Use unique heading text within each section
+2. Never repeat exact heading text at the same level
+3. Use descriptive slugs for each heading
+   ```markdown
+   ## Our Rights
+   Content...
+
+   ## Your Rights
+   Content...
+   ```
+
+### Content Organization
+1. Maintain hierarchical structure
+2. Use consistent heading levels
+3. Avoid skipping heading levels
+4. Keep headings unique within their context
+
+## Component Development
+
+### List Rendering
+1. Always provide unique keys for mapped elements
+   ```typescript
+   items.map((item) => (
+     <Component 
+       key={`${item.type}-${item.id}`}
+       {...item}
+     />
+   ));
+   ```
+
+2. Use compound keys for complex data:
+   ```typescript
+   const compoundKey = `${section}-${subsection}-${item.id}`;
+   ```
+
+3. Key Validation:
+   - Add key uniqueness validation in development
+   - Log warnings for duplicate keys
+   - Implement key generation utilities
+
+### Error Prevention
+1. Implement key validation in development:
+   ```typescript
+   const validateKeys = (items) => {
+     const keys = new Set();
+     items.forEach(item => {
+       if (keys.has(item.key)) {
+         console.warn(`Duplicate key found: ${item.key}`);
+       }
+       keys.add(item.key);
+     });
+   };
+   ```
+
+2. Use TypeScript to enforce key uniqueness:
+   ```typescript
+   interface WithUniqueKey {
+     key: string;
+     // other properties
+   }
+
+   function validateUniqueKeys<T extends WithUniqueKey>(items: T[]): boolean {
+     const keys = new Set<string>();
+     return items.every(item => {
+       if (keys.has(item.key)) return false;
+       keys.add(item.key);
+       return true;
+     });
+   }
+   ```
+
+## Testing Requirements
+
+### Key Testing
+1. Add tests for key uniqueness
+2. Verify key generation
+3. Test nested key structures
+4. Validate key persistence across renders
+
+## Documentation Requirements
+
+### Component Documentation
+1. Document key generation strategy
+2. Explain key structure and format
+3. Provide examples of correct key usage
+4. List common key-related pitfalls
+
+## Code Review Guidelines
+
+### Key-Related Checks
+1. Verify unique keys in lists
+2. Check key generation logic
+3. Validate key persistence
+4. Review key naming conventions
+5. Ensure proper key scoping
+
+## SEO Requirements
+- Open Graph tags for social sharing required
+- Twitter Cards support required
+- JSON-LD structured data for each page
+- Dynamic metadata generation
+- Educational content markup where applicable
+
+## Development Rules
+1. All new pages must include:
+   - Proper metadata
+   - Open Graph tags
+   - Twitter Cards
+   - JSON-LD structured data
+   - Responsive design support
+   - Dark mode compatibility
+
+2. Content Management:
+   - All course content must be in `/src/data/lessons.ts` and `/src/data/lessons` folder
+   - All interview content must be in `/src/data/interviews.ts` and `/src/data/interviews` folder
+   - Follow existing MDX patterns for consistency
+
+3. Image Requirements:
+   - Use Next.js `<Image>` component for all images
+   - Include image dimensions after alt text: `![Alt text|1000x500](mdc:image.png)`
+   - For dark/light mode support use: `![Alt text|1000x500](mdc:image.{scheme}.png)`
+   - Provide both versions: `image.light.png` and `image.dark.png`
+
+4. SEO Configuration:
+   - Update `metadataBase` in `src/app/layout.tsx` with proper domain
+   - Maintain required Open Graph images:
+     - `/public/og-image.jpg` (1200x630)
+     - `/public/twitter-image.jpg` (1200x600)
+   - Keep Google Search Console verification current
+   - Maintain up-to-date `site.webmanifest`
+   - Include proper favicon and apple-touch-icon files
+
+5. Deployment:
+   - Test builds locally before deployment
+   - Use Wrangler for Cloudflare Pages deployment
+   - Verify all static assets are properly included
+
+## Content Guidelines
+- Keep content focused on legal payment processing
+- Maintain professional tone
+- Ensure all claims are accurate and verifiable
+- Include clear calls-to-action
+- Maintain consistent branding
+- Focus on benefits and solutions
+
+## Technical Requirements
+- Keep files under 500 lines of code
+- Split larger files into organized folders
+- Maintain proper TypeScript types
+- Follow Next.js best practices
+- Ensure proper error handling
+- Maintain clean code structure
+
+## Testing Requirements
+- Test all major functionality
+- Verify responsive design
+- Check dark mode compatibility
+- Validate SEO elements
+- Test all interactive features
+
+## Performance Guidelines
+- Optimize images
+- Minimize bundle size
+- Ensure fast page loads
+- Monitor Core Web Vitals
+- Implement proper caching
+
+## Security Requirements
+- Protect sensitive data
+- Follow security best practices
+- Maintain proper access controls
+- Regular security updates
+- Proper error handling
+## Accessibility Requirements
+- WCAG 2.1 compliance
+- Proper ARIA labels
+- Keyboard navigation
+- Screen reader support
+- Color contrast compliance
