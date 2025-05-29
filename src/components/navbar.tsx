@@ -10,6 +10,7 @@ import { IconButton } from "@/components/icon-button";
 import { ChevronDownIcon } from "@/icons/chevron-down-icon";
 import { CloseIcon } from "@/icons/close-icon";
 import { MenuIcon } from "@/icons/menu-icon";
+import CommandPalette from "@/components/command-pallete";
 import {
   CloseButton,
   Dialog,
@@ -96,7 +97,7 @@ function SiteNavigation() {
   let [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="flex items-center">
+    <nav className="flex items-center gap-x-6">
       <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
         <MenuIcon className="fill-gray-950 dark:fill-white" />
       </IconButton>
@@ -104,6 +105,9 @@ function SiteNavigation() {
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
       />
+      <div className="hidden lg:block">
+        <CommandPalette />
+      </div>
       <div className="flex gap-x-6 text-sm/6 text-gray-950 max-lg:hidden dark:text-white">
         <Link href="/">Course</Link>
         <Link href="/interviews">Interviews</Link>
