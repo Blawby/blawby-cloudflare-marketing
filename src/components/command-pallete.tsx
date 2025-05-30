@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import { getModules, type Module, type Lesson } from '@/data/lessons';
 import type { Interview } from '@/data/interviews';
 import type React from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 interface SearchResult {
   id: string;
@@ -25,6 +26,7 @@ interface SearchResult {
   type: 'lesson' | 'interview';
   module?: string;
   url: string;
+  score?: number;
 }
 
 interface Action {
@@ -44,6 +46,8 @@ export default function CommandPalette() {
   const [query, setQuery] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const modules = getModules();
 
   // Handle keyboard shortcut (Cmd+K / Ctrl+K)
@@ -58,37 +62,63 @@ export default function CommandPalette() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
-  // Search through lessons and interviews
+  // Debounced vector search function
+  const searchVectors = useDebouncedCallback(async (searchQuery: string) => {
+    if (!searchQuery.trim()) {
+      setResults([]);
+      setError(null);
+      return;
+    }
+
+    setIsSearching(true);
+    setError(null);
+
+    try {
+      const response = await fetch('https://compass-ts.paulchrisluke.workers.dev', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: searchQuery }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Search failed');
+      }
+
+      const vectorResults = await response.json();
+      
+      // Transform vector results to match our SearchResult interface
+      const transformedResults: SearchResult[] = vectorResults.map((result: any) => ({
+        id: result.id,
+        title: result.metadata.title,
+        description: result.metadata.content,
+        type: result.metadata.type || 'lesson',
+        url: result.metadata.url,
+        score: result.score,
+        module: result.metadata.section
+      }));
+
+      setResults(transformedResults);
+    } catch (err) {
+      console.error('Search error:', err);
+      setError('Failed to perform search. Please try again.');
+      setResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, 300); // 300ms debounce
+
+  // Update search effect to use vector search
   useEffect(() => {
     if (!query) {
       setResults([]);
       return;
     }
 
-    const searchTerm = query.toLowerCase();
-    const searchResults: SearchResult[] = [];
-
-    // Search through lessons
-    modules.forEach((module) => {
-      module.lessons.forEach((lesson) => {
-        if (
-          lesson.title.toLowerCase().includes(searchTerm) ||
-          lesson.description.toLowerCase().includes(searchTerm)
-        ) {
-          searchResults.push({
-            id: lesson.id,
-            title: lesson.title,
-            description: lesson.description,
-            type: 'lesson',
-            module: module.title,
-            url: `/${lesson.id}`,
-          });
-        }
-      });
-    });
-
-    setResults(searchResults);
-  }, [query, modules]);
+    searchVectors(query);
+  }, [query, searchVectors]);
 
   return (
     <>
@@ -109,6 +139,7 @@ export default function CommandPalette() {
         onClose={() => {
           setOpen(false);
           setQuery('');
+          setError(null);
         }}
         className="relative z-50"
       >
@@ -132,14 +163,26 @@ export default function CommandPalette() {
                   placeholder="Search documentation..."
                   onChange={(event) => setQuery(event.target.value)}
                 />
-                <SearchIcon
-                  className="pointer-events-none col-start-1 row-start-1 ml-4 h-5 w-5 self-center stroke-gray-950 dark:stroke-white"
-                  aria-hidden="true"
-                />
+                {isSearching ? (
+                  <div className="pointer-events-none col-start-1 row-start-1 ml-4 h-5 w-5 self-center">
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-gray-950/20 border-t-gray-950 dark:border-white/20 dark:border-t-white" />
+                  </div>
+                ) : (
+                  <SearchIcon
+                    className="pointer-events-none col-start-1 row-start-1 ml-4 h-5 w-5 self-center stroke-gray-950 dark:stroke-white"
+                    aria-hidden="true"
+                  />
+                )}
               </div>
 
               <div className="max-h-96 scroll-py-2 divide-y divide-gray-950/5 overflow-y-auto dark:divide-white/10">
-                {(query === '' || results.length > 0) && (
+                {error && (
+                  <div className="px-6 py-14 text-center">
+                    <p className="text-sm text-red-500">{error}</p>
+                  </div>
+                )}
+
+                {!error && (query === '' || results.length > 0) && (
                   <div className="p-2">
                     {query === '' && (
                       <h2 className="mb-2 mt-4 px-3 text-xs font-semibold text-gray-500">
@@ -197,7 +240,7 @@ export default function CommandPalette() {
                   </div>
                 )}
 
-                {query !== '' && results.length === 0 && (
+                {!error && query !== '' && results.length === 0 && !isSearching && (
                   <div className="px-6 py-14 text-center">
                     <ArticleIcon className="mx-auto h-6 w-6 fill-gray-950 stroke-gray-950/40 dark:fill-white dark:stroke-white/40" />
                     <p className="mt-4 text-sm text-gray-950 dark:text-white">

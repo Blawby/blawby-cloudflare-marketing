@@ -59,7 +59,7 @@ export default async function Page() {
         <div className="mx-auto max-w-6xl">
           <div className="relative">
             <div className="px-4 pt-48 pb-12 lg:py-24">
-              {/* <Logo className="h-8 fill-gray-950 dark:fill-white" /> */}
+              <Logo className="h-8 fill-gray-950 dark:fill-white" />
               <h1 className="sr-only">Course overview</h1>
               <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-600 dark:text-gray-400">
                 Compliant credit card payments for legal practices.
