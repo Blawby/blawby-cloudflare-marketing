@@ -128,3 +128,12 @@ This project uses the latest Cloudflare Workers AI and Vectorize features. If yo
 **Current best practice:**
 - Use the Vectorize v2 REST API from Workers (not the binding) for all vector search operations.
 - See the end of `cloudflare.md` for details and code examples.
+
+## 🔄 Automated Cloudflare Vectorize Indexing & Pruning
+
+- All MDX content is indexed and pruned automatically via a TypeScript script and GitHub Actions workflow.
+- The script reads all MDX, chunks by heading, embeds with Workers AI, and upserts to Vectorize via REST API.
+- Pruning is manifest-based: `scripts/vector-manifest.json` tracks all upserted vector IDs. On each run, any vectors not present in the current content are deleted.
+- The workflow runs on push to `master` and nightly. If you see '0 workflow runs', check that your workflow triggers on the correct branch (e.g., `master` not `main`).
+- Set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repo secrets.
+- See `cloudflare.md` for full details, troubleshooting, and the Vectorize binding bug/workaround.

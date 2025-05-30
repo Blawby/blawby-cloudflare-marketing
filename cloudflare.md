@@ -298,3 +298,13 @@ Would you like help updating your indexing script for section/overlap logic, add
 - Document this workaround for all future devs.
 
 ---
+
+## 🟢 Production Indexing & Pruning Automation (2025)
+
+- **Indexing script**: TypeScript, runs in CI/CD, reads all MDX, chunks by heading, embeds with Workers AI, upserts to Vectorize via REST API.
+- **Pruning**: Uses a manifest file (`scripts/vector-manifest.json`) to track all upserted vector IDs. On each run, deletes any vectors not present in the current content set. This is required because Vectorize v2 REST API does not support listing all vectors.
+- **GitHub Actions**: Workflow runs on push to `master` and nightly. If you see '0 workflow runs', check that your workflow triggers on the correct branch (e.g., `master` not `main`).
+- **Secrets**: Set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` in repo secrets.
+- **Best practice**: Always use REST API for Vectorize, not the binding. See below for the binding bug and workaround.
+
+---
