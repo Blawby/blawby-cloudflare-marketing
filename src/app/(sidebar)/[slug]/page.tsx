@@ -39,24 +39,34 @@ export async function generateMetadata({
   return {
     title: `${lesson.title} - Compass`,
     description: lesson.description,
-    openGraph: {
-      title: `${lesson.title} - Compass`,
-      description: lesson.description,
-      type: lesson.video ? 'video.other' : 'article',
-      ...(lesson.video && {
-        videos: [{
-          url: lesson.video.url,
-          type: 'video/mp4',
-          duration: lesson.video.duration,
-        }],
-        images: [{
-          url: lesson.video.thumbnail,
-          width: 1920,
-          height: 1080,
-          alt: lesson.title,
-        }],
-      }),
-    },
+    openGraph: lesson.video
+      ? {
+          title: `${lesson.title} - Compass`,
+          description: lesson.description,
+          type: 'video.other',
+          videos: [
+            {
+              url: lesson.video.url,
+              type: 'video/mp4',
+            },
+          ],
+          images: [
+            {
+              url: lesson.video.thumbnail,
+              width: 1920,
+              height: 1080,
+              alt: lesson.title,
+            },
+          ],
+        }
+      : {
+          title: `${lesson.title} - Compass`,
+          description: lesson.description,
+          type: 'article',
+          images: [
+            // You may want to provide a default image for articles
+          ],
+        },
     twitter: {
       card: lesson.video ? 'player' : 'summary',
       title: `${lesson.title} - Compass`,
@@ -83,7 +93,7 @@ function generateLessonStructuredData(lesson: any) {
       name: 'Compass',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://compass.example.com/logo.png',
+        url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public',
       },
     },
     learningResourceType: 'Lesson',
@@ -166,9 +176,9 @@ export default async function Page({
                 />
               ) : (
                 <NextPageLink
-                  title="Interviews"
-                  description="Explore interviews with industry experts and thought leaders."
-                  href="/interviews"
+                  title="Payments with Blawby"
+                  description="Learn how to accept and manage payments securely and compliantly."
+                  href="/payment-processing"
                 />
               )}
             </div>

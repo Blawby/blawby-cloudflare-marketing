@@ -105,6 +105,12 @@ const lessons = [
         title: "IOLTA Compliance Guide",
         description: "Understanding trust account requirements for legal payments.",
         video: null,
+      },
+      {
+        id: "faq",
+        title: "FAQ",
+        description: "Frequently asked questions about Blawby, compliance, and payments.",
+        video: null,
       }
     ],
   },

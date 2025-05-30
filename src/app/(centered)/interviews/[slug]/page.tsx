@@ -46,7 +46,6 @@ export async function generateMetadata({
       videos: [{
         url: interview.video.hd,
         type: 'video/mp4',
-        duration: interview.video.duration,
       }],
       images: [{
         url: interview.video.thumbnail,
@@ -63,11 +62,6 @@ export async function generateMetadata({
     },
     alternates: {
       canonical: `https://compass.example.com/interviews/${interview.id}`,
-    },
-    other: {
-      'og:video:duration': interview.video.duration.toString(),
-      'video:duration': interview.video.duration.toString(),
-      'video:release_date': new Date().toISOString().split('T')[0],
     },
   };
 }
@@ -94,7 +88,7 @@ function generateVideoStructuredData(interview: any) {
       name: 'Compass',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://compass.example.com/logo.png',
+        url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public',
       },
     },
   };

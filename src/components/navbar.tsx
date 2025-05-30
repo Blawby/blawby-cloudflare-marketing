@@ -58,7 +58,7 @@ function MobileNavigation({
             <div className="flex flex-col gap-y-2">
               {[
                 ["Course", "/"],
-                ["Interviews", "/interviews"],
+                // ["Interviews", "/interviews"],
               ].map(([title, href]) => (
                 <CloseButton
                   as={Link}
@@ -98,19 +98,19 @@ function SiteNavigation() {
 
   return (
     <nav className="flex items-center gap-x-6">
-      <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
-        <MenuIcon className="fill-gray-950 dark:fill-white" />
-      </IconButton>
+      <div className="flex items-center gap-x-2">
+        <CommandPalette />
+        <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
+          <MenuIcon className="fill-gray-950 dark:fill-white" />
+        </IconButton>
+      </div>
       <MobileNavigation
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
       />
-      <div className="hidden lg:block">
-        <CommandPalette />
-      </div>
       <div className="flex gap-x-6 text-sm/6 text-gray-950 max-lg:hidden dark:text-white">
         <Link href="/">Course</Link>
-        <Link href="/interviews">Interviews</Link>
+        {/* <Link href="/interviews">Interviews</Link> */}
         <Link href="https://blawby.com/login">Login</Link>
         <Link href="https://blawby.com/register">Register</Link>
       </div>

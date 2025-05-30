@@ -81,7 +81,7 @@ const jsonLd = {
     name: 'Compass',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://compass.example.com/logo.png'
+      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public'
     }
   }
 };
