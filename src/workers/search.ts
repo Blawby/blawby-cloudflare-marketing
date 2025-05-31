@@ -1,112 +1,100 @@
 import { Ai } from '@cloudflare/ai';
 
-interface Env {
+export interface Env {
+  VECTORIZE: any;
   AI: any;
-  CLOUDFLARE_API_TOKEN: string;
-  CLOUDFLARE_ACCOUNT_ID: string;
 }
 
-interface SearchRequest {
-  query: string;
+function randomVector(dim: number) {
+  return Array.from({ length: dim }, () => Math.random());
 }
 
-interface SearchError {
-  error: string;
-  details?: string;
+function withCors(resp: Response) {
+  const newHeaders = new Headers(resp.headers);
+  newHeaders.set("Access-Control-Allow-Origin", "*");
+  newHeaders.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  newHeaders.set("Access-Control-Allow-Headers", "Content-Type");
+  return new Response(resp.body, {
+    status: resp.status,
+    statusText: resp.statusText,
+    headers: newHeaders,
+  });
 }
 
-interface SearchResult {
-  id: string;
-  score: number;
-  metadata: {
-    title: string;
-    url: string;
-    section?: string;
-    type?: string;
-    content: string;
-  };
-}
-
-const ALLOWED_ORIGIN = 'https://compass-ts.pages.dev'; // Update this with your actual domain
-const VECTORIZE_INDEX = 'docs';
+// Use a fixed query vector for deterministic results
+const fixedQueryVector = Array.from({ length: 384 }, (_, i) => (i % 2 === 0 ? 0.5 : 0.25));
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    // Handle CORS preflight requests
-    if (request.method === 'OPTIONS') {
+    // Handle CORS preflight
+    if (request.method === "OPTIONS") {
       return new Response(null, {
         headers: {
-          'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-          'Access-Control-Allow-Methods': 'POST',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Max-Age': '86400',
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
         },
       });
     }
 
-    // Only allow POST requests
-    if (request.method !== 'POST') {
-      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-        status: 405,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-        },
-      });
+    let path = new URL(request.url).pathname;
+    if (path.startsWith("/favicon")) {
+      return withCors(new Response("", { status: 404 }));
     }
 
-    try {
-      const { query } = (await request.json()) as SearchRequest;
+    // Temporary endpoint to delete demo vectors
+    if (path.startsWith("/delete-demo-vectors")) {
+      const deleted = await env.VECTORIZE.deleteByIds(["1", "2", "3"]);
+      return withCors(Response.json({ deleted }));
+    }
 
-      if (!query || typeof query !== 'string') {
-        throw new Error('Invalid query parameter');
+    if (path.startsWith("/query")) {
+      // For demo: use a random 384-dim vector as the query
+      const queryVector = randomVector(384);
+      const matches = await env.VECTORIZE.query(queryVector, {
+        topK: 3,
+        returnValues: true,
+        returnMetadata: "all",
+      });
+      return withCors(Response.json({ matches }));
+    }
+
+    if (path === "/") {
+      // Use a fixed query vector for deterministic results
+      const matches = await env.VECTORIZE.query(fixedQueryVector, {
+        topK: 3,
+        returnValues: true,
+        returnMetadata: "all",
+      });
+      return withCors(Response.json({ matches }));
+    }
+
+    // Bulk upsert endpoint for MDX lesson chunks
+    if (path === "/upsert-mdx" && request.method === "POST") {
+      try {
+        const chunks = await request.json(); // [{ id, text, metadata }]
+        if (!Array.isArray(chunks)) {
+          return withCors(new Response("Invalid input", { status: 400 }));
+        }
+        // Embed and upsert each chunk
+        const ai = new Ai(env.AI);
+        const vectors = [];
+        for (const chunk of chunks) {
+          const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: chunk.text });
+          const vector = embedding.data[0];
+          vectors.push({
+            id: chunk.id,
+            values: vector,
+            metadata: chunk.metadata,
+          });
+        }
+        const result = await env.VECTORIZE.upsert(vectors);
+        return withCors(Response.json({ mutationId: result.mutationId, count: vectors.length }));
+      } catch (err) {
+        return withCors(new Response(JSON.stringify({ error: "Upsert failed", details: err instanceof Error ? err.message : err }), { status: 500 }));
       }
-
-      // Generate embedding for the search query
-      const ai = new Ai(env.AI);
-      const embedding = await ai.run('@cf/baai/bge-small-en-v1.5', { text: query });
-      const vector = JSON.parse(JSON.stringify(embedding.data[0])); // ensure plain number[]
-
-      if (!vector || vector.length !== 384) {
-        return new Response('Invalid embedding output', { status: 400 });
-      }
-
-      // Use the Vectorize v2 REST API
-      const url = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/vectorize/v2/indexes/${VECTORIZE_INDEX}/query`;
-      const body = {
-        vector,
-        topK: 5,
-        namespace: 'docs',
-        return_metadata: true,
-      };
-      const apiRes = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${env.CLOUDFLARE_API_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-      const data = await apiRes.json();
-
-      return new Response(JSON.stringify(data), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-        },
-      });
-    } catch (error) {
-      console.error('Search error:', error);
-      return new Response(JSON.stringify({
-        error: 'Search failed',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-        },
-      });
     }
+
+    return withCors(Response.json({ text: "nothing to do... yet" }, { status: 404 }));
   },
 }; 

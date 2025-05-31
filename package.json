@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "index:content": "tsc --project tsconfig.scripts.json && node scripts/dist/index-content.js"
+    "index:content": "tsc --project tsconfig.scripts.json && node scripts/dist/index-content.js",
+    "chunk:lessons": "node --loader ts-node/esm scripts/chunk-mdx-lessons.ts"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.12",

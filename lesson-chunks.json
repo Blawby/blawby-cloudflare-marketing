@@ -1,0 +1,852 @@
+[
+  {
+    "id": "710281d19b36a4e3162f983e322592cb518327d8bee8e3d04b411353ec4c4629",
+    "text": "Blawby makes it easy for law firms to manage their clients. The Clients section lets you add, update, and remove clients, and track all client activity in one place.\n\nTo manage your clients, visit   . If you are logged in, this link will automatically redirect you to the correct team page for your account.",
+    "metadata": {
+      "title": "clients",
+      "file": "clients.mdx",
+      "section": "",
+      "url": "/lessons/clients"
+    }
+  },
+  {
+    "id": "8d91b1621ba3659f514a7919bc8417d9cdd807e276b8f08c15590bfbcfd75b52",
+    "text": "Add, update, or remove clients from your firm\n\nView a timeline of all client-related events (invoices, payments, communications)\n\nImport clients in bulk from a CSV file\n\nTo learn how to send invoices or track payment status, see    and   .",
+    "metadata": {
+      "title": "clients",
+      "file": "clients.mdx",
+      "section": "Overview",
+      "url": "/lessons/clients"
+    }
+  },
+  {
+    "id": "efff91d9d3a6e4da75788b50fbf8d43ed72923ccb6492a7a2dc18268306662ed",
+    "text": "Add new clients or update existing client information in the Clients section of your dashboard. For each client, you can store:\n\nName\n\nEmail\n\nPhone number\n\nAddress\n\nStatus (Lead or Client)\n\nYou can edit or remove clients at any time. Removing a client will detach them from your firm, but their historical data is preserved for compliance.",
+    "metadata": {
+      "title": "clients",
+      "file": "clients.mdx",
+      "section": "Adding and Managing Clients",
+      "url": "/lessons/clients"
+    }
+  },
+  {
+    "id": "55a426cf5c8183242c62ddeca70ffec63d942c19cc2d988625912ad8eb9c5b88",
+    "text": "Each client profile includes a timeline that tracks all important events:\n\nInvoices sent and their status\n\nPayments received\n\nCommunications and notes\n\nThis helps you keep a complete record of your relationship with each client.",
+    "metadata": {
+      "title": "clients",
+      "file": "clients.mdx",
+      "section": "Client Timeline",
+      "url": "/lessons/clients"
+    }
+  },
+  {
+    "id": "573d4b8b8f66aa003a1bf29a27bc4fe77c67b820d91f9c2199bf55d00dff3d9d",
+    "text": "To import clients in bulk:\n\nDownload the CSV template from the Import Clients page\n\nFill in your client data (Name, Email, Phone, etc.)\n\nUpload the completed CSV file using the import tool\n\nReview and confirm the imported data before finalizing\n\nIf there are any errors (such as missing required fields), Blawby will show you which rows need attention so you can correct and re-upload.",
+    "metadata": {
+      "title": "clients",
+      "file": "clients.mdx",
+      "section": "Importing Clients",
+      "url": "/lessons/clients"
+    }
+  },
+  {
+    "id": "84b3cff7f54c1381e60a1b26df5ec609d6d0fea030c242d8169ac7969bc33b7c",
+    "text": "Blawby is a comprehensive payment solution designed for law firms, ensuring compliance with ABA and IOLTA guidelines while providing seamless payment processing.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "What is Blawby?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "361e37dc4dbe6dc6286b907b4472a6f2ac362975e79d21ba435f4bd9d3493514",
+    "text": "Blawby charges an additional 1% fee on top of standard Stripe fees to guarantee compliance with legal industry standards, including ABA and IOLTA guidelines.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "How does Blawby ensure compliance?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "26f271a5c0283c6996787c58676c3db3175482a83de1a8f0befa86cbb9379e5f",
+    "text": "Blawby supports credit cards, debit cards, and eCheck payments, providing flexibility and convenience for both law firms and their clients.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "What payment methods does Blawby support?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "fb1397249bf822b65e830e19e4f22e6b080fa49fee170ddd22f254f13e4b79db",
+    "text": "Yes, Blawby uses advanced encryption and security measures to protect your transactions and client data, ensuring compliance with PCI standards.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "Is Blawby secure?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "be7021c7b1783d67268981f4cf4b7046850216b1760934aefedc7e4fa7f2b043",
+    "text": "Blawby does not offer a free trial. You can sign up and start using our service with our simple monthly billing cycle.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "Does Blawby offer a free trial?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "577cea2a9deeeacc3f7c6506769ae5b4732e028ce791a0b76aa237e2d574d235",
+    "text": "You can reach Blawby support via the Contact Us page on our website or by emailing support@blawby.com. Our team is here to help you with any questions or issues.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "How do I contact Blawby support?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "ea3a91f0eac8c512c326d4d0e3e9ea2a4bb0f6cbf01770f71387a96bfb7b5427",
+    "text": "Blawby offers a simple monthly billing cycle, providing you with consistent and predictable payment terms.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "What are Blawby's billing cycles?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "9c1663bf2e7484e79dfc58619e5c512ba61ebc46d9926a6b18feb321a34e290a",
+    "text": "Yes, Blawby integrates with various practice management and accounting software. Visit our    page for more details.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "Does Blawby integrate with other software?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "a58a5185e0dddab93cbf84e8dd4b4f34bf215a3c7a5db55719bdf977979ac2de",
+    "text": "You can sign up for Blawby by visiting our website and selecting the Sign Up option. Fill out the necessary information to create your account and start using Blawby.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "How do I sign up for Blawby?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "d2e8924af7d93b70f2e00dd74bb6346d24413bf172a924970d9baa118eb20a64",
+    "text": "Blawby's pricing includes a 1% compliance fee on top of standard Stripe fees. Detailed pricing information is available on our    page.",
+    "metadata": {
+      "title": "faq",
+      "file": "faq.mdx",
+      "section": "What is the cost of using Blawby?",
+      "url": "/lessons/faq"
+    }
+  },
+  {
+    "id": "ffe7957f57bde839aeb42669a519ee008ac71e520c67023f7e0646d171d49b78",
+    "text": "Welcome to Blawby, your all-in-one payment solution for legal practices. This guide will help you get started with our platform and begin accepting payments quickly and securely.",
+    "metadata": {
+      "title": "get-started",
+      "file": "get-started.mdx",
+      "section": "",
+      "url": "/lessons/get-started"
+    }
+  },
+  {
+    "id": "a1dec08aaa9e4966d0aedd338c983db2a4bdfe6b9d55e18aaf7c1829162cfcbe",
+    "text": "Visit    and click   .\n\nEnter your email address and create a secure password.\n\nProvide your law firm's details and complete the verification process.\n\n :  Go to    in your dashboard and follow the prompts to add your firm's bank account for payouts.\n\n :  Provide required business details and upload any necessary documents for verification (e.g., government-issued ID).\n\n :  In your Blawby dashboard, navigate to    and add your preferred payment methods (credit card, ACH, etc.).\n\nEnsure all verification steps are complete to enable payments and payouts.\n\nIn your dashboard, go to    and select your Team name.\n\nScroll to the    section.\n\nEnter a unique link name (e.g.,  myfirm-payments ) and an optional default amount.\n\nSave your changes.\n\nCopy your payment link (e.g.,  https://blawby.com/myfirm-payments ).\n\n  You can pre-fill the payment amount by adding an  amount  parameter to your link, e.g.,  https://blawby.com/your-link-name?amount=1000  for $10.00 (amount is in cents).\n\nAdd your payment link to your website as a \"Pay Now\" button.\n\nInclude it in your email signature or on invoices.\n\nSend it directly to clients for retainers, one-off payments, or outstanding balances.\n\nClients can pay securely online via credit card or ACH, and both you and your client will receive email receipts.\n\nTrack all payments in your Blawby dashboard under   .",
+    "metadata": {
+      "title": "get-started",
+      "file": "get-started.mdx",
+      "section": "Quick Start Guide",
+      "url": "/lessons/get-started"
+    }
+  },
+  {
+    "id": "f7b5f66986241be420fbc62e1cadb7ad589c40214bb51cc3c92eeb479fb22bf5",
+    "text": "After setting up your account, you can:\n\n  to start billing clients\n\n  to accept online payments\n\n  in your dashboard\n\n  to receive funds\n\nVisit our product guides to learn more about each feature and how to make the most of your Blawby account.",
+    "metadata": {
+      "title": "get-started",
+      "file": "get-started.mdx",
+      "section": "Next Steps",
+      "url": "/lessons/get-started"
+    }
+  },
+  {
+    "id": "b0f519b9d34fbf18b6e6ee2509ee0eb942b9787f08dda605e2981d99d2ec309d",
+    "text": "Blawby makes it easy for law firms to create, send, and manage professional invoices for their clients.\n\nTo manage your invoices, visit   . If you are logged in, this link will automatically redirect you to the correct team page for your account.",
+    "metadata": {
+      "title": "invoicing",
+      "file": "invoicing.mdx",
+      "section": "",
+      "url": "/lessons/invoicing"
+    }
+  },
+  {
+    "id": "85e81dd2a9c36de6d269c0cb6437f74a17f7eb8109baac5486ec58ace4dcde8a",
+    "text": "Streamline your billing process with Blawby's powerful invoicing features designed for legal professionals.\n\n  All invoices must have a due date set for at least the next day. If you need to collect a payment immediately (same-day), use a    instead. Payment links allow clients to pay you instantly, without waiting for an invoice due date.",
+    "metadata": {
+      "title": "invoicing",
+      "file": "invoicing.mdx",
+      "section": "Overview",
+      "url": "/lessons/invoicing"
+    }
+  },
+  {
+    "id": "b22d9f686eb9b1b627a065022418575852ad9e26e23f15e66903453568da160e",
+    "text": "To create a new invoice:\n\nNavigate to \"Invoices\" > \"Create New Invoice\"\n\nSelect a client from your list or add a new one\n\nAdd line items for your legal services:\n\nDescription of service\n\nTime spent (if billing hourly)\n\nRate\n\nFlat fee (if applicable)\n\nSet the due date\n\nPreview the invoice\n\nClick \"Send\" to email the invoice to your client",
+    "metadata": {
+      "title": "invoicing",
+      "file": "invoicing.mdx",
+      "section": "Creating Invoices",
+      "url": "/lessons/invoicing"
+    }
+  },
+  {
+    "id": "3f2b4c5edc991ac5c0ea9a7067229dbb30286cc867a2b597a2cf1ddbc54c99da",
+    "text": "Keep track of your legal billing:\n\nView all invoices in the \"Invoices\" dashboard\n\nMonitor payment status in real-time\n\nSend automatic reminders for overdue invoices\n\nGenerate reports for accounting and compliance\n\nFor details on managing clients, including adding, updating, and importing clients, see   .",
+    "metadata": {
+      "title": "invoicing",
+      "file": "invoicing.mdx",
+      "section": "Managing Invoices",
+      "url": "/lessons/invoicing"
+    }
+  },
+  {
+    "id": "a0e1f149807e9ea67cff39184e2827c89ba5a7226b3ee21f8e8aaa5ee026630f",
+    "text": "Trust accounts are fundamental to legal ethics. Whether you're holding client retainers, court filing fees, or settlement funds, the rules are clear: those funds must be handled with care and kept separate from operating funds. Mistakes, even honest ones, can carry serious consequences.\n\nBlawby is designed to make this easier. Our platform routes 100% of every client payment to your connected trust account. We never deduct fees from those funds. Instead, processing and platform fees are charged separately to a card tied to your firm's operating account. No complex setup. No risk of accidental non-compliance.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "386d643003418a5a227cfb762758f4d41d35872d6f93728f00e4a48ea3fed155",
+    "text": "An IOLTA (Interest on Lawyer Trust Account) is a type of pooled client trust account required in most jurisdictions when lawyers handle nominal or short-term funds. The interest earned from these accounts is used to support public legal services.\n\nWhat matters most from a compliance standpoint is that the lawyer cannot use or benefit from these funds until they are earned. And no operational or third-party fees can be deducted from the trust account—even indirectly.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Understanding IOLTA Accounts",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "83dd671f4d91854305693319d6269c0dc1d960385272bc32b53efb09ca038f85",
+    "text": "While it's easy to accept digital payments today, many systems are not built with trust accounting in mind. A few common issues:\n\n : Most payment processors subtract fees before depositing funds. That's fine for e-commerce—not for legal trust compliance.\n\n : Mixing trust and operating funds can happen unintentionally if a platform doesn't enforce separation.\n\n : Incomplete audit trails or unclear fund movements make it difficult to reconcile client ledgers accurately.\n\nThese problems are more common than many firms realize.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "The Challenge of Legal Payments",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "b827dcfa84ee46930830fd4d20407d1835f44a2be763207eb145025b83cf6b77",
+    "text": "Blawby is structured to respect the boundaries required by IOLTA rules. Here's what happens when a client makes a payment:\n\nThe entire payment amount is deposited into your connected trust account.\n\nProcessing fees (via Stripe) and Blawby's platform fee are not deducted from that payment.\n\nInstead, those fees are billed to a credit or debit card linked to your firm's operating account.\n\nThis flow ensures that client funds remain whole, and compliance isn't left to manual tracking or trust in the wrong software configuration.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "How Blawby Helps",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "3c7057be2a00e150037d166a1105d59cf1a0bc7658e267efedbd2c51fd327323",
+    "text": "Let's say your client pays a $2,500 retainer:\n\n$2,500 goes directly into your trust account.\n\nStripe processes the transaction and calculates fees (e.g., $72.80).\n\nBlawby charges a 1% platform fee ($25.00).\n\nYour saved card is charged $97.80 total.\n\nThe trust account receives the full $2,500. All fees are handled separately.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "A Typical Payment Flow",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "37618ca90247015eee4f61f0b2dd3e6bc8337340627b6fb37f145935da6e6d16",
+    "text": "A trust account eligible for client fund deposits\n\nA credit or debit card (ideally tied to your operating account) for fees\n\nYou don't need to connect two bank accounts. There are no intermediary transfers or manual adjustments. The setup is designed to match how lawyers already work, just with less risk.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "What You Need to Use Blawby",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "6f603f9f19ad2619eb7eea5162c43e829f7332ec5f39b737e22be8f0e8cf2399",
+    "text": "Blawby supports your compliance goals, but consistent internal practices matter too:\n\nUse clear account labeling to avoid confusion between trust and operating accounts.\n\nReconcile regularly, using Blawby's reporting features to align ledger records with bank statements.\n\nSeparate earned and unearned funds by keeping work status and invoicing up to date.\n\nDon't skip documentation. Transfers from trust to operating should always be traceable to client approval and earned revenue.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Good Habits to Maintain Trust Compliance",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "ff344f841b59d7cc29ce0717cfa6f8b6f19d5e7435d2b4303f93336b0428b644",
+    "text": "Blawby uses Stripe Connect for secure payments infrastructure. Stripe's reliability, PCI compliance, and reporting capabilities support a clean flow of funds with detailed tracking.\n\nOur integration ensures:\n\nTrust-compliant payment routing\n\nSeparate billing for fees\n\nClear audit trails for every transaction",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Built on Stripe Connect",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "536c3dcd142911cfc742559718b8509f035a487d4d022261160eaa5da3f58919",
+    "text": "Legal professionals choose Blawby because it aligns with how they practice:\n\nNo fees deducted from trust\n\nNo complex multi-account setup\n\nSimple configuration for trust payouts and operating account billing\n\nTransparent monthly billing structure\n\nWe're not reinventing legal payments—we're refining the flow so it aligns with compliance.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Why Firms Use Blawby",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "67e137753de381249e865769b0bde558fd1e70fcc7e619228498fbc71d9054ba",
+    "text": "Blawby is purpose-built for legal payments and designed with trust compliance in mind. If your firm accepts client funds and wants to reduce friction around trust accounting, we can help.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Try Blawby",
+      "url": "/lessons/iolta-compliance"
+    }
+  },
+  {
+    "id": "cdeb4f3b1859c8fac4704aea9aec8b70973111532d8c8fad98ccf8b6e833c783",
+    "text": "  Skip to    below.\n\nBlawby simplifies the payment process for your legal practice, ensuring secure and compliant transactions.",
+    "metadata": {
+      "title": "payment-processing",
+      "file": "payment-processing.mdx",
+      "section": "",
+      "url": "/lessons/payment-processing"
+    }
+  },
+  {
+    "id": "55d590dc4b5de8285b78b1b21ea18ce48d237b90d8d643865ed48f3fe5874a5b",
+    "text": "Blawby's payment system allows you to:\n\nAccept credit card and ACH payments\n\nComply with ABA and IOLTA guidelines\n\nTrack payment status in real-time\n\nAutomate payment reminders\n\n  If you haven't completed your account setup, including connecting your bank account and adding payment methods, see the    first.",
+    "metadata": {
+      "title": "payment-processing",
+      "file": "payment-processing.mdx",
+      "section": "Overview",
+      "url": "/lessons/payment-processing"
+    }
+  },
+  {
+    "id": "020ea575c56f7b5f8f003a523d51471a07bd70310c74a113ab4652e3c541d381",
+    "text": "Blawby lets you create payment links that you can share with clients for fast, secure online payments. These links provide a simple checkout experience, complete with your firm's branding and automated email receipts.\n\nGo to    in your Blawby dashboard.\n\nClick on your Team name.\n\nScroll down to the    section.\n\nEnter a unique link name (e.g.,  myfirm-payments ) and an optional default amount.\n\nSave your changes.\n\nCopy your payment link (e.g.,  https://blawby.com/myfirm-payments ).\n\nClients visit your payment link to access a secure checkout page.\n\nThey can enter their payment details and submit payment by card or ACH.\n\nAfter payment, clients receive an email receipt automatically.\n\nYou will also receive a payment email notifying you of the payment.\n\nYou and your team can track all payments in your Blawby dashboard.\n\nAdd your payment link to your website as a \"Pay Now\" button.\n\nInclude it in your email signature or on invoices.\n\nSend it directly to clients for retainers, one-off payments, or outstanding balances.\n\nAll payments received through your payment link are visible in the    dashboard:\n\nView payment status and history",
+    "metadata": {
+      "title": "payment-processing",
+      "file": "payment-processing.mdx",
+      "section": "Payment Links",
+      "url": "/lessons/payment-processing"
+    }
+  },
+  {
+    "id": "f955a496638c42976777477e2bd6446b15aae7754efea6ebd89e0f576d2f4b02",
+    "text": "If your payment link isn't working, ensure your payout account and payment method are set up in your account settings.\n\nYou can pre-fill the payment amount by adding an  amount  parameter to your payment link URL. For example:\n\nhttps://blawby.com/your-link-name?amount=1000\n\nThis will pre-fill the payment form with $10.00. The amount is specified in cents, so 1000 = $10.00, 2525 = $25.25, and so on.\n\nThis makes it easy to request specific payment amounts for different clients or services by simply changing the URL.",
+    "metadata": {
+      "title": "payment-processing",
+      "file": "payment-processing.mdx",
+      "section": "Troubleshooting & Tips",
+      "url": "/lessons/payment-processing"
+    }
+  },
+  {
+    "id": "b103fa71478138753f3af39f11fd4cbfaaff0d1b9378c6c0ca15c6a21bd6e732",
+    "text": "Blawby ensures compliance with legal industry standards:\n\nAutomatic separation of earned and unearned fees\n\nIOLTA account integration\n\nDetailed transaction records for auditing purposes\n\n : Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts.",
+    "metadata": {
+      "title": "payment-processing",
+      "file": "payment-processing.mdx",
+      "section": "Compliance",
+      "url": "/lessons/payment-processing"
+    }
+  },
+  {
+    "id": "6425d0d4cfcf6c2bdc2182e0362d4a2650aaaf29c74233ba45bb5b5588711227",
+    "text": "Manage your law firm's cash flow efficiently with Blawby's payout system.",
+    "metadata": {
+      "title": "payouts",
+      "file": "payouts.mdx",
+      "section": "",
+      "url": "/lessons/payouts"
+    }
+  },
+  {
+    "id": "d0cb249f5a84a19544a10012593befcfef790405fd6550063024a4f1d3a53583",
+    "text": "Blawby's payout feature allows you to:\n\nReceive payments directly to your firm's bank account\n\nTrack incoming funds from client payments",
+    "metadata": {
+      "title": "payouts",
+      "file": "payouts.mdx",
+      "section": "Overview",
+      "url": "/lessons/payouts"
+    }
+  },
+  {
+    "id": "25bc2dbec57efcf362d2438ed69661878322632df9c27ff66b2b14a6e53b5e06",
+    "text": "To start receiving payouts:\n\nEnsure your  \n\nGo to    in your Blawby dashboard. Your Blawby payout account is set up and ready to receive payments. You can now start sending invoices and receiving payments.\n\nSubmit information about your business and authorized representative(s) for verification. This may require documents such as government-issued identification. Click the    button to begin.\n\nIt's recommended that the person filling out the information is either the owner of the business, or someone with a significant role in the business, such as a director or executive.\n\n : Accurate business information is crucial for compliance with legal and financial regulations governing law firms.",
+    "metadata": {
+      "title": "payouts",
+      "file": "payouts.mdx",
+      "section": "Setting Up Payouts",
+      "url": "/lessons/payouts"
+    }
+  },
+  {
+    "id": "6699541e5cfdc415eda65b9c42638eafaa7eabfac676ad94bd7332a71c967fd7",
+    "text": "By default, Blawby processes payouts on the following schedule:\n\nFor credit card payments: 2 business days after the payment is received\n\nFor ACH payments: 5 business days after the payment is received\n\n : New Stripe accounts may have a longer initial payout delay (up to 7–14 days) for the first payout.",
+    "metadata": {
+      "title": "payouts",
+      "file": "payouts.mdx",
+      "section": "Payout Schedule",
+      "url": "/lessons/payouts"
+    }
+  },
+  {
+    "id": "1db15441fadc41e935e586671570313b2dc4aa3025dfddfe4aa2f85938ab682c",
+    "text": "If you encounter issues with payouts:\n\nCheck your Blawby Dashboard for any alerts or notifications\n\nVerify that your bank account information is correct\n\nEnsure your account is in good standing and all verification steps are complete",
+    "metadata": {
+      "title": "payouts",
+      "file": "payouts.mdx",
+      "section": "Troubleshooting Payouts",
+      "url": "/lessons/payouts"
+    }
+  },
+  {
+    "id": "525f801bfb2ff805067e1c6338867c42cd6942a3456c0841ae2121c22077b26b",
+    "text": "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
+    "metadata": {
+      "title": "pricing",
+      "file": "pricing.mdx",
+      "section": "",
+      "url": "/lessons/pricing"
+    }
+  },
+  {
+    "id": "1c9db4cddfd3b1266108b78b33f452915d4600e1a76b83fca05456a88134bee6",
+    "text": "\n\nCards and wallets - 2.9% + 30¢ per successful charge\n\nIntegrated per-transaction pricing means no setup fees. The price is the same for all cards and digital wallets. Accept large payments or recurring charges securely with ACH debit, ACH credit, or wire transfers.\n\nIOLTA compliance\n\nPCI compliance ($150 value)\n\nDebit, credit, and eCheck payment types\n\nBilling and invoicing\n\nPay monthly, love forever\n\n  |  ",
+    "metadata": {
+      "title": "pricing",
+      "file": "pricing.mdx",
+      "section": "Standard Plan",
+      "url": "/lessons/pricing"
+    }
+  },
+  {
+    "id": "a991458bb9ac226d24bdf476b56b511c49d0600f28184e10461694f4d2779d1d",
+    "text": "Accept domestic cards at industry rates\n\n  per successful charge for cards\n\nIntegrated per-transaction pricing means no setup fees or monthly fees. The price is the same for all cards and digital wallets.\n\nA quick link solution for clients to pay via ACH\n\n  ACH Direct Debit ($5 cap)\n\nProcess ACH transfers at a lower cost with full reconciliation support.\n\nA prebuilt payment form optimized for conversion.\n\n  - No Checkout-specific fees\n\nIncluded in the payments platform at no extra cost.\n\nSell products and services across any channel—no code required.\n\n  - No Payment Links-specific fees\n\nGenerate links directly from the Dashboard, no coding necessary. Share across any channel and with multiple customers. Sell products, services, or collect a donation. Customize with your branding.\n\nBuilt for speed and scale.\n\n  per paid invoice\n\nCreate, customize, and send online invoices that get paid fast. Monitor invoice statuses and easily collect unpaid invoices. Automatically reconcile incoming payments with outstanding invoices. Get started in a few clicks with no-code options.\n\nNote: $30 fee for disputed payments (also known as chargebacks) on card transactions.",
+    "metadata": {
+      "title": "pricing",
+      "file": "pricing.mdx",
+      "section": "Detailed Pricing Breakdown",
+      "url": "/lessons/pricing"
+    }
+  },
+  {
+    "id": "732f4b35b314c0bcc266994af335dceb91320c5a8f36e5b2c84c7b13d2142388",
+    "text": "For businesses with large payments volume or enterprise migration requests, we offer customized pricing packages. Our teams will review your current statements and help design a pricing package that fits your needs.\n\n  for enterprise pricing\n\nFor general questions about Blawby, see our   .",
+    "metadata": {
+      "title": "pricing",
+      "file": "pricing.mdx",
+      "section": "Enterprise Solutions",
+      "url": "/lessons/pricing"
+    }
+  },
+  {
+    "id": "414f4ffbc421ef51b3d0b99c1b91d38144051a8472c999adda9f1ad343411817",
+    "text": "Blawby Privacy Policy.  Last updated: May 3, 2024\n\nThis Privacy Policy describes how Blawby (the \"Site\", \"we\", \"us\", or \"our\") collects, uses, and discloses your personal information when you visit, use our services, or make a purchase from blawby.com (the \"Site\") or otherwise communicate with us (collectively, the \"Services\"). For purposes of this Privacy Policy, \"you\" and \"your\" means you as the user of the Services, whether you are a customer, website visitor, or another individual whose information we have collected pursuant to this Privacy Policy.\n\nPlease read this Privacy Policy carefully. By using and accessing any of the Services, you agree to the collection, use, and disclosure of your information as described in this Privacy Policy. If you do not agree to this Privacy Policy, please do not use or access any of the Services.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "a3c0290fb9951fa256fe22c31ba0c8aceaa81efd378c3642a0c7f77f26ed2424",
+    "text": "We may update this Privacy Policy from time to time, including to reflect changes to our practices or for other operational, legal, or regulatory reasons. We will post the revised Privacy Policy on the Site, update the \"Last updated\" date and take any other steps required by applicable law.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Changes to This Privacy Policy",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "cb3b9e87c53715c92736b9c433731a324d6920c967e871743c6569286e6c20f4",
+    "text": "To provide the Services, we collect and have collected over the past 12 months personal information about you from a variety of sources, as set out below. The information that we collect and use varies depending on how you interact with us. In addition to the specific uses set out below, we may use information we collect about you to communicate with you, provide the Services, comply with any applicable legal obligations, enforce any applicable terms of service, and to protect or defend the Services, our rights, and the rights of our users or others. The types of personal information we obtain about you depends on how you interact with our Site and use our Services. When we use the term \"personal information\", we are referring to information that identifies, relates to, describes or can be associated with you. The following sections describe the categories and specific types of personal information we collect. Information that you directly submit to us through our Services may include: Basic contact details including your name, address, phone number, email. Order information including your name, billing address, shipping address, payment confirmation, email address, phone number. Account information including your username, password, security questions. Shopping information including the items you view, put in your cart or add to your wishlist. Customer support information including the information you choose to include in communications with us, for example, when sending a message through the Services. Some features of the Services may require you to directly provide us with certain information about yourself. You may elect not to provide this information, but doing so may prevent you from using or accessing these features. We also automatically collect certain information about your interaction with the Services (\"Usage Data\"). To do this, we may use cookies, pixels and similar technologies (\"Cookies\").",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "How We Collect and Use Your Personal Information",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "c3d2172d5fa9088e300ac5645c64064f04de31a873dbcb90549ff27fb3170469",
+    "text": "Usage Data may include information about how you access and use our Site and your account, including device information, browser information, information about your network connection, your IP address and other information regarding your interaction with the Services. Finally, we may obtain information about you from third parties, including from vendors and service providers who may collect information on our behalf, such as: Companies who support our Site and Services, such as Blawby. Our payment processors, who collect payment information (e.g., bank account, credit or debit card information, billing address) to process your payment in order to fulfill your orders and provide you with products or services you have requested, in order to perform our contract with you. When you visit our Site, open or click on emails we send you, or interact with our Services or advertisements, we, or third parties we work with, may automatically collect certain information using online tracking technologies such as pixels, web beacons, software developer kits, third-party libraries, and cookies. Any information we obtain from third parties will be treated in accordance with this Privacy Policy. We are not responsible or liable for the accuracy of the information provided to us by third parties and are not responsible for any third party's policies or practices. For more information, see the section below, Third Party Websites and Links.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "How We Collect and Use Your Personal Information",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "56901ffeef6824f2426d868be91b6a94270235c47de11c07299d8391511e9bfa",
+    "text": "  We use your personal information to provide you with the Services in order to perform our contract with you, including to process your payments, fulfill your orders, to send notifications to you related to your account, purchases, returns, exchanges or other transactions, to create, maintain and otherwise manage your account, to arrange for shipping, facilitate any returns and exchanges and to enable you to post reviews.\n\n  We use your personal information for marketing and promotional purposes, such as to send marketing, advertising and promotional communications by email, text message or postal mail, and to show you advertisements for products or services. This may include using your personal information to better tailor the Services and advertising on our Site and other websites.\n\n  We use your personal information to detect, investigate or take action regarding possible fraudulent, illegal or malicious activity. If you choose to use the Services and register an account, you are responsible for keeping your account credentials safe. We highly recommend that you do not share your username, password, or other access details with anyone else. If you believe your account has been compromised, please contact us immediately.\n\n  We use your personal information to provide you with customer support and improve our Services. This is in our legitimate interests in order to be responsive to you, to provide effective services to you, and to maintain our business relationship with you.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "How We Use Your Personal Information",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "0abba9a9e300f1f21fd53b278a0acac9c5b2e7c58e40c137ae7806cea7f55d48",
+    "text": "Like many websites, we use Cookies on our Site. For specific information about the Cookies that we use related to powering our store with Blawby, see https://www.blawby.com/legal/cookies. We use Cookies to power and improve our Site and our Services (including to remember your actions and preferences), to run analytics and better understand user interaction with the Services (in our legitimate interests to administer, improve and optimize the Services). We may also permit third parties and services providers to use Cookies on our Site to better tailor the services, products and advertising on our Site and other websites.\n\nMost browsers automatically accept Cookies by default, but you can choose to set your browser to remove or reject Cookies through your browser controls. Please keep in mind that removing or blocking Cookies can negatively impact your user experience and may cause some of the Services, including certain features and general functionality, to work incorrectly or no longer be available. Additionally, blocking Cookies may not completely prevent how we share information with third parties such as our advertising partners.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Cookies",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "52a587fa249e38db919c33cd2587b29c248523a27702d8c730620736fc0964fd",
+    "text": "In certain circumstances, we may disclose your personal information to third parties for legitimate purposes subject to this Privacy Policy. Such circumstances may include: With vendors or other third parties who perform services on our behalf (e.g., IT management, payment processing, data analytics, customer support, cloud storage, fulfillment and shipping). With business and marketing partners, including Blawby, to provide services and advertise to you. When you direct, request us or otherwise consent to our disclosure of certain information to third parties, such as to ship you products or through your use of social media widgets or login integrations, with your consent. With our affiliates or otherwise within our corporate group, in our legitimate interests to run a successful business. In connection with a business transaction such as a merger or bankruptcy, to comply with any applicable legal obligations (including to respond to subpoenas, search warrants and similar requests), to enforce any applicable terms of service, and to protect or defend the Services, our rights, and the rights of our users or others. We have, in the past 12 months, disclosed the following categories of personal information and sensitive personal information (denoted by *) about users for the purposes set out above in \"How we Collect and Use your Personal Information\" and \"How we Disclose Personal Information\": Category: Identifiers such as basic contact details and certain order and account information Commercial information such as order information, shopping information and customer support information Internet or other similar network activity, such as Usage Data Categories of Recipients: Vendors and third parties who perform services on our behalf (such as Internet service providers, payment processors, fulfillment partners, customer support partners and data analytics providers) Business and marketing partners Affiliates We do not use or disclose sensitive personal information for the purposes of inferring characteristics",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "How We Disclose Personal Information",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "86a77d5177f97278db8c7046b8bf2ce78a5ac45c23b14ed24d2dfc92768126e3",
+    "text": "about you. We have \"sold\" and \"shared\" (as those terms are defined in applicable law) personal information over the preceding 12 months for the purpose of engaging in advertising and marketing activities, as follows. Category of Personal Information: Identifiers such as basic contact details and certain order and account information Commercial information such as records of products or services purchased and shopping information Internet or other similar network activity, such as Usage Data Categories of Recipients Business and marketing partners",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "How We Disclose Personal Information",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "f402d6c29195c128a47ba1ffafbd700b787ac266e4d39bb440abef4ec5edbb77",
+    "text": "The Services may enable you to post product reviews and other user-generated content. If you choose to submit user generated content to any public area of the Services, this content will be public and accessible by anyone.\n\nWe do not control who will have access to the information that you choose to make available to others, and cannot ensure that parties who have access to such information will respect your privacy or keep it secure. We are not responsible for the privacy or security of any information that you make publicly available, or for the accuracy, use or misuse of any information that you disclose or receive from third parties.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "User Generated Content",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "8df81af8e1d85785bbf446e08406bf57fa62c7ed499560e80e5c19c783944398",
+    "text": "Our Site may provide links to websites or other online platforms operated by third parties. If you follow links to sites not affiliated or controlled by us, you should review their privacy and security policies and other terms and conditions. We do not guarantee and are not responsible for the privacy or security of such sites, including the accuracy, completeness, or reliability of information found on these sites. Information you provide on public or semi-public venues, including information you share on third-party social networking platforms may also be viewable by other users of the Services and/or users of those third-party platforms without limitation as to its use by us or by a third party. Our inclusion of such links does not, by itself, imply any endorsement of the content on such platforms or of their owners or operators, except as disclosed on the Services.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Third Party Websites and Links",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "1c16776a7acbe94bce6d9076bfea86b0bd186cc48559d28d7f554dda5f2cc7a7",
+    "text": "The Services are not intended to be used by children, and we do not knowingly collect any personal information about children. If you are the parent or guardian of a child who has provided us with their personal information, you may contact us using the contact details set out below to request that it be deleted.\n\nAs of the Effective Date of this Privacy Policy, we do not have actual knowledge that we \"share\" or \"sell\" (as those terms are defined in applicable law) personal information of individuals under 16 years of age.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Children's Data",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "e1cc0e31b137674d7d96714d7eb3aa62b73b84eb756bf5048edee1d11222fb03",
+    "text": "Please be aware that no security measures are perfect or impenetrable, and we cannot guarantee \"perfect security.\" In addition, any information you send to us may not be secure while in transit. We recommend that you do not use unsecure channels to communicate sensitive or confidential information to us.\n\nHow long we retain your personal information depends on different factors, such as whether we need the information to maintain your account, to provide the Services, comply with legal obligations, resolve disputes or enforce other applicable contracts and policies.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Security and Retention of Your Information",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "f8b0546666102883a6af7b1a1f719507af2e5a40c1b47e214c619105206a0a0b",
+    "text": "Depending on where you live, you may have some or all of the rights listed below in relation to your personal information. However, these rights are not absolute, may apply only in certain circumstances and, in certain cases, we may decline your request as permitted by law. You may have a right to request access to personal information that we hold about you, including details relating to the ways in which we use and share your information. You may have a right to request that we delete personal information we maintain about you. You may have a right to request that we correct inaccurate personal information we maintain about you. You may have a right to receive a copy of the personal information we hold about you and to request that we transfer it to a third party, in certain circumstances and with certain exceptions. You may have a right to direct us not to \"sell\" or \"share\" your personal information or to opt out of the processing of your personal information for purposes considered to be \"targeted advertising\", as defined in applicable privacy laws. Please note that if you visit our Site with the Global Privacy Control opt-out preference signal enabled, depending on where you are, we will automatically treat this as a request to opt-out of the \"sale\" or \"sharing\" of information for the device and browser that you use to visit the Site. You may have a right to direct us to limit our use and/or disclosure of sensitive personal information to only what is necessary to perform the Services or provide the goods reasonably expected by an average individual. You may have the right to ask us to stop or restrict our processing of personal information. Where we rely on consent to process your personal information,",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Your Rights and Choices",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "e0597c0701d479f73d0c6f10ac5a5f1b298c681b13960ec293d6b1b303a1e0b1",
+    "text": "you may have the right to withdraw this consent. You may have a right to appeal our decision if we decline to process your request. You can do so by replying directly to our denial. We may send you promotional emails, and you may opt out of receiving these at any time by using the unsubscribe option displayed in our emails to you. If you opt out, we may still send you non-promotional emails, such as those about your account or orders that you have made. You may exercise any of these rights where indicated on our Site or by contacting us using the contact details provided below. We will not discriminate against you for exercising any of these rights. We may need to collect information from you to verify your identity, such as your email address or account information, before providing a substantive response to the request. In accordance with applicable laws, You may designate an authorized agent to make requests on your behalf to exercise your rights. Before accepting such a request from an agent, we will require that the agent provide proof you have authorized them to act on your behalf, and we may need you to verify your identity directly with us. We will respond to your request in a timely manner as required under applicable law.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Your Rights and Choices",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "50b14a4314ae80141783f84bb4e62943b47fde0d71278ad5a71c6fbcac6aca3c",
+    "text": "If you have complaints about how we process your personal information, please contact us using the contact details provided below. If you are not satisfied with our response to your complaint, depending on where you live you may have the right to appeal our decision by contacting us using the contact details set out below, or lodge your complaint with your local data protection authority.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Complaints",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "ed4168f38d20f2378d18579c2524e6f2c816cbea754d5aac943d3f3f027dd974",
+    "text": "Please note that we may transfer, store and process your personal information outside the country you live in, including the United States. Your personal information is also processed by staff and third party service providers and partners in these countries.  If we transfer your personal information out of Europe, we will rely on recognized transfer mechanisms like the European Commission's Standard Contractual Clauses, or any equivalent contracts issued by the relevant competent authority of the UK, as relevant, unless the data transfer is to a country that has been determined to provide an adequate level of protection.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "International Users",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "47c510e0fd0c3d839a6d3cbd42b6a64d530eb74d4bd9808e9a636280a506a08f",
+    "text": "Should you have any questions about our privacy practices or this Privacy Policy, or if you would like to exercise any of the rights available to you, please contact us.",
+    "metadata": {
+      "title": "privacy",
+      "file": "privacy.mdx",
+      "section": "Contact",
+      "url": "/lessons/privacy"
+    }
+  },
+  {
+    "id": "10b25141fc3ff9ecfe7b4393483612f1d161e8e062810bb209e25287ee1f0283",
+    "text": "This website is operated by Blawby. Throughout the site, the terms “we”, “us” and “our” refer to Blawby. Blawby offers this website, including all information, tools and Services available from this site to you, the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.\n\nBy visiting our site and/or purchasing something from us, you engage in our “Service” and agree to be bound by the following terms and conditions (“Terms of Service”, “Terms”), including those additional terms and conditions and policies referenced herein and/or available by hyperlink. These Terms of Service apply to all users of the site, including without limitation users who are browsers, vendors, customers, merchants, and/ or contributors of content.\n\nPlease read these Terms of Service carefully before accessing or using our website. By accessing or using any part of the site, you agree to be bound by these Terms of Service. If you do not agree to all the terms and conditions of this agreement, then you may not access the website or use any Services. If these Terms of Service are considered an offer, acceptance is expressly limited to these Terms of Service.\n\nAny new features or tools which are added to the current store shall also be subject to the Terms of Service. You can review the most current version of the Terms of Service at any time on this page. We reserve the right to update, change or replace any part of these Terms of Service by posting updates and/or changes to our website. It is your responsibility to check this page periodically for changes. Your continued use of or access to the website following the posting of any changes constitutes acceptance of those changes.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "dac60c3bbb6dc1f55e09667716fab84ea3f04a8666b7a62353d527560c57264b",
+    "text": "By agreeing to these Terms of Service, you represent that you are at least the age of majority in your state or province of residence, or that you are the age of majority in your state or province of residence and you have given us your consent to allow any of your minor dependents to use this site.\n\nYou may not use our products for any illegal or unauthorized purpose nor may you, in the use of the Service, violate any laws in your jurisdiction (including but not limited to copyright laws).\n\nYou must not transmit any worms or viruses or any code of a destructive nature.\n\nA breach or violation of any of the Terms will result in an immediate termination of your Services.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 1 - ONLINE STORE TERMS",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "d1c192eb624d414979da3564837792310e3059b4770abccbfb87cc77324d5345",
+    "text": "We reserve the right to refuse service to anyone for any reason at any time.\n\nYou understand that your content (not including credit card information), may be transferred unencrypted and involve (a) transmissions over various networks; and (b) changes to conform and adapt to technical requirements of connecting networks or devices. Credit card information is always encrypted during transfer over networks.\n\nYou agree not to reproduce, duplicate, copy, sell, resell or exploit any portion of the Service, use of the Service, or access to the Service or any contact on the website through which the service is provided, without express written permission by us.\n\nThe headings used in this agreement are included for convenience only and will not limit or otherwise affect these Terms.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 2 - GENERAL CONDITIONS",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "45e73fad19121f8e9b66b89638d45a81cbfff67a1c5905ac3db09cff6f63eba7",
+    "text": "We are not responsible if information made available on this site is not accurate, complete or current. The material on this site is provided for general information only and should not be relied upon or used as the sole basis for making decisions without consulting primary, more accurate, more complete or more timely sources of information. Any reliance on the material on this site is at your own risk.\n\nThis site may contain certain historical information. Historical information, necessarily, is not current and is provided for your reference only. We reserve the right to modify the contents of this site at any time, but we have no obligation to update any information on our site. You agree that it is your responsibility to monitor changes to our site.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 3 - ACCURACY, COMPLETENESS AND TIMELINESS OF INFORMATION",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "763253328b55d2658a2b117d0d78b3940f3b2dd5abbb2730a5d57ca36177dcc6",
+    "text": "Prices for our products are subject to change without notice.\n\nWe reserve the right at any time to modify or discontinue the Service (or any part or content thereof) without notice at any time.\n\nWe shall not be liable to you or to any third-party for any modification, price change, suspension or discontinuance of the Service.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 4 - MODIFICATIONS TO THE SERVICE AND PRICES",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "5d5929d968221d6d8cf9fae0bec1c027d05e54051ea8eed0012b52eab076a197",
+    "text": "Certain products or Services may be available exclusively online through the website. These products or Services may have limited quantities and are subject to return or exchange only according to our Return Policy.\n\nWe have made every effort to display as accurately as possible the colors and images of our products that appear at the store. We cannot guarantee that your computer monitor's display of any color will be accurate.\n\nWe reserve the right, but are not obligated, to limit the sales of our products or Services to any person, geographic region or jurisdiction. We may exercise this right on a case-by-case basis. We reserve the right to limit the quantities of any products or Services that we offer. All descriptions of products or product pricing are subject to change at any time without notice, at the sole discretion of us. We reserve the right to discontinue any product at any time. Any offer for any product or service made on this site is void where prohibited.\n\nWe do not warrant that the quality of any products, Services, information, or other material purchased or obtained by you will meet your expectations, or that any errors in the Service will be corrected.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 5 - PRODUCTS OR SERVICES (if applicable)",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "d811055265789c4cebbb7eb7e02f214b9b302d333a160860958a13d0f72e9523",
+    "text": "We reserve the right to refuse any order you place with us. We may, in our sole discretion, limit or cancel quantities purchased per person, per household or per order. These restrictions may include orders placed by or under the same customer account, the same credit card, and/or orders that use the same billing and/or shipping address. In the event that we make a change to or cancel an order, we may attempt to notify you by contacting the e-mail and/or billing address/phone number provided at the time the order was made. We reserve the right to limit or prohibit orders that, in our sole judgment, appear to be placed by dealers, resellers or distributors.\n\nYou agree to provide current, complete and accurate purchase and account information for all purchases made at our store. You agree to promptly update your account and other information, including your email address and credit card numbers and expiration dates, so that we can complete your transactions and contact you as needed.\n\nFor more detail, please review our Returns Policy.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 6 - ACCURACY OF BILLING AND ACCOUNT INFORMATION",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "58028a2d3312847fe32786f604f46f6d77527168904af85b834a963c446f2b9f",
+    "text": "We may provide you with access to third-party tools over which we neither monitor nor have any control nor input.\n\nYou acknowledge and agree that we provide access to such tools ”as is” and “as available” without any warranties, representations or conditions of any kind and without any endorsement. We shall have no liability whatsoever arising from or relating to your use of optional third-party tools.\n\nAny use by you of the optional tools offered through the site is entirely at your own risk and discretion and you should ensure that you are familiar with and approve of the terms on which tools are provided by the relevant third-party provider(s).\n\nWe may also, in the future, offer new Services and/or features through the website (including, the release of new tools and resources). Such new features and/or Services shall also be subject to these Terms of Service.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 7 - OPTIONAL TOOLS",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "ec1eae7586e48627e7ae6a4d9c2acb74c86e1ba68c2a49f312d6243596be9533",
+    "text": "Certain content, products and Services available via our Service may include materials from third-parties.\n\nThird-party links on this site may direct you to third-party websites that are not affiliated with us. We are not responsible for examining or evaluating the content or accuracy and we do not warrant and will not have any liability or responsibility for any third-party materials or websites, or for any other materials, products, or Services of third-parties.\n\nWe are not liable for any harm or damages related to the purchase or use of goods, Services, resources, content, or any other transactions made in connection with any third-party websites. Please review carefully the third-party's policies and practices and make sure you understand them before you engage in any transaction. Complaints, claims, concerns, or questions regarding third-party products should be directed to the third-party.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 8 - THIRD-PARTY LINKS",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "b80d7124fa3d00c8f49473eb7982a2bb8e279d71be1013c60fb952b7b8f1fdce",
+    "text": "If, at our request, you send certain specific submissions (for example contest entries) or without a request from us you send creative ideas, suggestions, proposals, plans, or other materials, whether online, by email, by postal mail, or otherwise (collectively, 'comments'), you agree that we may, at any time, without restriction, edit, copy, publish, distribute, translate and otherwise use in any medium any comments that you forward to us. We are and shall be under no obligation (1) to maintain any comments in confidence; (2) to pay compensation for any comments; or (3) to respond to any comments.\n\nWe may, but have no obligation to, monitor, edit or remove content that we determine in our sole discretion to be unlawful, offensive, threatening, libelous, defamatory, pornographic, obscene or otherwise objectionable or violates any party’s intellectual property or these Terms of Service.\n\nYou agree that your comments will not violate any right of any third-party, including copyright, trademark, privacy, personality or other personal or proprietary right. You further agree that your comments will not contain libelous or otherwise unlawful, abusive or obscene material, or contain any computer virus or other malware that could in any way affect the operation of the Service or any related website. You may not use a false e-mail address, pretend to be someone other than yourself, or otherwise mislead us or third-parties as to the origin of any comments. You are solely responsible for any comments you make and their accuracy. We take no responsibility and assume no liability for any comments posted by you or any third-party.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 9 - USER COMMENTS, FEEDBACK AND OTHER SUBMISSIONS",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "6e5f1fbfba5c1b6ba15479346b75e945e16f365945cb3b1d9fbc5d334ca2d1f1",
+    "text": "Your submission of personal information through the store is governed by our Privacy Policy. To view our Privacy Policy, please see https://blawby.com/privacy-policy",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 10 - PERSONAL INFORMATION",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "709d0483caced363355b2214a0152e74e359c026b8539fce8e11429a44b0b5b4",
+    "text": "Occasionally there may be information on our site or in the Service that contains typographical errors, inaccuracies or omissions that may relate to product descriptions, pricing, promotions, offers, product shipping charges, transit times and availability. We reserve the right to correct any errors, inaccuracies or omissions, and to change or update information or cancel orders if any information in the Service or on any related website is inaccurate at any time without prior notice (including after you have submitted your order).\n\nWe undertake no obligation to update, amend or clarify information in the Service or on any related website, including without limitation, pricing information, except as required by law. No specified update or refresh date applied in the Service or on any related website, should be taken to indicate that all information in the Service or on any related website has been modified or updated.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 11 - ERRORS, INACCURACIES AND OMISSIONS",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "f0303926d2b92d7ca9b72686e9922588140ede220a2c291874956956883b3d72",
+    "text": "In addition to other prohibitions as set forth in the Terms of Service, you are prohibited from using the site or its content: (a) for any unlawful purpose; (b) to solicit others to perform or participate in any unlawful acts; (c) to violate any international, federal, provincial or state regulations, rules, laws, or local ordinances; (d) to infringe upon or violate our intellectual property rights or the intellectual property rights of others; (e) to harass, abuse, insult, harm, defame, slander, disparage, intimidate, or discriminate based on gender, sexual orientation, religion, ethnicity, race, age, national origin, or disability; (f) to submit false or misleading information; (g) to upload or transmit viruses or any other type of malicious code that will or may be used in any way that will affect the functionality or operation of the Service or of any related website, other websites, or the Internet; (h) to collect or track the personal information of others; (i) to spam, phish, pharm, pretext, spider, crawl, or scrape; (j) for any obscene or immoral purpose; or (k) to interfere with or circumvent the security features of the Service or any related website, other websites, or the Internet. We reserve the right to terminate your use of the Service or any related website for violating any of the prohibited uses.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 12 - PROHIBITED USES",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "df343d1480e69bbe8fdb92559fc700e163d2bcdefba3e338595c713eebdfe3d8",
+    "text": "We do not guarantee, represent or warrant that your use of our service will be uninterrupted, timely, secure or error-free. We do not warrant that the results that may be obtained from the use of the service will be accurate or reliable. You agree that from time to time we may remove the service for indefinite periods of time or cancel the service at any time, without notice to you. You expressly agree that your use of, or inability to use, the service is at your sole risk. The service and all products and Services delivered to you through the service are (except as expressly stated by us) provided 'as is' and 'as available' for your use, without any representation, warranties or conditions of any kind, either express or implied, including all implied warranties or conditions of merchantability, merchantable quality, fitness for a particular purpose, durability, title, and non-infringement. In no case shall Blawby, our directors, officers, employees, affiliates, agents, contractors, interns, suppliers, service providers or licensors be liable for any injury, loss, claim, or any direct, indirect, incidental, punitive, special, or consequential damages of any kind, including, without limitation lost profits, lost revenue, lost savings, loss of data, replacement costs, or any similar damages, whether based in contract, tort (including negligence), strict liability or otherwise, arising from your use of any of the service or any products procured using the service, or for any other claim related in any way to your use of the service or any product, including, but not limited to, any errors or omissions in any content, or any loss or damage of any kind incurred as a result of the use of the service or any content (or product) posted, transmitted, or otherwise made available via the service, even if advised of their possibility.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 13 - DISCLAIMER OF WARRANTIES; LIMITATION OF LIABILITY",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "d7ef9fa23fe684e6374a6f26792764de0c77565ac45bb8facaa1ba168be40a88",
+    "text": "Because some states or jurisdictions do not allow the exclusion or the limitation of liability for consequential or incidental damages, in such states or jurisdictions, our liability shall be limited to the maximum extent permitted by law.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 13 - DISCLAIMER OF WARRANTIES; LIMITATION OF LIABILITY",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "89a9c118c49378d11a7498e0e40dbec6e39cdfc8dc9d9ed04452ded05fc92253",
+    "text": "You agree to indemnify, defend and hold harmless Blawby and our parent, subsidiaries, affiliates, partners, officers, directors, agents, contractors, licensors, service providers, subcontractors, suppliers, interns and employees, harmless from any claim or demand, including reasonable attorneys’ fees, made by any third-party due to or arising out of your breach of these Terms of Service or the documents they incorporate by reference, or your violation of any law or the rights of a third-party.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 14 - INDEMNIFICATION",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "53e0235b32e9d4f097c72c9e6f8686c2a57c69a555407fecd43aee3ac31a167f",
+    "text": "In the event that any provision of these Terms of Service is determined to be unlawful, void or unenforceable, such provision shall nonetheless be enforceable to the fullest extent permitted by applicable law, and the unenforceable portion shall be deemed to be severed from these Terms of Service, such determination shall not affect the validity and enforceability of any other remaining provisions.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 15 - SEVERABILITY",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "17b5dc74991ec9b414206db7e63c29e13d3683965355b20aae8fda5fb2b464f0",
+    "text": "The obligations and liabilities of the parties incurred prior to the termination date shall survive the termination of this agreement for all purposes.\n\nThese Terms of Service are effective unless and until terminated by either you or us. You may terminate these Terms of Service at any time by notifying us that you no longer wish to use our Services, or when you cease using our site.\n\nIf in our sole judgment you fail, or we suspect that you have failed, to comply with any term or provision of these Terms of Service, we also may terminate this agreement at any time without notice and you will remain liable for all amounts due up to and including the date of termination; and/or accordingly may deny you access to our Services (or any part thereof).",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 16 - TERMINATION",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "b3f0f309ff8e8c37dfa3095b8cc47fd4c97129c16b3944de1c7cd15de7ba12fd",
+    "text": "The failure of us to exercise or enforce any right or provision of these Terms of Service shall not constitute a waiver of such right or provision.\n\nThese Terms of Service and any policies or operating rules posted by us on this site or in respect to The Service constitutes the entire agreement and understanding between you and us and govern your use of the Service, superseding any prior or contemporaneous agreements, communications and proposals, whether oral or written, between you and us (including, but not limited to, any prior versions of the Terms of Service).\n\nAny ambiguities in the interpretation of these Terms of Service shall not be construed against the drafting party.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 17 - ENTIRE AGREEMENT",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "353388ad975a2957d035855a437f61d282aba6722c572c23540bffa7806cbd08",
+    "text": "These Terms of Service and any separate agreements whereby we provide you Services shall be governed by and construed in accordance with the laws of United States.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 18 - GOVERNING LAW",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "5eedfd7965857c5cf8c516ceccbe39f384df3b11598d66d775d0ef19c104abb1",
+    "text": "You can review the most current version of the Terms of Service at any time at this page.\n\nWe reserve the right, at our sole discretion, to update, change or replace any part of these Terms of Service by posting updates and changes to our website. It is your responsibility to check our website periodically for changes. Your continued use of or access to our website or the Service following the posting of any changes to these Terms of Service constitutes acceptance of those changes.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 19 - CHANGES TO TERMS OF SERVICE",
+      "url": "/lessons/terms"
+    }
+  },
+  {
+    "id": "14c9ea81a440a7e196a91171020c7a3c868056613ad189d61f6eebb335d90e90",
+    "text": "Questions about the Terms of Service should be sent to us.",
+    "metadata": {
+      "title": "terms",
+      "file": "terms.mdx",
+      "section": "SECTION 20 - CONTACT INFORMATION",
+      "url": "/lessons/terms"
+    }
+  }
+]

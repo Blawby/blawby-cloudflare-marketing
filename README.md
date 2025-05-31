@@ -137,3 +137,13 @@ This project uses the latest Cloudflare Workers AI and Vectorize features. If yo
 - The workflow runs on push to `master` and nightly. If you see '0 workflow runs', check that your workflow triggers on the correct branch (e.g., `master` not `main`).
 - Set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repo secrets.
 - See `cloudflare.md` for full details, troubleshooting, and the Vectorize binding bug/workaround.
+
+## Chunking MDX Lessons for Vector Search
+
+To generate vector-ready chunks from your lessons for semantic search:
+
+```bash
+npm run chunk:lessons
+```
+
+This will output `lesson-chunks.json` in the project root, ready to POST to the Worker for embedding and upsert.
