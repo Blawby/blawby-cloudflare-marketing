@@ -175,4 +175,4 @@ This project uses a hybrid search approach for best-in-class relevance:
 - Ensures exact matches (e.g., a page literally titled "Pricing") always rank highest for relevant queries.
 - Easy to tune and maintain.
 
-See `src/workers/search.ts` for the implementation details.
+See `src/workers/search.ts` for the implementation details
