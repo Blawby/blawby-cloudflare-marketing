@@ -17,7 +17,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Blawby - The Ultimate Guide to Navigating Uncertainty",
+  title: "Blawby - Compliant Credit Card Payments for Legal Practices",
   description:
     "Compliant credit card payments for legal practices",
 };

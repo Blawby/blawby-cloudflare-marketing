@@ -16,37 +16,39 @@ const InterVariable = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL('https://compass.example.com'),
   title: {
-    template: '%s - Compass',
-    default: 'Compass - The Ultimate Guide to Navigating Uncertainty',
+    template: '%s - Blawby',
+    default: 'Blawby - Compliant Credit Card Payments for Legal Practices',
   },
-  description: 'Compliant credit card payments for legal practices',
+  description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
   keywords: ['uncertainty', 'decision making', 'personal development', 'mindfulness', 'determinism'],
   authors: [{ name: 'Tom Harris' }],
   creator: 'Tom Harris',
-  publisher: 'Compass',
+  publisher: 'Blawby',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: 'https://compass.example.com',
-    siteName: 'Compass',
-    title: 'Compass - The Ultimate Guide to Navigating Uncertainty',
-    description: 'Compliant credit card payments for legal practices',
+    siteName: 'Blawby',
+    title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
+    description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
     images: [{
-      url: 'https://compass.example.com/og-image.jpg',
+      // TODO: replace with actual image cropped for seo
+      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public',
       width: 1200,
       height: 630,
-      alt: 'Compass - Navigate Uncertainty'
+      alt: 'Blawby - Compliant Credit Card Payments for Legal Practices'
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Compass - The Ultimate Guide to Navigating Uncertainty',
-    description: 'Compliant credit card payments for legal practices',
-    creator: '@compass',
-    images: ['https://compass.example.com/twitter-image.jpg'],
+    title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
+    description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
+    creator: '@blawby',
+    // TODO: replace with actual image cropped for seo
+    images: ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public'],
   },
   alternates: {
-    canonical: 'https://compass.example.com',
+    canonical: 'https://blawby.com',
   },
   robots: {
     index: true,
@@ -73,12 +75,12 @@ export const metadata: Metadata = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Compass',
-  description: 'Compliant credit card payments for legal practices',
+  name: 'Blawby',
+  description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
   url: 'https://compass.example.com',
   publisher: {
     '@type': 'Organization',
-    name: 'Compass',
+    name: 'Blawby',
     logo: {
       '@type': 'ImageObject',
       url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public'

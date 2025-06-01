@@ -37,10 +37,10 @@ export async function generateMetadata({
   const formattedDuration = formatDuration(interview.video.duration);
 
   return {
-    title: `Interview with ${interview.name} - Compass`,
+    title: `Interview with ${interview.name} - Blawby`,
     description: interview.subtitle,
     openGraph: {
-      title: `Interview with ${interview.name} - Compass`,
+      title: `Interview with ${interview.name} - Blawby`,
       description: interview.subtitle,
       type: 'video.other',
       videos: [{
@@ -56,7 +56,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'player',
-      title: `Interview with ${interview.name} - Compass`,
+      title: `Interview with ${interview.name} - Blawby`,
       description: interview.subtitle,
       images: [interview.video.thumbnail],
     },
@@ -85,7 +85,7 @@ function generateVideoStructuredData(interview: any) {
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Compass',
+      name: 'Blawby',
       logo: {
         '@type': 'ImageObject',
         url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public',

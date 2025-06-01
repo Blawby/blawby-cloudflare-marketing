@@ -5,10 +5,6 @@ export interface Env {
   AI: any;
 }
 
-function randomVector(dim: number) {
-  return Array.from({ length: dim }, () => Math.random());
-}
-
 function withCors(resp: Response) {
   const newHeaders = new Headers(resp.headers);
   newHeaders.set("Access-Control-Allow-Origin", "*");
@@ -20,9 +16,6 @@ function withCors(resp: Response) {
     headers: newHeaders,
   });
 }
-
-// Use a fixed query vector for deterministic results
-const fixedQueryVector = Array.from({ length: 384 }, (_, i) => (i % 2 === 0 ? 0.5 : 0.25));
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
@@ -40,12 +33,6 @@ export default {
     let path = new URL(request.url).pathname;
     if (path.startsWith("/favicon")) {
       return withCors(new Response("", { status: 404 }));
-    }
-
-    // Temporary endpoint to delete demo vectors
-    if (path.startsWith("/delete-demo-vectors")) {
-      const deleted = await env.VECTORIZE.deleteByIds(["1", "2", "3"]);
-      return withCors(Response.json({ deleted }));
     }
 
     if (path.startsWith("/query")) {
@@ -91,16 +78,6 @@ export default {
       }
     }
 
-    if (path === "/") {
-      // Use a fixed query vector for deterministic results
-      const matches = await env.VECTORIZE.query(fixedQueryVector, {
-        topK: 3,
-        returnValues: true,
-        returnMetadata: "all",
-      });
-      return withCors(Response.json({ matches }));
-    }
-
     // Bulk upsert endpoint for MDX lesson chunks
     if (path === "/upsert-mdx" && request.method === "POST") {
       try {
@@ -130,6 +107,6 @@ export default {
       }
     }
 
-    return withCors(Response.json({ text: "nothing to do... yet" }, { status: 404 }));
+    return withCors(Response.json({ text: "Not found" }, { status: 404 }));
   },
 }; 

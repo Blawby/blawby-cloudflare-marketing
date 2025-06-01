@@ -37,11 +37,11 @@ export async function generateMetadata({
   if (!lesson) return {};
 
   return {
-    title: `${lesson.title} - Compass`,
+    title: `${lesson.title} - Blawby`,
     description: lesson.description,
     openGraph: lesson.video
       ? {
-          title: `${lesson.title} - Compass`,
+          title: `${lesson.title} - Blawby`,
           description: lesson.description,
           type: 'video.other',
           videos: [
@@ -60,7 +60,7 @@ export async function generateMetadata({
           ],
         }
       : {
-          title: `${lesson.title} - Compass`,
+          title: `${lesson.title} - Blawby`,
           description: lesson.description,
           type: 'article',
           images: [
@@ -69,7 +69,7 @@ export async function generateMetadata({
         },
     twitter: {
       card: lesson.video ? 'player' : 'summary',
-      title: `${lesson.title} - Compass`,
+      title: `${lesson.title} - Blawby`,
       description: lesson.description,
       ...(lesson.video && {
         images: [lesson.video.thumbnail],
@@ -90,7 +90,7 @@ function generateLessonStructuredData(lesson: any) {
     description: lesson.description,
     provider: {
       '@type': 'Organization',
-      name: 'Compass',
+      name: 'Blawby',
       logo: {
         '@type': 'ImageObject',
         url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public',
