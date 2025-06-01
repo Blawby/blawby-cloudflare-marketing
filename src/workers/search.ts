@@ -49,20 +49,46 @@ export default {
     }
 
     if (path.startsWith("/query")) {
-      const reqBody = await request.json();
-      let query = reqBody.query;
-      if (typeof query === "string") {
-        query = query.trim();
+      try {
+        const reqBody = await request.json();
+        let query = reqBody.query;
+        if (typeof query === "string") {
+          query = query.trim();
+        }
+        const ai = new Ai(env.AI);
+        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
+        const queryVector = embedding.data[0];
+        // Increase topK for more candidates
+        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
+          topK: 10,
+          returnValues: true,
+          returnMetadata: "all",
+        });
+        let matches = vectorizeResult.matches || vectorizeResult;
+        if (!Array.isArray(matches)) {
+          // Log the unexpected response for debugging
+          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
+          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
+        }
+        // Hybrid re-ranking: boost score for keyword matches in title or section
+        const queryWords = query.toLowerCase().split(/\s+/);
+        matches.forEach((match: any) => {
+          const title = (match.metadata?.title || "").toLowerCase();
+          const section = (match.metadata?.section || "").toLowerCase();
+          if (
+            queryWords.some((word: string) => title.includes(word)) ||
+            queryWords.some((word: string) => section.includes(word))
+          ) {
+            match.score += 1.0; // Boost for keyword match
+          }
+        });
+        matches.sort((a: any, b: any) => b.score - a.score);
+        return withCors(Response.json({ matches }));
+      } catch (err) {
+        // Log the error for debugging
+        console.error("/query endpoint error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Worker exception in /query", details: err instanceof Error ? err.message : err }), { status: 500 }));
       }
-      const ai = new Ai(env.AI);
-      const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
-      const queryVector = embedding.data[0];
-      const matches = await env.VECTORIZE.query(queryVector, {
-        topK: 3,
-        returnValues: true,
-        returnMetadata: "all",
-      });
-      return withCors(Response.json({ matches }));
     }
 
     if (path === "/") {

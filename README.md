@@ -157,3 +157,22 @@ curl -X POST https://compass-ts.paulchrisluke.workers.dev/upsert-mdx \
 ```
 
 This will embed and upsert all lesson chunks to your Cloudflare Vectorize index via your Worker.
+
+## 🔍 Hybrid Semantic + Keyword Search (Cloudflare Vectorize)
+
+This project uses a hybrid search approach for best-in-class relevance:
+
+- **Semantic search:** All content is embedded and indexed in Cloudflare Vectorize using Workers AI.
+- **Metadata upsert:** Each vector is upserted with rich metadata (e.g., `title`, `section`, `url`, etc.).
+- **Hybrid re-ranking:**
+  - At query time, the Worker embeds the query and runs a vector search (topK=10).
+  - Results are post-processed in the Worker: if any query word matches the `title` or `section` in metadata, that result's score is boosted.
+  - Results are sorted by the new score, so exact or partial keyword matches (like "Pricing") appear at the top, even if the semantic score is similar.
+- **No extra infra:** This is fully Cloudflare-supported, scalable, and requires no separate keyword index or third-party service.
+
+**Why this approach?**
+- Combines the recall of semantic search with the precision of keyword search.
+- Ensures exact matches (e.g., a page literally titled "Pricing") always rank highest for relevant queries.
+- Easy to tune and maintain.
+
+See `src/workers/search.ts` for the implementation details.
