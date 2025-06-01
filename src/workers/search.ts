@@ -49,8 +49,14 @@ export default {
     }
 
     if (path.startsWith("/query")) {
-      // For demo: use a random 384-dim vector as the query
-      const queryVector = randomVector(384);
+      const reqBody = await request.json();
+      let query = reqBody.query;
+      if (typeof query === "string") {
+        query = query.trim();
+      }
+      const ai = new Ai(env.AI);
+      const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
+      const queryVector = embedding.data[0];
       const matches = await env.VECTORIZE.query(queryVector, {
         topK: 3,
         returnValues: true,
@@ -85,7 +91,10 @@ export default {
           vectors.push({
             id: chunk.id,
             values: vector,
-            metadata: chunk.metadata,
+            metadata: {
+              ...chunk.metadata,
+              description: chunk.text,
+            },
           });
         }
         const result = await env.VECTORIZE.upsert(vectors);

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { getModules } from "@/data/lessons"
 import type React from "react"
 import { useDebouncedCallback } from "use-debounce"
+import clsx from "clsx"
 
 interface SearchResult {
   id: string
@@ -22,34 +23,58 @@ interface SearchResult {
 function highlightQuery(text: string, query: string): React.ReactNode {
   if (!query.trim() || !text) return text
 
-  // Split query into individual words for better matching
-  const queryWords = query
+  // Create a case-insensitive regex for the full query and individual words
+  const fullQueryRegex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
+  const words = query
     .toLowerCase()
     .split(/\s+/)
-    .filter((word) => word.length > 2)
+    .filter((word) => word.length > 1)
 
-  if (queryWords.length === 0) return text
+  let result = text
 
-  let highlightedText = text
+  // First try to highlight the full query
+  if (fullQueryRegex.test(text)) {
+    result = text.replace(fullQueryRegex, "|||HIGHLIGHT_START|||$1|||HIGHLIGHT_END|||")
+  } else {
+    // If full query doesn't match, try individual words
+    words.forEach((word) => {
+      const wordRegex = new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
+      result = result.replace(wordRegex, "|||HIGHLIGHT_START|||$1|||HIGHLIGHT_END|||")
+    })
+  }
 
-  // Highlight each query word that appears in the text
-  queryWords.forEach((word) => {
-    const regex = new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi")
-    highlightedText = highlightedText.replace(regex, "**$1**")
-  })
-
-  // Convert markdown-style bold to JSX
-  const parts = highlightedText.split(/\*\*(.*?)\*\*/g)
+  // Convert to JSX
+  const parts = result.split(/\|\|\|HIGHLIGHT_START\|\|\|(.*?)\|\|\|HIGHLIGHT_END\|\|\|/g)
 
   return parts.map((part, index) =>
     index % 2 === 1 ? (
-      <strong key={index} className="bg-yellow-200 dark:bg-yellow-800">
+      <span
+        key={index}
+        className="font-semibold text-gray-950 dark:text-white"
+      >
         {part}
-      </strong>
+      </span>
     ) : (
       part
     ),
   )
+}
+
+function debugSearchResult(item: SearchResult, query: string) {
+  console.log("Search Result Debug:", {
+    query,
+    title: item.title,
+    description: item.description,
+    module: item.module,
+    titleContainsQuery: item.title?.toLowerCase().includes(query.toLowerCase()),
+    descriptionContainsQuery: item.description?.toLowerCase().includes(query.toLowerCase()),
+    moduleContainsQuery: item.module?.toLowerCase().includes(query.toLowerCase()),
+  })
+}
+
+// Add a utility function to capitalize each word
+function capitalizeTitle(title: string): string {
+  return title.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 export default function CommandPalette() {
@@ -58,6 +83,7 @@ export default function CommandPalette() {
   const [results, setResults] = useState<SearchResult[]>([])
   const [isSearching, setIsSearching] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const [selectedResultId, setSelectedResultId] = useState<string | null>(null)
   const modules = getModules()
 
   // Handle keyboard shortcut (Cmd+K / Ctrl+K)
@@ -74,7 +100,8 @@ export default function CommandPalette() {
 
   // Debounced vector search function
   const searchVectors = useDebouncedCallback(async (searchQuery: string) => {
-    if (!searchQuery.trim()) {
+    const trimmedQuery = searchQuery.trim();
+    if (!trimmedQuery) {
       setResults([])
       setError(null)
       return
@@ -89,7 +116,7 @@ export default function CommandPalette() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query: searchQuery }),
+        body: JSON.stringify({ query: trimmedQuery }),
       })
 
       if (!response.ok) {
@@ -98,17 +125,23 @@ export default function CommandPalette() {
       }
 
       const vectorResults = await response.json()
+      console.log("Raw API Response:", vectorResults)
+      console.log("First match metadata:", vectorResults.matches?.matches?.[0] || vectorResults.matches?.[0])
       const matches = vectorResults.matches?.matches || vectorResults.matches || []
       // Transform vector results to match our SearchResult interface
-      const transformedResults: SearchResult[] = matches.map((result: any) => ({
-        id: result.id,
-        title: result.metadata?.title,
-        description: result.metadata?.content,
-        type: result.metadata?.type || "lesson",
-        url: result.metadata?.url,
-        score: result.score,
-        module: result.metadata?.section,
-      }))
+      const transformedResults: SearchResult[] = matches.map((result: any) => {
+        console.log("Individual result metadata:", result.metadata)
+        return {
+          id: result.id,
+          title: result.metadata?.title || result.metadata?.name || "Untitled",
+          description:
+            result.metadata?.content || result.metadata?.description || result.metadata?.text || result.metadata?.body,
+          type: result.metadata?.type || "lesson",
+          url: result.metadata?.url,
+          score: result.score,
+          module: result.metadata?.section || result.metadata?.module,
+        }
+      })
 
       setResults(transformedResults)
     } catch (err) {
@@ -124,9 +157,9 @@ export default function CommandPalette() {
   useEffect(() => {
     if (!query) {
       setResults([])
+      // Do NOT close the palette when query is cleared
       return
     }
-
     searchVectors(query)
   }, [query, searchVectors])
 
@@ -166,12 +199,13 @@ export default function CommandPalette() {
                   }
                   window.location.href = url
                 }
+                setSelectedResultId(item?.id || null)
               }}
             >
               <div className="grid grid-cols-1">
                 <ComboboxInput
                   autoFocus
-                  className="col-start-1 row-start-1 h-12 w-full border-0 bg-transparent pl-11 pr-4 text-sm text-gray-950 outline-none placeholder:text-gray-500 focus:ring-0 dark:text-white dark:placeholder:text-gray-500"
+                  className="col-start-1 row-start-1 h-12 w-full border-0 bg-transparent pl-11 pr-4 text-[16px] text-gray-950 outline-none placeholder:text-gray-500 focus:ring-0 dark:text-white dark:placeholder:text-gray-500"
                   placeholder="Search documentation..."
                   onChange={(event) => setQuery(event.target.value)}
                 />
@@ -197,42 +231,40 @@ export default function CommandPalette() {
                 {!error && results.length > 0 && (
                   <div className="p-2">
                     <ul className="text-sm text-gray-950 dark:text-white">
-                      {results.map((item) => (
-                        <ComboboxOption
-                          as="li"
-                          key={item.id}
-                          value={item}
-                          className="group flex cursor-default select-none items-center rounded-md px-3 py-2 hover:bg-gray-950/5 dark:hover:bg-white/5"
-                        >
-                          {item.type === "lesson" ? (
-                            <ArticleIcon
-                              className="h-6 w-6 flex-none fill-gray-950 stroke-gray-950/40 dark:fill-white dark:stroke-white/40"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <CirclePlayIcon
-                              className="h-6 w-6 flex-none fill-gray-950 stroke-gray-950/40 dark:fill-white dark:stroke-white/40"
-                              aria-hidden="true"
-                            />
-                          )}
-                          <div className="ml-3 flex-auto">
-                            <div className="font-semibold">{highlightQuery(item.title, query)}</div>
-                            {item.module && (
-                              <div className="text-xs text-gray-500">{highlightQuery(item.module, query)}</div>
+                      {results.map((item) => {
+                        const isActive = selectedResultId === item.id;
+                        return (
+                          <ComboboxOption
+                            as="li"
+                            key={item.id}
+                            value={item}
+                            aria-current={isActive ? "page" : undefined}
+                            className={clsx(
+                              "-ml-px flex border-l pl-4 gap-4 border-transparent py-2.5",
+                              "hover:text-gray-950 hover:not-has-aria-[current=page]:border-gray-400 dark:hover:text-white",
+                              "has-aria-[current=page]:border-gray-950 dark:has-aria-[current=page]:border-white",
+                              isActive && "font-medium text-gray-950 dark:text-white"
                             )}
-                            {item.description && (
-                              <div className="text-xs text-gray-500 line-clamp-2">
-                                {highlightQuery(
-                                  item.description.length > 120
-                                    ? item.description.substring(0, 120) + "..."
-                                    : item.description,
-                                  query,
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </ComboboxOption>
-                      ))}
+                          >
+                            <div className="flex-auto">
+                              <div className="font-semibold">{highlightQuery(capitalizeTitle(item.title), query)}</div>
+                              {item.module && (
+                                <div className="text-xs text-gray-500">{highlightQuery(item.module, query)}</div>
+                              )}
+                              {item.description && (
+                                <div className="text-xs text-gray-500 line-clamp-2">
+                                  {highlightQuery(
+                                    item.description.length > 120
+                                      ? item.description.substring(0, 120) + "..."
+                                      : item.description,
+                                    query,
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </ComboboxOption>
+                        )
+                      })}
                     </ul>
                   </div>
                 )}

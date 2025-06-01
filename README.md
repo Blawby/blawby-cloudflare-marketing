@@ -146,4 +146,14 @@ To generate vector-ready chunks from your lessons for semantic search:
 npm run chunk:lessons
 ```
 
-This will output `lesson-chunks.json` in the project root, ready to POST to the Worker for embedding and upsert.
+This will output `lesson-chunks.json` in the project root.
+
+To upsert the chunks to your Vectorize index, run:
+
+```bash
+curl -X POST https://compass-ts.paulchrisluke.workers.dev/upsert-mdx \
+  -H "Content-Type: application/json" \
+  --data-binary @lesson-chunks.json
+```
+
+This will embed and upsert all lesson chunks to your Cloudflare Vectorize index via your Worker.
