@@ -3,6 +3,15 @@ name: Deploy to Cloudflare Pages and Worker
 on:
   push:
     branches: [master]
+    paths:
+      - 'src/data/lessons/**'
+      - '.github/workflows/deploy.yml'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'src/workers/search.ts'
+      - 'src/app/**'
+      - 'src/components/**'
+      - 'src/data/lessons.ts'
 
 jobs:
   build-and-deploy:
@@ -25,8 +34,19 @@ jobs:
       - name: Build Next.js site
         run: npm run build
 
+      - name: Chunk MDX lessons for vector search
+        if: ${{ github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'src/data/lessons/') }}
+        run: npm run chunk:lessons
+
       - name: Deploy to Cloudflare Pages
         run: npx wrangler pages deploy out --project-name=blawby-cloudflare-marketing
 
       - name: Deploy Worker
-        run: npx wrangler deploy 
+        run: npx wrangler deploy
+
+      - name: Upsert MDX chunks to Vectorize
+        if: ${{ github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'src/data/lessons/') }}
+        run: |
+          curl -X POST https://compass-ts.paulchrisluke.workers.dev/upsert-mdx \
+            -H "Content-Type: application/json" \
+            --data-binary @lesson-chunks.json 
