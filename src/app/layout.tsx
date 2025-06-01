@@ -32,8 +32,7 @@ export const metadata: Metadata = {
     title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
     description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
     images: [{
-      // TODO: replace with actual image cropped for seo
-      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public',
+            url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
       width: 1200,
       height: 630,
       alt: 'Blawby - Compliant Credit Card Payments for Legal Practices'
@@ -44,8 +43,7 @@ export const metadata: Metadata = {
     title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
     description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
     creator: '@blawby',
-    // TODO: replace with actual image cropped for seo
-    images: ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public'],
+        images: ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'],
   },
   alternates: {
     canonical: 'https://blawby.com',
@@ -83,7 +81,7 @@ const jsonLd = {
     name: 'Blawby',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public'
+      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'
     }
   }
 };

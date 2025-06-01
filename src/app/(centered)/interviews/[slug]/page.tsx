@@ -88,7 +88,7 @@ function generateVideoStructuredData(interview: any) {
       name: 'Blawby',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/264e9151-7efb-4aa3-0063-61622211ea00/public',
+        url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
       },
     },
   };
