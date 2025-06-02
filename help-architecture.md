@@ -120,3 +120,14 @@ This architecture enables hybrid semantic and keyword search over all indexed co
 - Build the `/api/help-form` endpoint to receive POST requests from the support form, with input validation.
 - Add a feedback prompt to the chat UI after case submission.
 - (Handle notification/delivery logic in a later step.)
+
+# Layout Consistency Requirement
+
+## Navigation, Footer, and Sidebar Patterns
+- **All pages (including static pages like /privacy, /terms, /help) must use the existing SidebarLayout, Navbar, and Footer components.**
+- The sidebar should always be present, even if some sections are empty or minimal for certain pages.
+- This ensures a unified navigation experience and consistent structure across the entire site.
+- **How to apply:**
+  - For all new pages, wrap content in SidebarLayout so the sidebar, navbar, and footer are always present and aligned.
+  - If a page does not have sidebar content, pass an empty or minimal modules array, but SidebarLayout should still render for layout consistency.
+- This guarantees all pages are visually and functionally consistent, responsive, and easy to navigate.

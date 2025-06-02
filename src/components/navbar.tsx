@@ -58,6 +58,7 @@ function MobileNavigation({
             <div className="flex flex-col gap-y-2">
               {[
                 ["Docs", "/"],
+                ["Help", "/help"],
                 // ["Interviews", "/interviews"],
               ].map(([title, href]) => (
                 <CloseButton
@@ -110,6 +111,7 @@ function SiteNavigation() {
       />
       <div className="flex gap-x-6 text-sm/6 text-gray-950 max-lg:hidden dark:text-white">
         <Link href="/">Docs</Link>
+        <Link href="/help">Help</Link>
         {/* <Link href="/interviews">Interviews</Link> */}
         <Link href="https://blawby.com/login">Login</Link>
         <Link href="https://blawby.com/register">Register</Link>

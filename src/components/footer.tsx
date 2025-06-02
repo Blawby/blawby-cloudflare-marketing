@@ -14,6 +14,7 @@ export function Footer() {
           <Link href="/" className="hover:text-gray-950 dark:hover:text-white">Docs</Link>
           <Link href="https://blawby.com/login" className="hover:text-gray-950 dark:hover:text-white">Login</Link>
           <Link href="https://blawby.com/register" className="hover:text-gray-950 dark:hover:text-white">Register</Link>
+          <Link href="/help" className="hover:text-gray-950 dark:hover:text-white">Help</Link>
           <Link href="/privacy" className="hover:text-gray-950 dark:hover:text-white">Privacy Policy</Link>
           <Link href="/terms" className="hover:text-gray-950 dark:hover:text-white">Terms of Service</Link>
         </nav>

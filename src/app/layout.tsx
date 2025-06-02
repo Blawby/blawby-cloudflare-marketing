@@ -107,6 +107,18 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <link rel="manifest" href="/site.webmanifest" />
+        {/* Google Analytics gtag.js */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LXBVNX707M"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-LXBVNX707M');
+            `,
+          }}
+        />
       </head>
       <body>
         <div className="isolate">{children}</div>
