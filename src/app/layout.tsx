@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import type React from "react";
 import { Metadata } from "next";
 import "./globals.css";
+import { Footer } from "@/components/footer";
 
 const InterVariable = localFont({
   variable: "--font-inter",
@@ -109,6 +110,7 @@ export default function RootLayout({
       </head>
       <body>
         <div className="isolate">{children}</div>
+        <Footer />
       </body>
     </html>
   );

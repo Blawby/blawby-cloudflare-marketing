@@ -41,6 +41,9 @@ export async function getLesson(
 }
 
 export async function getLessonContent(slug: string) {
+  if (slug === "privacy" || slug === "terms") {
+    return (await import(`@/data/legal/${slug}.mdx`)).default;
+  }
   return (await import(`@/data/lessons/${slug}.mdx`)).default;
 }
 
@@ -106,25 +109,6 @@ const lessons = [
         description: "Understanding trust account requirements for legal payments.",
         video: null,
       }
-    ],
-  },
-  {
-    id: "legal",
-    title: "Legal Information",
-    description: "Legal documents, privacy policy, and terms of service.",
-    lessons: [
-      {
-        id: "privacy",
-        title: "Privacy Policy",
-        description: "Our commitment to protecting your privacy and personal data.",
-        video: null,
-      },
-      {
-        id: "terms",
-        title: "Terms of Service",
-        description: "Terms and conditions for using Blawby's services.",
-        video: null,
-      },
     ],
   },
 ];

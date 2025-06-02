@@ -11,10 +11,18 @@ const OUTPUT_PATH = path.resolve(process.cwd(), 'lesson-chunks.json');
 const MAX_CHUNK_TOKENS = 300; // Adjust as needed
 const MAX_ID_BYTES = 64;
 
+// Recursively get all .mdx files in LESSONS_DIR
 function getAllMdxFiles(dir: string): string[] {
-  return fs.readdirSync(dir)
-    .filter(f => f.endsWith('.mdx'))
-    .map(f => path.join(dir, f));
+  let results: string[] = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results = results.concat(getAllMdxFiles(fullPath));
+    } else if (entry.isFile() && entry.name.endsWith('.mdx')) {
+      results.push(fullPath);
+    }
+  }
+  return results;
 }
 
 function splitParagraph(paragraph: string, maxTokens: number): string[] {
