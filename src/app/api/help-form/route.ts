@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       from: `Blawby Support <${SUPPORT_EMAIL}>`,
       to: SUPPORT_EMAIL,
       subject: `[Support] ${subject}`,
-      reply_to: email,
+      replyTo: email,
       text,
     });
     // Send confirmation to user
