@@ -28,10 +28,10 @@ curl -X POST https://<your-worker-domain>/query \
 - The response includes the most relevant content chunks and their metadata.
 
 ## Next Steps for Support Page
-- The current setup provides the backend for a support chatbot or RAG system.
+- The current setup provides the backend for a support chatbot and RAG system.
 - To build a support page like Vercel's:
   - Add a frontend chat UI that calls the `/query` endpoint.
-  - Optionally, add a conversational RAG step (AI-generated answers from top chunks).
+  - Add a conversational RAG step (AI-generated answers from top chunks).
   - Provide a fallback support form if the user's concern isn't resolved.
 
 ---
@@ -41,18 +41,19 @@ This architecture enables hybrid semantic and keyword search over all indexed co
 # Support Chat & Form: Implementation Plan
 
 ## Goal
-- Build a support/help page at **/help** (mirroring Vercel's approach) using the **HuggingFace Chat UI** as the frontend, fully integrated with the Cloudflare Workers AI/RAG backend.
+- Build a support/help page at **/help** (mirroring Vercel's approach) using a **custom chat UI** fully integrated with the Cloudflare Workers AI/RAG backend.
+- The custom chat UI will follow the existing color palette, typography, and style patterns of the site for a seamless, branded experience.
 
 ## Approach
-- Deploy the open-source [HuggingFace Chat UI](https://github.com/huggingface/chat-ui) at `/help`.
-- Configure HuggingFace Chat UI to use your Cloudflare Worker endpoints for chat, completions, and search ([Cloudflare integration guide](https://developers.cloudflare.com/workers-ai/configuration/hugging-face-chat-ui/)).
+- **Build a custom chat UI** at `/help` using the site's existing design system (colors, buttons, inputs, layout, etc.).
+- Configure the chat UI to use your Cloudflare Worker endpoints for chat, completions, and search.
 - The chat UI will handle all conversational support.
 - **At the bottom of the chat UI, always display an option for the user to create a support case ("Create Case") and a note such as:**
   - _"Generated with AI. Consider checking for important information. Need help? Create Case"_ (just like Vercel).
 - The support form is always available as an option, not only if the AI is unable to resolve the issue.
 
 ## Advanced Support Flow (Vercel-style, Static Site Adapted)
-1. **User interacts with HuggingFace Chat UI at `/help`**.
+1. **User interacts with the custom chat UI at `/help`**.
 2. **The chat UI collects structured information through conditional forms and prompts:**
    - Product selection (dropdown, if multiple products)
    - Area/problem type (dropdown)
@@ -82,7 +83,8 @@ This architecture enables hybrid semantic and keyword search over all indexed co
      ```
 7. **API endpoint receives the POST request.**
    - Validate and sanitize the input (required fields, valid email, etc).
-   - (Notification/delivery logic will be handled in a later step.)
+   - **Send a support case notification email via [Resend](https://resend.com/) to the support team at blawby.com.**
+   - (The Resend API key and domain are already configured for blawby.com.)
 8. **After submission, the chat UI provides a feedback prompt about the AI support experience (e.g., satisfaction rating, comments).**
 
 ## What We Have (src/components)
@@ -93,15 +95,15 @@ This architecture enables hybrid semantic and keyword search over all indexed co
 - **Layout Components**: For page structure (CenteredPageLayout, SidebarLayout, etc.).
 
 ## What We Need to Build/Integrate
-- **Integrate HuggingFace Chat UI** at `/help`.
-- **Configure backend endpoints** to connect HuggingFace Chat UI to your Cloudflare Worker for RAG/search and completions.
+- **Custom Chat UI** at `/help` (not HuggingFace Chat UI), following the site's color and style patterns.
+- **Configure backend endpoints** to connect the chat UI to your Cloudflare Worker for RAG/search and completions.
 - **SupportForm**: Multi-step, conditional form for case creation (fields as above), pre-filled from chat context if possible.
-- **Next.js API endpoint** (`/api/help-form`) to receive POST requests from the form, with input validation.
+- **Next.js API endpoint** (`/api/help-form`) to receive POST requests from the support form, with input validation and Resend email delivery.
 - **Feedback prompt** in the chat UI after case submission.
 
 ## Cloudflare Chat UI Integration
 - Cloudflare provides the backend (AI/RAG, vector search, etc.) but does NOT provide a frontend chat UI.
-- HuggingFace Chat UI will be used as the frontend, configured to call your Worker endpoints for answers.
+- We will build our own custom chat UI, styled to match the rest of the site, and connect it to the Cloudflare Worker endpoints for answers.
 
 ## Summary Table
 | Component           | Exists? | File/Notes                |
@@ -109,17 +111,16 @@ This architecture enables hybrid semantic and keyword search over all indexed co
 | Button              | Yes     | button.tsx                |
 | Input/TextInput     | Yes     | input.tsx                 |
 | Dropdown            | Yes     | dropdown.tsx              |
-| HuggingFace Chat UI | No      | To integrate at /help     |
+| Custom Chat UI      | No      | To build at /help         |
 | SupportForm         | No      | To build/integrate        |
-| API endpoint        | No      | To build: /api/help-form|
+| API endpoint        | No      | To build: /api/help-form  |
 | Feedback prompt     | No      | To build/integrate        |
 
 ## Next Steps
-- Deploy and configure HuggingFace Chat UI at `/help`, pointing it to your Cloudflare Worker backend for AI-powered support.
+- Build and style the custom chat UI at `/help`, pointing it to your Cloudflare Worker backend for AI-powered support.
 - Use existing Button, Input, and Dropdown components for any custom form or UI needs.
-- Build the `/api/help-form` endpoint to receive POST requests from the support form, with input validation.
+- Build the `/api/help-form` endpoint to receive POST requests from the support form, with input validation and Resend email delivery.
 - Add a feedback prompt to the chat UI after case submission.
-- (Handle notification/delivery logic in a later step.)
 
 # Layout Consistency Requirement
 
