@@ -15,10 +15,8 @@ export function TextInput({
   return (
     <input
       className={clsx(
+        "block w-full h-12 rounded-full bg-white/75 border border-gray-950/10 outline outline-gray-950/5 px-4 text-base text-gray-950 shadow-sm backdrop-blur-sm placeholder:text-gray-500 focus:outline-2 focus:outline-gray-950/20 dark:bg-gray-950/75 dark:text-white dark:placeholder:text-gray-500 dark:outline-white/10 dark:border-white/10 dark:focus:outline-white/20",
         className,
-        "block w-full rounded-lg bg-white px-3 py-1.5",
-        "text-base/6 text-gray-950 sm:text-sm/6 dark:text-white",
-        "outline -outline-offset-1 outline-gray-950/15 focus:outline-2 focus:outline-blue-500 dark:bg-white/10 dark:outline-white/15",
       )}
       {...props}
     />

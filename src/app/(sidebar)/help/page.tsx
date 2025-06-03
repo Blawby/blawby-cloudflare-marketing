@@ -6,6 +6,7 @@ import {
 } from "@/components/breadcrumbs";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import type { Metadata } from "next";
+import { SupportForm } from "@/components/SupportForm";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -83,6 +84,10 @@ export default function HelpPage() {
                 className="w-full rounded-2xl shadow-lg bg-transparent"
                 allow="clipboard-write; microphone; camera"
               />
+            </div>
+            {/* Support Form */}
+            <div className="py-12">
+              <SupportForm />
             </div>
           </div>
         </div>
