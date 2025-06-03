@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-export const onRequestPost: PagesFunction = async (context) => {
+export const onRequestPost = async (context: any) => {
   const SUPPORT_EMAIL = "paulchrisluke@gmail.com";
   try {
     const { name, email, subject, description } = await context.request.json();
