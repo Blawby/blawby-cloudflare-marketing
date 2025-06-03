@@ -1,19 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { Resend } from 'resend';
 
-const SUPPORT_EMAIL = "paulchrisluke@gmail.com";
-
-export async function POST(req: NextRequest) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
+export const onRequestPost: PagesFunction = async (context) => {
+  const SUPPORT_EMAIL = "paulchrisluke@gmail.com";
   try {
-    const { name, email, subject, description } = await req.json();
+    const { name, email, subject, description } = await context.request.json();
     if (!email || !subject || !description) {
-      return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
+      return new Response(JSON.stringify({ error: "Missing required fields." }), { status: 400 });
     }
-    // Basic email validation
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-      return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
+      return new Response(JSON.stringify({ error: "Invalid email address." }), { status: 400 });
     }
+    const resend = new Resend(context.env.RESEND_API_KEY);
     const text = `Name: ${name || "(not provided)"}\nEmail: ${email}\nSubject: ${subject}\n\n${description}`;
     // Send to admin
     await resend.emails.send({
@@ -30,8 +27,9 @@ export async function POST(req: NextRequest) {
       subject: `We received your support request: ${subject}`,
       text: `Hi${name ? ` ${name}` : ""},\n\nThank you for contacting Blawby support! We have received your request and will get back to you as soon as possible.\n\nHere is a copy of your message:\n\nSubject: ${subject}\n${description}\n\nIf you have any additional information, just reply to this email.\n\nBest,\nThe Blawby Team`,
     });
-    return NextResponse.json({ success: true });
+    return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (err) {
-    return NextResponse.json({ error: "Failed to send message." }, { status: 500 });
+    console.error("Support form error:", err);
+    return new Response(JSON.stringify({ error: "Failed to send message." }), { status: 500 });
   }
-} 
+}; 
