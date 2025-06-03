@@ -12,6 +12,7 @@ on:
       - 'src/app/**'
       - 'src/components/**'
       - 'src/data/lessons.ts'
+      - 'functions/**'
 
 jobs:
   build-and-deploy:
