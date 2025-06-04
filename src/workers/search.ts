@@ -107,6 +107,60 @@ export default {
       }
     }
 
+    if (path.startsWith("/chat")) {
+      try {
+        const reqBody = await request.json();
+        let query = reqBody.query;
+        if (typeof query === "string") {
+          query = query.trim();
+        }
+        const ai = new Ai(env.AI);
+        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
+        const queryVector = embedding.data[0];
+        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
+          topK: 10,
+          returnValues: true,
+          returnMetadata: "all",
+        });
+        let matches = vectorizeResult.matches || vectorizeResult;
+        if (!Array.isArray(matches)) {
+          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
+          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
+        }
+        // Hybrid re-ranking: boost score for keyword matches in title or section
+        const queryWords = query.toLowerCase().split(/\s+/);
+        matches.forEach((match: any) => {
+          const title = (match.metadata?.title || "").toLowerCase();
+          const section = (match.metadata?.section || "").toLowerCase();
+          if (
+            queryWords.some((word: string) => title.includes(word)) ||
+            queryWords.some((word: string) => section.includes(word))
+          ) {
+            match.score += 1.0;
+          }
+        });
+        matches.sort((a: any, b: any) => b.score - a.score);
+        // Build a conversational message from the top 3 matches with inline hyperlinks
+        const topMatches = matches.slice(0, 3);
+        let message;
+        if (topMatches.length === 0) {
+          message = "Sorry, I couldn't find any relevant information for your question.";
+        } else {
+          message = `Here's what I found for your question:<br><br>` +
+            topMatches.map((m: any, i: number) => {
+              const title = m.metadata?.title || m.metadata?.section || "Untitled";
+              const url = m.metadata?.url || "#";
+              const desc = m.metadata?.description || m.metadata?.text || m.metadata?.content || "";
+              return `${i + 1}. <a href=\"${url}\" target=\"_blank\">${title}</a>: ${desc.length > 180 ? desc.slice(0, 180) + '...' : desc}`;
+            }).join("<br><br>");
+        }
+        return withCors(Response.json({ message, matches: topMatches }));
+      } catch (err) {
+        console.error("/chat endpoint error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Worker exception in /chat", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
+    }
+
     return withCors(Response.json({ text: "Not found" }, { status: 404 }));
   },
 }; 
