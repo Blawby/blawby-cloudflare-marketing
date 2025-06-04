@@ -176,3 +176,5 @@ This project uses a hybrid search approach for best-in-class relevance:
 - Easy to tune and maintain.
 
 See `src/workers/search.ts` for the implementation details.
+
+Test: Triggering deploy workflow for GitHub Actions.
