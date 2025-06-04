@@ -7,7 +7,7 @@ const VECTORIZE_API = 'https://api.cloudflare.com/client/v4/accounts';
 
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
 const API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
-const INDEX_NAME = process.env.VECTORIZE_INDEX_NAME || 'docs';
+const INDEX_NAME = process.env.VECTORIZE_INDEX_NAME || 'documentation';
 
 if (!ACCOUNT_ID || !API_TOKEN) {
   console.error('Missing CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_API_TOKEN env vars.');
@@ -20,24 +20,31 @@ async function main() {
   const currentIds = new Set(chunks.map(c => c.id));
   console.log(`Loaded ${currentIds.size} current chunk IDs.`);
 
-  // 2. List all vector IDs in the index using v2 endpoint
+  // 2. Enumerate all vector IDs in the index using v2 API
   let allVectorIds = [];
   let cursor = '';
+  let total = 0;
   do {
-    const url = `${VECTORIZE_API}/${ACCOUNT_ID}/vectorize/v2/indexes/${INDEX_NAME}/get_by_ids`;
-    // The v2 API does not support listing all IDs directly, so we must use a workaround if available.
-    // If you have a manifest of all upserted IDs, use that. Otherwise, this step may need to be manual.
-    // For demonstration, we'll assume you have a manifest file 'vector-manifest.json' with all IDs.
-    const manifestPath = path.resolve(process.cwd(), 'vector-manifest.json');
-    if (!fs.existsSync(manifestPath)) {
-      console.error('vector-manifest.json not found. Please provide a manifest of all upserted vector IDs.');
+    const url = `${VECTORIZE_API}/${ACCOUNT_ID}/vectorize/v2/indexes/${INDEX_NAME}/list?limit=1000${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+    const resp = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!resp.ok) {
+      console.error('Failed to list vectors:', await resp.text());
       process.exit(1);
     }
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
-    allVectorIds = manifest;
-    break;
-  } while (cursor);
-  console.log(`Found ${allVectorIds.length} vectors in manifest.`);
+    const data = await resp.json();
+    const ids = (data.result?.vectors || []).map(v => v.id);
+    allVectorIds.push(...ids);
+    total += ids.length;
+    cursor = data.result?.cursor || '';
+    if (!cursor) break;
+  } while (true);
+  console.log(`Enumerated ${total} vectors in index.`);
 
   // 3. Find stale IDs
   const staleIds = allVectorIds.filter(id => !currentIds.has(id));

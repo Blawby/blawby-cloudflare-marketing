@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 [[vectorize]]
 binding = "VECTORIZE"
-index_name = "docs"
+index_name = "documentation"
 
 [ai]
 binding = "AI"
