@@ -3,16 +3,6 @@ name: Deploy to Cloudflare Pages and Worker
 on:
   push:
     branches: [master]
-    paths:
-      - 'src/data/lessons/**'
-      - '.github/workflows/deploy.yml'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'src/workers/search.ts'
-      - 'src/app/**'
-      - 'src/components/**'
-      - 'src/data/lessons.ts'
-      - 'functions/**'
 
 jobs:
   build-and-deploy:
