@@ -97,6 +97,12 @@ function main() {
   }
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(allChunks, null, 2));
   console.log(`Wrote ${allChunks.length} chunks to ${OUTPUT_PATH}`);
+
+  // Write vector-manifest.json for pruning
+  const manifestPath = path.resolve(process.cwd(), 'vector-manifest.json');
+  const allIds = allChunks.map(chunk => chunk.id);
+  fs.writeFileSync(manifestPath, JSON.stringify(allIds, null, 2));
+  console.log(`Wrote ${allIds.length} vector IDs to ${manifestPath}`);
 }
 
 main(); 
