@@ -50,11 +50,25 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string):
   let chunks: any[] = [];
   let paraBuffer: string[] = [];
   let chunkIdx = 0;
+  let summaryAdded = false;
+  // Find the first non-heading paragraph and always include it in the first chunk
+  let firstParagraph = '';
+  visit(tree, (node: any) => {
+    if (!summaryAdded && node.type === 'paragraph') {
+      firstParagraph = node.children.map((c: any) => c.value || '').join(' ');
+      summaryAdded = true;
+    }
+  });
+  // Now walk again for normal chunking
   visit(tree, (node: any) => {
     if (node.type === 'heading' && node.depth === 2) {
       // Flush previous section
       if (paraBuffer.length) {
-        const paraText = paraBuffer.join('\n\n');
+        let paraText = paraBuffer.join('\n\n');
+        // Prepend summary if this is the first chunk and summary not already in buffer
+        if (chunks.length === 0 && firstParagraph && !paraText.includes(firstParagraph)) {
+          paraText = firstParagraph + '\n\n' + paraText;
+        }
         splitParagraph(paraText, MAX_CHUNK_TOKENS).forEach((chunk) => {
           const id = makeSafeId(file, section || 'intro', chunkIdx++);
           chunks.push({
@@ -72,7 +86,10 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string):
   });
   // Flush last section
   if (paraBuffer.length) {
-    const paraText = paraBuffer.join('\n\n');
+    let paraText = paraBuffer.join('\n\n');
+    if (chunks.length === 0 && firstParagraph && !paraText.includes(firstParagraph)) {
+      paraText = firstParagraph + '\n\n' + paraText;
+    }
     splitParagraph(paraText, MAX_CHUNK_TOKENS).forEach((chunk) => {
       const id = makeSafeId(file, section || 'intro', chunkIdx++);
       chunks.push({

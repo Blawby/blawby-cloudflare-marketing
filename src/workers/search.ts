@@ -132,15 +132,26 @@ export default {
           `${i + 1}. ${m.metadata?.description || m.metadata?.text || m.text || ""}`
         ).join("\n");
         // Create prompt for LLM
-        const prompt = `\nYou are a helpful support assistant. Answer the user's question in a concise, direct way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold). If you don't know, say so and offer to create a support case.\n\nUser's question: ${query}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
+        const prompt = `\nYou are a helpful support assistant. Answer the user's question in a concise, direct way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).\n\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data. If the answer is not in the context, say you don't know and offer to create a support case.\n\nUser's question: ${query}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
         // Call Workers AI LLM (Llama 2 Chat)
         const llmResponse = await ai.run("@cf/meta/llama-2-7b-chat-int8", {
           prompt,
           max_tokens: 80,
           temperature: 0.3,
         });
+        let message: string;
+        if (
+          llmResponse &&
+          typeof llmResponse === "object" &&
+          "response" in llmResponse &&
+          typeof (llmResponse as any).response === "string"
+        ) {
+          message = (llmResponse as any).response;
+        } else {
+          message = "Sorry, I couldn't find an answer.";
+        }
         return withCors(Response.json({
-          message: llmResponse.response || "Sorry, I couldn't find an answer.",
+          message,
           messageFormat: "markdown",
           matches,
         }));
