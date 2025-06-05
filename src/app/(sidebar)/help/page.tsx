@@ -77,7 +77,7 @@ export default function HelpPage() {
             </div>
             <div className="py-12">
               <iframe
-                src="https://chat.blawby.com/?position=inline&teamId=blawby-help"
+                src="https://chat.blawby.com/?position=inline"
                 title="Blawby Support Chat"
                 style={{ border: 'none', width: '100%', height: '600px', background: 'transparent' }}
                 className="w-full rounded-2xl shadow-lg bg-transparent"
