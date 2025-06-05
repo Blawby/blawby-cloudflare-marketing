@@ -11,12 +11,12 @@ export function Footer() {
           <span className="hidden sm:inline text-gray-500 dark:text-gray-400">&copy; {new Date().getFullYear()} Blawby</span>
         </div>
         <nav className="flex flex-wrap justify-start gap-x-6 gap-y-2 sm:justify-center">
-          <Link href="/" className="hover:text-gray-950 dark:hover:text-white">Docs</Link>
+          <Link href="/get-started" className="hover:text-gray-950 dark:hover:text-white">Docs</Link>
           <Link href="https://blawby.com/login" className="hover:text-gray-950 dark:hover:text-white">Login</Link>
           <Link href="https://blawby.com/register" className="hover:text-gray-950 dark:hover:text-white">Register</Link>
           <Link href="/help" className="hover:text-gray-950 dark:hover:text-white">Help</Link>
-          <Link href="/privacy" className="hover:text-gray-950 dark:hover:text-white">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-gray-950 dark:hover:text-white">Terms of Service</Link>
+          <Link href="/privacy" className="hover:text-gray-950 dark:hover:text-white">Privacy</Link>
+          <Link href="/terms" className="hover:text-gray-950 dark:hover:text-white">Terms</Link>
         </nav>
         <span className="sm:hidden text-gray-500 dark:text-gray-400">&copy; {new Date().getFullYear()} Blawby</span>
       </div>

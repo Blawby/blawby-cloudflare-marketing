@@ -57,7 +57,7 @@ function MobileNavigation({
           <div className="mt-4">
             <div className="flex flex-col gap-y-2">
               {[
-                ["Docs", "/"],
+                ["Docs", "/get-started"],
                 ["Help", "/help"],
                 // ["Interviews", "/interviews"],
               ].map(([title, href]) => (
@@ -110,7 +110,7 @@ function SiteNavigation() {
         onClose={() => setMobileMenuOpen(false)}
       />
       <div className="flex gap-x-6 text-sm/6 text-gray-950 max-lg:hidden dark:text-white">
-        <Link href="/">Docs</Link>
+        <Link href="/get-started">Docs</Link>
         <Link href="/help">Help</Link>
         {/* <Link href="/interviews">Interviews</Link> */}
         <Link href="https://blawby.com/login">Login</Link>
