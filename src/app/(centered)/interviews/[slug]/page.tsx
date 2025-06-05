@@ -61,7 +61,7 @@ export async function generateMetadata({
       images: [interview.video.thumbnail],
     },
     alternates: {
-      canonical: `https://compass.example.com/interviews/${interview.id}`,
+      canonical: `https://blawby.com/interviews/${interview.id}`,
     },
   };
 }

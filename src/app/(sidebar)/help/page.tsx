@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
     },
     alternates: {
-      canonical: "https://compass.example.com/help",
+      canonical: "https://blawby.com/help",
     },
   };
 }

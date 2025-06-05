@@ -19,6 +19,8 @@ import { CTASection } from "@/components/cta-section";
 import { Button } from "@/components/button";
 import { Pricing } from "@/components/pricing";
 import { LogoCloud } from "@/components/logo-cloud";
+import fs from "fs";
+import path from "path";
 
 export const metadata: Metadata = {
   title: "Blawby - Compliant Credit Card Payments for Legal Practices",
@@ -33,13 +35,26 @@ function formatDuration(seconds: number): string {
   return h > 0 ? (m > 0 ? `${h} hr ${m} min` : `${h} hr`) : `${m} min`;
 }
 
+function getLessonReadingDuration(slug: string): number {
+  try {
+    const filePath = path.join(process.cwd(), "src/data/lessons", `${slug}.mdx`);
+    const content = fs.readFileSync(filePath, "utf-8");
+    const wordCount = content.split(/\s+/).filter(Boolean).length;
+    // 200 words per minute reading speed
+    return Math.ceil(wordCount / 200 * 60); // seconds
+  } catch (e) {
+    // If file not found or error, fallback to 0
+    return 0;
+  }
+}
+
 export default async function Page() {
   let modules = await getModules();
   let lessons = modules.flatMap(({ lessons }) => lessons);
-  let duration = lessons.reduce(
-    (sum, { video }) => sum + (video?.duration ?? 0),
-    0,
-  );
+  let duration = lessons.reduce((sum, lesson) => {
+    if (lesson.video?.duration) return sum + lesson.video.duration;
+    return sum + getLessonReadingDuration(lesson.id);
+  }, 0);
 
   return (
     <SidebarLayoutContent
@@ -158,8 +173,8 @@ export default async function Page() {
                               title={lesson.title}
                               description={lesson.description}
                               href={`/${lesson.id}`}
-                              type="video"
-                              duration={lesson.video?.duration}
+                              type={lesson.video ? "video" : "article"}
+                              duration={lesson.video?.duration ?? getLessonReadingDuration(lesson.id)}
                             />
                           </li>
                         ))}

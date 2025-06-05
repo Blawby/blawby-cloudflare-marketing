@@ -15,7 +15,7 @@ const InterVariable = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://compass.example.com'),
+  metadataBase: new URL('https://blawby.com'),
   title: {
     template: '%s - Blawby',
     default: 'Blawby - Compliant Credit Card Payments for Legal Practices',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://compass.example.com',
+    url: 'https://blawby.com',
     siteName: 'Blawby',
     title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
     description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
@@ -76,7 +76,7 @@ const jsonLd = {
   '@type': 'WebSite',
   name: 'Blawby',
   description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
-  url: 'https://compass.example.com',
+  url: 'https://blawby.com',
   publisher: {
     '@type': 'Organization',
     name: 'Blawby',
