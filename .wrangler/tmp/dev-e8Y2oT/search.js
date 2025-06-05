@@ -1114,6 +1114,23 @@ ${message}`;
         if (!resendApiKey) {
           return withCors(new Response(JSON.stringify({ error: "Missing RESEND_API_KEY in environment" }), { status: 500 }));
         }
+        const adminHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+            <div style="background: #18181b; padding: 24px 0; text-align: center;">
+              <img src="https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public" alt="Blawby Logo" style="height:38px;" />
+            </div>
+            <div style="padding: 32px; background: #fff;">
+              <h2 style="color: #18181b; margin-top: 0;">New help form submission</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Message:</strong></p>
+              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
+            </div>
+            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
+              &copy; ${(/* @__PURE__ */ new Date()).getFullYear()} Blawby. All rights reserved.
+            </div>
+          </div>
+        `;
         const sendResp = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -1124,13 +1141,33 @@ ${message}`;
             from: "support@blawby.com",
             to: ["paulchrisluke@gmail.com"],
             subject: `Help Form Submission from ${name}`,
-            text: emailBody
+            text: emailBody,
+            html: adminHtml
           })
         });
         if (!sendResp.ok) {
           const errText = await sendResp.text();
           return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
         }
+        const userHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+            <div style="background: #18181b; padding: 24px 0; text-align: center;">
+              <img src="https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public" alt="Blawby Logo" style="height:38px;" />
+            </div>
+            <div style="padding: 32px; background: #fff;">
+              <h2 style="color: #18181b; margin-top: 0;">We've received your support request</h2>
+              <p>Hi ${name},</p>
+              <p>Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.</p>
+              <p><strong>Your message:</strong></p>
+              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
+              <p style="margin-top: 24px;">If you have any additional information, just reply to this email.</p>
+              <p style="margin-top: 24px;">Best,<br/>The Blawby Team</p>
+            </div>
+            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
+              &copy; ${(/* @__PURE__ */ new Date()).getFullYear()} Blawby. All rights reserved.
+            </div>
+          </div>
+        `;
         const confirmBody = `Hi ${name},
 
 Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.
@@ -1152,7 +1189,8 @@ The Blawby Team`;
             from: "support@blawby.com",
             to: [email],
             subject: "We've received your support request",
-            text: confirmBody
+            text: confirmBody,
+            html: userHtml
           })
         });
         if (!confirmResp.ok) {

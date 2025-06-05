@@ -161,7 +161,7 @@
   },
   {
     "id": "3c7057be2a00e150037d166a1105d59cf1a0bc7658e267efedbd2c51fd327323",
-    "text": "Let's say your client pays a $2,500 retainer:\n\n$2,500 goes directly into your trust account.\n\nStripe processes the transaction and calculates fees (e.g., $72.80).\n\nBlawby charges a 1% platform fee ($25.00).\n\nYour saved card is charged $97.80 total.\n\nThe trust account receives the full $2,500. All fees are handled separately.",
+    "text": "Let's say your client pays a $2,500 retainer:\n\n$2,500 goes directly into your trust account.\n\nStripe processes the transaction and calculates fees (e.g., $72.80).\n\nBlawby charges a 1.4% platform fee ($25.00).\n\nYour saved card is charged $97.80 total.\n\nThe trust account receives the full $2,500. All fees are handled separately.",
     "metadata": {
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",

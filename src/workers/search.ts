@@ -249,12 +249,30 @@ If the context does not contain relevant code or instructions, respond by saying
         if (!name || !email || !message) {
           return withCors(new Response(JSON.stringify({ error: "Missing name, email, or message" }), { status: 400 }));
         }
-        // Compose email
+        // Compose plain text email
         const emailBody = `New help form submission:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`;
         const resendApiKey = env.RESEND_API_KEY;
         if (!resendApiKey) {
           return withCors(new Response(JSON.stringify({ error: "Missing RESEND_API_KEY in environment" }), { status: 500 }));
         }
+        // HTML email for admin
+        const adminHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+            <div style="background: #18181b; padding: 24px 0; text-align: center;">
+              <img src=\"https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public\" alt=\"Blawby Logo\" style=\"height:38px;\" />
+            </div>
+            <div style="padding: 32px; background: #fff;">
+              <h2 style="color: #18181b; margin-top: 0;">New help form submission</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Message:</strong></p>
+              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
+            </div>
+            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
+              &copy; ${new Date().getFullYear()} Blawby. All rights reserved.
+            </div>
+          </div>
+        `;
         // Send notification to site owner
         const sendResp = await fetch("https://api.resend.com/emails", {
           method: "POST",
@@ -267,12 +285,33 @@ If the context does not contain relevant code or instructions, respond by saying
             to: ["paulchrisluke@gmail.com"],
             subject: `Help Form Submission from ${name}`,
             text: emailBody,
+            html: adminHtml,
           }),
         });
         if (!sendResp.ok) {
           const errText = await sendResp.text();
           return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
         }
+        // HTML email for user
+        const userHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+            <div style="background: #18181b; padding: 24px 0; text-align: center;">
+              <img src=\"https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public\" alt=\"Blawby Logo\" style=\"height:38px;\" />
+            </div>
+            <div style="padding: 32px; background: #fff;">
+              <h2 style="color: #18181b; margin-top: 0;">We've received your support request</h2>
+              <p>Hi ${name},</p>
+              <p>Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.</p>
+              <p><strong>Your message:</strong></p>
+              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
+              <p style="margin-top: 24px;">If you have any additional information, just reply to this email.</p>
+              <p style="margin-top: 24px;">Best,<br/>The Blawby Team</p>
+            </div>
+            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
+              &copy; ${new Date().getFullYear()} Blawby. All rights reserved.
+            </div>
+          </div>
+        `;
         // Send confirmation to user
         const confirmBody = `Hi ${name},\n\nThank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.\n\nYour message:\n${message}\n\nIf you have any additional information, just reply to this email.\n\nBest,\nThe Blawby Team`;
         const confirmResp = await fetch("https://api.resend.com/emails", {
@@ -286,6 +325,7 @@ If the context does not contain relevant code or instructions, respond by saying
             to: [email],
             subject: "We've received your support request",
             text: confirmBody,
+            html: userHtml,
           }),
         });
         if (!confirmResp.ok) {

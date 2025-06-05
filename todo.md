@@ -1,6 +1,14 @@
 updated docs seo strategy julia
+
 affiliate page
-check seo
+
+check seo maybe lighthouse checks
+
 tracking events for sign ups and payment method added in gtag
-home page content
+
 category heiarchy
+
+recent posts home page 
+
+
+we need to say your payout account is your trust account do not use operating account for payouts. use operating account credit card/debit card for the payment method

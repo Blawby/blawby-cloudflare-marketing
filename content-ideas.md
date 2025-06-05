@@ -1,5 +1,5 @@
 so does blawby still take a fee if paying via ACH
-we take a fee any time stripe issues one, in some cases bank transfers may include fees and blawby will take the standard 1% from that fee. If there are no fees deducted at the time of transaction by stripe, blawby will also deduct no fees.
+we take a fee any time stripe issues one, in some cases bank transfers may include fees and blawby will take the standard 1.4% from that fee. If there are no fees deducted at the time of transaction by stripe, blawby will also deduct no fees.
 
 most of the time, lawyers prefer to have a unified payment process.
 
