@@ -17,4 +17,4 @@ CLOUDFLARE_API_TOKEN = "fTmZjFFCGuhUppQ0XOScPWPIl8hJnqSLl4tpf_Jf"
 [[d1_databases]]
 binding = "SUPPORT_DB"
 database_name = "support"
-database_id = "<your-d1-database-id>"
+database_id = "e2d54e53-bad8-4927-9ed7-d401d5488c6a"

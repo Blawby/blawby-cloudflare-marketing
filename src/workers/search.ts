@@ -206,6 +206,38 @@ export default {
       }
     }
 
+    // --- Support Case Prefill Endpoint ---
+    if (path.startsWith("/support-case/") && request.method === "GET") {
+      const match = path.match(/^\/support-case\/(.+)$/);
+      if (match) {
+        const caseId = match[1];
+        try {
+          const db = env.SUPPORT_DB;
+          const result = await db.prepare(
+            `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`
+          ).bind(caseId).first();
+          if (!result) {
+            return withCors(new Response(JSON.stringify({ error: "Case not found" }), { status: 404 }));
+          }
+          // Parse JSON fields
+          let chatHistory = [];
+          let otherContext = null;
+          try { chatHistory = JSON.parse(result.chat_history); } catch {}
+          try { otherContext = result.other_context ? JSON.parse(result.other_context) : null; } catch {}
+          return withCors(Response.json({
+            caseId: result.id,
+            userId: result.user_id,
+            chatHistory,
+            otherContext,
+            createdAt: result.created_at,
+          }));
+        } catch (err) {
+          console.error("/support-case/:id GET error:", err);
+          return withCors(new Response(JSON.stringify({ error: "Failed to fetch support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        }
+      }
+    }
+
     return withCors(Response.json({ text: "Not found" }, { status: 404 }));
   },
 }; 

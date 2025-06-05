@@ -28,7 +28,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// .wrangler/tmp/bundle-a9OvnJ/checked-fetch.js
+// .wrangler/tmp/bundle-uEDSm3/checked-fetch.js
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
     (typeof request === "string" ? new Request(request, init) : request).url
@@ -46,7 +46,7 @@ function checkURL(request, init) {
 }
 var urls;
 var init_checked_fetch = __esm({
-  ".wrangler/tmp/bundle-a9OvnJ/checked-fetch.js"() {
+  ".wrangler/tmp/bundle-uEDSm3/checked-fetch.js"() {
     "use strict";
     urls = /* @__PURE__ */ new Set();
     __name(checkURL, "checkURL");
@@ -60,14 +60,14 @@ var init_checked_fetch = __esm({
   }
 });
 
-// .wrangler/tmp/bundle-a9OvnJ/strip-cf-connecting-ip-header.js
+// .wrangler/tmp/bundle-uEDSm3/strip-cf-connecting-ip-header.js
 function stripCfConnectingIPHeader(input, init) {
   const request = new Request(input, init);
   request.headers.delete("CF-Connecting-IP");
   return request;
 }
 var init_strip_cf_connecting_ip_header = __esm({
-  ".wrangler/tmp/bundle-a9OvnJ/strip-cf-connecting-ip-header.js"() {
+  ".wrangler/tmp/bundle-uEDSm3/strip-cf-connecting-ip-header.js"() {
     "use strict";
     __name(stripCfConnectingIPHeader, "stripCfConnectingIPHeader");
     globalThis.fetch = new Proxy(globalThis.fetch, {
@@ -207,12 +207,12 @@ var require_base64_js = __commonJS({
   }
 });
 
-// .wrangler/tmp/bundle-a9OvnJ/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-uEDSm3/middleware-loader.entry.ts
 init_checked_fetch();
 init_strip_cf_connecting_ip_header();
 init_modules_watch_stub();
 
-// .wrangler/tmp/bundle-a9OvnJ/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-uEDSm3/middleware-insertion-facade.js
 init_checked_fetch();
 init_strip_cf_connecting_ip_header();
 init_modules_watch_stub();
@@ -1059,6 +1059,41 @@ Respond in Markdown only. Do not use HTML tags.`;
         return withCors(new Response(JSON.stringify({ error: "Failed to submit feedback", details: err instanceof Error ? err.message : err }), { status: 500 }));
       }
     }
+    if (path.startsWith("/support-case/") && request.method === "GET") {
+      const match = path.match(/^\/support-case\/(.+)$/);
+      if (match) {
+        const caseId = match[1];
+        try {
+          const db = env.SUPPORT_DB;
+          const result = await db.prepare(
+            `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`
+          ).bind(caseId).first();
+          if (!result) {
+            return withCors(new Response(JSON.stringify({ error: "Case not found" }), { status: 404 }));
+          }
+          let chatHistory = [];
+          let otherContext = null;
+          try {
+            chatHistory = JSON.parse(result.chat_history);
+          } catch {
+          }
+          try {
+            otherContext = result.other_context ? JSON.parse(result.other_context) : null;
+          } catch {
+          }
+          return withCors(Response.json({
+            caseId: result.id,
+            userId: result.user_id,
+            chatHistory,
+            otherContext,
+            createdAt: result.created_at
+          }));
+        } catch (err) {
+          console.error("/support-case/:id GET error:", err);
+          return withCors(new Response(JSON.stringify({ error: "Failed to fetch support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        }
+      }
+    }
     return withCors(Response.json({ text: "Not found" }, { status: 404 }));
   }
 };
@@ -1110,7 +1145,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// .wrangler/tmp/bundle-a9OvnJ/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-uEDSm3/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -1145,7 +1180,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-a9OvnJ/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-uEDSm3/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

@@ -178,3 +178,24 @@ This project uses a hybrid search approach for best-in-class relevance:
 See `src/workers/search.ts` for the implementation details.
 
 Test: Triggering deploy workflow for GitHub Actions.
+
+## Support Case & Feedback Storage (Cloudflare D1)
+
+This project uses [Cloudflare D1](https://developers.cloudflare.com/d1/) as a production-grade relational database for support case and feedback storage. The API Worker exposes endpoints for support case creation and feedback collection, both backed by D1:
+
+- **POST `/support-case/create`**: Stores a new support case with user ID, chat history, and context.
+- **POST `/support-case/feedback`**: Stores user feedback (rating, comments) for a support case.
+
+**D1 Schema:** See `scripts/d1-support-schema.sql` for the schema. Tables:
+- `support_cases`: Stores case ID, user ID, chat history, context, and timestamps.
+- `support_feedback`: Stores feedback for each case (case ID, rating, comments, timestamp).
+
+**How it works:**
+- The frontend (Preact) calls the Worker API to create a support case and submit feedback.
+- All data is stored in D1 for strong consistency, analytics, and future admin/reporting needs.
+- See `src/workers/search.ts` for endpoint implementation.
+
+**To update the schema:**
+```bash
+npx wrangler d1 execute support --file=./scripts/d1-support-schema.sql --remote
+```
