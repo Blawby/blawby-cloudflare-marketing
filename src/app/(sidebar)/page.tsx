@@ -21,6 +21,7 @@ import { Pricing } from "@/components/pricing";
 import { LogoCloud } from "@/components/logo-cloud";
 import fs from "fs";
 import path from "path";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Blawby - Compliant Credit Card Payments for Legal Practices",
@@ -68,10 +69,13 @@ export default async function Page() {
     >
       <div className="relative mx-auto max-w-7xl">
         <div className="absolute -inset-x-2 top-0 -z-10 h-80 overflow-hidden rounded-t-2xl mask-b-from-60% sm:h-88 md:h-112 lg:-inset-x-4 lg:h-128">
-          <img
+          <Image
             alt=""
             src="https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/26a43a4d-6e82-4078-ea9c-2c11b3d77600/public"
+            fill
             className="absolute inset-0 h-full w-full mask-l-from-60% object-cover object-center opacity-40"
+            priority
+            unoptimized
           />
           <div className="absolute inset-0 rounded-t-2xl outline-1 -outline-offset-1 outline-gray-950/10 dark:outline-white/10" />
         </div>
