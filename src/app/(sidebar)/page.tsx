@@ -15,6 +15,10 @@ import { LessonsIcon } from "@/icons/lessons-icon";
 import { PlayIcon } from "@/icons/play-icon";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CTASection } from "@/components/cta-section";
+import { Button } from "@/components/button";
+import { Pricing } from "@/components/pricing";
+import { LogoCloud } from "@/components/logo-cloud";
 
 export const metadata: Metadata = {
   title: "Blawby - Compliant Credit Card Payments for Legal Practices",
@@ -64,6 +68,8 @@ export default async function Page() {
               <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-600 dark:text-gray-400">
                 Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.
               </p>
+              <p className="mt-4 text-base/7 text-pretty text-gray-600 dark:text-gray-400">
+                              </p>
               <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm/7 font-semibold text-gray-950 sm:gap-3 dark:text-white">
                 <div className="flex items-center gap-1.5">
                   <BookIcon className="stroke-gray-950/40 dark:stroke-white/40" />
@@ -90,9 +96,37 @@ export default async function Page() {
                   className="inline-flex items-center gap-x-2 rounded-full bg-gray-950 px-3 py-0.5 text-sm/7 font-semibold text-white hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600"
                 >
                   <PlayIcon className="fill-white" />
-                  Start the course
+                  Start accepting payments with Blawby
                 </Link>
               </div>
+
+              <div className="mt-16">
+                <LogoCloud />
+              </div>
+
+              <div className="mt-16">
+                <h2 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white sm:text-4xl">
+                  Comprehensive Solutions
+                </h2>
+                <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+                  A fully integrated suite of financial and payments tools for legal practices.
+                </p>
+                <ul className="mt-6 space-y-4 text-gray-700 dark:text-gray-300">
+                  <li><strong>Legal Payments:</strong> Accept credit card, debit card, and eCheck payments with ease. Ensure compliance with ABA and IOLTA guidelines.</li>
+                  <li><strong>Client Management:</strong> Manage your clients efficiently with integrated Calendly.</li>
+                </ul>
+              </div>
+
+              <div className="mt-16">
+                <h2 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white sm:text-4xl">
+                  Simple no-tricks pricing
+                </h2>
+                <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+                  Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.
+                </p>
+              </div>
+
+              <Pricing />
             </div>
 
             <div className="grid grid-cols-1 gap-y-16 pb-10 sm:px-4">
@@ -130,6 +164,12 @@ export default async function Page() {
           </div>
         </div>
       </div>
+      <CTASection
+        title="Ready to get started?"
+        description="Blawby makes compliant credit card payments easy for legal professionals. Start your journey to secure, streamlined, and ABA-compliant payments today."
+        buttonText="Register for Blawby"
+        buttonHref="https://blawby.com/register"
+      />
     </SidebarLayoutContent>
   );
 }
