@@ -312,7 +312,7 @@ export default function CommandPalette() {
                 {!error && query !== "" && results.length === 0 && !isSearching && (
                   <div className="px-6 py-14 text-center">
                     <ArticleIcon className="mx-auto h-6 w-6 fill-gray-950 stroke-gray-950/40 dark:fill-white dark:stroke-white/40" />
-                    <p className="mt-4 text-sm text-gray-950 dark:text-white">
+                    <p className="mt-4 text-sm body-text">
                       We couldn't find any matches for "{query}". Please try a different search term.
                     </p>
                   </div>

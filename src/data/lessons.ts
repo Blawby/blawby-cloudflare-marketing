@@ -95,7 +95,7 @@ const lessons = [
         title: "Pricing",
         description: "Simple, transparent pricing with no hidden fees. Pay-as-you-go with monthly billing.",
         video: null,
-      }
+      },
     ],
   },
   {
@@ -107,6 +107,12 @@ const lessons = [
         id: "iolta-compliance",
         title: "IOLTA Compliance Guide",
         description: "Understanding trust account requirements for legal payments.",
+        video: null,
+      },
+      {
+        id: "future-proof-revenue",
+        title: "Future-Proof Revenue",
+        description: "How to use flat fees, payment plans, and automated billing to stabilize your law firm's cash flow.",
         video: null,
       }
     ],

@@ -20,10 +20,10 @@ export function NextPageLink({
           Up next
           <ChevronRightIcon className="stroke-current" />
         </p>
-        <p className="mt-3 text-base/7 font-medium text-gray-950 dark:text-white">
+        <p className="mt-3 text-base/7 font-medium body-text">
           {title}
         </p>
-        <p className="text-sm/7 text-gray-700 dark:text-gray-400">
+        <p className="text-sm/7 body-text">
           {description}
         </p>
       </Link>

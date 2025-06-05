@@ -71,7 +71,7 @@ export default function HelpPage() {
           <div className="relative">
             <div className="px-4 pt-48 pb-12 lg:py-24">
               <h1 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">Help & Support</h1>
-              <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-600 dark:text-gray-400">
+              <p className="mt-7 max-w-lg text-base/7 text-pretty body-text">
               Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.
               </p>
             </div>

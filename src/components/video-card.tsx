@@ -80,7 +80,7 @@ export function VideoCard({
       <p className="mt-4 text-sm/6 font-semibold text-gray-950 dark:text-white">
         {title}
       </p>
-      <p className="text-sm/6 text-gray-600 dark:text-gray-400">{subtitle}</p>
+      <p className="text-sm/6 body-text">{subtitle}</p>
     </Link>
   );
 }

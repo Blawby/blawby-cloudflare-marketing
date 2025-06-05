@@ -88,7 +88,7 @@ export function TimestampButton({
       }}
       className={clsx(
         className,
-        "inline-flex items-center gap-x-2 rounded-md bg-gray-950/5 px-1.5 font-mono text-xs/6 text-gray-700 hover:bg-gray-950/10 dark:bg-white/5 dark:text-gray-400",
+        "inline-flex items-center gap-x-2 rounded-md bg-gray-950/5 px-1.5 font-mono text-xs/6 body-text hover:bg-gray-950/10 dark:bg-white/5 dark:text-gray-400",
       )}
     >
       <PlayIcon className="fill-gray-950 dark:fill-white" />

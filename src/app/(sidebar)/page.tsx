@@ -65,11 +65,11 @@ export default async function Page() {
             <div className="px-4 pt-48 pb-12 lg:py-24">
               <Logo className="h-8 fill-gray-950 dark:fill-white" />
               <h1 className="sr-only">Course overview</h1>
-              <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-600 dark:text-gray-400">
+              <p className="mt-7 max-w-lg text-base/7 text-pretty body-text">
                 Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.
               </p>
-              <p className="mt-4 text-base/7 text-pretty text-gray-600 dark:text-gray-400">
-                              </p>
+              <p className="mt-4 text-base/7 text-pretty body-text">
+              </p>
               <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm/7 font-semibold text-gray-950 sm:gap-3 dark:text-white">
                 <div className="flex items-center gap-1.5">
                   <BookIcon className="stroke-gray-950/40 dark:stroke-white/40" />
@@ -108,10 +108,10 @@ export default async function Page() {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white sm:text-4xl">
                   Comprehensive Solutions
                 </h2>
-                <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+                <p className="mt-6 text-lg leading-8 body-text">
                   A fully integrated suite of financial and payments tools for legal practices.
                 </p>
-                <ul className="mt-6 space-y-4 text-gray-700 dark:text-gray-300">
+                <ul className="mt-6 space-y-4 body-text">
                   <li><strong>Legal Payments:</strong> Accept credit card, debit card, and eCheck payments with ease. Ensure compliance with ABA and IOLTA guidelines.</li>
                   <li><strong>Client Management:</strong> Manage your clients efficiently with integrated Calendly.</li>
                 </ul>
@@ -121,45 +121,53 @@ export default async function Page() {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white sm:text-4xl">
                   Simple no-tricks pricing
                 </h2>
-                <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+                <p className="mt-6 text-lg leading-8 body-text">
                   Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.
                 </p>
               </div>
 
-              <Pricing />
-            </div>
+              <Pricing price={40} />
 
-            <div className="grid grid-cols-1 gap-y-16 pb-10 sm:px-4">
-              {modules.map((module: Module, index: number) => (
-                <PageSection
-                  key={module.id}
-                  id={module.id}
-                  title={`Part ${index + 1}`}
-                >
-                  <div className="max-w-2xl">
-                    <h2 className="text-2xl/7 font-medium tracking-tight text-pretty text-gray-950 dark:text-white">
-                      {module.title}
-                    </h2>
-                    <p className="mt-4 text-base/7 text-gray-700 sm:text-sm/7 dark:text-gray-400">
-                      {module.description}
-                    </p>
+              {/* Introduction to docs/lessons content */}
+              <div className="mt-16">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white">Explore Blawby Documentation & Lessons</h2>
+                <p className="mt-4 text-lg body-text max-w-2xl mb-10">
+                  Dive into our comprehensive guides and video lessons to master compliant payments, client management, and more. Whether you're just getting started or looking to deepen your expertise, you'll find step-by-step modules and practical resources below.
+                </p>
+              </div>
 
-                    <ol className="mt-6 space-y-4">
-                      {module.lessons.map((lesson) => (
-                        <li key={lesson.id}>
-                          <ContentLink
-                            title={lesson.title}
-                            description={lesson.description}
-                            href={`/${lesson.id}`}
-                            type="video"
-                            duration={lesson.video?.duration}
-                          />
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                </PageSection>
-              ))}
+              <div className="grid grid-cols-1 gap-y-16 pb-10 sm:px-4">
+                {modules.map((module: Module, index: number) => (
+                  <PageSection
+                    key={module.id}
+                    id={module.id}
+                    title={`Part ${index + 1}`}
+                  >
+                    <div className="max-w-2xl">
+                      <h2 className="text-2xl/7 font-medium tracking-tight text-pretty text-gray-950 dark:text-white">
+                        {module.title}
+                      </h2>
+                      <p className="mt-4 text-base/7 body-text sm:text-sm/7">
+                        {module.description}
+                      </p>
+
+                      <ol className="mt-6 space-y-4">
+                        {module.lessons.map((lesson) => (
+                          <li key={lesson.id}>
+                            <ContentLink
+                              title={lesson.title}
+                              description={lesson.description}
+                              href={`/${lesson.id}`}
+                              type="video"
+                              duration={lesson.video?.duration}
+                            />
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  </PageSection>
+                ))}
+              </div>
             </div>
           </div>
         </div>

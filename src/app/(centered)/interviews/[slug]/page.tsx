@@ -140,7 +140,7 @@ export default async function Page({
                 {interview.name}
               </h1>
             </hgroup>
-            <p className="text-base/7 text-gray-700 dark:text-gray-400">
+            <p className="text-base/7 body-text">
               {interview.intro}
             </p>
             <div className="flex items-center gap-x-2 text-sm/7 font-semibold text-gray-950 dark:text-white">

@@ -9,7 +9,7 @@ export function LogoCloud() {
             <h2 className="text-3xl font-bold tracking-tight text-white dark:text-white">
               Integrate with existing workflows
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-300 dark:text-gray-300">
+            <p className="mt-6 text-lg leading-8 body-text">
               Automatically recognize and defer invoicing revenue within Stripe. Sync your data in real time to NetSuite, Xero, QuickBooks, and other accounting and ERP systems with apps from the App Marketplace. You can also import data into your own systems with Stripe's Reporting APIs.
             </p>
           </div>

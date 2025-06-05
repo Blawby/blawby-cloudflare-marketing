@@ -1,69 +1,87 @@
 # Payments with Blawby
 
-> **Already set up your account?** Skip to [Payment Links](#payment-links) below.
+## Why Modern Payment Processing Matters for Law Firms
 
-Blawby simplifies the payment process for your legal practice, ensuring secure and compliant transactions.
+Managing payments shouldn't be a source of stress for your team or your clients. Yet, many law firms still deal with late checks, manual reconciliation, and client confusion about how to pay. Blawby's payment processing is designed to remove these pain points—so you can focus on your practice, not your paperwork.
 
-## Overview
+## What You Can Do with Blawby Payments
 
 Blawby's payment system allows you to:
+- Accept credit card and ACH payments securely
+- Comply with ABA and IOLTA guidelines by default
+- Automate payment reminders to reduce late payments
 
-- Accept credit card and ACH payments
-- Comply with ABA and IOLTA guidelines
-- Track payment status in real-time
-- Automate payment reminders
+Payments are managed through Blawby and can be fully reconciled in your own Stripe account or accounting software, giving you control and flexibility over your financial records.
 
-> **Note:** If you haven't completed your account setup, including connecting your bank account and adding payment methods, see the [Quick Start Guide](/get-started) first.
+[Learn more about invoicing best practices](/invoicing)  
+[See how to manage payouts](/payouts)
 
-## Payment Links
+---
 
-Blawby lets you create payment links that you can share with clients for fast, secure online payments. These links provide a simple checkout experience, complete with your firm's branding and automated email receipts.
+## How Payment Links Work
 
-### Creating a Payment Link
+### Fast, Frictionless Payments for Every Client
+
+With Blawby, you can generate a payment link in seconds—no technical setup required. Whether you're onboarding a new client, collecting a retainer, or following up on an outstanding invoice, payment links make it easy for clients to pay you online, from any device.
+
+For example, when a client calls to ask how to pay their retainer, you can send them a secure payment link by email or text. They pay instantly, and both of you receive a receipt—no delays, no confusion.
+
+### Creating and Sharing Payment Links
 
 1. Go to **Settings** in your Blawby dashboard.
 2. Click on your Team name.
-3. Scroll down to the **Payment Link** section.
+3. Scroll to the **Payment Link** section.
 4. Enter a unique link name (e.g., `myfirm-payments`) and an optional default amount.
 5. Save your changes.
 6. Copy your payment link (e.g., `https://blawby.com/myfirm-payments`).
 
-### How Clients Use Your Payment Link
-
-- Clients visit your payment link to access a secure checkout page.
-- They can enter their payment details and submit payment by card or ACH.
-- After payment, clients receive an email receipt automatically.
-- You will also receive a payment email notifying you of the payment.
-- You and your team can track all payments in your Blawby dashboard.
-
-### Best Practices for Sharing Payment Links
-
+**Best Practices:**
 - Add your payment link to your website as a "Pay Now" button.
 - Include it in your email signature or on invoices.
 - Send it directly to clients for retainers, one-off payments, or outstanding balances.
 
-### Tracking and Managing Payments
+[See how payment plans can help your clients](/future-proof-revenue)
 
-All payments received through your payment link are visible in the **Payments** dashboard:
-- View payment status and history
+---
+
+## Tracking and Managing Payments
+
+Blawby does not currently provide an in-app payment dashboard. Instead, all payments are managed through Blawby and can be tracked and reconciled in your own Stripe account or accounting software. This approach gives you the flexibility to use the financial tools you already trust for reporting and reconciliation.
+
+If you ever need to request a specific amount, you can pre-fill the payment form by adding an `amount` parameter to your link. **Blawby payment links use a bigint for the amount, so for example:**
+
+`https://blawby.com/northcarolinalegalservices/pay?amount=10000` = $100
+
+---
+
+## Built-In Compliance, Less Admin
+
+Blawby is designed to support compliance and reduce friction for law offices of any size:
+- **Automatic separation of earned and unearned funds:** Payments are routed to the correct accounts, so you don't have to worry about manual sorting or accidental commingling.
+- **No fees deducted from trust:** Processing and platform fees are always billed to your operating account, never from client funds.
+- **Clear, searchable audit trails:** Every transaction is logged and easy to review, making audits and reconciliations faster and less stressful.
+
+[Read about IOLTA compliance](/iolta-compliance)
+
+> **Note:** Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts.
+
+---
 
 ## Troubleshooting & Tips
 
 - If your payment link isn't working, ensure your payout account and payment method are set up in your account settings.
-- You can pre-fill the payment amount by adding an `amount` parameter to your payment link URL. For example:
+- For urgent payments, use the pre-filled amount feature to make it easy for clients to pay the exact amount you request.
 
-  `https://blawby.com/your-link-name?amount=1000`
+---
 
-  This will pre-fill the payment form with $10.00. The amount is specified in cents, so 1000 = $10.00, 2525 = $25.25, and so on.
+## Ready to Make Payments Effortless?
 
-  This makes it easy to request specific payment amounts for different clients or services by simply changing the URL.
+Blawby's payment processing is built for law firms that want to get paid faster, reduce admin, and stay compliant—without the headaches.  
+[See how Blawby can help your firm simplify payments and boost your bottom line.](https://yourproduct.com/demo)
 
-## Compliance
+---
 
-Blawby ensures compliance with legal industry standards:
-
-- Automatic separation of earned and unearned fees
-- IOLTA account integration
-- Detailed transaction records for auditing purposes
-
-> **Warning**: Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts. 
+**Read Next:**  
+- [Invoicing with Blawby](/invoicing)  
+- [Managing Payouts](/payouts)  
+- [Future-Proof Revenue: Flat Fees, Payment Plans, and Automated Billing](/future-proof-revenue) 
