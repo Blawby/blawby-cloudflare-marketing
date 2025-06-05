@@ -6,7 +6,6 @@ import {
 } from "@/components/breadcrumbs";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import type { Metadata } from "next";
-import { SupportForm } from "@/components/SupportForm";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
