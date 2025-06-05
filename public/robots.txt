@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://blawby.com
+
+# Sitemaps
+Sitemap: https://blawby.com/sitemap.xml

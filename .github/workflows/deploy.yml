@@ -25,6 +25,9 @@ jobs:
       - name: Build Next.js site
         run: npm run build
 
+      - name: Generate sitemap
+        run: npx next-sitemap
+
       - name: Chunk MDX lessons for vector search
         if: |
           ${{

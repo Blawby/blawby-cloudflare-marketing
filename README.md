@@ -78,6 +78,20 @@ To complete SEO setup:
 4. Update `site.webmanifest` for PWA support
 5. Add proper favicon and apple-touch-icon files
 
+## Sitemap Generation
+
+This project uses [next-sitemap](https://github.com/iamvishnusankar/next-sitemap) to automatically generate `sitemap.xml` and `robots.txt` after each build.
+
+- The config file is `next-sitemap.config.js` and uses ES module syntax (`export default`).
+- The sitemap is generated automatically in the deployment workflow.
+- To generate the sitemap locally, run:
+
+```bash
+npx next-sitemap
+```
+
+This will use the default config file and output the sitemap and robots.txt in the appropriate directory.
+
 ## Customizing
 
 You can start editing this template by modifying the files in the `/src` folder. The site will auto-update as you edit these files.
