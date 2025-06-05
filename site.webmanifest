@@ -1,0 +1,27 @@
+{
+  "name": "Blawby - Compliant Credit Card Payments for Legal Practices",
+  "short_name": "Blawby",
+  "description": "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32 48x48 64x64 96x96 128x128 256x256",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/ae609b77-9a3c-4ef9-c667-17d8b7ce7d00/public",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "scope": "/",
+  "id": "/",
+  "orientation": "portrait-primary",
+  "related_applications": [],
+  "prefer_related_applications": false
+} 
