@@ -4,6 +4,7 @@ export interface Env {
   VECTORIZE: any;
   AI: any;
   SUPPORT_DB: any;
+  RESEND_API_KEY: string;
 }
 
 function withCors(resp: Response) {
@@ -137,7 +138,7 @@ export default {
         // Call Workers AI LLM (Llama 2 Chat)
         const llmResponse = await ai.run("@cf/meta/llama-2-7b-chat-int8", {
           prompt,
-          max_tokens: 80,
+          max_tokens: 200,
           temperature: 0.3,
         });
         let message: string;
@@ -235,6 +236,42 @@ export default {
           console.error("/support-case/:id GET error:", err);
           return withCors(new Response(JSON.stringify({ error: "Failed to fetch support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
         }
+      }
+    }
+
+    // --- Help Form Email Endpoint ---
+    if (path === "/api/help-form" && request.method === "POST") {
+      try {
+        const { name, email, message } = await request.json();
+        if (!name || !email || !message) {
+          return withCors(new Response(JSON.stringify({ error: "Missing name, email, or message" }), { status: 400 }));
+        }
+        // Compose email
+        const emailBody = `New help form submission:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`;
+        const resendApiKey = env.RESEND_API_KEY;
+        if (!resendApiKey) {
+          return withCors(new Response(JSON.stringify({ error: "Missing RESEND_API_KEY in environment" }), { status: 500 }));
+        }
+        const sendResp = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "support@blawby.com",
+            to: ["paulchrisluke@gmail.com"],
+            subject: `Help Form Submission from ${name}`,
+            text: emailBody,
+          }),
+        });
+        if (!sendResp.ok) {
+          const errText = await sendResp.text();
+          return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
+        }
+        return withCors(Response.json({ ok: true }));
+      } catch (err) {
+        return withCors(new Response(JSON.stringify({ error: "Exception in /api/help-form", details: err instanceof Error ? err.message : err }), { status: 500 }));
       }
     }
 

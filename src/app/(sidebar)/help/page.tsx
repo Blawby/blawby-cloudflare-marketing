@@ -11,17 +11,17 @@ import { SupportForm } from "@/components/SupportForm";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Help & Support - Blawby",
-    description: "Get help, support, and answers to your questions about Blawby.",
+    description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
     openGraph: {
       title: "Help & Support - Blawby",
-      description: "Get help, support, and answers to your questions about Blawby.",
+      description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
       type: "website",
       images: [],
     },
     twitter: {
       card: "summary",
       title: "Help & Support - Blawby",
-      description: "Get help, support, and answers to your questions about Blawby.",
+      description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
     },
     alternates: {
       canonical: "https://compass.example.com/help",
@@ -33,7 +33,7 @@ const helpStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   name: 'Help & Support',
-  description: 'Get help, support, and answers to your questions about Blawby.',
+  description: 'Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.',
   provider: {
     '@type': 'Organization',
     name: 'Blawby',
@@ -73,7 +73,7 @@ export default function HelpPage() {
             <div className="px-4 pt-48 pb-12 lg:py-24">
               <h1 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">Help & Support</h1>
               <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-600 dark:text-gray-400">
-                Get help, support, and answers to your questions about Blawby. Our AI assistant and support form will appear here soon.
+              Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.
               </p>
             </div>
             <div className="py-12">
@@ -84,10 +84,6 @@ export default function HelpPage() {
                 className="w-full rounded-2xl shadow-lg bg-transparent"
                 allow="clipboard-write; microphone; camera"
               />
-            </div>
-            {/* Support Form */}
-            <div className="py-12">
-              <SupportForm />
             </div>
           </div>
         </div>
