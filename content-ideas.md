@@ -10,3 +10,5 @@ resource explaining payment links from riche's questions about how to customize 
 
 
 intergrations right now we need to be careful in that when we say integrations we mean just having a dynamic param changing url 
+
+stripe stuff how to account
