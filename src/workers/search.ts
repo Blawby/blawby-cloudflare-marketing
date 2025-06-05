@@ -3,6 +3,7 @@ import { Ai } from '@cloudflare/ai';
 export interface Env {
   VECTORIZE: any;
   AI: any;
+  SUPPORT_DB: any;
 }
 
 function withCors(resp: Response) {
@@ -158,6 +159,50 @@ export default {
       } catch (err) {
         console.error("/chat endpoint error:", err);
         return withCors(new Response(JSON.stringify({ error: "Worker exception in /chat", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
+    }
+
+    // --- Support Case Creation Endpoint ---
+    if (path === "/support-case/create" && request.method === "POST") {
+      try {
+        const db = env.SUPPORT_DB;
+        const reqBody = await request.json();
+        const { userId, chatHistory, otherContext } = reqBody;
+        if (!userId || !Array.isArray(chatHistory)) {
+          return withCors(new Response(JSON.stringify({ error: "Missing userId or chatHistory" }), { status: 400 }));
+        }
+        // Insert support case into D1
+        const caseId = crypto.randomUUID();
+        const chatHistoryStr = JSON.stringify(chatHistory);
+        const otherContextStr = otherContext ? JSON.stringify(otherContext) : null;
+        await db.prepare(
+          `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`
+        ).bind(caseId, userId, chatHistoryStr, otherContextStr).run();
+        // Return case URL and ID
+        const caseUrl = `/support/case/${caseId}`;
+        return withCors(Response.json({ caseId, caseUrl, prefilledFields: { userId, chatHistory, otherContext } }));
+      } catch (err) {
+        console.error("/support-case/create error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Failed to create support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
+    }
+
+    // --- Support Case Feedback Endpoint ---
+    if (path === "/support-case/feedback" && request.method === "POST") {
+      try {
+        const db = env.SUPPORT_DB;
+        const reqBody = await request.json();
+        const { caseId, rating, comments } = reqBody;
+        if (!caseId || typeof rating !== "number" || rating < 1 || rating > 5) {
+          return withCors(new Response(JSON.stringify({ error: "Missing or invalid caseId or rating" }), { status: 400 }));
+        }
+        await db.prepare(
+          `INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`
+        ).bind(caseId, rating, comments || null).run();
+        return withCors(Response.json({ ok: true }));
+      } catch (err) {
+        console.error("/support-case/feedback error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Failed to submit feedback", details: err instanceof Error ? err.message : err }), { status: 500 }));
       }
     }
 
