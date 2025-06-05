@@ -1127,6 +1127,34 @@ ${message}`;
           const errText = await sendResp.text();
           return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
         }
+        const confirmBody = `Hi ${name},
+
+Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.
+
+Your message:
+${message}
+
+If you have any additional information, just reply to this email.
+
+Best,
+The Blawby Team`;
+        const confirmResp = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            from: "support@blawby.com",
+            to: [email],
+            subject: "We've received your support request",
+            text: confirmBody
+          })
+        });
+        if (!confirmResp.ok) {
+          const errText = await confirmResp.text();
+          return withCors(new Response(JSON.stringify({ error: "Failed to send confirmation email", details: errText }), { status: 500 }));
+        }
         return withCors(Response.json({ ok: true }));
       } catch (err) {
         return withCors(new Response(JSON.stringify({ error: "Exception in /api/help-form", details: err instanceof Error ? err.message : err }), { status: 500 }));

@@ -252,6 +252,7 @@ export default {
         if (!resendApiKey) {
           return withCors(new Response(JSON.stringify({ error: "Missing RESEND_API_KEY in environment" }), { status: 500 }));
         }
+        // Send notification to site owner
         const sendResp = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -268,6 +269,25 @@ export default {
         if (!sendResp.ok) {
           const errText = await sendResp.text();
           return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
+        }
+        // Send confirmation to user
+        const confirmBody = `Hi ${name},\n\nThank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.\n\nYour message:\n${message}\n\nIf you have any additional information, just reply to this email.\n\nBest,\nThe Blawby Team`;
+        const confirmResp = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "support@blawby.com",
+            to: [email],
+            subject: "We've received your support request",
+            text: confirmBody,
+          }),
+        });
+        if (!confirmResp.ok) {
+          const errText = await confirmResp.text();
+          return withCors(new Response(JSON.stringify({ error: "Failed to send confirmation email", details: errText }), { status: 500 }));
         }
         return withCors(Response.json({ ok: true }));
       } catch (err) {
