@@ -83,6 +83,10 @@ export default function HelpPage() {
                 className="w-full rounded-2xl shadow-lg bg-transparent"
                 allow="clipboard-write; microphone; camera"
               />
+              <div className="flex justify-center">
+                <p className="max-w-lg text-xs text-center text-gray-900 dark:text-gray-100 text-pretty body-text">Blawby AI can make mistakes. Check important info.
+                </p>
+              </div>
             </div>
           </div>
         </div>

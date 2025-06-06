@@ -120,7 +120,7 @@ export default {
         const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
         const queryVector = embedding.data[0];
         const vectorizeResult = await env.VECTORIZE.query(queryVector, {
-          topK: 3,
+          topK: 5, // Increase to get more pricing context
           returnValues: true,
           returnMetadata: "all",
         });
@@ -129,6 +129,53 @@ export default {
           console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
           return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
         }
+        // --- Pricing Query Detection ---
+        const pricingKeywords = [
+          "price", "pricing", "cost", "fee", "fees", "charge", "charges", "how much", "rate", "rates", "platform fee", "transaction fee", "monthly fee", "card fee", "bank fee", "ach fee", "chargeback"
+        ];
+        const isPricingQuery = pricingKeywords.some(kw => query.toLowerCase().includes(kw));
+        if (isPricingQuery) {
+          // Aggregate pricing info from context
+          let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
+          let foundAny = false;
+          let contextText = matches.map(m => m.metadata?.description || m.metadata?.text || m.text || "").join("\n");
+          // Use regex to extract fees
+          // Monthly/user fee
+          const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
+          if (monthlyMatch) { monthlyFee = `$${monthlyMatch[1]} per user per month`; foundAny = true; }
+          // Card fee
+          const cardMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i);
+          if (cardMatch) { cardFee = `${cardMatch[1]}% + ${cardMatch[2]} per card transaction`; foundAny = true; }
+          // ACH/bank fee
+          const achMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i);
+          if (achMatch) { achFee = `${achMatch[1]}% per ACH (max $${achMatch[2]})`; foundAny = true; }
+          // Platform fee
+          const platformMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) || contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i);
+          if (platformMatch) { platformFee = `${platformMatch[1]}% platform fee (billed monthly)`; foundAny = true; }
+          // Chargeback fee
+          const chargebackMatch = contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i);
+          if (chargebackMatch) { chargebackFee = `$${chargebackMatch[1]} per chargeback`; foundAny = true; }
+          // Setup/hidden fees
+          if (/no setup fees?/i.test(contextText)) { setupFee = "No setup fees"; foundAny = true; }
+          if (/no hidden fees?/i.test(contextText)) { hiddenFee = "No hidden fees"; foundAny = true; }
+          // Compose answer
+          let pricingLines = [];
+          if (monthlyFee) pricingLines.push(`- **Monthly user license:** ${monthlyFee}`);
+          if (cardFee) pricingLines.push(`- **Card payments:** ${cardFee}`);
+          if (achFee) pricingLines.push(`- **ACH/bank payments:** ${achFee}`);
+          if (platformFee) pricingLines.push(`- **Platform fee:** ${platformFee}`);
+          if (chargebackFee) pricingLines.push(`- **Chargeback fee:** ${chargebackFee}`);
+          if (setupFee) pricingLines.push(`- ${setupFee}`);
+          if (hiddenFee) pricingLines.push(`- ${hiddenFee}`);
+          let answer = `**Blawby Pricing Overview**\n\n` + (pricingLines.length ? pricingLines.join("\n") : "(Some fees could not be found in the current context.)");
+          answer += `\n\nFor full details and the latest updates, [see our pricing page](/pricing).`;
+          return withCors(Response.json({
+            message: answer,
+            messageFormat: "markdown",
+            matches,
+          }));
+        }
+        // --- Fallback: normal LLM prompt ---
         // Build context for LLM
         const context = matches.map((m, i) =>
           `${i + 1}. ${m.metadata?.description || m.metadata?.text || m.text || ""}`
