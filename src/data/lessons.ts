@@ -69,7 +69,7 @@ const lessons = [
       {
         id: "payment-processing",
         title: "Payments",
-        description: "Accept credit card, debit card, and eCheck payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
+        description: "Accept credit card, debit card, and ACH/Bank Transfer payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
         video: null,
       },
       {

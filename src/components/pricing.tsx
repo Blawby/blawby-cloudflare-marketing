@@ -7,7 +7,7 @@ export function Pricing({ price, error }: { price: number; error?: string | null
   const includedFeatures = [
     "IOLTA compliance",
     "PCI compliance ($150 value)",
-    "Debit, credit, and eCheck payment types",
+    "Debit, credit, and ACH/Bank Transfer payment types",
     "Billing and invoicing",
   ];
 
@@ -25,7 +25,7 @@ export function Pricing({ price, error }: { price: number; error?: string | null
         </p>
         <p className="mt-2 text-base leading-7 body-text">
           Integrated per-transaction pricing means no setup fees. The price is the same for all cards and digital wallets.
-          Accept large payments or recurring charges securely with ACH debit, ACH credit, or wire transfers.
+          Accept large payments or recurring charges securely with ACH debit or ACH credit.
         </p>
         {/* Payment Logos */}
         <div className="mt-8">
