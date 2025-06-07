@@ -88,29 +88,3 @@ declare module 'react-pay-icons/lib/UnionPay' {
   const UnionPay: FC<IconProps>;
   export default UnionPay;
 }
-
-declare module 'react-pay-icons/lib/Applepay' {
-  import { FC } from 'react';
-
-  interface IconProps {
-    width?: number;
-    height?: number;
-    style?: React.CSSProperties;
-  }
-
-  const Applepay: FC<IconProps>;
-  export default Applepay;
-}
-
-declare module 'react-pay-icons/lib/Googlepay' {
-  import { FC } from 'react';
-
-  interface IconProps {
-    width?: number;
-    height?: number;
-    style?: React.CSSProperties;
-  }
-
-  const Googlepay: FC<IconProps>;
-  export default Googlepay;
-} 

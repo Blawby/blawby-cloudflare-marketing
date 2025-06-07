@@ -6,8 +6,6 @@ import Discover from "react-pay-icons/lib/Discover";
 import Jcb from "react-pay-icons/lib/Jcb";
 import DinersClub from "react-pay-icons/lib/DinersClub";
 import UnionPay from "react-pay-icons/lib/UnionPay";
-import Applepay from "react-pay-icons/lib/Applepay";
-import Googlepay from "react-pay-icons/lib/Googlepay";
 
 type PaymentMethod = {
   title: string;
@@ -33,8 +31,6 @@ export const PAYMENT_METHODS: PaymentMethod[] = [
     { title: "JCB", component: <Jcb width={25} height={24} /> },
     { title: "Diners Club", component: <DinersClub width={26} height={24} /> },
     { title: "UnionPay", component: <UnionPay width={28} height={24} /> },
-    { title: "Applepay", component: <Applepay width={40} height={17} /> },
-    { title: "Googlepay", component: <Googlepay width={40} height={17} /> }
 ];
 
 export const PaymentMethods = () => {
