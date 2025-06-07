@@ -12,8 +12,8 @@ export function Footer() {
         </div>
         <nav className="flex flex-wrap justify-start gap-x-6 gap-y-2 sm:justify-center">
           <Link href="/get-started" className="hover:text-gray-950 dark:hover:text-white">Docs</Link>
-          <Link href="https://blawby.com/login" className="hover:text-gray-950 dark:hover:text-white">Login</Link>
-          <Link href="https://blawby.com/register" className="hover:text-gray-950 dark:hover:text-white">Register</Link>
+          <Link href="https://app.blawby.com/login" className="hover:text-gray-950 dark:hover:text-white">Login</Link>
+          <Link href="https://app.blawby.com/register" className="hover:text-gray-950 dark:hover:text-white">Register</Link>
           <Link href="/help" className="hover:text-gray-950 dark:hover:text-white">Help</Link>
           <Link href="/privacy" className="hover:text-gray-950 dark:hover:text-white">Privacy</Link>
           <Link href="/terms" className="hover:text-gray-950 dark:hover:text-white">Terms</Link>

@@ -286,7 +286,7 @@ export default async function Page() {
         title="Ready to get started?"
         description="Blawby makes compliant credit card payments easy for legal professionals. Start your journey to secure, streamlined, and ABA-compliant payments today."
         buttonText="Register for Blawby"
-        buttonHref="https://blawby.com/register"
+        buttonHref="https://app.blawby.com/register"
       />
     </SidebarLayoutContent>
   );

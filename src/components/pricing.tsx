@@ -61,7 +61,7 @@ export function Pricing({ price, error }: { price: number; error?: string | null
               </span>
               <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600 dark:text-gray-300">/month</span>
             </p>
-            <Button href="https://blawby.com/register" target="_blank" rel="noopener noreferrer" className="mt-10 w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
+            <Button href="https://app.blawby.com/register" target="_blank" rel="noopener noreferrer" className="mt-10 w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
               Get access
             </Button>
             <p className="mt-6 text-xs leading-5 body-text">

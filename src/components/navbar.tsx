@@ -74,8 +74,8 @@ function MobileNavigation({
             <div className="mt-6 flex flex-col gap-y-2">
               <h3 className="px-4 py-1 text-sm/7 text-gray-500">Account</h3>
               {[
-                ["Login", "https://blawby.com/login"],
-                ["Register", "https://blawby.com/register"],
+                ["Login", "https://app.blawby.com/login"],
+                ["Register", "https://app.blawby.com/register"],
               ].map(([title, href], index) => (
                 <CloseButton
                   as={Link}
@@ -113,8 +113,8 @@ function SiteNavigation() {
         <Link href="/get-started">Docs</Link>
         <Link href="/help">Help</Link>
         {/* <Link href="/interviews">Interviews</Link> */}
-        <Link href="https://blawby.com/login">Login</Link>
-        <Link href="https://blawby.com/register">Register</Link>
+        <Link href="https://app.blawby.com/login">Login</Link>
+        <Link href="https://app.blawby.com/register">Register</Link>
       </div>
     </nav>
   );
