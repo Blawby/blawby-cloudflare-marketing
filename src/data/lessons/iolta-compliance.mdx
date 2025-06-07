@@ -25,7 +25,7 @@ These problems are more common than many firms realize.
 Blawby is structured to respect the boundaries required by IOLTA rules. Here's what happens when a client makes a payment:
 
 1. The entire payment amount is deposited into your connected trust account.
-2. Processing fees (via Stripe) and Blawby's platform fee are not deducted from that payment.
+2. Processing fees are not deducted from that payment.
 3. Instead, those fees are billed to a credit or debit card linked to your firm's operating account.
 
 This flow ensures that client funds remain whole, and compliance isn't left to manual tracking or trust in the wrong software configuration.
@@ -34,7 +34,7 @@ This flow ensures that client funds remain whole, and compliance isn't left to m
 
 Let's say your client pays a $2,500 retainer:
 - $2,500 goes directly into your trust account.
-- Stripe processes the transaction and calculates fees (e.g., $72.80).
+- The card processor processes the transaction and calculates fees (e.g., $72.80).
 - Blawby charges a 1.4% platform fee ($35.00).
 - Your saved card is charged $107.80 total.
 
@@ -56,11 +56,11 @@ Blawby supports your compliance goals, but consistent internal practices matter 
 - Separate earned and unearned funds by keeping work status and invoicing up to date.
 - Don't skip documentation. Transfers from trust to operating should always be traceable to client approval and earned revenue.
 
-## Built on Stripe Connect
+## PCI-Compliant Payment Infrastructure
 
-Blawby uses Stripe Connect for secure payments infrastructure. Stripe's reliability, PCI compliance, and reporting capabilities support a clean flow of funds with detailed tracking.
+Blawby leverages a secure payments infrastructure that ensures PCI compliance, providing a reliable and transparent flow of funds with detailed tracking.
 
-Our integration ensures:
+Our system ensures:
 - Trust-compliant payment routing
 - Separate billing for fees
 - Clear audit trails for every transaction

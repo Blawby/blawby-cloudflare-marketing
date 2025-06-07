@@ -178,7 +178,7 @@ export default async function Page({
                 <NextPageLink
                   title="Payments with Blawby"
                   description="Learn how to accept and manage payments securely and compliantly."
-                  href="/payment-processing"
+                  href="/payments"
                 />
               )}
             </div>

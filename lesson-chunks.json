@@ -313,70 +313,70 @@
     "id": "488f6f17a090be08cca1297510b39f1e5f9a0f506be8db04662ddf1c4ffbe499",
     "text": "Managing payments shouldn't be a source of stress for your team or your clients. Yet, many law firms still deal with late checks, manual reconciliation, and client confusion about how to pay. Blawby's payment processing is designed to remove these pain points—so you can focus on your practice, not your paperwork.",
     "metadata": {
-      "title": "payment-processing",
-      "file": "payment-processing.mdx",
+      "title": "payments",
+      "file": "payments.mdx",
       "section": "Why Modern Payment Processing Matters for Law Firms",
-      "url": "/lessons/payment-processing"
+      "url": "/lessons/payments"
     }
   },
   {
     "id": "956cc17ba774ce09e2ff3975bf9a02401154d88267f24d6bbe3be322b1938b04",
     "text": "Blawby's payment system allows you to:\n\nAccept credit card and ACH payments securely\n\nComply with ABA and IOLTA guidelines by default\n\nAutomate payment reminders to reduce late payments\n\nPayments are managed through Blawby and can be fully reconciled in your own Stripe account or accounting software, giving you control and flexibility over your financial records.\n\n  ",
     "metadata": {
-      "title": "payment-processing",
-      "file": "payment-processing.mdx",
+      "title": "payments",
+      "file": "payments.mdx",
       "section": "What You Can Do with Blawby Payments",
-      "url": "/lessons/payment-processing"
+      "url": "/lessons/payments"
     }
   },
   {
     "id": "ce24f501bdcdb53d5a4c39567bd2ecb07d07fc3cc1b174275acac81d40faaa3b",
     "text": "With Blawby, you can generate a payment link in seconds—no technical setup required. Whether you're onboarding a new client, collecting a retainer, or following up on an outstanding invoice, payment links make it easy for clients to pay you online, from any device.\n\nFor example, when a client calls to ask how to pay their retainer, you can send them a secure payment link by email or text. They pay instantly, and both of you receive a receipt—no delays, no confusion.\n\nGo to    in your Blawby dashboard.\n\nClick on your Team name.\n\nScroll to the    section.\n\nEnter a unique link name (e.g.,  myfirm-payments ) and an optional default amount.\n\nSave your changes.\n\nCopy your payment link (e.g.,  https://blawby.com/myfirm-payments ).\n\n\n\nAdd your payment link to your website as a \"Pay Now\" button.\n\nInclude it in your email signature or on invoices.\n\nSend it directly to clients for retainers, one-off payments, or outstanding balances.\n\n",
     "metadata": {
-      "title": "payment-processing",
-      "file": "payment-processing.mdx",
+      "title": "payments",
+      "file": "payments.mdx",
       "section": "How Payment Links Work",
-      "url": "/lessons/payment-processing"
+      "url": "/lessons/payments"
     }
   },
   {
     "id": "4cf99e87756cae084327d61428bd5c7296caa30b4b3f1b87c087aaa59676f1ce",
     "text": "Blawby does not currently provide an in-app payment dashboard. Instead, all payments are managed through Blawby and can be tracked and reconciled in your own Stripe account or accounting software. This approach gives you the flexibility to use the financial tools you already trust for reporting and reconciliation.\n\nIf you ever need to request a specific amount, you can pre-fill the payment form by adding an  amount  parameter to your link.  \n\nhttps://blawby.com/northcarolinalegalservices/pay?amount=10000  = $100",
     "metadata": {
-      "title": "payment-processing",
-      "file": "payment-processing.mdx",
+      "title": "payments",
+      "file": "payments.mdx",
       "section": "Tracking and Managing Payments",
-      "url": "/lessons/payment-processing"
+      "url": "/lessons/payments"
     }
   },
   {
     "id": "2854567f44bdaee97eca5f29ed9951e3df225e4cacf5d8483c56bd402392a638",
     "text": "Blawby is designed to support compliance and reduce friction for law offices of any size:\n\n  Payments are routed to the correct accounts, so you don't have to worry about manual sorting or accidental commingling.\n\n  Processing and platform fees are always billed to your operating account, never from client funds.\n\n  Every transaction is logged and easy to review, making audits and reconciliations faster and less stressful.\n\n\n\n  Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts.",
     "metadata": {
-      "title": "payment-processing",
-      "file": "payment-processing.mdx",
+      "title": "payments",
+      "file": "payments.mdx",
       "section": "Built-In Compliance, Less Admin",
-      "url": "/lessons/payment-processing"
+      "url": "/lessons/payments"
     }
   },
   {
     "id": "06775a167424145098e21ce03292f68d42be025be1c662e85eb034ff6dbe61e0",
     "text": "If your payment link isn't working, ensure your payout account and payment method are set up in your account settings.\n\nFor urgent payments, use the pre-filled amount feature to make it easy for clients to pay the exact amount you request.",
     "metadata": {
-      "title": "payment-processing",
-      "file": "payment-processing.mdx",
+      "title": "payments",
+      "file": "payments.mdx",
       "section": "Troubleshooting & Tips",
-      "url": "/lessons/payment-processing"
+      "url": "/lessons/payments"
     }
   },
   {
     "id": "181f5597d4cba7a07f45cd84c2d3366f81679a5d6584c6886eb05a25c4773823",
     "text": "Blawby's payment processing is built for law firms that want to get paid faster, reduce admin, and stay compliant—without the headaches.  \n\n\n\n\n\n\n\n",
     "metadata": {
-      "title": "payment-processing",
-      "file": "payment-processing.mdx",
+      "title": "payments",
+      "file": "payments.mdx",
       "section": "Ready to Make Payments Effortless?",
-      "url": "/lessons/payment-processing"
+      "url": "/lessons/payments"
     }
   },
   {
@@ -461,7 +461,7 @@
   },
   {
     "id": "6c76a92e7eee459ac9f66dee85d31f1700d9bba6bb9048e61b54f75b54c6077f",
-    "text": "Blawby offers transparent pricing based on industry rates. Fees incurred are held and billed monthly (not at the time of transaction) with an additional   . Explore pricing for the full Blawby platform.\n\nIncrease customer acquisition with 100+ payment methods. Improve conversion with Link - Stripe's accelerated checkout. Reduce fraud and increase revenue with ML optimisations. Save engineering time with pre-built payment pages.  \n\n  for domestic cards - Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.\n\n  ACH Direct Debit ($5 cap) - A quick link solution for clients to pay via ACH. Process ACH transfers at a lower cost with full reconciliation support.\n\nSave engineering time and get started quickly. Reduce friction with features designed to improve conversion. Customise with your branding.\n\n  - Quickly generate custom payments without having to log into the platform, no coding necessary. Quick edit of url's amount integrates into any payment integration flow. Generate links directly from the Dashboard, no coding necessary. Share across any channel and with multiple customers. Sell products, services, or collect a donation. Customize with your branding.\n\n  per paid invoice - Create, customize, and send online invoices that get paid fast. Monitor invoice statuses and easily collect unpaid invoices. Automatically reconcile incoming payments with outstanding invoices. Get started in a few clicks with no-code options.\n\n  - Admins have the flexibility to invite other staff or team members to their Blawby account, with each additional user incurring a $40/month fee. This ensures that your entire team can benefit from Blawby's comprehensive payment solutions, tailored to your firm's needs.",
+    "text": "Blawby offers transparent pricing based on industry rates. Fees incurred are held and billed monthly (not at the time of transaction) with an additional   . Explore pricing for the full Blawby platform.\n\nIncrease customer acquisition with 100+ payment methods. Improve conversion with Link - Stripe's accelerated checkout. Reduce fraud and increase revenue with ML optimisations. Save engineering time with pre-built payment pages.  \n\n  for domestic cards - Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.\n\n  ACH Direct Debit ($5 cap) - A quick link solution for clients to pay via ACH. Process ACH transfers at a lower cost with full reconciliation support.\n\nSave engineering time and get started quickly. Reduce friction with features designed to improve conversion. Customise with your branding.\n\n  - Quickly generate payments without having to log into the platform, no coding necessary. Quick edit of url's amount integrates into any payment integration flow. Generate links directly from the Dashboard, no coding necessary. Share across any channel and with multiple customers. Sell products, services, or collect a donation. Customize with your branding.\n\n  per paid invoice - Create, customize, and send online invoices that get paid fast. Monitor invoice statuses and easily collect unpaid invoices. Automatically reconcile incoming payments with outstanding invoices. Get started in a few clicks with no-code options.\n\n  - Admins have the flexibility to invite other staff or team members to their Blawby account, with each additional user incurring a $40/month fee. This ensures that your entire team can benefit from Blawby's comprehensive payment solutions, tailored to your firm's needs.",
     "metadata": {
       "title": "pricing",
       "file": "pricing.mdx",

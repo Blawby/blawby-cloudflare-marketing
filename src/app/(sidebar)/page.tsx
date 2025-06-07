@@ -207,7 +207,7 @@ export default async function Page() {
                 </h3>
                 <ol className="mt-4 space-y-2 body-text list-decimal list-inside text-gray-700 dark:text-gray-300">
                   <li>The entire payment amount is deposited into your connected trust account.</li>
-                  <li>Processing fees (via Stripe) and Blawby's platform fee are not deducted from that payment.</li>
+                  <li>Processing fees are not deducted from that payment.</li>
                   <li>Instead, those fees are billed to a credit or debit card linked to your firm's operating account.</li>
                 </ol>
                 <p className="mt-4 text-base body-text text-gray-700 dark:text-gray-300">

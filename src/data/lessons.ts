@@ -67,7 +67,7 @@ const lessons = [
     description: "Compliant credit card payments and invoicing solutions for legal practices.",
     lessons: [
       {
-        id: "payment-processing",
+        id: "payments",
         title: "Payments",
         description: "Accept credit card, debit card, and ACH/Bank Transfer payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
         video: null,

@@ -7,11 +7,12 @@ Managing payments shouldn't be a source of stress for your team or your clients.
 ## What You Can Do with Blawby Payments
 
 Blawby's payment system allows you to:
+
 - Accept credit card and ACH payments securely
 - Comply with ABA and IOLTA guidelines by default
-- Automate payment reminders to reduce late payments
+- Quickly generate payments without having to log into the platform, no coding necessary.
 
-Payments are managed through Blawby and can be fully reconciled in your own Stripe account or accounting software, giving you control and flexibility over your financial records.
+Payments are managed through Blawby and can be fully reconciled in your accounting software, giving you control and flexibility over your financial records.
 
 [Learn more about invoicing best practices](/invoicing)  
 [See how to manage payouts](/payouts)
@@ -26,37 +27,24 @@ With Blawby, you can generate a payment link in seconds—no technical setup req
 
 For example, when a client calls to ask how to pay their retainer, you can send them a secure payment link by email or text. They pay instantly, and both of you receive a receipt—no delays, no confusion.
 
-### Creating and Sharing Payment Links
+## Using Dynamic Payment Links
 
-1. Go to **Settings** in your Blawby dashboard.
-2. Click on your Team name.
-3. Scroll to the **Payment Link** section.
-4. Enter a unique link name (e.g., `myfirm-payments`) and an optional default amount.
-5. Save your changes.
-6. Copy your payment link (e.g., `https://blawby.com/myfirm-payments`).
+Blawby's dynamic payment links are designed to save you time by allowing you to adjust the payment amount directly in the URL, without needing to log into the CMS. This feature enables any automation system or CMS to manipulate the URL parameter to dynamically prepare always-ready, no-code payment link pages.
 
-**Best Practices:**
-- Add your payment link to your website as a "Pay Now" button.
-- Include it in your email signature or on invoices.
-- Send it directly to clients for retainers, one-off payments, or outstanding balances.
+### Adjusting the Payment Amount
 
-[See how payment plans can help your clients](/future-proof-revenue)
+To change the payment amount, simply modify the `amount` parameter in the URL. The amount is specified in cents, so for example, to request a payment of $75.00, you would use:
 
----
+`https://blawby.com/myfirm-payments?amount=7500`
 
-## Tracking and Managing Payments
-
-Blawby does not currently provide an in-app payment dashboard. Instead, all payments are managed through Blawby and can be tracked and reconciled in your own Stripe account or accounting software. This approach gives you the flexibility to use the financial tools you already trust for reporting and reconciliation.
-
-If you ever need to request a specific amount, you can pre-fill the payment form by adding an `amount` parameter to your link. **Blawby payment links use a bigint for the amount, so for example:**
-
-`https://blawby.com/northcarolinalegalservices/pay?amount=10000` = $100
+This flexibility means you can generate payment links on-the-fly, tailored to each client's needs, without the hassle of creating a new link each time. This not only streamlines your payment process but also enhances your firm's efficiency by reducing administrative tasks.
 
 ---
 
 ## Built-In Compliance, Less Admin
 
 Blawby is designed to support compliance and reduce friction for law offices of any size:
+
 - **Automatic separation of earned and unearned funds:** Payments are routed to the correct accounts, so you don't have to worry about manual sorting or accidental commingling.
 - **No fees deducted from trust:** Processing and platform fees are always billed to your operating account, never from client funds.
 - **Clear, searchable audit trails:** Every transaction is logged and easy to review, making audits and reconciliations faster and less stressful.
@@ -64,6 +52,34 @@ Blawby is designed to support compliance and reduce friction for law offices of 
 [Read about IOLTA compliance](/iolta-compliance)
 
 > **Note:** Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts.
+
+---
+
+## Advanced Features for Scaling Firms
+
+### Smarter Link Generation with URL Parameters
+
+Blawby lets you generate custom payment links quickly by changing the amount in the URL—no logins, no integrations, and no coding required.
+
+You can:
+
+- Pre-fill specific payment amounts for faster transactions
+- Share the same link across channels with client-specific amounts
+- Embed links into emails, CMS pages, or SMS workflows
+
+**Example:**
+
+`https://blawby.com/myfirm-payments?amount=12500` (For a $125.00 payment request)
+
+This keeps your payment process streamlined and makes it easy to create dynamic, client-specific links on-the-fly.
+
+### Custom Branding and Experience
+
+Each payment page includes your firm's logo, name, email address, and phone number—so clients know exactly who they're paying. This ensures a clear, professional presentation without the need for additional customization or legal disclaimers.
+
+### Real-Time Notifications & Tracking
+
+Get notified instantly when a payment is completed. Track status via the dashboard or webhook events to update your systems in real-time.
 
 ---
 
