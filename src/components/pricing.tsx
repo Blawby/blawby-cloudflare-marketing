@@ -15,7 +15,7 @@ export function Pricing({ price, error }: { price: number; error?: string | null
   const formattedPrice = `$${price}`;
 
   return (
-    <div className="relative mx-auto mt-16 max-w-2xl rounded-3xl bg-white ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none dark:bg-gray-950 dark:ring-white/10">
+    <div className="relative mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none dark:ring-white/10">
       <div className="p-8 sm:p-10 lg:flex-auto">
         <h3 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white">
           Standard
@@ -50,7 +50,7 @@ export function Pricing({ price, error }: { price: number; error?: string | null
         </ul>
       </div>
       <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
-        <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-200 lg:flex lg:flex-col lg:justify-center lg:py-16 dark:bg-gray-900 dark:ring-white/10">
+        <div className="rounded-2xl py-10 text-center ring-1 ring-inset ring-gray-200 lg:flex lg:flex-col lg:justify-center lg:py-16 dark:ring-white/10">
           <div className="mx-auto max-w-xs px-8">
             <p className="text-base font-semibold body-text text-gray-700 dark:text-gray-300">
               Pay monthly, love forever
