@@ -4,10 +4,10 @@
   line-height: --spacing(7);
 
   @variant dark {
-    color: var(--color-gray-400);
+    color: var(--color-gray-300);
   }
 
-  * + * {
+  *+* {
     margin-top: --spacing(6);
   }
 
@@ -106,7 +106,7 @@
     padding: --spacing(3) --spacing(4);
     overflow-x: auto;
 
-    > code {
+    >code {
       display: block;
       font-size: var(--text-sm);
       line-height: --spacing(5);

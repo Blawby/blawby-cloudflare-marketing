@@ -46,7 +46,7 @@ function CourseNavigation({
           <h2 className="text-base/7 font-semibold text-pretty text-gray-950 sm:text-sm/6 dark:text-white">
             {module.title}
           </h2>
-          <ul className="mt-4 flex flex-col gap-4 border-l border-gray-950/10 text-base/7 body-text sm:mt-3 sm:gap-3 sm:text-sm/6 dark:border-white/10">
+          <ul className="mt-4 flex flex-col gap-4 border-l border-gray-950/10 text-base/7 text-gray-700 sm:mt-3 sm:gap-3 sm:text-sm/6 dark:border-white/10 dark:text-gray-400">
             {module.lessons.map((lesson) => (
               <li
                 key={lesson.id}

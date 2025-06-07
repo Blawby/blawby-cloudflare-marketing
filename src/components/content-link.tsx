@@ -56,7 +56,7 @@ export function ContentLink({
               </>
             )}
           </div>
-          <p className="body-text">{description}</p>
+          <p className="body-text text-gray-700 dark:text-gray-300">{description}</p>
           {duration && (
             <div className="text-gray-500 sm:hidden">
               {formatDuration(duration)}

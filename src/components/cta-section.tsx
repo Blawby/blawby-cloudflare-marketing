@@ -24,7 +24,7 @@ export function CTASection({
       }
     >
       <h2 className="text-2xl font-bold text-gray-950 dark:text-white mb-4">{title}</h2>
-      <p className="mb-8 text-lg body-text max-w-2xl mx-auto">{description}</p>
+      <p className="mb-8 text-lg body-text max-w-2xl mx-auto text-gray-700 dark:text-gray-300">{description}</p>
       {isExternal ? (
         <a href={buttonHref} target="_blank" rel="noopener noreferrer">
           <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">

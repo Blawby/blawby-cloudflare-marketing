@@ -1,10 +1,6 @@
 @import "tailwindcss";
 @import "./typography.css";
 
-.body-text {
-  @apply text-gray-700 dark:text-gray-300;
-}
-
 @theme inline {
   --font-sans: var(--font-inter);
   --font-sans--font-feature-settings: "cv11";
