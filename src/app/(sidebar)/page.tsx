@@ -23,6 +23,7 @@ import fs from "fs";
 import path from "path";
 import Image from "next/image";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { getCoursePathwaySchema } from "@/utils/course-schema";
 
 export const metadata: Metadata = {
   title: "Blawby - Compliant Credit Card Payments for Legal Practices",
@@ -77,6 +78,43 @@ export default async function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            getCoursePathwaySchema({
+              name: "Blawby Legal Payments Curriculum",
+              description: "A comprehensive set of lessons for legal professionals to master compliant payments.",
+              lessons: lessons.map(lesson => ({
+                name: lesson.title,
+                description: lesson.description,
+                url: `https://blawby.com/${lesson.id}`,
+              })),
+            })
+          ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Blawby",
+            operatingSystem: "Web",
+            applicationCategory: "BusinessApplication",
+            description:
+              "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance.",
+            url: "https://blawby.com",
+            image: "https://blawby.com/favicon.ico",
+            offers: {
+              "@type": "Offer",
+              price: "40",
+              priceCurrency: "USD"
+            }
+          })
+        }}
       />
       <div className="relative mx-auto max-w-7xl">
         <div className="absolute -inset-x-2 top-0 -z-10 h-80 overflow-hidden rounded-t-2xl mask-b-from-60% sm:h-88 md:h-112 lg:-inset-x-4 lg:h-128">

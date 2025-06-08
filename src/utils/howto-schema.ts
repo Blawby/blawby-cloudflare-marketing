@@ -66,9 +66,33 @@ function sumDurations(durations: string[]): string | undefined {
   return undefined;
 }
 
+// Helper: Parse duration from step name like "(2 minutes)" and return [name, duration]
+function extractDurationFromName(name: string): { cleanName: string; duration?: string } {
+  const match = name.match(/^(.*)\s*\((\d+)\s*minute[s]?\)/i);
+  if (match) {
+    const minutes = parseInt(match[2], 10);
+    return {
+      cleanName: match[1].trim(),
+      duration: `PT${minutes}M`,
+    };
+  }
+  return { cleanName: name };
+}
+
 export function getHowToSchema({ name, description, steps }: { name: string; description: string; steps: { name: string; text: string; duration?: string }[] }) {
   // Calculate totalTime from step durations if present
-  const durations = steps.map(s => s.duration).filter(Boolean) as string[];
+  // If step.duration is missing, try to extract from name
+  const processedSteps = steps.map((s) => {
+    let duration = s.duration;
+    let stepName = s.name;
+    if (!duration) {
+      const extracted = extractDurationFromName(s.name);
+      stepName = extracted.cleanName;
+      duration = extracted.duration;
+    }
+    return { ...s, name: stepName, duration };
+  });
+  const durations = processedSteps.map(s => s.duration).filter(Boolean) as string[];
   const totalTime = durations.length > 0 ? sumDurations(durations) : undefined;
   return {
     "@context": "https://schema.org",
@@ -76,7 +100,7 @@ export function getHowToSchema({ name, description, steps }: { name: string; des
     name,
     description,
     ...(totalTime ? { totalTime } : {}),
-    step: steps.map((s) => ({
+    step: processedSteps.map((s) => ({
       "@type": "HowToStep",
       name: s.name,
       text: s.text,

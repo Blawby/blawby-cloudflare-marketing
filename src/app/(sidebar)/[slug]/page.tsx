@@ -14,6 +14,7 @@ import { notFound } from "next/navigation";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 import { parseHowToStepsFromMarkdown, getHowToSchema } from "@/utils/howto-schema";
 import { parseFAQFromMarkdown, getFAQSchema } from "@/utils/faq-schema";
+import { getCourseSchema } from "@/utils/course-schema";
 import fs from "fs";
 import path from "path";
 
@@ -193,6 +194,18 @@ export default async function Page({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            getCourseSchema({
+              name: lesson.title,
+              description: lesson.description,
+              url: `https://blawby.com/${lesson.id}`,
+            })
+          ),
+        }}
       />
       {howToSchema && (
         <script
