@@ -31,7 +31,7 @@ export function parseFAQFromMarkdown(md: string): { question: string; answer: st
       } else if (currentQ && (token.type === "paragraph" || token.type === "text")) {
         currentA.push(token.text.trim());
       } else if (currentQ && token.type === "list") {
-        currentA.push(token.items.map(i => i.text.trim()).join(" "));
+        currentA.push(token.items.map((i: any) => i.text.trim()).join(" "));
       }
     }
   }
