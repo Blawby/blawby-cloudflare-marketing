@@ -10,17 +10,17 @@ import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Help & Support - Blawby",
+    title: "Help & Support",
     description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
     openGraph: {
-      title: "Help & Support - Blawby",
+      title: "Help & Support",
       description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
       type: "website",
       images: [],
     },
     twitter: {
       card: "summary",
-      title: "Help & Support - Blawby",
+      title: "Help & Support",
       description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
     },
     alternates: {

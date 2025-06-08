@@ -3,7 +3,7 @@ import { TextInput } from "@/components/input";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Login - Blawby",
+  title: "Login",
 };
 
 export default function Page() {

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Enter one-time password - Blawby",
+  title: "Enter one-time password",
 };
 
 export default function Page() {

@@ -37,10 +37,10 @@ export async function generateMetadata({
   const formattedDuration = formatDuration(interview.video.duration);
 
   return {
-    title: `Interview with ${interview.name} - Blawby`,
+    title: `Interview with ${interview.name}`,
     description: interview.subtitle,
     openGraph: {
-      title: `Interview with ${interview.name} - Blawby`,
+      title: `Interview with ${interview.name}`,
       description: interview.subtitle,
       type: 'video.other',
       videos: [{
@@ -56,7 +56,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'player',
-      title: `Interview with ${interview.name} - Blawby`,
+      title: `Interview with ${interview.name}`,
       description: interview.subtitle,
       images: [interview.video.thumbnail],
     },

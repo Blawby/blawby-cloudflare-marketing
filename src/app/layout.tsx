@@ -17,7 +17,7 @@ const InterVariable = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL('https://blawby.com'),
   title: {
-    template: '%s',
+    template: '%s | Blawby',
     default: 'Blawby - Compliant Credit Card Payments for Legal Practices',
   },
   description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',

@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - Blawby",
+  title: "Privacy Policy",
   description: "Read the Blawby Privacy Policy to learn how we handle your data.",
   alternates: { canonical: "https://blawby.com/privacy" },
 };

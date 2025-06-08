@@ -43,11 +43,11 @@ export async function generateMetadata({
   if (!lesson) return {};
 
   return {
-    title: `${lesson.title} - Blawby`,
+    title: `${lesson.title}`,
     description: lesson.description,
     openGraph: lesson.video
       ? {
-          title: `${lesson.title} - Blawby`,
+          title: `${lesson.title}`,
           description: lesson.description,
           type: 'video.other',
           videos: [
@@ -66,7 +66,7 @@ export async function generateMetadata({
           ],
         }
       : {
-          title: `${lesson.title} - Blawby`,
+          title: `${lesson.title}`,
           description: lesson.description,
           type: 'article',
           images: [
@@ -75,7 +75,7 @@ export async function generateMetadata({
         },
     twitter: {
       card: lesson.video ? 'player' : 'summary',
-      title: `${lesson.title} - Blawby`,
+      title: `${lesson.title}`,
       description: lesson.description,
       ...(lesson.video && {
         images: [lesson.video.thumbnail],
