@@ -1,27 +1,30 @@
 import type React from "react";
-import { Alegreya } from 'next/font/google';
+import { Alegreya } from "next/font/google";
 import clsx from "clsx";
 
 const alegreya = Alegreya({
-  subsets: ['latin'],
-  weight: ['500'], // Medium
+  subsets: ["latin"],
+  weight: ["500"], // Medium
 });
 
 export function Logo(props: React.ComponentProps<"svg">) {
   return (
     <div className="flex items-center space-x-2">
-    <svg
-      {...props}
-      version="1.1"
-      id="Layer_1"
-      xmlns="http://www.w3.org/2000/svg"
-      x="0px"
-      y="0px"
-      viewBox="0 0 1672 1672"
-      className="h-[32px] w-[32px] text-gray-950 dark:text-white"
-    >
-<path fill="currentColor" opacity="1.000000" stroke="none" 
-	d="
+      <svg
+        {...props}
+        version="1.1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        x="0px"
+        y="0px"
+        viewBox="0 0 1672 1672"
+        className="h-[32px] w-[32px] text-gray-950 dark:text-white"
+      >
+        <path
+          fill="currentColor"
+          opacity="1.000000"
+          stroke="none"
+          d="
 M652.609497,43.377136 
 	C654.488831,42.917809 656.356689,42.403717 658.249512,42.009148 
 	C664.629211,40.679237 671.017700,39.391666 677.403076,38.089043 
@@ -571,9 +574,13 @@ M638.068909,919.052368
 	C590.587708,915.503418 600.366333,913.687256 609.990417,915.780945 
 	C618.155884,917.557251 626.742554,917.382996 635.136353,918.142822 
 	C636.159973,918.235535 637.143616,918.768860 638.068909,919.052368 
-z"/>
-<path fill="currentColor" opacity="1.000000" stroke="none" 
-	d="
+z"
+        />
+        <path
+          fill="currentColor"
+          opacity="1.000000"
+          stroke="none"
+          d="
 M1291.263794,832.751953 
 	C1295.390991,839.262695 1301.993164,843.663086 1304.513062,851.258118 
 	C1295.530518,853.552917 1288.993896,849.082397 1282.234863,845.669617 
@@ -664,9 +671,13 @@ M1291.263794,832.751953
 	C1237.254639,762.519165 1243.411987,771.060730 1249.870728,779.366821 
 	C1260.221924,792.678589 1270.837891,805.784241 1281.241821,819.055542 
 	C1284.652466,823.406128 1287.751953,828.000488 1291.263794,832.751953 
-z"/>
-<path fill="currentColor" opacity="1.000000" stroke="none" 
-	d="
+z"
+        />
+        <path
+          fill="currentColor"
+          opacity="1.000000"
+          stroke="none"
+          d="
 M503.094177,1267.999512 
 	C509.387878,1266.737305 515.243286,1264.949585 521.217529,1264.353027 
 	C527.982117,1263.677734 534.853516,1264.004761 541.678284,1264.014893 
@@ -731,12 +742,17 @@ M503.094177,1267.999512
 	C474.538422,1285.227417 473.822662,1283.359009 472.178406,1281.215454 
 	C472.178406,1280.744995 472.178406,1279.116577 472.178406,1276.824341 
 	C482.350189,1273.884277 492.529266,1270.942139 503.094177,1267.999512 
-z"/>
-</svg>
-<span className={clsx("text-3xl font-bold text-gray-950 dark:text-white", alegreya.className)}>
-      Blawby
-    </span>
+z"
+        />
+      </svg>
+      <span
+        className={clsx(
+          "text-3xl font-bold text-gray-950 dark:text-white",
+          alegreya.className
+        )}
+      >
+        Blawby
+      </span>
     </div>
-
   );
 }
