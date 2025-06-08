@@ -18,7 +18,7 @@ import Link from "next/link";
 import { CTASection } from "@/components/cta-section";
 import { Button } from "@/components/button";
 import { Pricing } from "@/components/pricing";
-import { LogoCloud } from "@/components/logo-cloud";
+// import { LogoCloud } from "@/components/logo-cloud";
 import fs from "fs";
 import path from "path";
 import Image from "next/image";
@@ -131,9 +131,11 @@ export default async function Page() {
         <div className="mx-auto max-w-6xl">
           <div className="relative">
             <div className="px-4 pt-48 pb-12 lg:py-24">
-              <Logo className="h-8 fill-gray-950 dark:fill-white" />
+              <div className="flex items-center gap-3">
+                <Logo className="h-8 dark:text-white" />
+              </div>
               <h1 className="sr-only">Course overview</h1>
-              <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-600 dark:text-gray-300">
+              <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-950 dark:text-gray-300">
                 Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.
               </p>
               <p className="mt-4 text-base/7 text-pretty body-text">
@@ -228,10 +230,10 @@ export default async function Page() {
                   <li>Designed for attorneys, not just generic service providers.</li>
                 </ul>
               </div>
-
-              <div className="mt-16">
+{/* TODO: Add logo cloud with light and dark svgs */}
+              {/* <div className="mt-16">
                 <LogoCloud />
-              </div>
+              </div> */}
 
               {/*
                 IOLTA Compliance Section

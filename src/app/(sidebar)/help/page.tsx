@@ -95,7 +95,7 @@ export default function HelpPage() {
                 allow="clipboard-write; microphone; camera"
               />
               <div className="flex justify-center">
-                <p className="max-w-lg text-xs text-center text-gray-700 dark:text-gray-300 text-pretty body-text">Blawby AI can make mistakes. Check important info.
+                <p className="mt-4 max-w-lg text-xs text-center text-gray-700 dark:text-gray-300 text-pretty body-text">Blawby AI can make mistakes. Check important info.
                 </p>
               </div>
             </div>
