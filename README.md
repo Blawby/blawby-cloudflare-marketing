@@ -78,6 +78,59 @@ To complete SEO setup:
 4. Update `site.webmanifest` for PWA support
 5. Add proper favicon and apple-touch-icon files
 
+## Structured Data & Schema Utilities
+
+To support SEO and rich results, the codebase includes several utilities for generating and injecting structured data (JSON-LD) into your pages:
+
+### 1. Breadcrumb Schema Utility
+- **File:** `src/utils/breadcrumb-schema.ts`
+- **Function:** `getBreadcrumbSchema(items)`
+- **Purpose:** Generates a [BreadcrumbList](https://schema.org/BreadcrumbList) JSON-LD object from an array of breadcrumb items (`{ name, url }`).
+- **Usage:**
+  - Import and use in any page where breadcrumbs are rendered.
+  - Example:
+    ```ts
+    import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+    const breadcrumbItems = [
+      { name: "Home", url: "https://blawby.com" },
+      { name: "Overview", url: "https://blawby.com/" },
+    ];
+    const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
+    ```
+  - Inject as a `<script type="application/ld+json">` in your page component.
+
+### 2. HowTo Schema Utilities
+- **File:** `src/utils/howto-schema.ts`
+- **Functions:**
+  - `parseHowToStepsFromMarkdown(md: string)`
+    - Parses a Markdown string for ordered list steps and returns an array of step objects (`{ name, text }`).
+  - `getHowToSchema({ name, description, steps })`
+    - Generates a [HowTo](https://schema.org/HowTo) JSON-LD object from a title, description, and array of steps.
+- **Usage:**
+  - Use in lesson page components to auto-generate HowTo schema from MDX content.
+  - Example:
+    ```ts
+    import { parseHowToStepsFromMarkdown, getHowToSchema } from "@/utils/howto-schema";
+    const steps = parseHowToStepsFromMarkdown(mdxContent);
+    const howToSchema = getHowToSchema({
+      name: lesson.title,
+      description: lesson.description,
+      steps,
+    });
+    ```
+  - Inject as a `<script type="application/ld+json">` in your page component if steps are found.
+
+### 3. Validation Script
+- **File:** `scripts/validate-howto-schema.ts`
+- **Purpose:** Scans all lesson MDX files, parses for HowTo steps, and prints a validation report. Ensures your content is eligible for HowTo rich results.
+- **Usage:**
+  - Run locally or in CI: `npx tsx scripts/validate-howto-schema.ts`
+
+**Best Practices:**
+- Only use HowTo schema for lessons with true step-by-step instructional content.
+- Keep your MDX steps as true ordered lists for best schema extraction.
+- Always match the visible UI breadcrumbs to the schema for consistency.
+
 ## Sitemap Generation
 
 This project uses [next-sitemap](https://github.com/iamvishnusankar/next-sitemap) to automatically generate `sitemap.xml` and `robots.txt` after each build.

@@ -6,6 +6,7 @@ import {
 } from "@/components/breadcrumbs";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import type { Metadata } from "next";
+import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -43,6 +44,12 @@ const helpStructuredData = {
   },
 };
 
+const breadcrumbItems = [
+  { name: "Home", url: "https://blawby.com" },
+  { name: "Help & Support", url: "https://blawby.com/help" },
+];
+const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
+
 export default function HelpPage() {
   return (
     <SidebarLayoutContent
@@ -57,6 +64,10 @@ export default function HelpPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(helpStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <div className="relative mx-auto max-w-7xl">
         <div className="absolute -inset-x-2 top-0 -z-10 h-80 overflow-hidden rounded-t-2xl mask-b-from-60% sm:h-88 md:h-112 lg:-inset-x-4 lg:h-128">

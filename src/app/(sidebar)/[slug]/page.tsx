@@ -11,6 +11,11 @@ import { Video } from "@/components/video-player";
 import { getLesson, getLessonContent, getModules } from "@/data/lessons";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { parseHowToStepsFromMarkdown, getHowToSchema } from "@/utils/howto-schema";
+import { parseFAQFromMarkdown, getFAQSchema } from "@/utils/faq-schema";
+import fs from "fs";
+import path from "path";
 
 export async function generateStaticParams() {
   const modules = getModules();
@@ -133,6 +138,39 @@ export default async function Page({
 
   let Content = await getLessonContent(slug);
   const lessonStructuredData = generateLessonStructuredData(lesson);
+  const breadcrumbItems = [
+    { name: "Home", url: "https://blawby.com" },
+    { name: lesson.module.title, url: `https://blawby.com/#${lesson.module.id}` },
+    { name: lesson.title, url: `https://blawby.com/${lesson.id}` },
+  ];
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
+
+  // HowTo schema: parse steps from MDX file
+  let howToSchema = null;
+  let faqSchema = null;
+  try {
+    const lessonPath = path.join(process.cwd(), "src/data/lessons", `${slug}.mdx`);
+    const mdxContent = fs.readFileSync(lessonPath, "utf-8");
+    const steps = parseHowToStepsFromMarkdown(mdxContent);
+    if (steps.length >= 2) {
+      howToSchema = getHowToSchema({
+        name: lesson.title,
+        description: lesson.description,
+        steps,
+      });
+    }
+    // FAQ schema
+    const faqs = parseFAQFromMarkdown(mdxContent);
+    if (faqs.length > 0) {
+      faqSchema = getFAQSchema({
+        faqs,
+        name: lesson.title,
+        description: lesson.description,
+      });
+    }
+  } catch (e) {
+    // Ignore if file not found or parse error
+  }
 
   return (
     <SidebarLayoutContent
@@ -152,6 +190,22 @@ export default async function Page({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(lessonStructuredData) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {howToSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
+      )}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <div className="mx-auto max-w-7xl">
         <div className="-mx-2 sm:-mx-4">
           {lesson.video && (

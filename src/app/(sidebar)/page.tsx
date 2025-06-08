@@ -22,6 +22,7 @@ import { LogoCloud } from "@/components/logo-cloud";
 import fs from "fs";
 import path from "path";
 import Image from "next/image";
+import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 
 export const metadata: Metadata = {
   title: "Blawby - Compliant Credit Card Payments for Legal Practices",
@@ -57,6 +58,12 @@ export default async function Page() {
     return sum + getLessonReadingDuration(lesson.id);
   }, 0);
 
+  const breadcrumbItems = [
+    { name: "Home", url: "https://blawby.com" },
+    { name: "Overview", url: "https://blawby.com/" },
+  ];
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
+
   return (
     <SidebarLayoutContent
       breadcrumbs={
@@ -67,6 +74,10 @@ export default async function Page() {
         </Breadcrumbs>
       }
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="relative mx-auto max-w-7xl">
         <div className="absolute -inset-x-2 top-0 -z-10 h-80 overflow-hidden rounded-t-2xl mask-b-from-60% sm:h-88 md:h-112 lg:-inset-x-4 lg:h-128">
           <Image
