@@ -3,7 +3,6 @@
 import { Combobox, ComboboxInput, ComboboxOption, Dialog, DialogPanel, DialogBackdrop } from "@headlessui/react"
 import { SearchIcon } from "@/icons/search-icon"
 import { ArticleIcon } from "@/icons/article-icon"
-import { CirclePlayIcon } from "@/icons/circle-play-icon"
 import { useEffect, useState } from "react"
 import { getModules } from "@/data/lessons"
 import type React from "react"
@@ -49,10 +48,7 @@ function highlightQuery(text: string, query: string): React.ReactNode {
 
   return parts.map((part, index) =>
     index % 2 === 1 ? (
-      <span
-        key={index}
-        className="font-semibold text-gray-950 dark:text-white"
-      >
+      <span key={index} className="font-semibold text-gray-950 dark:text-white">
         {part}
       </span>
     ) : (
@@ -61,37 +57,23 @@ function highlightQuery(text: string, query: string): React.ReactNode {
   )
 }
 
-function debugSearchResult(item: SearchResult, query: string) {
-  console.log("Search Result Debug:", {
-    query,
-    title: item.title,
-    description: item.description,
-    module: item.module,
-    titleContainsQuery: item.title?.toLowerCase().includes(query.toLowerCase()),
-    descriptionContainsQuery: item.description?.toLowerCase().includes(query.toLowerCase()),
-    moduleContainsQuery: item.module?.toLowerCase().includes(query.toLowerCase()),
-  })
-}
-
 // Update capitalizeTitle to also replace dashes with spaces
 function capitalizeTitle(title: string): string {
-  return title.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+  return title.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
-// Utility to group results by url
+// Utility to group results by url - now only keeping the best match per URL
 function groupResultsByUrl(results: SearchResult[]) {
-  const groups: Record<string, { title: string; url: string; matches: SearchResult[] }> = {};
+  const urlMap: Record<string, SearchResult> = {}
+
+  // Group by URL and keep the result with highest score or most relevant content
   for (const item of results) {
-    if (!groups[item.url]) {
-      groups[item.url] = {
-        title: item.title,
-        url: item.url,
-        matches: [],
-      };
+    if (!urlMap[item.url] || (item.score && urlMap[item.url].score && item.score > urlMap[item.url].score)) {
+      urlMap[item.url] = item
     }
-    groups[item.url].matches.push(item);
   }
-  return Object.values(groups);
+
+  return Object.values(urlMap)
 }
 
 export default function CommandPalette() {
@@ -117,7 +99,7 @@ export default function CommandPalette() {
 
   // Debounced vector search function
   const searchVectors = useDebouncedCallback(async (searchQuery: string) => {
-    const trimmedQuery = searchQuery.trim();
+    const trimmedQuery = searchQuery.trim()
     if (!trimmedQuery) {
       setResults([])
       setError(null)
@@ -142,12 +124,9 @@ export default function CommandPalette() {
       }
 
       const vectorResults = await response.json()
-      console.log("Raw API Response:", vectorResults)
-      console.log("First match metadata:", vectorResults.matches?.matches?.[0] || vectorResults.matches?.[0])
       const matches = vectorResults.matches?.matches || vectorResults.matches || []
       // Transform vector results to match our SearchResult interface
       const transformedResults: SearchResult[] = matches.map((result: any) => {
-        console.log("Individual result metadata:", result.metadata)
         return {
           id: result.id,
           title: result.metadata?.title || result.metadata?.name || "Untitled",
@@ -181,6 +160,14 @@ export default function CommandPalette() {
     searchVectors(query)
   }, [query, searchVectors])
 
+  // Navigate to URL function
+  const navigateToUrl = (url: string) => {
+    if (url && url.startsWith("/lessons/")) {
+      url = "/" + url.replace(/^\/lessons\//, "")
+    }
+    window.location.href = url
+  }
+
   return (
     <>
       <button
@@ -211,11 +198,7 @@ export default function CommandPalette() {
               onChange={(item: SearchResult | null) => {
                 setOpen(false)
                 if (item?.url) {
-                  let url = item.url
-                  if (url && url.startsWith("/lessons/")) {
-                    url = "/" + url.replace(/^\/lessons\//, "")
-                  }
-                  window.location.href = url
+                  navigateToUrl(item.url)
                 }
                 setSelectedResultId(item?.id || null)
               }}
@@ -249,62 +232,58 @@ export default function CommandPalette() {
                 {!error && results.length > 0 && (
                   <div className="p-2">
                     <ul className="text-sm text-gray-950 dark:text-white">
-                      {groupResultsByUrl(results).map((group) => (
-                        <li key={group.url} className="mb-4">
-                          <div className="font-semibold text-base text-gray-950 dark:text-white mb-1">
-                            {highlightQuery(capitalizeTitle(group.title), query)}
-                          </div>
-                          <ul className="ml-2 space-y-1">
-                            {group.matches.map((item) => {
-                              const isActive = selectedResultId === item.id;
-                              return (
-                                <ComboboxOption
-                                  as="li"
-                                  key={item.id}
-                                  value={item}
-                                  aria-current={isActive ? "page" : undefined}
-                                  className={clsx(
-                                    "-ml-px flex border-l pl-4 gap-4 border-transparent py-2.5 cursor-pointer",
-                                    "hover:text-gray-950 hover:not-has-aria-[current=page]:border-gray-400 dark:hover:text-white",
-                                    "has-aria-[current=page]:border-gray-950 dark:has-aria-[current=page]:border-white",
-                                    isActive && "font-medium text-gray-950 dark:text-white"
+                      {groupResultsByUrl(results).map((item) => {
+                        const isActive = selectedResultId === item.id
+                        return (
+                          <ComboboxOption
+                            as="li"
+                            key={item.id}
+                            value={item}
+                            aria-current={isActive ? "page" : undefined}
+                            className={clsx(
+                              "mb-4 px-4 py-3 rounded-lg cursor-pointer",
+                              "hover:bg-gray-100 dark:hover:bg-gray-800/50",
+                              isActive && "bg-gray-100 dark:bg-gray-800/50",
+                            )}
+                          >
+                            {/* Clickable page title */}
+                            <button onClick={() => navigateToUrl(item.url)} className="w-full text-left cursor-pointer">
+                              <h3 className="text-lg font-semibold text-gray-950 dark:text-white mb-1 hover:underline">
+                                {highlightQuery(capitalizeTitle(item.title), query)}
+                              </h3>
+
+                              {/* Module/section info if available - avoid duplicates */}
+                              {(item.module || item.section) && (
+                                <div className="text-xs text-gray-500 mb-1.5">
+                                  {/* Only show one if they're the same, otherwise show both with separator */}
+                                  {item.module && item.section && item.module !== item.section ? (
+                                    <>
+                                      {highlightQuery(item.module, query)} › {highlightQuery(item.section, query)}
+                                    </>
+                                  ) : (
+                                    highlightQuery(item.module || item.section || "", query)
                                   )}
-                                  onClick={() => {
-                                    let url = item.url;
-                                    if (url && url.startsWith("/lessons/")) {
-                                      url = "/" + url.replace(/^\/lessons\//, "");
-                                    }
-                                    window.location.href = url;
-                                  }}
-                                >
-                                  <div className="flex-auto">
-                                    {item.module && (
-                                      <div className="text-xs text-gray-500 mb-0.5">
-                                        {highlightQuery(item.module, query)}
-                                      </div>
-                                    )}
-                                    {item.section && (
-                                      <div className="text-xs text-gray-500 mb-0.5">
-                                        {highlightQuery(item.section, query)}
-                                      </div>
-                                    )}
-                                    {item.description && (
-                                      <div className="text-xs text-gray-500 line-clamp-2">
-                                        {highlightQuery(
-                                          item.description.length > 120
-                                            ? item.description.substring(0, 120) + "..."
-                                            : item.description,
-                                          query,
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                </ComboboxOption>
-                              );
-                            })}
-                          </ul>
-                        </li>
-                      ))}
+                                </div>
+                              )}
+
+                              {/* Description snippet */}
+                              {item.description && (
+                                <div className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                  {highlightQuery(
+                                    item.description.length > 160
+                                      ? item.description.substring(0, 160) + "..."
+                                      : item.description,
+                                    query,
+                                  )}
+                                </div>
+                              )}
+
+                              {/* URL display */}
+                              <div className="text-xs text-gray-400 mt-1 truncate">{item.url}</div>
+                            </button>
+                          </ComboboxOption>
+                        )
+                      })}
                     </ul>
                   </div>
                 )}

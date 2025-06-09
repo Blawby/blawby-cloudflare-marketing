@@ -298,3 +298,13 @@ This project uses [Cloudflare D1](https://developers.cloudflare.com/d1/) as a pr
 ```bash
 npx wrangler d1 execute support --file=./scripts/d1-support-schema.sql --remote
 ```
+
+## Automated Vector Index Maintenance (Cloudflare Vectorize)
+
+After any lesson or page change, the following steps are run automatically in CI/CD (see .github/workflows/deploy.yml):
+
+1. **Chunk MDX lessons/pages:** Generates `lesson-chunks.json` and `vector-manifest.json`.
+2. **Prune stale vectors:** Removes any vectors from the index that are not present in the current manifest (using only supported Cloudflare API endpoints).
+3. **Upsert new/changed chunks:** Adds or updates all current chunks in the index.
+
+This ensures your search index is always in sync with your content. Manual steps are only needed for local development or hotfixes.

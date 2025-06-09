@@ -1,8 +1,10 @@
+import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
 
 const CHUNKS_PATH = path.resolve(process.cwd(), 'lesson-chunks.json');
+const MANIFEST_PATH = path.resolve(process.cwd(), 'vector-manifest.json');
 const VECTORIZE_API = 'https://api.cloudflare.com/client/v4/accounts';
 
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -20,31 +22,12 @@ async function main() {
   const currentIds = new Set(chunks.map(c => c.id));
   console.log(`Loaded ${currentIds.size} current chunk IDs.`);
 
-  // 2. Enumerate all vector IDs in the index using v2 API
+  // 2. Read all previously upserted vector IDs from manifest
   let allVectorIds = [];
-  let cursor = '';
-  let total = 0;
-  do {
-    const url = `${VECTORIZE_API}/${ACCOUNT_ID}/vectorize/v2/indexes/${INDEX_NAME}/list?limit=1000${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
-    const resp = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-    });
-    if (!resp.ok) {
-      console.error('Failed to list vectors:', await resp.text());
-      process.exit(1);
-    }
-    const data = await resp.json();
-    const ids = (data.result?.vectors || []).map(v => v.id);
-    allVectorIds.push(...ids);
-    total += ids.length;
-    cursor = data.result?.cursor || '';
-    if (!cursor) break;
-  } while (true);
-  console.log(`Enumerated ${total} vectors in index.`);
+  if (fs.existsSync(MANIFEST_PATH)) {
+    allVectorIds = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf-8'));
+  }
+  console.log(`Loaded ${allVectorIds.length} vector IDs from manifest.`);
 
   // 3. Find stale IDs
   const staleIds = allVectorIds.filter(id => !currentIds.has(id));
@@ -61,6 +44,7 @@ async function deleteVectors(staleIds) {
   for (let i = 0; i < staleIds.length; i += batchSize) {
     const batch = staleIds.slice(i, i + batchSize);
     const url = `${VECTORIZE_API}/${ACCOUNT_ID}/vectorize/v2/indexes/${INDEX_NAME}/delete_by_ids`;
+    console.log('Deleting batch:', url, batch);
     const resp = await fetch(url, {
       method: 'POST',
       headers: {
