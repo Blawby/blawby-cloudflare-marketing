@@ -7,11 +7,12 @@ import { visit } from 'unist-util-visit';
 import crypto from 'crypto';
 
 const LESSONS_DIR = path.resolve(process.cwd(), 'src/data/lessons');
+const PAGES_DIR = path.resolve(process.cwd(), 'src/data/pages');
 const OUTPUT_PATH = path.resolve(process.cwd(), 'lesson-chunks.json');
 const MAX_CHUNK_TOKENS = 300; // Adjust as needed
 const MAX_ID_BYTES = 64;
 
-// Recursively get all .mdx files in LESSONS_DIR
+// Recursively get all .mdx files in a directory
 function getAllMdxFiles(dir: string): string[] {
   let results: string[] = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -44,7 +45,7 @@ function makeSafeId(file: string, section: string, idx: number): string {
   return hash;
 }
 
-function chunkMarkdownByParagraph(content: string, file: string, title: string): any[] {
+function chunkMarkdownByParagraph(content: string, file: string, title: string, urlPrefix: string): any[] {
   const tree = unified().use(remarkParse).parse(content);
   let section = '';
   let chunks: any[] = [];
@@ -74,7 +75,7 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string):
           chunks.push({
             id,
             text: chunk,
-            metadata: { title, file: path.basename(file), section, url: `/lessons/${path.basename(file, '.mdx')}` }
+            metadata: { title, file: path.basename(file), section, url: `${urlPrefix}/${path.basename(file, '.mdx')}` }
           });
         });
         paraBuffer = [];
@@ -95,7 +96,7 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string):
       chunks.push({
         id,
         text: chunk,
-        metadata: { title, file: path.basename(file), section, url: `/lessons/${path.basename(file, '.mdx')}` }
+        metadata: { title, file: path.basename(file), section, url: `${urlPrefix}/${path.basename(file, '.mdx')}` }
       });
     });
   }
@@ -103,13 +104,21 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string):
 }
 
 function main() {
-  const files = getAllMdxFiles(LESSONS_DIR);
+  const lessonFiles = getAllMdxFiles(LESSONS_DIR);
+  const pageFiles = getAllMdxFiles(PAGES_DIR);
   let allChunks: any[] = [];
-  for (const file of files) {
+  for (const file of lessonFiles) {
     const raw = fs.readFileSync(file, 'utf8');
     const { data: frontmatter, content } = matter(raw);
     const title = frontmatter.title || path.basename(file, '.mdx');
-    const chunks = chunkMarkdownByParagraph(content, file, title);
+    const chunks = chunkMarkdownByParagraph(content, file, title, '/lessons');
+    allChunks.push(...chunks);
+  }
+  for (const file of pageFiles) {
+    const raw = fs.readFileSync(file, 'utf8');
+    const { data: frontmatter, content } = matter(raw);
+    const title = frontmatter.title || path.basename(file, '.mdx');
+    const chunks = chunkMarkdownByParagraph(content, file, title, '/pages');
     allChunks.push(...chunks);
   }
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(allChunks, null, 2));

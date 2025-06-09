@@ -99,6 +99,9 @@ export default async function Page({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  if (process.env.SHOW_INTERVIEWS !== 'true') {
+    notFound();
+  }
   let interview = await getInterview((await params).slug);
 
   if (!interview) {

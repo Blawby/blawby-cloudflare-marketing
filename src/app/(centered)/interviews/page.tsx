@@ -8,6 +8,7 @@ import { CenteredPageLayout } from "@/components/centered-layout";
 import { VideoCard } from "@/components/video-card";
 import { getInterviews } from "@/data/interviews";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Interviews",
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 };
 
 export default async function InterviewsPage() {
+  if (process.env.SHOW_INTERVIEWS !== 'true') {
+    notFound();
+  }
   let interviews = await getInterviews();
 
   return (

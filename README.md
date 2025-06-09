@@ -40,6 +40,34 @@ npm run dev
 
 Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
 
+## Feature Flags
+
+### Hiding Interviews with SHOW_INTERVIEWS
+
+The interviews feature is protected by a feature flag. By default, interviews pages and content are hidden from the site and return a 404 unless the environment variable `SHOW_INTERVIEWS` is set to `true`.
+
+#### How to enable/disable interviews:
+
+- **Local development:**
+  - Add to your `.env` file:
+    ```
+    SHOW_INTERVIEWS=false
+    ```
+    (Set to `true` to enable interviews locally.)
+
+- **Cloudflare Pages/Workers:**
+  - Add the secret using Wrangler:
+    ```
+    npx wrangler secret put SHOW_INTERVIEWS
+    ```
+    (You will be prompted to enter the value. Use `false` to hide, `true` to show.)
+  - Or, add as an environment variable in the Cloudflare Pages dashboard.
+
+- **GitHub Actions/CI:**
+  - Add `SHOW_INTERVIEWS` as a variable or secret in your repository settings if your build/deploy workflow needs it.
+
+**Default:** Interviews are hidden unless you explicitly set `SHOW_INTERVIEWS=true` in your environment.
+
 ## Deployment
 
 This project is configured for deployment to Cloudflare Pages. To deploy:
