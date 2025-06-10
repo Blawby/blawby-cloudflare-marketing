@@ -68,8 +68,17 @@ function groupResultsByUrl(results: SearchResult[]) {
 
   // Group by URL and keep the result with highest score or most relevant content
   for (const item of results) {
-    if (!urlMap[item.url] || (item.score && urlMap[item.url].score && item.score > urlMap[item.url].score)) {
-      urlMap[item.url] = item
+    const existing = urlMap[item.url];
+    const existingScore = existing?.score;
+    if (
+      !existing ||
+      (
+        typeof item.score === "number" &&
+        typeof existingScore === "number" &&
+        item.score > existingScore
+      )
+    ) {
+      urlMap[item.url] = item;
     }
   }
 
@@ -191,7 +200,7 @@ export default function CommandPalette() {
         }}
         className="relative z-50"
       >
-        <DialogBackdrop className="fixed inset-0 bg-gray-950/25" />
+        <DialogBackdrop className="fixed inset-0 bg-gray-950/25 dark:bg-black/60" />
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto p-4 sm:p-6 md:p-20">
           <DialogPanel className="mx-auto max-w-2xl transform overflow-hidden rounded-xl bg-white/75 shadow-sm outline outline-gray-950/5 backdrop-blur-sm transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-950/75 dark:outline-white/10">
             <Combobox
@@ -206,7 +215,7 @@ export default function CommandPalette() {
               <div className="grid grid-cols-1">
                 <ComboboxInput
                   autoFocus
-                  className="col-start-1 row-start-1 h-12 w-full border-0 bg-transparent pl-11 pr-4 text-[16px] text-gray-950 outline-none placeholder:text-gray-500 focus:ring-0 dark:text-white dark:placeholder:text-gray-500"
+                  className="col-start-1 row-start-1 h-12 w-full border-0 bg-transparent pl-11 pr-4 text-[16px] text-gray-950 outline-none placeholder:text-gray-500 focus:ring-0 dark:text-white dark:placeholder:text-gray-400"
                   placeholder="Search documentation..."
                   onChange={(event) => setQuery(event.target.value)}
                 />
@@ -225,7 +234,7 @@ export default function CommandPalette() {
               <div className="max-h-96 scroll-py-2 divide-y divide-gray-950/5 overflow-y-auto dark:divide-white/10">
                 {error && (
                   <div className="px-6 py-14 text-center">
-                    <p className="text-sm text-red-500">{error}</p>
+                    <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
                   </div>
                 )}
 
@@ -254,7 +263,7 @@ export default function CommandPalette() {
 
                               {/* Module/section info if available - avoid duplicates */}
                               {(item.module || item.section) && (
-                                <div className="text-xs text-gray-500 mb-1.5">
+                                <div className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">
                                   {/* Only show one if they're the same, otherwise show both with separator */}
                                   {item.module && item.section && item.module !== item.section ? (
                                     <>
@@ -279,7 +288,7 @@ export default function CommandPalette() {
                               )}
 
                               {/* URL display */}
-                              <div className="text-xs text-gray-400 mt-1 truncate">{item.url}</div>
+                              <div className="text-xs text-gray-400 dark:text-gray-500 mt-1 truncate">{item.url}</div>
                             </button>
                           </ComboboxOption>
                         )
@@ -291,7 +300,7 @@ export default function CommandPalette() {
                 {!error && query !== "" && results.length === 0 && !isSearching && (
                   <div className="px-6 py-14 text-center">
                     <ArticleIcon className="mx-auto h-6 w-6 fill-gray-950 stroke-gray-950/40 dark:fill-white dark:stroke-white/40" />
-                    <p className="mt-4 text-sm body-text">
+                    <p className="mt-4 text-sm body-text text-gray-700 dark:text-gray-300">
                       We couldn't find any matches for "{query}". Please try a different search term.
                     </p>
                   </div>

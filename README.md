@@ -222,11 +222,11 @@ To learn more about the technologies used in this site template, see the followi
 
 ## ⚡️ Cloudflare Bleeding Edge Integration Notes
 
-This project uses the latest Cloudflare Workers AI and Vectorize features. If you encounter issues with the Vectorize binding (e.g., valid vectors being rejected), see `cloudflare.md` for a full debugging log and workaround. 
+This project uses the latest Cloudflare Workers AI and Vectorize features. 
 
 **Current best practice:**
 - Use the Vectorize v2 REST API from Workers (not the binding) for all vector search operations.
-- See the end of `cloudflare.md` for details and code examples.
+
 
 ## 🔄 Automated Cloudflare Vectorize Indexing & Pruning
 
