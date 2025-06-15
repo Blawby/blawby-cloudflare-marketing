@@ -107,8 +107,8 @@ function SiteNavigation() {
       <div className="flex gap-x-6 text-sm/6 text-gray-950 max-lg:hidden dark:text-white">
         <Link href="/">Course</Link>
         <Link href="/interviews">Interviews</Link>
-        <Link href="https://blawby.com/login">Login</Link>
-        <Link href="https://blawby.com/register">Register</Link>
+        <Link href="https://app.blawby.com/login">Login</Link>
+        <Link href="https://app.blawby.com/register">Register</Link>
       </div>
     </nav>
   );
