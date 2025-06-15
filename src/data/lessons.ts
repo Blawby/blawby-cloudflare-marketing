@@ -41,6 +41,9 @@ export async function getLesson(
 }
 
 export async function getLessonContent(slug: string) {
+  if (slug === "privacy" || slug === "terms") {
+    return (await import(`@/data/legal/${slug}.mdx`)).default;
+  }
   return (await import(`@/data/lessons/${slug}.mdx`)).default;
 }
 
@@ -64,9 +67,9 @@ const lessons = [
     description: "Compliant credit card payments and invoicing solutions for legal practices.",
     lessons: [
       {
-        id: "payment-processing",
+        id: "payments",
         title: "Payments",
-        description: "Accept credit card, debit card, and eCheck payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
+        description: "Accept credit card, debit card, and ACH/Bank Transfer payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
         video: null,
       },
       {
@@ -92,7 +95,7 @@ const lessons = [
         title: "Pricing",
         description: "Simple, transparent pricing with no hidden fees. Pay-as-you-go with monthly billing.",
         video: null,
-      }
+      },
     ],
   },
   {
@@ -105,26 +108,13 @@ const lessons = [
         title: "IOLTA Compliance Guide",
         description: "Understanding trust account requirements for legal payments.",
         video: null,
+      },
+      {
+        id: "future-proof-revenue",
+        title: "Future-Proof Revenue",
+        description: "How to use flat fees, payment plans, and automated billing to stabilize your law firm's cash flow.",
+        video: null,
       }
-    ],
-  },
-  {
-    id: "legal",
-    title: "Legal Information",
-    description: "Legal documents, privacy policy, and terms of service.",
-    lessons: [
-      {
-        id: "privacy",
-        title: "Privacy Policy",
-        description: "Our commitment to protecting your privacy and personal data.",
-        video: null,
-      },
-      {
-        id: "terms",
-        title: "Terms of Service",
-        description: "Terms and conditions for using Blawby's services.",
-        video: null,
-      },
     ],
   },
 ];

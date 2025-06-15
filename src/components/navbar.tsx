@@ -10,6 +10,7 @@ import { IconButton } from "@/components/icon-button";
 import { ChevronDownIcon } from "@/icons/chevron-down-icon";
 import { CloseIcon } from "@/icons/close-icon";
 import { MenuIcon } from "@/icons/menu-icon";
+import CommandPalette from "@/components/command-pallete";
 import {
   CloseButton,
   Dialog,
@@ -56,8 +57,8 @@ function MobileNavigation({
           <div className="mt-4">
             <div className="flex flex-col gap-y-2">
               {[
-                ["Course", "/"],
-                ["Interviews", "/interviews"],
+                ["Docs", "/get-started"],
+                ["Help", "/help"],
               ].map(([title, href]) => (
                 <CloseButton
                   as={Link}
@@ -72,8 +73,8 @@ function MobileNavigation({
             <div className="mt-6 flex flex-col gap-y-2">
               <h3 className="px-4 py-1 text-sm/7 text-gray-500">Account</h3>
               {[
-                ["Login", "https://blawby.com/login"],
-                ["Register", "https://blawby.com/register"],
+                ["Login", "https://app.blawby.com/login"],
+                ["Register", "https://app.blawby.com/register"],
               ].map(([title, href], index) => (
                 <CloseButton
                   as={Link}
@@ -96,17 +97,20 @@ function SiteNavigation() {
   let [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="flex items-center">
-      <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
-        <MenuIcon className="fill-gray-950 dark:fill-white" />
-      </IconButton>
+    <nav className="flex items-center gap-x-6">
+      <div className="flex items-center gap-x-2">
+        <CommandPalette />
+        <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
+          <MenuIcon className="fill-gray-950 dark:fill-white" />
+        </IconButton>
+      </div>
       <MobileNavigation
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
       />
       <div className="flex gap-x-6 text-sm/6 text-gray-950 max-lg:hidden dark:text-white">
-        <Link href="/">Course</Link>
-        <Link href="/interviews">Interviews</Link>
+        <Link href="/get-started">Docs</Link>
+        <Link href="/help">Help</Link>
         <Link href="https://app.blawby.com/login">Login</Link>
         <Link href="https://app.blawby.com/register">Register</Link>
       </div>

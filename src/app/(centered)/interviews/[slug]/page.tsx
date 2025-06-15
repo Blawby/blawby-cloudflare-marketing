@@ -37,16 +37,15 @@ export async function generateMetadata({
   const formattedDuration = formatDuration(interview.video.duration);
 
   return {
-    title: `Interview with ${interview.name} - Compass`,
+    title: `Interview with ${interview.name}`,
     description: interview.subtitle,
     openGraph: {
-      title: `Interview with ${interview.name} - Compass`,
+      title: `Interview with ${interview.name}`,
       description: interview.subtitle,
       type: 'video.other',
       videos: [{
         url: interview.video.hd,
         type: 'video/mp4',
-        duration: interview.video.duration,
       }],
       images: [{
         url: interview.video.thumbnail,
@@ -57,17 +56,12 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'player',
-      title: `Interview with ${interview.name} - Compass`,
+      title: `Interview with ${interview.name}`,
       description: interview.subtitle,
       images: [interview.video.thumbnail],
     },
     alternates: {
-      canonical: `https://compass.example.com/interviews/${interview.id}`,
-    },
-    other: {
-      'og:video:duration': interview.video.duration.toString(),
-      'video:duration': interview.video.duration.toString(),
-      'video:release_date': new Date().toISOString().split('T')[0],
+      canonical: `https://blawby.com/interviews/${interview.id}`,
     },
   };
 }
@@ -91,10 +85,10 @@ function generateVideoStructuredData(interview: any) {
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Compass',
+      name: 'Blawby',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://compass.example.com/logo.png',
+        url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
       },
     },
   };
@@ -105,6 +99,9 @@ export default async function Page({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  if (process.env.SHOW_INTERVIEWS !== 'true') {
+    notFound();
+  }
   let interview = await getInterview((await params).slug);
 
   if (!interview) {
@@ -146,7 +143,7 @@ export default async function Page({
                 {interview.name}
               </h1>
             </hgroup>
-            <p className="text-base/7 text-gray-700 dark:text-gray-400">
+            <p className="text-base/7 body-text">
               {interview.intro}
             </p>
             <div className="flex items-center gap-x-2 text-sm/7 font-semibold text-gray-950 dark:text-white">

@@ -1,6 +1,10 @@
-# Compass
+# Blawby Marketing
 
-Compass is a [Tailwind Plus](https://tailwindcss.com/plus) site template built using [Tailwind CSS](https://tailwindcss.com) and [Next.js](https://nextjs.org).
+Live site: https://blawby-cloudflare-marketing.pages.dev/
+
+# Blawby
+
+Blawby is a [Tailwind Plus](https://tailwindcss.com/plus) site template built using [Tailwind CSS](https://tailwindcss.com) and [Next.js](https://nextjs.org).
 
 ## Features
 
@@ -35,6 +39,34 @@ npm run dev
 ```
 
 Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
+
+## Feature Flags
+
+### Hiding Interviews with SHOW_INTERVIEWS
+
+The interviews feature is protected by a feature flag. By default, interviews pages and content are hidden from the site and return a 404 unless the environment variable `SHOW_INTERVIEWS` is set to `true`.
+
+#### How to enable/disable interviews:
+
+- **Local development:**
+  - Add to your `.env` file:
+    ```
+    SHOW_INTERVIEWS=false
+    ```
+    (Set to `true` to enable interviews locally.)
+
+- **Cloudflare Pages/Workers:**
+  - Add the secret using Wrangler:
+    ```
+    npx wrangler secret put SHOW_INTERVIEWS
+    ```
+    (You will be prompted to enter the value. Use `false` to hide, `true` to show.)
+  - Or, add as an environment variable in the Cloudflare Pages dashboard.
+
+- **GitHub Actions/CI:**
+  - Add `SHOW_INTERVIEWS` as a variable or secret in your repository settings if your build/deploy workflow needs it.
+
+**Default:** Interviews are hidden unless you explicitly set `SHOW_INTERVIEWS=true` in your environment.
 
 ## Deployment
 
@@ -73,6 +105,73 @@ To complete SEO setup:
 3. Add Google Search Console verification code
 4. Update `site.webmanifest` for PWA support
 5. Add proper favicon and apple-touch-icon files
+
+## Structured Data & Schema Utilities
+
+To support SEO and rich results, the codebase includes several utilities for generating and injecting structured data (JSON-LD) into your pages:
+
+### 1. Breadcrumb Schema Utility
+- **File:** `src/utils/breadcrumb-schema.ts`
+- **Function:** `getBreadcrumbSchema(items)`
+- **Purpose:** Generates a [BreadcrumbList](https://schema.org/BreadcrumbList) JSON-LD object from an array of breadcrumb items (`{ name, url }`).
+- **Usage:**
+  - Import and use in any page where breadcrumbs are rendered.
+  - Example:
+    ```ts
+    import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+    const breadcrumbItems = [
+      { name: "Home", url: "https://blawby.com" },
+      { name: "Overview", url: "https://blawby.com/" },
+    ];
+    const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
+    ```
+  - Inject as a `<script type="application/ld+json">` in your page component.
+
+### 2. HowTo Schema Utilities
+- **File:** `src/utils/howto-schema.ts`
+- **Functions:**
+  - `parseHowToStepsFromMarkdown(md: string)`
+    - Parses a Markdown string for ordered list steps and returns an array of step objects (`{ name, text }`).
+  - `getHowToSchema({ name, description, steps })`
+    - Generates a [HowTo](https://schema.org/HowTo) JSON-LD object from a title, description, and array of steps.
+- **Usage:**
+  - Use in lesson page components to auto-generate HowTo schema from MDX content.
+  - Example:
+    ```ts
+    import { parseHowToStepsFromMarkdown, getHowToSchema } from "@/utils/howto-schema";
+    const steps = parseHowToStepsFromMarkdown(mdxContent);
+    const howToSchema = getHowToSchema({
+      name: lesson.title,
+      description: lesson.description,
+      steps,
+    });
+    ```
+  - Inject as a `<script type="application/ld+json">` in your page component if steps are found.
+
+### 3. Validation Script
+- **File:** `scripts/validate-howto-schema.ts`
+- **Purpose:** Scans all lesson MDX files, parses for HowTo steps, and prints a validation report. Ensures your content is eligible for HowTo rich results.
+- **Usage:**
+  - Run locally or in CI: `npx tsx scripts/validate-howto-schema.ts`
+
+**Best Practices:**
+- Only use HowTo schema for lessons with true step-by-step instructional content.
+- Keep your MDX steps as true ordered lists for best schema extraction.
+- Always match the visible UI breadcrumbs to the schema for consistency.
+
+## Sitemap Generation
+
+This project uses [next-sitemap](https://github.com/iamvishnusankar/next-sitemap) to automatically generate `sitemap.xml` and `robots.txt` after each build.
+
+- The config file is `next-sitemap.config.js` and uses ES module syntax (`export default`).
+- The sitemap is generated automatically in the deployment workflow.
+- To generate the sitemap locally, run:
+
+```bash
+npx next-sitemap
+```
+
+This will use the default config file and output the sitemap and robots.txt in the appropriate directory.
 
 ## Customizing
 
@@ -120,3 +219,92 @@ To learn more about the technologies used in this site template, see the followi
 - [Headless UI](https://headlessui.dev) - the official Headless UI documentation
 - [MDX](https://mdxjs.com/) - the official MDX documentation
 - [Cloudflare Pages](https://developers.cloudflare.com/pages/) - Cloudflare Pages documentation
+
+## ⚡️ Cloudflare Bleeding Edge Integration Notes
+
+This project uses the latest Cloudflare Workers AI and Vectorize features. 
+
+**Current best practice:**
+- Use the Vectorize v2 REST API from Workers (not the binding) for all vector search operations.
+
+
+## 🔄 Automated Cloudflare Vectorize Indexing & Pruning
+
+- All MDX content is indexed and pruned automatically via a TypeScript script and GitHub Actions workflow.
+- The script reads all MDX, chunks by heading, embeds with Workers AI, and upserts to Vectorize via REST API.
+- Pruning is manifest-based: `scripts/vector-manifest.json` tracks all upserted vector IDs. On each run, any vectors not present in the current content are deleted.
+- The workflow runs on push to `master` and nightly. If you see '0 workflow runs', check that your workflow triggers on the correct branch (e.g., `master` not `main`).
+- Set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repo secrets.
+- See `cloudflare.md` for full details, troubleshooting, and the Vectorize binding bug/workaround.
+
+## Chunking MDX Lessons for Vector Search
+
+To generate vector-ready chunks from your lessons for semantic search:
+
+```bash
+npm run chunk:lessons
+```
+
+This will output `lesson-chunks.json` in the project root.
+
+To upsert the chunks to your Vectorize index, run:
+
+```bash
+curl -X POST https://compass-ts.paulchrisluke.workers.dev/upsert-mdx \
+  -H "Content-Type: application/json" \
+  --data-binary @lesson-chunks.json
+```
+
+This will embed and upsert all lesson chunks to your Cloudflare Vectorize index via your Worker.
+
+## 🔍 Hybrid Semantic + Keyword Search (Cloudflare Vectorize)
+
+This project uses a hybrid search approach for best-in-class relevance:
+
+- **Semantic search:** All content is embedded and indexed in Cloudflare Vectorize using Workers AI.
+- **Metadata upsert:** Each vector is upserted with rich metadata (e.g., `title`, `section`, `url`, etc.).
+- **Hybrid re-ranking:**
+  - At query time, the Worker embeds the query and runs a vector search (topK=10).
+  - Results are post-processed in the Worker: if any query word matches the `title` or `section` in metadata, that result's score is boosted.
+  - Results are sorted by the new score, so exact or partial keyword matches (like "Pricing") appear at the top, even if the semantic score is similar.
+- **No extra infra:** This is fully Cloudflare-supported, scalable, and requires no separate keyword index or third-party service.
+
+**Why this approach?**
+- Combines the recall of semantic search with the precision of keyword search.
+- Ensures exact matches (e.g., a page literally titled "Pricing") always rank highest for relevant queries.
+- Easy to tune and maintain.
+
+See `src/workers/search.ts` for the implementation details.
+
+Test: Triggering deploy workflow for GitHub Actions.
+
+## Support Case & Feedback Storage (Cloudflare D1)
+
+This project uses [Cloudflare D1](https://developers.cloudflare.com/d1/) as a production-grade relational database for support case and feedback storage. The API Worker exposes endpoints for support case creation and feedback collection, both backed by D1:
+
+- **POST `/support-case/create`**: Stores a new support case with user ID, chat history, and context.
+- **POST `/support-case/feedback`**: Stores user feedback (rating, comments) for a support case.
+
+**D1 Schema:** See `scripts/d1-support-schema.sql` for the schema. Tables:
+- `support_cases`: Stores case ID, user ID, chat history, context, and timestamps.
+- `support_feedback`: Stores feedback for each case (case ID, rating, comments, timestamp).
+
+**How it works:**
+- The frontend (Preact) calls the Worker API to create a support case and submit feedback.
+- All data is stored in D1 for strong consistency, analytics, and future admin/reporting needs.
+- See `src/workers/search.ts` for endpoint implementation.
+
+**To update the schema:**
+```bash
+npx wrangler d1 execute support --file=./scripts/d1-support-schema.sql --remote
+```
+
+## Automated Vector Index Maintenance (Cloudflare Vectorize)
+
+After any lesson or page change, the following steps are run automatically in CI/CD (see .github/workflows/deploy.yml):
+
+1. **Chunk MDX lessons/pages:** Generates `lesson-chunks.json` and `vector-manifest.json`.
+2. **Prune stale vectors:** Removes any vectors from the index that are not present in the current manifest (using only supported Cloudflare API endpoints).
+3. **Upsert new/changed chunks:** Adds or updates all current chunks in the index.
+
+This ensures your search index is always in sync with your content. Manual steps are only needed for local development or hotfixes.

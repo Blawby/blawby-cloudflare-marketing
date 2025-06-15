@@ -1,0 +1,506 @@
+---
+description: 
+globs: *.mdx
+alwaysApply: false
+---
+
+---
+
+### File: Content_Strategy_Ruleset_Part4_LegalTechProfessionals.mdx
+
+
+## 🏷️ Content Bucket: Legal Tech for Professionals
+
+### 🎯 Objective:
+Normalize the use of modern legal tools — not as novelties, but as necessary infrastructure for delivering better service, protecting time, and scaling without hiring. Speak to lawyers and legal staff who want better outcomes with less complexity.
+
+### 🎯 Primary Personas:
+- Experienced lawyers feeling behind on tech
+- Small firm leaders looking to upgrade operations
+- Paralegals and office managers trying to improve team efficiency
+- Tech-ambivalent legal professionals open to smarter systems
+
+---
+
+### ✅ Seeded Post Ideas
+
+1. **Modern Legal Tools That Don’t Require a Learning Curve**
+   - Focus: Ease of use
+   - Tone: Supportive, no assumptions
+
+2. **You Don’t Need to Be Tech-Savvy to Run a Tech-Forward Firm**
+   - Audience: Tech-cautious leaders
+   - CTA: Delegate the “how,” lead the “why”
+
+3. **The Quiet ROI of Legal Tech: Better Clients, Fewer Mistakes, More Time**
+   - Message: Improve experience, not just numbers
+
+4. **Legal Tech That Pays for Itself (Even in a One-Lawyer Practice)**
+   - Hook: Cost-to-benefit storytelling
+   - Persona: Budget-conscious solos
+
+5. **How to Choose Legal Tools That Actually Work for Small Firms**
+   - Teach: How to avoid features you don’t need
+   - Tie-in: Simplicity > feature lists
+
+6. **Legal Software Isn’t About the Tool — It’s About What You Stop Doing**
+   - Focus: Behavioral change, not bells & whistles
+   - CTA: Use systems to remove low-value tasks
+
+7. **Tech Stack Bloat: Why More Tools = More Problems**
+   - Topic: Consolidation & tool fatigue
+   - CTA: Choose fewer tools that integrate well
+
+8. **The Tools Most Lawyers Regret NOT Adopting Sooner**
+   - Format: Roundup of insights from multiple personas
+   - Hook: FOMO + validation
+
+---
+
+<!-- competitor_sources: lawpay.com, clio.com -->
+<!-- competitor_check_required: true -->
+<!-- rotation_priority: Medium -->
+
+
+---
+
+### File: Content_Strategy_Ruleset_Part5_DelegationStaffEmpowerment.mdx
+
+
+## 🏷️ Content Bucket: Delegation & Staff Empowerment
+
+### 🎯 Objective:
+Support lawyers who manage others — whether staff, junior attorneys, or vendors — by providing calm, process-driven solutions that make it easier to build trust, train well, and delegate meaningfully. Speak with respect for the legal team structure while offering clear systems that improve how work gets shared.
+
+### 🎯 Primary Personas:
+- Lawyers managing support staff
+- Paralegals and office managers trying to build process
+- Law firm owners onboarding new hires
+- Small firm professionals wearing multiple hats
+
+---
+
+### ✅ Seeded Post Ideas
+
+1. **Improving Handoffs So Your Team Can Work With Less Back-and-Forth**
+   - Focus: Streamlined communication and task clarity
+
+2. **How to Set Clear Ownership Without Micromanaging**
+   - Focus: Delegation structure that builds autonomy
+
+3. **Bringing on Support Staff? Here’s How to Structure Their Workload**
+   - Focus: Onboarding with built-in clarity
+
+4. **Simple Ways to Make Legal Tools Easier for Your Team to Use Daily**
+   - Focus: Reducing tool resistance through better support
+
+5. **Building Trust Into Your Workflow — So You Don’t Have to Check Everything Twice**
+   - Focus: Process confidence and visibility
+
+6. **Support Systems That Let Staff Take Action Without Waiting on You**
+   - Focus: Efficiency and responsiveness for teams
+
+7. **Operational Clarity for Growing Legal Teams**
+   - Focus: Smooth scaling without silos
+
+---
+
+<!-- competitor_sources: lawpay.com, clio.com -->
+<!-- competitor_check_required: true -->
+<!-- rotation_priority: Medium -->
+
+
+---
+
+### File: Content_Strategy_Ruleset_Part6_ProductEducation.mdx
+
+
+## 🏷️ Content Bucket: Product Education & Feature Highlights
+
+### 🎯 Objective:
+Educate lawyers, legal staff, and office managers on how specific product features directly solve everyday problems — especially around billing, intake, and internal communication. Prioritize use-case storytelling and respectful explanations over promotional fluff.
+
+### 🎯 Primary Personas:
+- Lawyers managing billing or client experience
+- Paralegals and office managers overseeing payments or paperwork
+- Solos looking to automate without hiring
+- Larger firms trying to reduce admin friction
+
+---
+
+### ✅ Seeded Post Ideas (Product-Backed, Problem-Led)
+
+1. **Fewer Late Payments, Less Follow-Up: Tools That Keep Invoices on Track**
+   - Feature: Payment tracking, invoice reminders, due-date visibility
+
+2. **How to Collect Payments Without Staff Needing to Ask Twice**
+   - Feature: Smart links, dashboard alerts, auto-reminders
+
+3. **Turning Intake Into an Easy Yes: Tools That Get Clients to Submit Quickly**
+   - Feature: Mobile-friendly intake forms, auto-save, low-friction UX
+
+4. **Stop Losing Track of What’s Been Paid and What’s Outstanding**
+   - Feature: Visual invoice history, labeling, and status tracking
+
+5. **What You Can Automate (Without Losing the Personal Touch)**
+   - Feature: Branded automations, reminder customization
+
+6. **Built-In Payment Plans: Flexible for Clients, Easier for You**
+   - Feature: Scheduled billing with no manual chasing
+
+7. **How One Feature Helps Your Team Work Faster Without Needing More Logins**
+   - Feature: Shared tools or views that reduce logins and toggling
+
+8. **Why Firms That Simplify Payments Get More Referrals**
+   - Feature: Better client experience → easier referrals
+
+---
+
+<!-- competitor_sources: lawpay.com, clio.com -->
+<!-- competitor_check_required: true -->
+<!-- rotation_priority: High -->
+
+
+---
+
+### File: Content_Strategy_CadenceRules.mdx
+
+
+## 📅 Content Cadence Rule Set (Updated for Weekly Publishing)
+
+Establish a consistent and SEO-optimized publishing frequency across all content buckets while addressing product education, persona balance, and rotation needs.
+
+---
+
+### 🗓️ Weekly Publishing Goal
+
+Publish **1 blog post per week** (minimum 4 posts per month). Content must rotate through buckets strategically but prioritize ongoing business pain points and high-conversion topics.
+
+---
+
+### 🔁 Priority Buckets (1–2x per month each)
+
+| Bucket | Post Type | Notes |
+|--------|-----------|-------|
+| Law Firm Operations | Fixing friction, process improvements | Often SEO-driven, addresses core business concerns |
+| Product Education | Feature-backed problem solving | Supports product onboarding, trust, and conversion |
+| Getting Paid | Billing, late payments, follow-up automation | Core messaging strength of the product |
+
+---
+
+### 🔁 Rotational Buckets (1x every 6–8 weeks)
+
+| Bucket | Post Type | Notes |
+|--------|-----------|-------|
+| Delegation & Staff Empowerment | Internal clarity, less micro-managing | Appeals to growing teams and efficiency-seeking firms |
+| Legal Tech for Professionals | System upgrades, toolstack sanity | Reframe legal tech as a non-negotiable tool, not a luxury |
+| Starting a New Law Firm | Foundational guidance for first-year solos | Ideal for early-stage or expansion-curious readers |
+
+---
+
+### 🌿 Seasonal, Opportunistic, or Persona-Based
+
+Use these buckets when seasonal timing, product updates, or competitive trends signal opportunity.
+
+| Type | When to Use |
+|------|-------------|
+| Marketing Your Services | Product adds visibility features, SEO spike from competitors |
+| Case Studies / Testimonials | Social proof, campaign support, launch windows |
+| Industry Events or Legal Calendar Anchors | Time-sensitive hooks: bar exams, tax deadlines, regulatory changes |
+
+---
+
+### 📌 Guiding Cadence Notes
+
+- Maintain **weekly publishing** across all seasons.
+- Prioritize topics that directly reflect **product value** or **relevant pain points**.
+- Ensure each month includes:
+  - 1+ Product Education post
+  - 1+ Law Firm Operations post
+  - 1+ "Getting Paid" post
+  - 1 rotating/seasonal post
+
+---
+
+
+
+
+---
+
+### File: Content_Strategy_InternalLinking.mdx
+
+
+## 🔗 Internal Linking Ruleset
+
+Define how blog posts should link internally to each other and to key product pages. Internal linking improves SEO, increases session duration, and builds trust by offering deeper, contextually relevant solutions.
+
+---
+
+### ✅ Core Rules
+
+| Rule | Rationale |
+|------|-----------|
+| Use absolute internal paths (e.g., `/blog/how-to-delegate`) | Prevents broken links and ensures links work across environments |
+| Link only to deeply relevant content | Avoids bounce rates and builds user trust |
+| Use descriptive anchor text (not “click here”) | Improves search engine readability and accessibility |
+| Include at least two internal links in each blog post | Strengthens internal SEO and aids user navigation |
+| Identify one “hub” post per content bucket that other posts can reference | Establishes SEO authority for priority topics |
+| Add soft CTAs to product pages when the product meaningfully supports the topic | Supports conversions without pushy sales |
+
+---
+
+### 🧠 Advanced Suggestions
+
+- Consider adding a **“Read Next”** section at the end of each post to guide users to the most contextually relevant follow-up content
+- Use a tag system to group and interlink thematic posts (e.g., “intake systems,” “staff training,” “automation”)
+
+---
+
+### Example Link Placement
+
+In a post on legal payment plans, link to:
+
+- **Another content post**:
+  > “Learn how one firm reduced late invoices in [Fewer Late Payments, Less Follow-Up](mdc:blog/fewer-late-payments).”
+
+- **A product feature page**:
+  > “Offer flexible billing without extra follow-up using [automated payment plans](mdc:features/payment-plans).”
+
+
+---
+
+### File: Content_Strategy_ContentPathing.mdx
+
+
+## 🧭 Content Discovery & Pathing Ruleset
+
+Define how users should be guided through the blog content ecosystem after reading a post. The goal is to increase session duration, deliver relevant value, and nudge users toward high-value actions (product education or conversion).
+
+---
+
+### 🎯 Objectives
+
+1. Keep readers engaged by suggesting relevant follow-up content
+2. Deepen trust by connecting them with more of your expertise
+3. Gently guide them toward learning about the product without forcing it
+
+---
+
+### 📌 Core Rules
+
+| Rule | Rationale |
+|------|-----------|
+| Always include a “Read Next” recommendation | Prevents bounce and supports discovery |
+| Match "Read Next" content to persona + pain point | Keeps content flow relevant |
+| Use soft-text nudges instead of "related posts" language | Builds continuity of thought |
+| Embed product mentions naturally if the feature solves the ongoing issue | Reinforces value without hard-selling |
+| Link to pillar pages when users are in research mode | Helps establish topical authority |
+| Optionally surface “Most Popular Reads” based on real traffic data | Adds social proof and relevance |
+
+---
+
+### 📥 Example Reader Paths
+
+| Reader Type | Suggested Next Steps |
+|-------------|----------------------|
+| First-time visitor | Educational blog → Feature use case → Signup/https://app.blawby.com/register link |
+| Returning visitor | Strategic topic → Client case study → Feature CTA |
+| Legal support staff | Process guide → Empowerment blog → Internal tools walkthrough |
+| Lawyer frustrated by admin tasks | Pain-led blog → Simplification explainer → Product feature page |
+
+---
+
+### 🧠 Sample Nudges
+
+> “Still chasing down late payments? Here's how other law firms simplify collections without sounding pushy.”  
+→ `/blog/legal-payment-reminders`
+
+> “Want a complete view of which clients have outstanding invoices?”  
+→ `/features/billing-dashboard`
+
+
+---
+
+### File: Content_Strategy_PerformanceCadence.mdx
+
+
+## 📈 Performance & Strategy Maintenance Ruleset
+
+Ensure that blog content continues to perform, evolve, and support the business as your product and audience grow.
+
+---
+
+### 📊 Key Performance Metrics
+
+| Metric | Purpose |
+|--------|---------|
+| Organic traffic per post | SEO visibility and search intent match |
+| Time on page | Content quality and engagement |
+| Bounce rate | Intent mismatch or intro issues |
+| Click-through rate to https://app.blawby.com/register | Interest in solution and conversion readiness |
+| Internal link clicks | Navigation strength and content curiosity |
+| Content-attributed conversions (if tracked) | Business ROI |
+
+---
+
+### 🔁 Maintenance Cadence
+
+| Frequency | Task |
+|-----------|------|
+| Monthly | Review top and bottom performers, fix dead internal links |
+| Quarterly | Rebalance persona visibility, update metadata or schema |
+| Biannually | Refresh aging posts, inject new features, retune for current SEO keywords |
+| Annually | Evaluate content buckets and revise strategy as needed |
+
+---
+
+### 🧠 Red Flags to Watch For
+
+- High bounce rates with short read time → Misleading or weak intros
+- Low internal link clicks → Content too siloed, not networked
+- High traffic with no conversions → Weak product positioning or CTA
+- Consistently underperforming bucket → Persona/topic mismatch
+
+---
+
+
+
+---
+
+### File: Content_Strategy_AdvancedTaggingSEO.mdx
+
+
+## 🧠 Advanced Content Strategy Ruleset: Tagging, Intent, and SEO Integrity
+
+Extend the base content strategy to support long-term SEO health, post performance, and discoverability in high-competition environments.
+
+---
+
+### 🏷️ Evergreen vs Time-Sensitive Tagging
+
+| Tag Type | Description | Use Case |
+|----------|-------------|----------|
+| `evergreen` | Content that remains relevant year-round and long-term | "How to simplify law firm invoicing" |
+| `timely` | Posts tied to seasonal, regulatory, or tech updates | "Legal billing tips for tax season" or product feature launches |
+
+✅ These tags help prioritize **refresh cycles** and improve automation for audits.
+
+---
+
+### 🔎 Search Intent Mapping
+
+| Intent Type | What It Means | Post Goal |
+|-------------|----------------|-----------|
+| `informational` | User wants to learn about a problem or concept | Education, awareness-building |
+| `navigational` | User is looking for a tool or specific brand | Guide toward your feature or product pages |
+| `transactional` | User is close to making a decision or purchase | Highlight product benefits, include strong CTA |
+
+✅ Each post should be mapped to one primary intent and support linking to posts of **adjacent intent** (e.g. `informational` → `navigational`).
+
+---
+
+### 🧹 Content Pruning Rules
+
+| Rule | Action |
+|------|--------|
+| If post receives < 10 visits in 6+ months with no backlinks | Consider deleting or merging |
+| If content overlaps 70%+ with another post | Consolidate and redirect |
+| If keyword trends have shifted dramatically | Retarget or retire the post |
+| If product references are outdated or inaccurate | Refresh immediately or unpublish until fixed |
+
+✅ Schedule pruning twice per year during major strategy reviews.
+
+---
+
+### ✨ Zero-Click SEO Content
+
+| Purpose | Example |
+|---------|---------|
+| Help your blog appear in featured snippets or answer boxes | Use direct answers, bullets, bold definitions |
+| Address high-volume “quick answer” queries | “What is legal retainer billing?”, “How long do law firms keep client files?” |
+| Use `FAQ` formatting with `Question: / Answer:` or H3 blocks | Can live inside normal blog posts or in dedicated FAQ-style entries |
+
+✅ Zero-click SEO is best used **inside existing blog posts** when the opportunity is relevant to the search term — not as standalone fluff.
+
+---
+
+
+---
+
+## 🔒 INTERNAL ONLY: Post Strategy Compliance Checklist
+
+This checklist is to be used by AI agents and internal reviewers. It should be visible in workspaces like Notion, Git, or Cursor, but **not published** on the public blog.
+
+```markdown
+### ✅ Post Strategy Compliance Checklist
+
+- [ ] ✅ Content bucket is clearly identified and aligned
+- [ ] ✅ Persona is addressed in tone and pain point
+- [ ] ✅ Search intent is respected (informational/navigational/transactional)
+- [ ] ✅ Product tie-in is naturally introduced
+- [ ] ✅ Internal links: Minimum 2, and directly relevant
+- [ ] ✅ CTA included (if applicable), soft or hard depending on topic
+- [ ] ✅ No legal advice or impersonation of lawyers
+- [ ] ✅ Voice prioritizes problem-solving, systems, and business outcomes
+```
+
+---
+
+
+<!--
+✅ INTERNAL POST STRATEGY COMPLIANCE CHECKLIST
+
+- [ ] Content bucket is clearly identified and aligned
+- [ ] Persona is addressed in tone and pain point
+- [ ] Search intent is respected (informational/navigational/transactional)
+- [ ] Product tie-in is naturally introduced
+- [ ] Internal links: Minimum 2, and directly relevant
+- [ ] CTA included (if applicable), soft or hard depending on topic
+- [ ] No legal advice or impersonation of lawyers
+- [ ] Voice prioritizes problem-solving, systems, and business outcomes
+
+This section is for internal validation and should never appear in the published post.
+-->
+
+
+## 🔁 Persona Rotation & Coverage Strategy
+
+
+## 📊 Persona Rotation Tracker
+
+This ruleset ensures content remains balanced across all major target personas by tracking post history and setting limits.
+
+---
+
+### 🧠 Target Personas
+
+| Persona | Description |
+|---------|-------------|
+| **New Solo Lawyer** | Just starting, doing everything alone, wants growth without chaos |
+| **Tech-Outdated Veteran** | Very experienced, behind on tech, needs simple + safe upgrades |
+| **Legal Admin / Paralegal** | Works at a firm, improving efficiency, may advocate for new software |
+| **Firm Owner / Managing Partner** | Business-minded, scaling operations, wants time savings + oversight |
+
+---
+
+### 🔁 Rotation Rules
+
+| Rule | Application |
+|------|-------------|
+| No more than 2 consecutive posts for the same persona | Prevents bias |
+| If no post for a persona in 4 weeks, prioritize next post for them | Ensures balance |
+| If a feature is best suited to one persona, allow override | Feature fit trumps strict rotation |
+| Tie rotation to content buckets when relevant | Avoid repeating the same bucket/persona combo too often |
+
+---
+
+### 🔍 Weekly Evaluation Example
+
+| Week | Persona | Bucket | Topic |
+|------|---------|--------|-------|
+| 1 | New Solo Lawyer | Law Firm Operations | Handling Client Intake Alone |
+| 2 | Managing Partner | Getting Paid | Simplifying Multi-Attorney Invoicing |
+| 3 | Paralegal | Automation & Efficiency | Delegating Work Through Tech |
+| 4 | New Solo Lawyer ❌ | Getting Paid | (Skip — already covered solo lawyer this month)
+| → Recommend: Tech-Outdated Veteran | Law Firm Operations | Upgrading Time Tracking Tools |
+

@@ -11,6 +11,12 @@ import { Video } from "@/components/video-player";
 import { getLesson, getLessonContent, getModules } from "@/data/lessons";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { parseHowToStepsFromMarkdown, getHowToSchema } from "@/utils/howto-schema";
+import { parseFAQFromMarkdown, getFAQSchema } from "@/utils/faq-schema";
+import { getCourseSchema } from "@/utils/course-schema";
+import fs from "fs";
+import path from "path";
 
 export async function generateStaticParams() {
   const modules = getModules();
@@ -37,36 +43,46 @@ export async function generateMetadata({
   if (!lesson) return {};
 
   return {
-    title: `${lesson.title} - Compass`,
+    title: `${lesson.title}`,
     description: lesson.description,
-    openGraph: {
-      title: `${lesson.title} - Compass`,
-      description: lesson.description,
-      type: lesson.video ? 'video.other' : 'article',
-      ...(lesson.video && {
-        videos: [{
-          url: lesson.video.url,
-          type: 'video/mp4',
-          duration: lesson.video.duration,
-        }],
-        images: [{
-          url: lesson.video.thumbnail,
-          width: 1920,
-          height: 1080,
-          alt: lesson.title,
-        }],
-      }),
-    },
+    openGraph: lesson.video
+      ? {
+          title: `${lesson.title}`,
+          description: lesson.description,
+          type: 'video.other',
+          videos: [
+            {
+              url: lesson.video.url,
+              type: 'video/mp4',
+            },
+          ],
+          images: [
+            {
+              url: lesson.video.thumbnail,
+              width: 1920,
+              height: 1080,
+              alt: lesson.title,
+            },
+          ],
+        }
+      : {
+          title: `${lesson.title}`,
+          description: lesson.description,
+          type: 'article',
+          images: [
+            // You may want to provide a default image for articles
+          ],
+        },
     twitter: {
       card: lesson.video ? 'player' : 'summary',
-      title: `${lesson.title} - Compass`,
+      title: `${lesson.title}`,
       description: lesson.description,
       ...(lesson.video && {
         images: [lesson.video.thumbnail],
       }),
     },
     alternates: {
-      canonical: `https://compass.example.com/${lesson.id}`,
+      canonical: `https://blawby.com/${lesson.id}`,
     },
   };
 }
@@ -80,10 +96,10 @@ function generateLessonStructuredData(lesson: any) {
     description: lesson.description,
     provider: {
       '@type': 'Organization',
-      name: 'Compass',
+      name: 'Blawby',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://compass.example.com/logo.png',
+        url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
       },
     },
     learningResourceType: 'Lesson',
@@ -123,6 +139,39 @@ export default async function Page({
 
   let Content = await getLessonContent(slug);
   const lessonStructuredData = generateLessonStructuredData(lesson);
+  const breadcrumbItems = [
+    { name: "Home", url: "https://blawby.com" },
+    { name: lesson.module.title, url: `https://blawby.com/#${lesson.module.id}` },
+    { name: lesson.title, url: `https://blawby.com/${lesson.id}` },
+  ];
+  const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
+
+  // HowTo schema: parse steps from MDX file
+  let howToSchema = null;
+  let faqSchema = null;
+  try {
+    const lessonPath = path.join(process.cwd(), "src/data/lessons", `${slug}.mdx`);
+    const mdxContent = fs.readFileSync(lessonPath, "utf-8");
+    const steps = parseHowToStepsFromMarkdown(mdxContent);
+    if (steps.length >= 2) {
+      howToSchema = getHowToSchema({
+        name: lesson.title,
+        description: lesson.description,
+        steps,
+      });
+    }
+    // FAQ schema
+    const faqs = parseFAQFromMarkdown(mdxContent);
+    if (faqs.length > 0) {
+      faqSchema = getFAQSchema({
+        faqs,
+        name: lesson.title,
+        description: lesson.description,
+      });
+    }
+  } catch (e) {
+    // Ignore if file not found or parse error
+  }
 
   return (
     <SidebarLayoutContent
@@ -142,6 +191,34 @@ export default async function Page({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(lessonStructuredData) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            getCourseSchema({
+              name: lesson.title,
+              description: lesson.description,
+              url: `https://blawby.com/${lesson.id}`,
+            })
+          ),
+        }}
+      />
+      {howToSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
+      )}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <div className="mx-auto max-w-7xl">
         <div className="-mx-2 sm:-mx-4">
           {lesson.video && (
@@ -166,9 +243,9 @@ export default async function Page({
                 />
               ) : (
                 <NextPageLink
-                  title="Interviews"
-                  description="Explore interviews with industry experts and thought leaders."
-                  href="/interviews"
+                  title="Payments with Blawby"
+                  description="Learn how to accept and manage payments securely and compliantly."
+                  href="/payments"
                 />
               )}
             </div>

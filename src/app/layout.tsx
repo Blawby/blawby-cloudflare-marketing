@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import type React from "react";
 import { Metadata } from "next";
 import "./globals.css";
+import { Footer } from "@/components/footer";
 
 const InterVariable = localFont({
   variable: "--font-inter",
@@ -14,39 +15,39 @@ const InterVariable = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://compass.example.com'),
+  metadataBase: new URL('https://blawby.com'),
   title: {
-    template: '%s - Compass',
-    default: 'Compass - The Ultimate Guide to Navigating Uncertainty',
+    template: '%s | Blawby',
+    default: 'Blawby - Compliant Credit Card Payments for Legal Practices',
   },
-  description: 'Compliant credit card payments for legal practices',
+  description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
   keywords: ['uncertainty', 'decision making', 'personal development', 'mindfulness', 'determinism'],
   authors: [{ name: 'Tom Harris' }],
   creator: 'Tom Harris',
-  publisher: 'Compass',
+  publisher: 'Blawby',
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://compass.example.com',
-    siteName: 'Compass',
-    title: 'Compass - The Ultimate Guide to Navigating Uncertainty',
-    description: 'Compliant credit card payments for legal practices',
+    url: 'https://blawby.com',
+    siteName: 'Blawby',
+    title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
+    description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
     images: [{
-      url: 'https://compass.example.com/og-image.jpg',
+            url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
       width: 1200,
       height: 630,
-      alt: 'Compass - Navigate Uncertainty'
+      alt: 'Blawby - Compliant Credit Card Payments for Legal Practices'
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Compass - The Ultimate Guide to Navigating Uncertainty',
-    description: 'Compliant credit card payments for legal practices',
-    creator: '@compass',
-    images: ['https://compass.example.com/twitter-image.jpg'],
+    title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
+    description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
+    creator: '@blawby',
+        images: ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'],
   },
   alternates: {
-    canonical: 'https://compass.example.com',
+    canonical: 'https://blawby.com',
   },
   robots: {
     index: true,
@@ -73,15 +74,15 @@ export const metadata: Metadata = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Compass',
-  description: 'Compliant credit card payments for legal practices',
-  url: 'https://compass.example.com',
+  name: 'Blawby',
+  description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
+  url: 'https://blawby.com',
   publisher: {
     '@type': 'Organization',
-    name: 'Compass',
+    name: 'Blawby',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://compass.example.com/logo.png'
+      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'
     }
   }
 };
@@ -106,9 +107,22 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <link rel="manifest" href="/site.webmanifest" />
+        {/* Google Analytics gtag.js */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LXBVNX707M"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-LXBVNX707M');
+            `,
+          }}
+        />
       </head>
       <body>
         <div className="isolate">{children}</div>
+        <Footer />
       </body>
     </html>
   );

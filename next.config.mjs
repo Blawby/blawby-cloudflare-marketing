@@ -27,6 +27,17 @@ const nextConfig = {
   output: 'export',
   // Optimize build output
   webpack: (config) => {
+    config.module.rules.push({
+      test: /\.(js|jsx)$/,
+      include: [/node_modules\/react-pay-icons/],
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-react']
+        }
+      }
+    });
+
     // Split chunks into smaller pieces
     config.optimization.splitChunks = {
       chunks: 'all',
