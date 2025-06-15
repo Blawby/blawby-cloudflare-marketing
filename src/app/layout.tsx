@@ -5,6 +5,7 @@ import type React from "react";
 import { Metadata } from "next";
 import "./globals.css";
 import { Footer } from "@/components/footer";
+import CookieConsentComponent from "@/components/cookie-consent";
 
 const InterVariable = localFont({
   variable: "--font-inter",
@@ -123,6 +124,7 @@ export default function RootLayout({
       <body>
         <div className="isolate">{children}</div>
         <Footer />
+        <CookieConsentComponent />
       </body>
     </html>
   );
