@@ -70,16 +70,19 @@ export async function generateMetadata({
           description: lesson.description,
           type: 'article',
           images: [
-            // You may want to provide a default image for articles
+            {
+              url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
+              width: 1200,
+              height: 630,
+              alt: 'Blawby - Compliant Credit Card Payments for Legal Practices'
+            }
           ],
         },
     twitter: {
-      card: lesson.video ? 'player' : 'summary',
+      card: lesson.video ? 'player' : 'summary_large_image',
       title: `${lesson.title}`,
       description: lesson.description,
-      ...(lesson.video && {
-        images: [lesson.video.thumbnail],
-      }),
+      images: lesson.video ? [lesson.video.thumbnail] : ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'],
     },
     alternates: {
       canonical: `https://blawby.com/${lesson.id}`,
