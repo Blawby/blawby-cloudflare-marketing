@@ -9,6 +9,7 @@ import { Logo } from "@/components/logo";
 import { PageSection } from "@/components/page-section";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import { getModules, type Module } from "@/data/lessons";
+import { getArticles, type Article } from "@/data/articles";
 import { BookIcon } from "@/icons/book-icon";
 import { ClockIcon } from "@/icons/clock-icon";
 import { LessonsIcon } from "@/icons/lessons-icon";
@@ -56,6 +57,7 @@ function getLessonReadingDuration(slug: string): number {
 
 export default async function Page() {
   let modules = await getModules();
+  let articles = await getArticles();
   let lessons = modules.flatMap(({ lessons }) => lessons);
   let duration = lessons.reduce((sum, lesson) => {
     if (lesson.video?.duration) return sum + lesson.video.duration;

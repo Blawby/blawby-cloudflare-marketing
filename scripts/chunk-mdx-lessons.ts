@@ -7,10 +7,14 @@ import { visit } from 'unist-util-visit';
 import crypto from 'crypto';
 
 const LESSONS_DIR = path.resolve(process.cwd(), 'src/data/lessons');
+const ARTICLES_DIR = path.resolve(process.cwd(), 'src/data/articles');
 const PAGES_DIR = path.resolve(process.cwd(), 'src/data/pages');
 const OUTPUT_PATH = path.resolve(process.cwd(), 'lesson-chunks.json');
 const MAX_CHUNK_TOKENS = 300; // Adjust as needed
 const MAX_ID_BYTES = 64;
+
+// Files to exclude from indexing
+const EXCLUDED_FILES = ['privacy.mdx', 'terms.mdx'];
 
 // Recursively get all .mdx files in a directory
 function getAllMdxFiles(dir: string): string[] {
@@ -104,23 +108,57 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string, 
 }
 
 function main() {
-  const lessonFiles = getAllMdxFiles(LESSONS_DIR);
-  const pageFiles = getAllMdxFiles(PAGES_DIR);
   let allChunks: any[] = [];
+  
+  // Process lessons
+  const lessonFiles = getAllMdxFiles(LESSONS_DIR);
   for (const file of lessonFiles) {
+    const filename = path.basename(file);
+    if (EXCLUDED_FILES.includes(filename)) continue;
+    
     const raw = fs.readFileSync(file, 'utf8');
     const { data: frontmatter, content } = matter(raw);
     const title = frontmatter.title || path.basename(file, '.mdx');
     const chunks = chunkMarkdownByParagraph(content, file, title, '/lessons');
     allChunks.push(...chunks);
   }
-  for (const file of pageFiles) {
+  
+  // Process articles (with category-based URLs)
+  const articleFiles = getAllMdxFiles(ARTICLES_DIR);
+  for (const file of articleFiles) {
+    const filename = path.basename(file);
+    if (EXCLUDED_FILES.includes(filename)) continue;
+    
     const raw = fs.readFileSync(file, 'utf8');
     const { data: frontmatter, content } = matter(raw);
     const title = frontmatter.title || path.basename(file, '.mdx');
-    const chunks = chunkMarkdownByParagraph(content, file, title, '/pages');
+    
+    // Extract category from file path: src/data/articles/[category]/[file].mdx
+    const relativePath = path.relative(ARTICLES_DIR, file);
+    const pathParts = relativePath.split(path.sep);
+    const category = pathParts[0]; // First directory is the category
+    const urlPrefix = `/${category}`;
+    
+    const chunks = chunkMarkdownByParagraph(content, file, title, urlPrefix);
     allChunks.push(...chunks);
   }
+  
+  // Process standalone pages
+  const pageFiles = getAllMdxFiles(PAGES_DIR);
+  for (const file of pageFiles) {
+    const filename = path.basename(file);
+    if (EXCLUDED_FILES.includes(filename)) continue;
+    
+    const raw = fs.readFileSync(file, 'utf8');
+    const { data: frontmatter, content } = matter(raw);
+    const title = frontmatter.title || path.basename(file, '.mdx');
+    
+    // Pages have direct URLs: /pricing, /help, etc.
+    const urlPrefix = '';
+    const chunks = chunkMarkdownByParagraph(content, file, title, urlPrefix);
+    allChunks.push(...chunks);
+  }
+  
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(allChunks, null, 2));
   console.log(`Wrote ${allChunks.length} chunks to ${OUTPUT_PATH}`);
 

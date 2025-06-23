@@ -83,7 +83,7 @@ export default function CookieConsentComponent() {
 
     return () => {
       // Cleanup if needed
-      CookieConsent.destroy();
+      // CookieConsent.destroy() is not available in this version
     };
   }, []);
 

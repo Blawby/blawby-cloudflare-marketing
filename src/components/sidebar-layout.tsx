@@ -15,6 +15,8 @@ import { usePathname } from "next/navigation";
 import type React from "react";
 import { createContext, useContext, useState } from "react";
 import { Navbar } from "./navbar";
+import type { Article } from "@/data/articles";
+import type { Page } from "@/data/pages";
 
 export const SidebarContext = createContext<{
   isSidebarOpen: boolean;
@@ -57,9 +59,9 @@ function CourseNavigation({
                 )}
               >
                 <Link
-                  href={`/${lesson.id}`}
+                  href={`/${lesson.category}/${lesson.id}`}
                   aria-current={
-                    `/${lesson.id}` === pathname ? "page" : undefined
+                    `/${lesson.category}/${lesson.id}` === pathname ? "page" : undefined
                   }
                   onNavigate={onNavigate}
                   className="aria-[current=page]:font-medium aria-[current=page]:text-gray-950 dark:aria-[current=page]:text-white"
@@ -75,14 +77,108 @@ function CourseNavigation({
   );
 }
 
+function ArticlesNavigation({
+  articles,
+  onNavigate,
+  className,
+}: {
+  articles: Article[];
+  onNavigate?: () => void;
+  className?: string;
+}) {
+  let pathname = usePathname();
+  if (!articles.length) return null;
+  return (
+    <div className={clsx(className, "space-y-8 mt-10")}>
+      <div>
+        <h2 className="text-base/7 font-semibold text-pretty text-gray-950 sm:text-sm/6 dark:text-white">
+          Articles & Guides
+        </h2>
+        <ul className="mt-4 flex flex-col gap-4 border-l border-gray-950/10 text-base/7 text-gray-700 sm:mt-3 sm:gap-3 sm:text-sm/6 dark:border-white/10 dark:text-gray-400">
+          {articles.map((article) => (
+            <li
+              key={article.id}
+              className={clsx(
+                "-ml-px flex border-l border-transparent pl-4",
+                "hover:text-gray-950 hover:not-has-aria-[current=page]:border-gray-400 dark:hover:text-white",
+                "has-aria-[current=page]:border-gray-950 dark:has-aria-[current=page]:border-white",
+              )}
+            >
+              <Link
+                href={`/${article.category}/${article.id}`}
+                aria-current={
+                  `/${article.category}/${article.id}` === pathname ? "page" : undefined
+                }
+                onClick={onNavigate}
+                className="aria-[current=page]:font-medium aria-[current=page]:text-gray-950 dark:aria-[current=page]:text-white"
+              >
+                {article.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function PagesNavigation({
+  pages,
+  onNavigate,
+  className,
+}: {
+  pages: Page[];
+  onNavigate?: () => void;
+  className?: string;
+}) {
+  let pathname = usePathname();
+  if (!pages.length) return null;
+  return (
+    <div className={clsx(className, "space-y-8 mt-10")}>
+      <div>
+        <h2 className="text-base/7 font-semibold text-pretty text-gray-950 sm:text-sm/6 dark:text-white">
+          Pages
+        </h2>
+        <ul className="mt-4 flex flex-col gap-4 border-l border-gray-950/10 text-base/7 text-gray-700 sm:mt-3 sm:gap-3 sm:text-sm/6 dark:border-white/10 dark:text-gray-400">
+          {pages.map((page) => (
+            <li
+              key={page.id}
+              className={clsx(
+                "-ml-px flex border-l border-transparent pl-4",
+                "hover:text-gray-950 hover:not-has-aria-[current=page]:border-gray-400 dark:hover:text-white",
+                "has-aria-[current=page]:border-gray-950 dark:has-aria-[current=page]:border-white",
+              )}
+            >
+              <Link
+                href={page.href}
+                aria-current={
+                  page.href === pathname ? "page" : undefined
+                }
+                onClick={onNavigate}
+                className="aria-[current=page]:font-medium aria-[current=page]:text-gray-950 dark:aria-[current=page]:text-white"
+              >
+                {page.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 function MobileNavigation({
   open,
   onClose,
   modules,
+  articles,
+  pages,
 }: {
   open: boolean;
   onClose: () => void;
   modules: Module[];
+  articles: Article[];
+  pages: Page[];
 }) {
   return (
     <Dialog open={open} onClose={onClose} className="xl:hidden">
@@ -100,6 +196,16 @@ function MobileNavigation({
           onNavigate={onClose}
           className="px-4 pb-4 sm:px-6"
         />
+        <ArticlesNavigation
+          articles={articles}
+          onNavigate={onClose}
+          className="px-4 pb-4 sm:px-6"
+        />
+        <PagesNavigation
+          pages={pages}
+          onNavigate={onClose}
+          className="px-4 pb-4 sm:px-6"
+        />
       </DialogPanel>
     </Dialog>
   );
@@ -107,9 +213,13 @@ function MobileNavigation({
 
 export function SidebarLayout({
   modules,
+  articles = [],
+  pages = [],
   children,
 }: {
   modules: Module[];
+  articles?: Article[];
+  pages?: Page[];
   children: React.ReactNode;
 }) {
   let [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -138,10 +248,14 @@ export function SidebarLayout({
                 open={isMobileDialogOpen}
                 onClose={() => setIsMobileDialogOpen(false)}
                 modules={modules}
+                articles={articles}
+                pages={pages}
               />
             </div>
             <div className="mt-3">
               <CourseNavigation modules={modules} className="max-xl:hidden" />
+              <ArticlesNavigation articles={articles} className="max-xl:hidden" />
+              <PagesNavigation pages={pages} className="max-xl:hidden" />
             </div>
           </nav>
         </aside>
