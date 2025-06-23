@@ -8,6 +8,7 @@ export type Article = {
   datePublished: string;
   dateModified: string;
   author?: string;
+  image?: string;
   video: {
     thumbnail: string;
     duration: number;
@@ -39,6 +40,7 @@ const articles: Article[] = [
     tags: ["iolta", "trust-accounts", "legal-compliance", "payment-processing"],
     datePublished: "2024-01-15",
     dateModified: "2024-01-15",
+    image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
     video: null,
   },
   {
@@ -50,6 +52,7 @@ const articles: Article[] = [
     tags: ["revenue-optimization", "flat-fees", "payment-plans", "automated-billing", "cash-flow"],
     datePublished: "2024-01-20",
     dateModified: "2024-01-20",
+    image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
     video: null,
   }
 ]; 
