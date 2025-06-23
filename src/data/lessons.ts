@@ -9,11 +9,18 @@ export type Lesson = {
   id: string;
   title: string;
   description: string;
+  contentType: "lesson" | "article" | "guide";
   video: {
     thumbnail: string;
     duration: number;
     url: string;
   } | null;
+  // Article-specific metadata
+  category?: string;
+  tags?: string[];
+  datePublished?: string;
+  dateModified?: string;
+  author?: string;
 };
 
 export function getModules(): Module[] {
@@ -44,7 +51,19 @@ export async function getLessonContent(slug: string) {
   if (slug === "privacy" || slug === "terms") {
     return (await import(`@/data/legal/${slug}.mdx`)).default;
   }
-  return (await import(`@/data/lessons/${slug}.mdx`)).default;
+  
+  // First try to find the lesson to determine its content type
+  const lesson = await getLesson(slug);
+  if (!lesson) {
+    throw new Error(`Lesson not found: ${slug}`);
+  }
+  
+  // Import from appropriate directory based on content type
+  if (lesson.contentType === "guide" || lesson.contentType === "article") {
+    return (await import(`@/data/articles/${slug}.mdx`)).default;
+  } else {
+    return (await import(`@/data/lessons/${slug}.mdx`)).default;
+  }
 }
 
 const lessons = [
@@ -57,6 +76,8 @@ const lessons = [
         id: "get-started",
         title: "Quick Start Guide",
         description: "Get up and running with Blawby's payment processing platform.",
+        contentType: "lesson" as const,
+        category: "lessons",
         video: null,
       }
     ],
@@ -70,51 +91,34 @@ const lessons = [
         id: "payments",
         title: "Payments",
         description: "Accept credit card, debit card, and ACH/Bank Transfer payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
+        contentType: "lesson" as const,
+        category: "lessons",
         video: null,
       },
       {
         id: "invoicing",
         title: "Invoicing",
         description: "Streamline your billing process with automated invoicing and payment collection.",
+        contentType: "lesson" as const,
+        category: "lessons",
         video: null,
       },
       {
         id: "clients",
         title: "Clients",
         description: "Efficiently manage your client information, communications, and payment history.",
+        contentType: "lesson" as const,
+        category: "lessons",
         video: null,
       },
       {
         id: "payouts",
         title: "Payouts",
         description: "Manage your firm's cash flow with secure and efficient payout processing.",
+        contentType: "lesson" as const,
+        category: "lessons",
         video: null,
       },
-      {
-        id: "pricing",
-        title: "Pricing",
-        description: "Simple, transparent pricing with no hidden fees. Pay-as-you-go with monthly billing.",
-        video: null,
-      },
-    ],
-  },
-  {
-    id: "resources",
-    title: "Resources & Guides",
-    description: "Helpful guides and best practices for legal payment processing.",
-    lessons: [
-      {
-        id: "iolta-compliance",
-        title: "IOLTA Compliance Guide",
-        description: "Understanding trust account requirements for legal payments.",
-        video: null,
-      },
-      {
-        id: "future-proof-revenue",
-        title: "Future-Proof Revenue",
-        description: "How to use flat fees, payment plans, and automated billing to stabilize your law firm's cash flow.",
-        video: null,
-      }
     ],
   },
 ];

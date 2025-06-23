@@ -20,12 +20,12 @@
     }
   },
   {
-    "id": "efff91d9d3a6e4da75788b50fbf8d43ed72923ccb6492a7a2dc18268306662ed",
-    "text": "Add new clients or update existing client information in the Clients section of your dashboard. For each client, you can store:\n\nName\n\nEmail\n\nPhone number\n\nAddress\n\nStatus (Lead or Client)\n\nYou can edit or remove clients at any time. Removing a client will detach them from your firm, but their historical data is preserved for compliance.",
+    "id": "c718f87df5c868c269f037036f3198c0af269ab859468d7432e478ae8c71180a",
+    "text": "Use the following steps to add or update a client in Blawby:\n\n  (1 minute) Log in to your Blawby dashboard and select \"Clients\" from the sidebar menu.\n\n  (1 minute) Click \"Add Client\" to create a new record, or click on a client's name to update their information.\n\n  (2 minutes) Fill in the client's name, email, phone number, address, and status (Lead or Client).\n\n  (1 minute) Click \"Save\" to add the new client or update the existing record. All changes are saved instantly and securely.\n\n  (1 minute) Each client profile includes a timeline of invoices, payments, and communications for easy tracking.",
     "metadata": {
       "title": "clients",
       "file": "clients.mdx",
-      "section": "Adding and Managing Clients",
+      "section": "How to Add and Manage Clients",
       "url": "/lessons/clients"
     }
   },
@@ -41,7 +41,7 @@
   },
   {
     "id": "573d4b8b8f66aa003a1bf29a27bc4fe77c67b820d91f9c2199bf55d00dff3d9d",
-    "text": "To import clients in bulk:\n\nDownload the CSV template from the Import Clients page\n\nFill in your client data (Name, Email, Phone, etc.)\n\nUpload the completed CSV file using the import tool\n\nReview and confirm the imported data before finalizing\n\nIf there are any errors (such as missing required fields), Blawby will show you which rows need attention so you can correct and re-upload.",
+    "text": "Use the following steps to import clients in bulk with Blawby:\n\n  (1 minute) Go to the Import Clients page in your dashboard and download the provided CSV template.\n\n  (2 minutes) Enter each client's Name, Email, Phone, and any other required information into the CSV file.\n\n  (1 minute) Use the import tool to upload your filled-out CSV file to Blawby.\n\n  (2 minutes) Check for any errors or missing fields, then confirm to finalize the import. Blawby will highlight any rows that need attention so you can correct and re-upload if necessary.",
     "metadata": {
       "title": "clients",
       "file": "clients.mdx",
@@ -50,93 +50,13 @@
     }
   },
   {
-    "id": "e4c5ca733f49ff71bd566c28ad30b8af94d417b272b219bf5b76087e3fe2ac8c",
-    "text": "Unpredictable cash flow is one of the biggest headaches for solo and small firm attorneys. Clients want flexibility, but you need to keep the lights on and your team paid. The good news? You can have both—by combining flat fees, payment plans, and automated billing features.\n\nFor many law firms, the traditional model of hourly billing and chasing down payments is not only time-consuming but also stressful. It can lead to cash flow gaps, client frustration, and administrative overload. By modernizing your approach, you can create a more stable, client-friendly, and efficient practice.",
+    "id": "d73a530e6d1c8f4fac49a9af9aabd977d60cde19b1c9aabb3fc0b4deacac3d75",
+    "text": "No. You can use the CSV import tool to upload multiple clients at once, saving time and effort.\n\nBlawby will highlight the specific rows and columns that contain issues, allowing you to fix and re-upload only the problem data.\n\nYes, clients can be removed from your account if necessary. Note that deleting a client does not delete their associated invoices or payment records.\n\nYes. Each client profile includes a timeline view where you can see all recorded invoices, payments, and notes related to the client.\n\nAbsolutely. All client data is encrypted in transit and at rest, and changes are saved securely in compliance with industry best practices.",
     "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Why Predictable Revenue Matters for Law Firms",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "0b4d61fc1d3838ae842b4438ee76f6f148e5ffc956a2e57f08fe72db4c13b2d2",
-    "text": "Flat fees are more than a trend—they're a client expectation. Offering flat fees for common matters (like uncontested divorces, wills, or traffic tickets) gives clients cost certainty and reduces billing disputes. For your firm, it means less time tracking and more time focused on client work.\n\nA flat fee is a set price for a specific legal service, regardless of the time it takes to complete. This model is especially effective for predictable, repeatable tasks. Clients appreciate knowing exactly what they'll pay, and you benefit from streamlined billing and fewer disputes.\n\n  Review your case history to find matters with consistent scope and effort. For example, if you regularly handle simple estate plans or uncontested divorces, these are ideal candidates for a flat-fee approach.\n\n  Factor in your time, overhead, and any potential complications. Be transparent about what is included and what is not. When a client comes to you for a straightforward matter, being able to say, \"This will cost $1,200, start to finish,\" builds trust and makes the decision easier for them.\n\n  Use engagement letters and invoices to spell out the scope. This reduces misunderstandings and sets clear expectations. If a case becomes more complex—say, a divorce that starts uncontested but later requires litigation—your agreement can specify how billing will adapt, so there are no surprises.\n\n  Modern platforms make it easy to create, send, and track flat-fee invoices, so you spend less time on admin and more on client work.\n\n  Flat fees can be combined with other billing models. For example, you might offer a flat fee for initial consultation and hourly rates for additional work.\n\n",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Flat Fees: Simplicity Clients Love",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "d4e4ef349e4c553061bae1f2cdcf0743539d5c4dc107c01ec81e11600a0ef0e3",
-    "text": "Not every client can pay a large bill up front. Payment plans let you break invoices into manageable chunks, making your services accessible to more people—while improving your own collection rate. More clients can afford your help when payments are spread out. For instance, if you offer a $3,000 flat fee for a criminal defense case, you might structure it as $1,000 down and $500/month for four months. This approach opens the door to clients who otherwise couldn't afford representation, while ensuring you receive steady, predictable payments. Clients are less likely to fall behind when payments are predictable and automated. When your system automatically sends reminders and processes payments, you spend less time chasing overdue bills. Flexible payment options show you understand your clients' needs. Clients appreciate knowing they can get the help they need without a huge upfront cost, and your firm benefits from a more reliable cash flow. Flat-fee matters, retainers, or even large hourly bills can be split into installments. For example, you might offer payment plans for estate planning, family law, or business formation services. Ensure each payment covers your costs and reduces risk. A reasonable down payment demonstrates client commitment and helps cover initial expenses. Automation reduces manual follow-up and ensures timely payments. Clients receive reminders before each installment is due, making it easy for them to stay on track. Stay on top of your cash flow and follow up only when necessary. If a client misses a payment, your system can alert you so you can address it promptly and professionally. Let clients know you offer payment plans and explain the terms. This conversation can be a relief for clients who are worried about affording legal help. Specify the total amount, payment schedule, due dates, and consequences for missed payments. This clarity helps avoid",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Payment Plans: Make Legal Help Accessible (and Get Paid Faster)",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "6a011d73f0c6a5bce637228e08ff7216f6796cae1ff8707acef781ebcc8b0a26",
-    "text": "misunderstandings down the road. This shows commitment and covers initial costs. Use your billing software to send invoices and reminders automatically, so you don't have to remember each due date. If a client misses a payment, your system should alert you so you can follow up promptly and keep the relationship positive.",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Payment Plans: Make Legal Help Accessible (and Get Paid Faster)",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "e26f4462acbe9c711423f6aec6bcf0eed940083642f6e8d5972aac48e74dde38",
-    "text": "Manual invoicing and reminders eat up valuable time. Automated billing features let you:\n\nSchedule invoices to go out on specific dates\n\nSend automatic payment reminders (no more awkward follow-ups)\n\nAccept multiple payment methods (credit card, ACH/bank transfer)\n\nTrack payments and outstanding balances in real time\n\n  Reduce manual data entry and follow-up. For example, a mid-sized firm handling ongoing matters can set up monthly invoices and reminders, freeing up staff to focus on client service instead of collections.\n\n  Automated reminders and easy payment options mean clients pay sooner. When clients receive a reminder three days before and after the due date, late payments drop dramatically.\n\n  Automation ensures accuracy and consistency, so you don't have to worry about missed invoices or incorrect amounts.\n\n  Clients appreciate clear, timely communication and flexible payment options. When paying is easy, clients are more likely to pay on time and recommend your firm to others.\n\n\n\n  Look for scheduled invoicing, recurring payments, and automated reminders.\n\n  Pre-fill details for flat fees, retainers, or payment plans, so you can send invoices in seconds.\n\n  Make it easy for clients to pay by card or ACH/bank transfer.\n\n  Track which invoices are paid, pending, or overdue at a glance, so you always know where your cash flow stands.",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Automated Billing: Less Admin, More Results",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "f148c8b7e6e648c06cbb3edc6885f0b24f3d4cce59b0617eb9ff6170710971f0",
-    "text": "Compliance isn't just about following rules—it's about removing the pain points that slow your team down and create risk. Many law firms, regardless of size, face friction in their billing and trust accounting workflows:\n\n  Matching payments to the right accounts and matters can eat up hours each month.\n\n  Even experienced teams can make mistakes when moving funds between trust and operating accounts.\n\n  When payment records are scattered or incomplete, audits become stressful and time-consuming.\n\n  Some processors deduct fees from client funds, creating compliance headaches and extra work.\n\nBlawby is designed to support compliance and reduce these friction points for any law office:\n\n  Payments are routed to the correct accounts, so you don't have to worry about manual sorting or accidental commingling.\n\n  Processing and platform fees are always billed to your operating account, never from client funds, so you stay compliant by default.\n\n  Every transaction is logged and easy to review, making audits and reconciliations faster and less stressful.\n\n",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Compliance and Trust Accounting: Reducing Friction, Supporting Your Practice",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "150d3336b92df8c9bbb56dec5dba3f5f2e002a55eb3a017d37ce75e42462487c",
-    "text": "Firms that use flat fees, payment plans, and automated billing together:\n\nGet paid faster and more consistently\n\nSpend less time on admin and more on client work\n\nReduce billing disputes and improve client satisfaction\n\nMake legal services more accessible to a wider range of clients\n\nStay compliant with trust accounting and industry regulations\n\nWhen you bring these features together, you create a workflow where clients know exactly what they'll pay, can choose a payment plan that fits their budget, and receive timely reminders and easy payment options. Your team spends less time on admin, your cash flow becomes more predictable, and compliance is built into every transaction. Whether you're helping a family with an estate plan or guiding a business through formation, this approach lets you focus on what matters most: delivering great legal service.",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "What Happens When You Combine All Three?",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "eed8db0c4e6b98a8509f342b8793a822fa572169c5fe77a691fe62fd29145fe5",
-    "text": "  Many guides stop at \"offer flat fees\" or \"use payment plans,\" but don't show how to combine these features for maximum impact.\n\n  Some resources gloss over trust accounting, but it's critical for law firms. This guide provides actionable steps to stay compliant.\n\n  Rather than treating each feature in isolation, this guide shows how to integrate them for a future-proof revenue strategy.",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Overlooked Details: What Competitors Miss",
-      "url": "/lessons/future-proof-revenue"
-    }
-  },
-  {
-    "id": "1c8d7710b4006768b745fcfbd9639ec981c6f9f4d1ec7018f61d563733e2145c",
-    "text": "Start using flat fees, payment plans, and automated billing to take control of your firm's cash flow. The right tools make it easy to set up, track, and get paid—without extra admin.  \n\n   ",
-    "metadata": {
-      "title": "future-proof-revenue",
-      "file": "future-proof-revenue.mdx",
-      "section": "Ready to Make Your Revenue Predictable?",
-      "url": "/lessons/future-proof-revenue"
+      "title": "clients",
+      "file": "clients.mdx",
+      "section": "Frequently Asked Questions",
+      "url": "/lessons/clients"
     }
   },
   {
@@ -151,7 +71,7 @@
   },
   {
     "id": "a1dec08aaa9e4966d0aedd338c983db2a4bdfe6b9d55e18aaf7c1829162cfcbe",
-    "text": "Visit    and click   .\n\nEnter your email address and create a secure password.\n\nProvide your law firm's details and complete the verification process.\n\n :  Go to    in your dashboard and follow the prompts to add your firm's bank account for payouts.\n\n :  Provide required business details and upload any necessary documents for verification (e.g., government-issued ID).\n\n :  In your Blawby dashboard, navigate to    and add your preferred payment methods (credit card, ACH, etc.).\n\nEnsure all verification steps are complete to enable payments and payouts.\n\nIn your dashboard, go to    and select your Team name.\n\nScroll to the    section.\n\nEnter a unique link name (e.g.,  myfirm-payments ) and an optional default amount.\n\nSave your changes.\n\nCopy your payment link (e.g.,  https://blawby.com/myfirm-payments ).\n\n  You can pre-fill the payment amount by adding an  amount  parameter to your link, e.g.,  https://blawby.com/your-link-name?amount=1000  for $10.00 (amount is in cents).\n\nAdd your payment link to your website as a \"Pay Now\" button.\n\nInclude it in your email signature or on invoices.\n\nSend it directly to clients for retainers, one-off payments, or outstanding balances.\n\nClients can pay securely online via credit card or ACH, and both you and your client will receive email receipts.\n\nTrack all payments in your Blawby dashboard under   .",
+    "text": "Use the following steps to get started with Blawby:\n\n  (2 minutes) Visit    and click   . Enter your email address and create a secure password. Provide your law firm's details and complete the verification process. For more information, see   .\n\n  (5 minutes) Connect your bank account by going to    in your dashboard and following the prompts to add your firm's bank account for payouts. Submit required business and representative information, including any necessary documents for verification (e.g., government-issued ID). Add a payment method in your Blawby dashboard under    (credit card, ACH, etc.). Ensure all verification steps are complete to enable payments and payouts. For a detailed guide, visit   .\n\n  (2 minutes) In your dashboard, go to    and select your Team name. Scroll to the    section, enter a unique link name (e.g.,  myfirm-payments ), and an optional default amount. Save your changes and copy your payment link (e.g.,  https://blawby.com/myfirm-payments ). You can pre-fill the payment amount by adding an  amount  parameter to your link, such as  https://blawby.com/your-link-name?amount=1000  for $10.00 (amount is in cents). For more details, see   .\n\n  (2 minutes) Add your payment link to your website as a \"Pay Now\" button, include it in your email signature or on invoices, or send it directly to clients for retainers, one-off payments, or outstanding balances. Clients can pay securely online via credit card or ACH, and both you and your client will receive email receipts. Track all payments in your Blawby dashboard under   . For more information, see   .",
     "metadata": {
       "title": "get-started",
       "file": "get-started.mdx",
@@ -160,18 +80,118 @@
     }
   },
   {
-    "id": "f7b5f66986241be420fbc62e1cadb7ad589c40214bb51cc3c92eeb479fb22bf5",
-    "text": "After setting up your account, you can:\n\n  to start billing clients\n\n  to accept online payments\n\n  in your dashboard\n\n  to receive funds\n\nVisit our product guides to learn more about each feature and how to make the most of your Blawby account.",
+    "id": "242757422876165ec4d99d40f1d958eac780f530129bdd26ee674cf21d4a40fd",
+    "text": "Most users can complete the full account setup, including verification, in under 15 minutes if all necessary documents are ready.\n\nNo. You can use your Blawby payment link directly in emails, invoices, or messages—no website needed.\n\nYes. You can create a custom link name and add default amounts. You can also modify the amount dynamically in the URL.\n\nAbsolutely. All payment processing through Blawby is encrypted and compliant with industry standards.\n\nYes. Both you and your client will receive email receipts immediately after a payment is completed.",
     "metadata": {
       "title": "get-started",
       "file": "get-started.mdx",
-      "section": "Next Steps",
+      "section": "Frequently Asked Questions",
       "url": "/lessons/get-started"
     }
   },
   {
+    "id": "325468b7908207f0c94bcc7fe64cb17ff76ddf19175e34e3db2381573b47e92c",
+    "text": "When I first started my law practice, I was spending way too much time chasing down consultation payments. Clients would call, we'd schedule a meeting, and then I'd have to follow up multiple times to get paid. It was frustrating for everyone involved. My paralegal was spending hours each week on payment follow-ups, and I was losing valuable time that could be spent on client work.\n\nThat's when I discovered Blawby's payment links. Now, when potential clients reach out, they can pay for their consultation instantly with a simple link. It's been a game-changer for my practice, and my team couldn't be happier with the streamlined process.",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "359fe1b8278148dd5381f6187734faa49808c97ec8933da2f0b19c26fc4013db",
+    "text": "I was stuck in a cycle of:\n\nSpending hours following up for payments\n\nJuggling multiple systems to track who paid\n\nLosing focus on my actual legal work\n\nWasting time on administrative tasks that could be automated\n\nMy team spending too much time on payment collection\n\nClients getting confused about how to pay\n\nI knew there had to be a better way to handle consultation payments. After all, I started my practice to help clients, not to chase payments.",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "The Problem I Was Facing",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "53c7b94bc1f964144aea51892eeb618bd2413973b4b8c400927d1ccb8810aa08",
+    "text": "Here's how I set up my consultation payment system:\n\n  (2 minutes)\n\nWent to my Blawby dashboard\n\nNavigated to Settings\n\nCreated a payment link called \"consultation\"\n\nSet my standard consultation fee of $75\n\nAdded my firm's branding to the payment page\n\nVerified the payment setup met all professional requirements\n\n  (1 minute)\n\nAdded the amount parameter to my URL\n\nExample:  https://blawby.com/myfirm-payments?amount=7500  for $75\n\nThis lets me adjust amounts as needed\n\nCreated different links for different types of consultations",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "My Solution: Simple Payment Links",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "356130d2f9f5114404e048c7b242a421bc3f9e8f837ac0d334939b8247038968",
+    "text": "I've set up a seamless system using Zapier to handle everything automatically. Here's how it works:\n\n\n\nWhen someone books a consultation:\n\nZapier creates a new client in my Notion database\n\nSets their status as \"Pending Payment\"\n\nRecords their consultation date and time\n\nStores their contact information\n\nAdds a note about the payment link\n\n\n\nWhen I receive a Blawby payment notification email:\n\nZapier reads the email\n\nExtracts the payment amount and client name\n\nFinds the matching client in Notion\n\nUpdates their status to \"Paid\"\n\nRecords the payment date and amount\n\nAdds a confirmation note\n\n\n\nFor clients who haven't paid within 24 hours:\n\nZapier checks their status in Notion\n\nIf still \"Pending Payment\":\n\nCancels their Calendly booking\n\nSends them a polite cancellation email\n\nUpdates their status to \"Cancelled\"\n\nAdds a note about the cancellation\n\nThis automation has been a game-changer for my practice. I don't have to worry about:\n\nManually tracking payments\n\nFollowing up with clients\n\nCancelling unpaid bookings\n\nUpdating client records",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "My Complete Automation Setup",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "f43180884eee54e535f083c84412e2f1b6b2db89b6493b34d79a528a26709aec",
+    "text": "I've made the payment link work seamlessly with my existing tools:\n\n  I added the payment link to my booking confirmation emails. When a client books a consultation, they receive an email that includes:\n\nTheir appointment details\n\nA clear note that payment is required to confirm the consultation\n\nThe payment link with the exact amount\n\nInstructions on how to complete the payment\n\nA professional, branded presentation\n\nAll necessary payment disclosures\nThis ensures clients know exactly what they need to do to secure their appointment.\n\n  My paralegal can easily track payments alongside client information, making it simple to follow up if needed. We've set up a system where:\n\nAll payments are automatically recorded\n\nPayment status is clearly visible\n\nFollow-up reminders are automated\n\nClient history is maintained\n\n  Added a prominent \"Schedule Consultation\" button that my team can easily update. The button:\n\nMatches our firm's branding\n\nIs mobile-friendly\n\nProvides clear next steps\n\nCreates a professional first impression",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "How I Integrated It with My Workflow",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "64988630403d3b411a2df0786a032a4b49a62e8a59568dc13f2b450ab5570330",
+    "text": "Since implementing this system, I've noticed:\n\n90% reduction in payment follow-up time\n\nMore professional client experience\n\nBetter cash flow management\n\nFewer administrative headaches\n\nMy team spends less time on payment collection\n\nNew clients appreciate the modern payment process\n\nIncreased client satisfaction\n\nBetter organization of payment records\n\nReduced stress for my team\n\nMore time for actual legal work\n\nPeace of mind knowing all payments are properly handled",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "The Results I've Seen",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "3be9035579478b4a594302ca215edf77973602552b86c0abced89abd013fc1a2",
+    "text": "\n\nUse consistent payment amounts\n\nMake the purpose clear\n\nTest links regularly\n\nTrain your team on the process\n\nKeep instructions straightforward\n\nMaintain clear communication\n\n\n\nEnsure branding is consistent\n\nUse clear payment descriptions\n\nProvide immediate confirmation\n\nMaintain a professional tone in all communications\n\nInclude secure payment indicators\n\nKeep the process transparent\n\n\n\nTrack payments in one place\n\nSet up automatic notifications\n\nKeep clear records\n\nMake it easy for your team to find information\n\nRegular system checks\n\nClear documentation",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "My Best Practices",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "2883e1a499f2c10535d7b6201edaef62963650c9ee2175d0f7664247c7b9b267",
+    "text": "Yes! I can adjust the amount by modifying the URL parameter. For example, to change from $75 to $100:\n https://blawby.com/myfirm-payments?amount=10000\n\nThis flexibility is perfect for:\n\nDifferent types of consultations\n\nSpecial circumstances\n\nPackage deals\n\nPromotional rates\n\nMy payment page automatically includes:\n\nMy firm's branding\n\nClear payment description\n\nProfessional presentation\n\nSecure payment indicators\n\nDetailed instructions\n\nContact information\n\nSince I collect payment upfront, I don't have to worry about:\n\nChasing payments after no-shows\n\nLost revenue from missed appointments\n\nAdministrative follow-up\n\nMy team spending time on payment collection\n\nClient confusion about payment status\n\nLast-minute cancellations",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "Questions I Get Asked",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "4d3dd09adbe876652414eadd10838dc0aaf44f1c5ca1d14ad4d70794a03dd95c",
+    "text": "If I could go back and give myself advice, I would say:\n\nSet up the payment link before you need it\n\nMake the consultation amount clear in all communications\n\nDon't be afraid to create different payment links for different services\n\nKeep your payment page branding consistent with your firm's image\n\nTest your payment link regularly\n\nTrain your team on the new process early\n\nSet up clear procedures for payment tracking\n\nDocument everything for future reference\n\nGet feedback from your team\n\nMonitor the system's effectiveness",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "What I Wish I Knew When I Started",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
+    "id": "62f6452439d47ac622c248e009293a3dd75858dd64585c44b95b5766d5b4c9ab",
+    "text": "Setting up consultation payments with Blawby was one of the best decisions I made for my practice. It's saved me countless hours and made the client experience much smoother. My team is more efficient, my clients are happier, and I can focus on what I do best - practicing law.\n\n  and see how simple payment collection can be. Trust me, your future self will thank you!",
+    "metadata": {
+      "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
+      "section": "Ready to Try It Yourself?",
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    }
+  },
+  {
     "id": "b0f519b9d34fbf18b6e6ee2509ee0eb942b9787f08dda605e2981d99d2ec309d",
-    "text": "Blawby makes it easy for law firms to create, send, and manage professional invoices for their clients.\n\nTo manage your invoices, visit   . If you are logged in, this link will automatically redirect you to the correct team page for your account.",
+    "text": "Blawby makes it easy for law firms to create, send, and manage professional invoices for their clients.\n\nTo manage your invoices, visit   .",
     "metadata": {
       "title": "invoicing",
       "file": "invoicing.mdx",
@@ -191,7 +211,7 @@
   },
   {
     "id": "b22d9f686eb9b1b627a065022418575852ad9e26e23f15e66903453568da160e",
-    "text": "To create a new invoice:\n\nNavigate to \"Invoices\" > \"Create New Invoice\"\n\nSelect a client from your list or add a new one\n\nAdd line items for your legal services:\n\nDescription of service\n\nTime spent (if billing hourly)\n\nRate\n\nFlat fee (if applicable)\n\nSet the due date\n\nPreview the invoice\n\nClick \"Send\" to email the invoice to your client",
+    "text": "Use the following steps to create and send an invoice with Blawby:\n\n  (1 minute) Go to the \"Clients\" section in your Blawby dashboard and select the client you want to invoice. If you need to add or edit client information, see   .\n\n  (1 minute) In the client's profile, click \"Generate Invoice.\" The invoice template will automatically use your firm's branding, including logo and contact information. If you need to update your contact info or logo, see   .\n\n  (2 minutes) Enter a description of the service, time spent (if billing hourly), rate, and any flat fees as applicable. You can add multiple line items to reflect the full scope of work.\n\n  (1 minute) Choose a due date for the invoice. Note: All invoices must have a due date set for at least the next day. If you need to collect a payment immediately, use a    instead.\n\n  (1 minute) Review all details to ensure accuracy before sending.\n\n  (1 minute) Click \"Send\" to email the invoice to your client. The client will receive a secure link to pay online.\n\nFor more information on payment options, visit   .",
     "metadata": {
       "title": "invoicing",
       "file": "invoicing.mdx",
@@ -200,117 +220,37 @@
     }
   },
   {
-    "id": "3f2b4c5edc991ac5c0ea9a7067229dbb30286cc867a2b597a2cf1ddbc54c99da",
-    "text": "Keep track of your legal billing:\n\nView all invoices in the \"Invoices\" dashboard\n\nMonitor payment status in real-time\n\nSend automatic reminders for overdue invoices\n\nGenerate reports for accounting and compliance\n\nFor details on managing clients, including adding, updating, and importing clients, see   .",
+    "id": "7fd496e49c75169a59efc79a18455199aa0a38d7f9d5c9c97cc93092128fa5af",
+    "text": "Once you have created and sent an invoice, an email is automatically sent to your client requesting payment. This email includes a link that directs them to the payment page, where they can choose from various payment options. For more information on payment options, visit   .",
     "metadata": {
       "title": "invoicing",
       "file": "invoicing.mdx",
-      "section": "Managing Invoices",
+      "section": "After Creating an Invoice",
       "url": "/lessons/invoicing"
     }
   },
   {
-    "id": "a0e1f149807e9ea67cff39184e2827c89ba5a7226b3ee21f8e8aaa5ee026630f",
-    "text": "Trust accounts are fundamental to legal ethics. Whether you're holding client retainers, court filing fees, or settlement funds, the rules are clear: those funds must be handled with care and kept separate from operating funds. Mistakes, even honest ones, can carry serious consequences.\n\nBlawby is designed to make this easier. Our platform routes 100% of every client payment to your connected trust account. We never deduct fees from those funds. Instead, processing and platform fees are charged separately to a card tied to your firm's operating account. No complex setup. No risk of accidental non-compliance.",
+    "id": "7072f57a149cdb51b8bfebe0708045cb831e6ff679cb6eb63cc266724f588620",
+    "text": "After a payment is successfully processed, both you and your client will receive a payment confirmation email. This ensures that both parties have a record of the transaction, providing peace of mind and a clear audit trail.",
     "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "",
-      "url": "/lessons/iolta-compliance"
+      "title": "invoicing",
+      "file": "invoicing.mdx",
+      "section": "Payment Confirmation",
+      "url": "/lessons/invoicing"
     }
   },
   {
-    "id": "386d643003418a5a227cfb762758f4d41d35872d6f93728f00e4a48ea3fed155",
-    "text": "An IOLTA (Interest on Lawyer Trust Account) is a type of pooled client trust account required in most jurisdictions when lawyers handle nominal or short-term funds. The interest earned from these accounts is used to support public legal services.\n\nWhat matters most from a compliance standpoint is that the lawyer cannot use or benefit from these funds until they are earned. And no operational or third-party fees can be deducted from the trust account—even indirectly.",
+    "id": "34bb86026eef00aaab8d01396bca7cb73269a698f1bedb58361c441f4fad8165",
+    "text": "Yes. You can create and send invoices to both new and existing clients directly from the Clients section in your dashboard.\n\nYes. Invoices automatically include your firm's logo, contact info, and payment terms. You can customize this information under your account settings.\n\nYes. Clients receive a secure link with the invoice that lets them pay online via credit card or ACH.\n\nUse a    instead of an invoice. Invoices require a due date of at least one day in the future.\n\nYes. You’ll receive an email notification when a payment is completed, and it will also appear in your dashboard in real time.",
     "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "Understanding IOLTA Accounts",
-      "url": "/lessons/iolta-compliance"
+      "title": "invoicing",
+      "file": "invoicing.mdx",
+      "section": "Frequently Asked Questions",
+      "url": "/lessons/invoicing"
     }
   },
   {
-    "id": "83dd671f4d91854305693319d6269c0dc1d960385272bc32b53efb09ca038f85",
-    "text": "While it's easy to accept digital payments today, many systems are not built with trust accounting in mind. A few common issues:\n\n : Most payment processors subtract fees before depositing funds. That's fine for e-commerce—not for legal trust compliance.\n\n : Mixing trust and operating funds can happen unintentionally if a platform doesn't enforce separation.\n\n : Incomplete audit trails or unclear fund movements make it difficult to reconcile client ledgers accurately.\n\nThese problems are more common than many firms realize.",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "The Challenge of Legal Payments",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "b827dcfa84ee46930830fd4d20407d1835f44a2be763207eb145025b83cf6b77",
-    "text": "Blawby is structured to respect the boundaries required by IOLTA rules. Here's what happens when a client makes a payment:\n\nThe entire payment amount is deposited into your connected trust account.\n\nProcessing fees (via Stripe) and Blawby's platform fee are not deducted from that payment.\n\nInstead, those fees are billed to a credit or debit card linked to your firm's operating account.\n\nThis flow ensures that client funds remain whole, and compliance isn't left to manual tracking or trust in the wrong software configuration.",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "How Blawby Helps",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "3c7057be2a00e150037d166a1105d59cf1a0bc7658e267efedbd2c51fd327323",
-    "text": "Let's say your client pays a $2,500 retainer:\n\n$2,500 goes directly into your trust account.\n\nStripe processes the transaction and calculates fees (e.g., $72.80).\n\nBlawby charges a 1.4% platform fee ($35.00).\n\nYour saved card is charged $107.80 total.\n\nThe trust account receives the full $2,500. All fees are handled separately.",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "A Typical Payment Flow",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "37618ca90247015eee4f61f0b2dd3e6bc8337340627b6fb37f145935da6e6d16",
-    "text": "A trust account eligible for client fund deposits\n\nA credit or debit card (ideally tied to your operating account) for fees\n\nYou don't need to connect two bank accounts. There are no intermediary transfers or manual adjustments. The setup is designed to match how lawyers already work, just with less risk.",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "What You Need to Use Blawby",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "6f603f9f19ad2619eb7eea5162c43e829f7332ec5f39b737e22be8f0e8cf2399",
-    "text": "Blawby supports your compliance goals, but consistent internal practices matter too:\n\nUse clear account labeling to avoid confusion between trust and operating accounts.\n\nReconcile regularly, using Blawby's reporting features to align ledger records with bank statements.\n\nSeparate earned and unearned funds by keeping work status and invoicing up to date.\n\nDon't skip documentation. Transfers from trust to operating should always be traceable to client approval and earned revenue.",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "Good Habits to Maintain Trust Compliance",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "ff344f841b59d7cc29ce0717cfa6f8b6f19d5e7435d2b4303f93336b0428b644",
-    "text": "Blawby uses Stripe Connect for secure payments infrastructure. Stripe's reliability, PCI compliance, and reporting capabilities support a clean flow of funds with detailed tracking.\n\nOur integration ensures:\n\nTrust-compliant payment routing\n\nSeparate billing for fees\n\nClear audit trails for every transaction",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "Built on Stripe Connect",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "536c3dcd142911cfc742559718b8509f035a487d4d022261160eaa5da3f58919",
-    "text": "Legal professionals choose Blawby because it aligns with how they practice:\n\nNo fees deducted from trust\n\nNo complex multi-account setup\n\nSimple configuration for trust payouts and operating account billing\n\nTransparent monthly billing structure\n\nWe're not reinventing legal payments—we're refining the flow so it aligns with compliance.",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "Why Firms Use Blawby",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "67e137753de381249e865769b0bde558fd1e70fcc7e619228498fbc71d9054ba",
-    "text": "Blawby is purpose-built for legal payments and designed with trust compliance in mind. If your firm accepts client funds and wants to reduce friction around trust accounting, we can help.",
-    "metadata": {
-      "title": "iolta-compliance",
-      "file": "iolta-compliance.mdx",
-      "section": "Try Blawby",
-      "url": "/lessons/iolta-compliance"
-    }
-  },
-  {
-    "id": "488f6f17a090be08cca1297510b39f1e5f9a0f506be8db04662ddf1c4ffbe499",
+    "id": "0deb1481194153cb9f57175bde294104501962c9da938bdd0dc1c4fbcd2bc2fb",
     "text": "Managing payments shouldn't be a source of stress for your team or your clients. Yet, many law firms still deal with late checks, manual reconciliation, and client confusion about how to pay. Blawby's payment processing is designed to remove these pain points—so you can focus on your practice, not your paperwork.",
     "metadata": {
       "title": "payments",
@@ -320,8 +260,8 @@
     }
   },
   {
-    "id": "956cc17ba774ce09e2ff3975bf9a02401154d88267f24d6bbe3be322b1938b04",
-    "text": "Blawby's payment system allows you to:\n\nAccept credit card and ACH payments securely\n\nComply with ABA and IOLTA guidelines by default\n\nAutomate payment reminders to reduce late payments\n\nPayments are managed through Blawby and can be fully reconciled in your own Stripe account or accounting software, giving you control and flexibility over your financial records.\n\n  ",
+    "id": "5d1964f1a7fb4b2dbeb2e66ddfdf8f2fc526864dc5e9369d7230802417aea594",
+    "text": "Blawby's payment system allows you to:\n\nAccept credit card and ACH payments securely\n\nComply with ABA and IOLTA guidelines by default\n\nQuickly generate payments without having to log into the platform, no coding necessary.\n\nPayments are managed through Blawby and can be fully reconciled in your accounting software, giving you control and flexibility over your financial records.\n\n  ",
     "metadata": {
       "title": "payments",
       "file": "payments.mdx",
@@ -330,8 +270,18 @@
     }
   },
   {
-    "id": "ce24f501bdcdb53d5a4c39567bd2ecb07d07fc3cc1b174275acac81d40faaa3b",
-    "text": "With Blawby, you can generate a payment link in seconds—no technical setup required. Whether you're onboarding a new client, collecting a retainer, or following up on an outstanding invoice, payment links make it easy for clients to pay you online, from any device.\n\nFor example, when a client calls to ask how to pay their retainer, you can send them a secure payment link by email or text. They pay instantly, and both of you receive a receipt—no delays, no confusion.\n\nGo to    in your Blawby dashboard.\n\nClick on your Team name.\n\nScroll to the    section.\n\nEnter a unique link name (e.g.,  myfirm-payments ) and an optional default amount.\n\nSave your changes.\n\nCopy your payment link (e.g.,  https://blawby.com/myfirm-payments ).\n\n\n\nAdd your payment link to your website as a \"Pay Now\" button.\n\nInclude it in your email signature or on invoices.\n\nSend it directly to clients for retainers, one-off payments, or outstanding balances.\n\n",
+    "id": "e5fc7c1847460429ba13337cafc39527702c792cace9e485e969ddc8e28e756b",
+    "text": "Use the following steps to create and share a payment link with a client.\n\n  (1 minute) Visit    and log in with your account credentials.\n\n  (1 minute) From the sidebar, select \"Settings,\" click on your firm name, and then scroll down to \"Payment link\" to view your payment link.\n\n  (2 minutes) Enter your custom link name (e.g., \"consultation\" or \"donation\") and press save.\n\n  (1 minute) To change the amount directly in the URL, modify the amount parameter in cents. Example: https://blawby.com/myfirm-payments?amount=7500 (for $75.00).\n\n  (1 minute) Copy the payment link and send it via email, SMS, or any client communication channel.\n\n  (1 minute) Monitor your email for payment notifications.",
+    "metadata": {
+      "title": "payments",
+      "file": "payments.mdx",
+      "section": "How to Accept a Payment Using Blawby",
+      "url": "/lessons/payments"
+    }
+  },
+  {
+    "id": "f4fa56b0916119a548adeca698e3f32443a8c3adb1953683c021cbc03030d22f",
+    "text": "With Blawby, you can generate a payment link in seconds—no technical setup required. Whether you're onboarding a new client, collecting a retainer, or following up on an outstanding invoice, payment links make it easy for clients to pay you online, from any device.\n\nFor example, when a client calls to ask how to pay their retainer, you can send them a secure payment link by email or text. They pay instantly, and both of you receive a receipt—no delays, no confusion.",
     "metadata": {
       "title": "payments",
       "file": "payments.mdx",
@@ -340,17 +290,17 @@
     }
   },
   {
-    "id": "4cf99e87756cae084327d61428bd5c7296caa30b4b3f1b87c087aaa59676f1ce",
-    "text": "Blawby does not currently provide an in-app payment dashboard. Instead, all payments are managed through Blawby and can be tracked and reconciled in your own Stripe account or accounting software. This approach gives you the flexibility to use the financial tools you already trust for reporting and reconciliation.\n\nIf you ever need to request a specific amount, you can pre-fill the payment form by adding an  amount  parameter to your link.  \n\nhttps://blawby.com/northcarolinalegalservices/pay?amount=10000  = $100",
+    "id": "02b5ee865968261dd223b4680b2af0cd6ee17fbdde81d9d8da09e5f327d93416",
+    "text": "Blawby's dynamic payment links are designed to save you time by allowing you to adjust the payment amount directly in the URL, without needing to log into the CMS. This feature enables any automation system or CMS to manipulate the URL parameter to dynamically prepare always-ready, no-code payment link pages.\n\nTo change the payment amount, simply modify the  amount  parameter in the URL. The amount is specified in cents, so for example, to request a payment of $75.00, you would use:\n\nhttps://blawby.com/myfirm-payments?amount=7500\n\nThis flexibility means you can generate payment links on-the-fly, tailored to each client's needs, without the hassle of creating a new link each time. This not only streamlines your payment process but also enhances your firm's efficiency by reducing administrative tasks.",
     "metadata": {
       "title": "payments",
       "file": "payments.mdx",
-      "section": "Tracking and Managing Payments",
+      "section": "Using Dynamic Payment Links",
       "url": "/lessons/payments"
     }
   },
   {
-    "id": "2854567f44bdaee97eca5f29ed9951e3df225e4cacf5d8483c56bd402392a638",
+    "id": "6b0314bbd81eb4af92b76aaeb13da65a53f70d4d5cd080112f075e06c435b21f",
     "text": "Blawby is designed to support compliance and reduce friction for law offices of any size:\n\n  Payments are routed to the correct accounts, so you don't have to worry about manual sorting or accidental commingling.\n\n  Processing and platform fees are always billed to your operating account, never from client funds.\n\n  Every transaction is logged and easy to review, making audits and reconciliations faster and less stressful.\n\n\n\n  Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts.",
     "metadata": {
       "title": "payments",
@@ -360,7 +310,27 @@
     }
   },
   {
-    "id": "06775a167424145098e21ce03292f68d42be025be1c662e85eb034ff6dbe61e0",
+    "id": "da10bbacedd2236feb2a748a0f358fcad0d6fab7d1f7cd40132e1f0c658e1131",
+    "text": "Blawby lets you generate custom payment links quickly by changing the amount in the URL—no logins, no integrations, and no coding required.\n\nYou can:\n\nPre-fill specific payment amounts for faster transactions\n\nShare the same link across channels with client-specific amounts\n\nEmbed links into emails, CMS pages, or SMS workflows\n\n\n\nhttps://blawby.com/myfirm-payments?amount=12500  (For a $125.00 payment request)\n\nThis keeps your payment process streamlined and makes it easy to create dynamic, client-specific links on-the-fly.\n\nEach payment page includes your firm's logo, name, email address, and phone number—so clients know exactly who they're paying. This ensures a clear, professional presentation without the need for additional customization or legal disclaimers.\n\nGet notified instantly when a payment is completed. Track status via the dashboard or webhook events to update your systems in real-time.",
+    "metadata": {
+      "title": "payments",
+      "file": "payments.mdx",
+      "section": "Advanced Features for Scaling Firms",
+      "url": "/lessons/payments"
+    }
+  },
+  {
+    "id": "47b2a1ec9608eb861f1c68275e611560dc459493016140bee1e9ad11292ddaac",
+    "text": "Yes. Blawby is designed to ensure full compliance with both ABA and IOLTA trust accounting requirements. Payments are automatically split and routed to the correct accounts.\n\nYes, Blawby supports secure credit card and ACH bank transfer payments.\n\nNo. Processing and platform fees are charged only to your operating account—never from client funds.\n\nMost payments are processed within 1–2 business days.\n\nYes. Each payment page displays your firm's branding, including logo, name, and contact information.",
+    "metadata": {
+      "title": "payments",
+      "file": "payments.mdx",
+      "section": "Frequently Asked Questions",
+      "url": "/lessons/payments"
+    }
+  },
+  {
+    "id": "b297ed083c637e0815b5a7b8b78facf8bf86dd2565eaed1828b3a01b349bbc96",
     "text": "If your payment link isn't working, ensure your payout account and payment method are set up in your account settings.\n\nFor urgent payments, use the pre-filled amount feature to make it easy for clients to pay the exact amount you request.",
     "metadata": {
       "title": "payments",
@@ -370,8 +340,8 @@
     }
   },
   {
-    "id": "181f5597d4cba7a07f45cd84c2d3366f81679a5d6584c6886eb05a25c4773823",
-    "text": "Blawby's payment processing is built for law firms that want to get paid faster, reduce admin, and stay compliant—without the headaches.  \n\n\n\n\n\n\n\n",
+    "id": "c4b334be14ea0bdf522ac6842a4a519b24a360d76320d2eca3a826fce60c34c5",
+    "text": "Blawby's payment processing is built for law firms that want to get paid faster, reduce admin, and stay compliant—without the headaches.  ",
     "metadata": {
       "title": "payments",
       "file": "payments.mdx",
@@ -391,7 +361,7 @@
   },
   {
     "id": "d0cb249f5a84a19544a10012593befcfef790405fd6550063024a4f1d3a53583",
-    "text": "Blawby's payout feature allows you to:\n\nReceive payments directly to your firm's bank account\n\nTrack incoming funds from client payments",
+    "text": "Blawby's payout system helps law firms manage client payments while staying compliant with trust accounting requirements. With our integrated system, your firm can:\n\nReceive funds directly into your firm's trust account\n\nStay compliant with IOLTA rules by using verified trust account information\n\nAccess scheduled payouts based on payment method and processing time\n\nSimplify fee handling, as Blawby covers processing fees upfront and bills them on a monthly cycle\n\nBlawby takes care of the operational and compliance complexity behind the scenes, so your firm can focus on practicing law.",
     "metadata": {
       "title": "payouts",
       "file": "payouts.mdx",
@@ -401,7 +371,7 @@
   },
   {
     "id": "25bc2dbec57efcf362d2438ed69661878322632df9c27ff66b2b14a6e53b5e06",
-    "text": "To start receiving payouts:\n\nEnsure your  \n\nGo to    in your Blawby dashboard. Your Blawby payout account is set up and ready to receive payments. You can now start sending invoices and receiving payments.\n\nSubmit information about your business and authorized representative(s) for verification. This may require documents such as government-issued identification. Click the    button to begin.\n\nIt's recommended that the person filling out the information is either the owner of the business, or someone with a significant role in the business, such as a director or executive.\n\n : Accurate business information is crucial for compliance with legal and financial regulations governing law firms.",
+    "text": "Use the following steps to set up payouts and receive funds with Blawby. This process is designed to ensure IOLTA (trust account) compliance, so you must use your trust account bank information during setup:\n\n  (1 minute) In your Blawby dashboard, navigate to Settings and click on   . This is where you will manage your bank account information for payouts.\n\n  (2 minutes) Before proceeding, make sure you have the details for your law firm's trust account ready. You will need the account number, routing number, and the name on the account. Using your trust account is required for compliance with legal and financial regulations.\n\n  (2 minutes) Provide all required business details and upload any necessary documents for verification, such as government-issued identification. Enter your trust account bank information when prompted. Click the    button to begin. It's recommended that the person filling out the information is either the owner of the business or someone with a significant role, such as a director or executive.\n\n  (1 minute) In most cases, verification is immediate and your account will be eligible to receive payouts right away. If your account is flagged for further verification, you will see an alert in your dashboard guiding you through the next steps. If you have trouble verifying your account, visit    for assistance.",
     "metadata": {
       "title": "payouts",
       "file": "payouts.mdx",
@@ -410,8 +380,18 @@
     }
   },
   {
-    "id": "6699541e5cfdc415eda65b9c42638eafaa7eabfac676ad94bd7332a71c967fd7",
-    "text": "By default, Blawby processes payouts on the following schedule:\n\nFor credit card payments: 2 business days after the payment is received\n\nFor ACH payments: 5 business days after the payment is received\n\n : New Stripe accounts may have a longer initial payout delay (up to 7–14 days) for the first payout.",
+    "id": "882d2e4e5878d4635292525b9c49b8d36fe680861dbc15dd8a83e83b9586ff19",
+    "text": "At the time of each client transaction, Blawby absorbs the processing fees incurred by financial institutions (e.g., credit card networks like American Express or ACH providers). These fees are advanced by Blawby on your behalf and the full transaction amount is credited to your trust account without deductions.\n\nBlawby tracks all advanced processing fees and applicable platform fees in an accrued fee ledger, which is reconciled and billed on a rolling 30-day cycle. This means you will be invoiced every 30 days for the total of these fees.\n\nFor more information on current processing and platform fees, visit   .",
+    "metadata": {
+      "title": "payouts",
+      "file": "payouts.mdx",
+      "section": "How It Works",
+      "url": "/lessons/payouts"
+    }
+  },
+  {
+    "id": "184d9010e0095f70f0d467be7c8152fde09d26d1034424c6309e8fbcf5245e88",
+    "text": "By default, Blawby processes payouts on the following schedule:\n\nFor credit card payments: 2 business days after the payment is received\n\nFor ACH payments: 5 business days after the payment is received\n\n : New accounts may have a longer initial payout delay (up to 7–14 days) for the first payout.",
     "metadata": {
       "title": "payouts",
       "file": "payouts.mdx",
@@ -420,7 +400,7 @@
     }
   },
   {
-    "id": "1db15441fadc41e935e586671570313b2dc4aa3025dfddfe4aa2f85938ab682c",
+    "id": "de6be7bbdcd61a4bdc873869cc0af1e693b63dd6c068db213ff94ccc0817df32",
     "text": "If you encounter issues with payouts:\n\nCheck your Blawby Dashboard for any alerts or notifications\n\nVerify that your bank account information is correct\n\nEnsure your account is in good standing and all verification steps are complete",
     "metadata": {
       "title": "payouts",
@@ -430,13 +410,213 @@
     }
   },
   {
+    "id": "b2557158b5b1458a951ff884cd09e3b94f25b48382cbb5e17a1c2bf2b17208a6",
+    "text": "Yes. To remain compliant with IOLTA rules, Blawby requires you to use your law firm’s trust account for all payouts.\n\nNo. Blawby advances all processing fees up front and bills them to your operating account on a 30-day cycle. Client payments are deposited in full.\n\nCredit card payments are typically paid out in 2 business days, and ACH payments in 5 business days. New accounts may experience a temporary 7–14 day delay for their first payout.\n\nYou’ll receive a notification in your dashboard with next steps. Common issues include incorrect routing numbers or missing documents.\n\nYes. You can update your external payout account details at any time from the Blawby dashboard under   .",
+    "metadata": {
+      "title": "payouts",
+      "file": "payouts.mdx",
+      "section": "Frequently Asked Questions",
+      "url": "/lessons/payouts"
+    }
+  },
+  {
+    "id": "e4c5ca733f49ff71bd566c28ad30b8af94d417b272b219bf5b76087e3fe2ac8c",
+    "text": "Unpredictable cash flow is one of the biggest headaches for solo and small firm attorneys. Clients want flexibility, but you need to keep the lights on and your team paid. The good news? You can have both—by combining flat fees, payment plans, and automated billing features.\n\nFor many law firms, the traditional model of hourly billing and chasing down payments is not only time-consuming but also stressful. It can lead to cash flow gaps, client frustration, and administrative overload. By modernizing your approach, you can create a more stable, client-friendly, and efficient practice.",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Why Predictable Revenue Matters for Law Firms",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "0b4d61fc1d3838ae842b4438ee76f6f148e5ffc956a2e57f08fe72db4c13b2d2",
+    "text": "Flat fees are more than a trend—they're a client expectation. Offering flat fees for common matters (like uncontested divorces, wills, or traffic tickets) gives clients cost certainty and reduces billing disputes. For your firm, it means less time tracking and more time focused on client work.\n\nA flat fee is a set price for a specific legal service, regardless of the time it takes to complete. This model is especially effective for predictable, repeatable tasks. Clients appreciate knowing exactly what they'll pay, and you benefit from streamlined billing and fewer disputes.\n\n  Review your case history to find matters with consistent scope and effort. For example, if you regularly handle simple estate plans or uncontested divorces, these are ideal candidates for a flat-fee approach.\n\n  Factor in your time, overhead, and any potential complications. Be transparent about what is included and what is not. When a client comes to you for a straightforward matter, being able to say, \"This will cost $1,200, start to finish,\" builds trust and makes the decision easier for them.\n\n  Use engagement letters and invoices to spell out the scope. This reduces misunderstandings and sets clear expectations. If a case becomes more complex—say, a divorce that starts uncontested but later requires litigation—your agreement can specify how billing will adapt, so there are no surprises.\n\n  Modern platforms make it easy to create, send, and track flat-fee invoices, so you spend less time on admin and more on client work.\n\n  Flat fees can be combined with other billing models. For example, you might offer a flat fee for initial consultation and hourly rates for additional work.\n\n",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Flat Fees: Simplicity Clients Love",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "d4e4ef349e4c553061bae1f2cdcf0743539d5c4dc107c01ec81e11600a0ef0e3",
+    "text": "Not every client can pay a large bill up front. Payment plans let you break invoices into manageable chunks, making your services accessible to more people—while improving your own collection rate. More clients can afford your help when payments are spread out. For instance, if you offer a $3,000 flat fee for a criminal defense case, you might structure it as $1,000 down and $500/month for four months. This approach opens the door to clients who otherwise couldn't afford representation, while ensuring you receive steady, predictable payments. Clients are less likely to fall behind when payments are predictable and automated. When your system automatically sends reminders and processes payments, you spend less time chasing overdue bills. Flexible payment options show you understand your clients' needs. Clients appreciate knowing they can get the help they need without a huge upfront cost, and your firm benefits from a more reliable cash flow. Flat-fee matters, retainers, or even large hourly bills can be split into installments. For example, you might offer payment plans for estate planning, family law, or business formation services. Ensure each payment covers your costs and reduces risk. A reasonable down payment demonstrates client commitment and helps cover initial expenses. Automation reduces manual follow-up and ensures timely payments. Clients receive reminders before each installment is due, making it easy for them to stay on track. Stay on top of your cash flow and follow up only when necessary. If a client misses a payment, your system can alert you so you can address it promptly and professionally. Let clients know you offer payment plans and explain the terms. This conversation can be a relief for clients who are worried about affording legal help. Specify the total amount, payment schedule, due dates, and consequences for missed payments. This clarity helps avoid",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Payment Plans: Make Legal Help Accessible (and Get Paid Faster)",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "6a011d73f0c6a5bce637228e08ff7216f6796cae1ff8707acef781ebcc8b0a26",
+    "text": "misunderstandings down the road. This shows commitment and covers initial costs. Use your billing software to send invoices and reminders automatically, so you don't have to remember each due date. If a client misses a payment, your system should alert you so you can follow up promptly and keep the relationship positive.",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Payment Plans: Make Legal Help Accessible (and Get Paid Faster)",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "e26f4462acbe9c711423f6aec6bcf0eed940083642f6e8d5972aac48e74dde38",
+    "text": "Manual invoicing and reminders eat up valuable time. Automated billing features let you:\n\nSchedule invoices to go out on specific dates\n\nSend automatic payment reminders (no more awkward follow-ups)\n\nAccept multiple payment methods (credit card, ACH/bank transfer)\n\nTrack payments and outstanding balances in real time\n\n  Reduce manual data entry and follow-up. For example, a mid-sized firm handling ongoing matters can set up monthly invoices and reminders, freeing up staff to focus on client service instead of collections.\n\n  Automated reminders and easy payment options mean clients pay sooner. When clients receive a reminder three days before and after the due date, late payments drop dramatically.\n\n  Automation ensures accuracy and consistency, so you don't have to worry about missed invoices or incorrect amounts.\n\n  Clients appreciate clear, timely communication and flexible payment options. When paying is easy, clients are more likely to pay on time and recommend your firm to others.\n\n\n\n  Look for scheduled invoicing, recurring payments, and automated reminders.\n\n  Pre-fill details for flat fees, retainers, or payment plans, so you can send invoices in seconds.\n\n  Make it easy for clients to pay by card or ACH/bank transfer.\n\n  Track which invoices are paid, pending, or overdue at a glance, so you always know where your cash flow stands.",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Automated Billing: Less Admin, More Results",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "f148c8b7e6e648c06cbb3edc6885f0b24f3d4cce59b0617eb9ff6170710971f0",
+    "text": "Compliance isn't just about following rules—it's about removing the pain points that slow your team down and create risk. Many law firms, regardless of size, face friction in their billing and trust accounting workflows:\n\n  Matching payments to the right accounts and matters can eat up hours each month.\n\n  Even experienced teams can make mistakes when moving funds between trust and operating accounts.\n\n  When payment records are scattered or incomplete, audits become stressful and time-consuming.\n\n  Some processors deduct fees from client funds, creating compliance headaches and extra work.\n\nBlawby is designed to support compliance and reduce these friction points for any law office:\n\n  Payments are routed to the correct accounts, so you don't have to worry about manual sorting or accidental commingling.\n\n  Processing and platform fees are always billed to your operating account, never from client funds, so you stay compliant by default.\n\n  Every transaction is logged and easy to review, making audits and reconciliations faster and less stressful.\n\n",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Compliance and Trust Accounting: Reducing Friction, Supporting Your Practice",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "150d3336b92df8c9bbb56dec5dba3f5f2e002a55eb3a017d37ce75e42462487c",
+    "text": "Firms that use flat fees, payment plans, and automated billing together:\n\nGet paid faster and more consistently\n\nSpend less time on admin and more on client work\n\nReduce billing disputes and improve client satisfaction\n\nMake legal services more accessible to a wider range of clients\n\nStay compliant with trust accounting and industry regulations\n\nWhen you bring these features together, you create a workflow where clients know exactly what they'll pay, can choose a payment plan that fits their budget, and receive timely reminders and easy payment options. Your team spends less time on admin, your cash flow becomes more predictable, and compliance is built into every transaction. Whether you're helping a family with an estate plan or guiding a business through formation, this approach lets you focus on what matters most: delivering great legal service.",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "What Happens When You Combine All Three?",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "eed8db0c4e6b98a8509f342b8793a822fa572169c5fe77a691fe62fd29145fe5",
+    "text": "  Many guides stop at \"offer flat fees\" or \"use payment plans,\" but don't show how to combine these features for maximum impact.\n\n  Some resources gloss over trust accounting, but it's critical for law firms. This guide provides actionable steps to stay compliant.\n\n  Rather than treating each feature in isolation, this guide shows how to integrate them for a future-proof revenue strategy.",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Overlooked Details: What Competitors Miss",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "1c8d7710b4006768b745fcfbd9639ec981c6f9f4d1ec7018f61d563733e2145c",
+    "text": "Start using flat fees, payment plans, and automated billing to take control of your firm's cash flow. The right tools make it easy to set up, track, and get paid—without extra admin.  \n\n   ",
+    "metadata": {
+      "title": "future-proof-revenue",
+      "file": "future-proof-revenue.mdx",
+      "section": "Ready to Make Your Revenue Predictable?",
+      "url": "/business-strategy/future-proof-revenue"
+    }
+  },
+  {
+    "id": "a0e1f149807e9ea67cff39184e2827c89ba5a7226b3ee21f8e8aaa5ee026630f",
+    "text": "Trust accounts are fundamental to legal ethics. Whether you're holding client retainers, court filing fees, or settlement funds, the rules are clear: those funds must be handled with care and kept separate from operating funds. Mistakes, even honest ones, can carry serious consequences.\n\nBlawby is designed to make this easier. Our platform routes 100% of every client payment to your connected trust account. We never deduct fees from those funds. Instead, processing and platform fees are charged separately to a card tied to your firm's operating account. No complex setup. No risk of accidental non-compliance.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "386d643003418a5a227cfb762758f4d41d35872d6f93728f00e4a48ea3fed155",
+    "text": "An IOLTA (Interest on Lawyer Trust Account) is a type of pooled client trust account required in most jurisdictions when lawyers handle nominal or short-term funds. The interest earned from these accounts is used to support public legal services.\n\nWhat matters most from a compliance standpoint is that the lawyer cannot use or benefit from these funds until they are earned. And no operational or third-party fees can be deducted from the trust account—even indirectly.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Understanding IOLTA Accounts",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "83dd671f4d91854305693319d6269c0dc1d960385272bc32b53efb09ca038f85",
+    "text": "While it's easy to accept digital payments today, many systems are not built with trust accounting in mind. A few common issues:\n\n : Most payment processors subtract fees before depositing funds. That's fine for e-commerce—not for legal trust compliance.\n\n : Mixing trust and operating funds can happen unintentionally if a platform doesn't enforce separation.\n\n : Incomplete audit trails or unclear fund movements make it difficult to reconcile client ledgers accurately.\n\nThese problems are more common than many firms realize.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "The Challenge of Legal Payments",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "b827dcfa84ee46930830fd4d20407d1835f44a2be763207eb145025b83cf6b77",
+    "text": "Blawby is structured to respect the boundaries required by IOLTA rules. Here's what happens when a client makes a payment:\n\nThe entire payment amount is deposited into your connected trust account.\n\nProcessing fees are not deducted from that payment.\n\nInstead, those fees are billed to a credit or debit card linked to your firm's operating account.\n\nThis flow ensures that client funds remain whole, and compliance isn't left to manual tracking or trust in the wrong software configuration.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "How Blawby Helps",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "3c7057be2a00e150037d166a1105d59cf1a0bc7658e267efedbd2c51fd327323",
+    "text": "Let's say your client pays a $2,500 retainer:\n\n$2,500 goes directly into your trust account.\n\nThe card processor processes the transaction and calculates fees (e.g., $72.80).\ncharges a 1.4% platform fee ($35.00).\n\nYour saved card is charged $107.80 total.\n\nThe trust account receives the full $2,500. All fees are handled separately.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "A Typical Payment Flow",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "37618ca90247015eee4f61f0b2dd3e6bc8337340627b6fb37f145935da6e6d16",
+    "text": "A trust account eligible for client fund deposits\n\nA credit or debit card (ideally tied to your operating account) for fees\n\nYou don't need to connect two bank accounts. There are no intermediary transfers or manual adjustments. The setup is designed to match how lawyers already work, just with less risk.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "What You Need to Use Blawby",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "6f603f9f19ad2619eb7eea5162c43e829f7332ec5f39b737e22be8f0e8cf2399",
+    "text": "Blawby supports your compliance goals, but consistent internal practices matter too:\n\nUse clear account labeling to avoid confusion between trust and operating accounts.\n\nReconcile regularly, using Blawby's reporting features to align ledger records with bank statements.\n\nSeparate earned and unearned funds by keeping work status and invoicing up to date.\n\nDon't skip documentation. Transfers from trust to operating should always be traceable to client approval and earned revenue.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Good Habits to Maintain Trust Compliance",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "eab4d5168ce9d3935935b11f9bd370f8654f88176b7c8f41a2bf0bfb6b5cc279",
+    "text": "Blawby leverages a secure payments infrastructure that ensures PCI compliance, providing a reliable and transparent flow of funds with detailed tracking.\n\nOur system ensures:\n\nTrust-compliant payment routing\n\nSeparate billing for fees\n\nClear audit trails for every transaction",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "PCI-Compliant Payment Infrastructure",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "536c3dcd142911cfc742559718b8509f035a487d4d022261160eaa5da3f58919",
+    "text": "Legal professionals choose Blawby because it aligns with how they practice:\n\nNo fees deducted from trust\n\nNo complex multi-account setup\n\nSimple configuration for trust payouts and operating account billing\n\nTransparent monthly billing structure\n\nWe're not reinventing legal payments—we're refining the flow so it aligns with compliance.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Why Firms Use Blawby",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
+    "id": "67e137753de381249e865769b0bde558fd1e70fcc7e619228498fbc71d9054ba",
+    "text": "Blawby is purpose-built for legal payments and designed with trust compliance in mind. If your firm accepts client funds and wants to reduce friction around trust accounting, we can help.",
+    "metadata": {
+      "title": "iolta-compliance",
+      "file": "iolta-compliance.mdx",
+      "section": "Try Blawby",
+      "url": "/compliance/iolta-compliance"
+    }
+  },
+  {
     "id": "525f801bfb2ff805067e1c6338867c42cd6942a3456c0841ae2121c22077b26b",
     "text": "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
     "metadata": {
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "",
-      "url": "/lessons/pricing"
+      "url": "/pricing"
     }
   },
   {
@@ -446,7 +626,7 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Standard  ",
-      "url": "/lessons/pricing"
+      "url": "/pricing"
     }
   },
   {
@@ -456,27 +636,27 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Custom",
-      "url": "/lessons/pricing"
+      "url": "/pricing"
     }
   },
   {
     "id": "6c76a92e7eee459ac9f66dee85d31f1700d9bba6bb9048e61b54f75b54c6077f",
-    "text": "Blawby offers transparent pricing based on industry rates. Fees incurred are held and billed monthly (not at the time of transaction) with an additional   . Explore pricing for the full Blawby platform.\n\nIncrease customer acquisition with 100+ payment methods. Improve conversion with Link - Stripe's accelerated checkout. Reduce fraud and increase revenue with ML optimisations. Save engineering time with pre-built payment pages.  \n\n  for domestic cards - Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.\n\n  ACH Direct Debit ($5 cap) - A quick link solution for clients to pay via ACH. Process ACH transfers at a lower cost with full reconciliation support.\n\nSave engineering time and get started quickly. Reduce friction with features designed to improve conversion. Customise with your branding.\n\n  - Quickly generate payments without having to log into the platform, no coding necessary. Quick edit of url's amount integrates into any payment integration flow. Generate links directly from the Dashboard, no coding necessary. Share across any channel and with multiple customers. Sell products, services, or collect a donation. Customize with your branding.\n\n  per paid invoice - Create, customize, and send online invoices that get paid fast. Monitor invoice statuses and easily collect unpaid invoices. Automatically reconcile incoming payments with outstanding invoices. Get started in a few clicks with no-code options.\n\n  - Admins have the flexibility to invite other staff or team members to their Blawby account, with each additional user incurring a $40/month fee. This ensures that your entire team can benefit from Blawby's comprehensive payment solutions, tailored to your firm's needs.",
+    "text": "Blawby offers transparent pricing based on industry rates. Fees incurred are held and billed monthly (not at the time of transaction) with an additional   . Explore pricing for the full Blawby platform.\n\nIncrease customer acquisition with 100+ payment methods. Improve conversions. Reduce fraud and increase revenue with ML optimisations. Save engineering time with pre-built payment pages.  \n\n  for domestic cards - Accept widely used credit and debit cards, prepaid cards, and digital wallets for online payments.\n\n  ACH Direct Debit ($5 cap) - A quick link solution for clients to pay via ACH. Process ACH transfers at a lower cost with full reconciliation support.\n\nSave engineering time and get started quickly. Reduce friction with features designed to improve conversion. Customise with your branding.\n\n  - Quickly generate payments without having to log into the platform, no coding necessary. Quick edit of url's amount integrates into any payment integration flow. Generate links directly from the Dashboard, no coding necessary. Share across any channel and with multiple customers. Sell products, services, or collect a donation. Customize with your branding.\n\n  per paid invoice - Create, customize, and send online invoices that get paid fast. Monitor invoice statuses and easily collect unpaid invoices. Automatically reconcile incoming payments with outstanding invoices. Get started in a few clicks with no-code options.\n\n  - Admins have the flexibility to invite other staff or team members to their Blawby account, with each additional user incurring a $40/month fee. This ensures that your entire team can benefit from Blawby's comprehensive payment solutions, tailored to your firm's needs.",
     "metadata": {
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Standard pricing for all products",
-      "url": "/lessons/pricing"
+      "url": "/pricing"
     }
   },
   {
-    "id": "f8b691e2e7e2b217a09521d890a1b85176c85de39bf8f5a8374f20554a69ed03",
-    "text": "Blawby charges a per-transaction fee depending on the payment method used by the end customer.\n\nBlawby charges a $30 fee for disputed payments (also known as chargebacks) on card transactions.\n\nBlawby does not charge setup fees, or any other hidden fees like closure fees. There is a $40 per month per user license fee. All fees for businesses on standard pricing are listed on our website.\n\nStripe offers custom pricing for businesses with large processing volumes. Eligibility varies by market.",
+    "id": "5c924e6e56fc6091e2ccd93f46faf5cd00143c298aab23b612de192b9aa14c46",
+    "text": "Blawby charges a per-transaction fee depending on the payment method used by the end customer.\n\nBlawby charges a $30 fee for disputed payments (also known as chargebacks) on card transactions.\n\nBlawby does not charge setup fees, or any other hidden fees like closure fees. There is a $40 per month per user license fee. All fees for businesses on standard pricing are listed on our website.\n\nBlawby offers custom pricing for businesses with large processing volumes. Eligibility varies by market.",
     "metadata": {
       "title": "pricing",
       "file": "pricing.mdx",
-      "section": "FAQ",
-      "url": "/lessons/pricing"
+      "section": "Frequently asked Questions",
+      "url": "/pricing"
     }
   },
   {
@@ -486,7 +666,7 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Ready to Get Started?",
-      "url": "/lessons/pricing"
+      "url": "/pricing"
     }
   }
 ]

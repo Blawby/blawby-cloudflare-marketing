@@ -57,7 +57,7 @@ function MobileNavigation({
           <div className="mt-4">
             <div className="flex flex-col gap-y-2">
               {[
-                ["Docs", "/get-started"],
+                ["Docs", "/lessons/get-started"],
                 ["Help", "/help"],
               ].map(([title, href]) => (
                 <CloseButton
@@ -109,7 +109,7 @@ function SiteNavigation() {
         onClose={() => setMobileMenuOpen(false)}
       />
       <div className="flex gap-x-6 text-sm/6 text-gray-950 max-lg:hidden dark:text-white">
-        <Link href="/get-started">Docs</Link>
+        <Link href="/lessons/get-started">Docs</Link>
         <Link href="/help">Help</Link>
         <Link href="https://app.blawby.com/login">Login</Link>
         <Link href="https://app.blawby.com/register">Register</Link>

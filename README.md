@@ -23,6 +23,8 @@ Blawby is a [Tailwind Plus](https://tailwindcss.com/plus) site template built us
 - Video player integration
 - Interactive transcripts
 - Chapter navigation
+- Content organization with lessons, articles, and standalone pages
+- Vector search indexing for all content types
 
 ## Getting started
 
@@ -39,6 +41,28 @@ npm run dev
 ```
 
 Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
+
+## Content Structure
+
+The site organizes content into three main types:
+
+### 1. Lessons (`/lessons/[slug]`)
+- **Location**: `src/data/lessons/` directory
+- **Configuration**: `src/data/lessons.ts`
+- **URL Structure**: `/lessons/get-started`, `/lessons/payments`, etc.
+- **Purpose**: Educational content for product features and guides
+
+### 2. Articles & Guides (`/[category]/[slug]`)
+- **Location**: `src/data/articles/[category]/` directories
+- **Configuration**: `src/data/articles.ts`
+- **URL Structure**: `/compliance/iolta-compliance`, `/business-strategy/future-proof-revenue`
+- **Purpose**: In-depth articles organized by category
+
+### 3. Pages (`/[slug]`)
+- **Location**: `src/data/pages/` directory
+- **Configuration**: `src/data/pages.ts`
+- **URL Structure**: `/pricing`, `/help`
+- **Purpose**: Standalone pages like pricing, help, etc.
 
 ## Feature Flags
 
@@ -94,7 +118,7 @@ The project includes comprehensive SEO support. Key files:
 
 - `src/app/layout.tsx` - Root metadata configuration
 - `src/app/(centered)/interviews/[slug]/page.tsx` - Video content metadata
-- `src/app/(sidebar)/[slug]/page.tsx` - Educational content metadata
+- `src/app/(sidebar)/[category]/[slug]/page.tsx` - Educational content metadata
 
 To complete SEO setup:
 
@@ -105,6 +129,33 @@ To complete SEO setup:
 3. Add Google Search Console verification code
 4. Update `site.webmanifest` for PWA support
 5. Add proper favicon and apple-touch-icon files
+
+## Vector Search Indexing
+
+The site includes a comprehensive vector search system that indexes all content types:
+
+### Content Indexing
+- **Script**: `scripts/chunk-mdx-lessons.ts`
+- **Output**: `lesson-chunks.json` and `vector-manifest.json`
+- **Coverage**: Lessons, articles, and pages (excludes privacy/terms)
+- **URL Structure**: Matches the actual site routing structure
+
+### Search Worker
+- **Location**: `src/workers/search.ts`
+- **Features**: 
+  - Vector similarity search
+  - Hybrid ranking with keyword matching
+  - Special pricing query detection
+  - Chat interface with LLM responses
+
+### Indexing Process
+```bash
+# Generate content chunks for vector search
+npx tsx scripts/chunk-mdx-lessons.ts
+
+# Deploy search worker
+npx wrangler deploy src/workers/search.ts
+```
 
 ## Structured Data & Schema Utilities
 
@@ -179,9 +230,26 @@ You can start editing this template by modifying the files in the `/src` folder.
 
 ### Content Management
 
-All course content is located in the `/src/data/lessons.ts` file and the `/src/data/lessons` folder.
+#### Adding New Lessons
+1. Create MDX file in `src/data/lessons/`
+2. Add lesson entry to `src/data/lessons.ts`
+3. Update sidebar automatically
 
-All interview content is located in the `/src/data/interviews.ts` file and the `/src/data/interviews` folder.
+#### Adding New Articles
+1. Create MDX file in `src/data/articles/[category]/`
+2. Add article entry to `src/data/articles.ts`
+3. Update sidebar automatically
+
+#### Adding New Pages
+1. Create MDX file in `src/data/pages/`
+2. Add page entry to `src/data/pages.ts`
+3. Update sidebar automatically
+
+#### Regenerating Search Index
+After adding new content, regenerate the vector search index:
+```bash
+npx tsx scripts/chunk-mdx-lessons.ts
+```
 
 ## Images
 
@@ -198,13 +266,9 @@ When adding images to lesson markdown files, be sure to include the image size a
 To support both light and dark mode images, insert `.{scheme}` before the file extension:
 
 ```md
-![My alt tag|1000x500](my-image.{scheme}.png)
+![My alt tag|1000x500](my-image.light.png)
+![My alt tag|1000x500](my-image.dark.png)
 ```
-
-Then provide two versions of the image:
-
-- `my-image.light.png` for light mode
-- `my-image.dark.png` for dark mode
 
 ## License
 
