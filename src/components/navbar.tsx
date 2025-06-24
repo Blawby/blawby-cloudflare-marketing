@@ -6,7 +6,7 @@ import {
   DropdownItem,
   DropdownMenu,
 } from "@/components/dropdown";
-import { IconButton } from "@/components/icon-button";
+import { Button } from "@/components/button";
 import { ChevronDownIcon } from "@/icons/chevron-down-icon";
 import { CloseIcon } from "@/icons/close-icon";
 import { MenuIcon } from "@/icons/menu-icon";
@@ -50,7 +50,7 @@ function MobileNavigation({
       <div className="fixed inset-0 flex justify-end pl-11">
         <DialogPanel className="w-full max-w-2xs bg-white px-4 py-5 ring ring-gray-950/10 sm:px-6 dark:bg-gray-950 dark:ring-white/10">
           <div className="flex justify-end">
-            <CloseButton as={IconButton} onClick={onClose}>
+            <CloseButton as={Button} variant="icon" onClick={onClose}>
               <CloseIcon className="stroke-gray-950 dark:stroke-white" />
             </CloseButton>
           </div>
@@ -100,9 +100,9 @@ function SiteNavigation() {
     <nav className="flex items-center gap-x-6">
       <div className="flex items-center gap-x-2">
         <CommandPalette />
-        <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
+        <Button className="lg:hidden" onClick={() => setMobileMenuOpen(true)} variant="icon">
           <MenuIcon className="fill-gray-950 dark:fill-white" />
-        </IconButton>
+        </Button>
       </div>
       <MobileNavigation
         open={mobileMenuOpen}
