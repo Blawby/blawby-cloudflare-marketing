@@ -55,7 +55,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ category: string; slug: string }>;
 }): Promise<Metadata> {
-  let { slug } = await params;
+  let { category, slug } = await params;
   let lesson = await getLesson(slug);
   let article = await getArticle(slug);
   
@@ -109,13 +109,13 @@ export async function generateMetadata({
       images: content.video ? [content.video.thumbnail] : ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'],
     },
     alternates: {
-      canonical: `https://blawby.com/${content.id}`,
+      canonical: `https://blawby.com/${category}/${slug}`,
     },
   };
 }
 
 // Add JSON-LD structured data for the lesson
-function generateLessonStructuredData(lesson: any) {
+function generateLessonStructuredData(lesson: any, category: string) {
   // Use Course schema for lessons, Article schema for guides
   if (lesson.contentType === "lesson") {
     const baseData = {
@@ -154,16 +154,17 @@ function generateLessonStructuredData(lesson: any) {
     return baseData;
   } else {
     // Use Article schema for guides and articles
-    const category = lesson.category ? getCategoryById(lesson.category) : undefined;
+    const categoryData = lesson.category ? getCategoryById(lesson.category) : undefined;
     return getArticleSchema({
       name: lesson.title,
       description: lesson.description,
-      url: `https://blawby.com/${lesson.id}`,
-      category: category?.name,
+      url: `https://blawby.com/${category}/${lesson.id}`,
+      category: categoryData?.name,
       tags: lesson.tags,
       datePublished: lesson.datePublished,
       dateModified: lesson.dateModified,
       author: lesson.author,
+      image: lesson.image,
     });
   }
 }
@@ -198,7 +199,7 @@ export default async function Page({
     Content = await getLessonContent(slug);
   }
 
-  const lessonStructuredData = generateLessonStructuredData(content);
+  const lessonStructuredData = generateLessonStructuredData(content, category);
   
   // Handle breadcrumbs differently for articles vs lessons
   const breadcrumbItems = [
@@ -207,7 +208,7 @@ export default async function Page({
       name: isArticle ? "Articles" : (lesson?.module?.title || "Content"), 
       url: isArticle ? "https://blawby.com/articles" : `https://blawby.com/#${lesson?.module?.id || ""}` 
     },
-    { name: content.title, url: `https://blawby.com/${content.id}` },
+    { name: content.title, url: `https://blawby.com/${category}/${slug}` },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
@@ -275,7 +276,7 @@ export default async function Page({
               getCourseSchema({
                 name: content.title,
                 description: content.description,
-                url: `https://blawby.com/${content.id}`,
+                url: `https://blawby.com/${category}/${slug}`,
               })
             ),
           }}

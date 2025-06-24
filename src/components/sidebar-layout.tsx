@@ -1,6 +1,6 @@
 "use client";
 
-import { IconButton } from "@/components/icon-button";
+import { Button } from "@/components/button";
 import type { Module } from "@/data/lessons";
 import { SidebarIcon } from "@/icons/sidebar-icon";
 import {
@@ -186,7 +186,7 @@ function MobileNavigation({
       <DialogPanel className="fixed inset-y-0 left-0 isolate w-sm max-w-[calc(100%-(--spacing(11)))] overflow-y-auto bg-white ring ring-gray-950/10 sm:w-xs dark:bg-gray-950 dark:ring-white/10">
         <div className="sticky top-0 z-10 px-4 py-4 sm:px-6">
           <div className="flex h-6 shrink-0">
-            <CloseButton as={IconButton}>
+            <CloseButton as={Button} variant="icon">
               <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />
             </CloseButton>
           </div>
@@ -241,9 +241,9 @@ export function SidebarLayout({
         <aside className="fixed inset-y-0 left-0 w-2xs overflow-y-auto border-r border-gray-950/10 group-data-sidebar-collapsed:hidden max-xl:hidden dark:border-white/10">
           <nav aria-label="Course" className="px-6 py-4">
             <div className="sticky top-4 flex h-6">
-              <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+              <Button onClick={() => setIsSidebarOpen(!isSidebarOpen)} variant="icon">
                 <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />
-              </IconButton>
+              </Button>
               <MobileNavigation
                 open={isMobileDialogOpen}
                 onClose={() => setIsMobileDialogOpen(false)}
@@ -285,19 +285,21 @@ export function SidebarLayoutContent({
     <>
       <Navbar>
         <div className="flex min-w-0 shrink items-center gap-x-4">
-          <IconButton
+          <Button
             onClick={() => setIsMobileDialogOpen(!isMobileDialogOpen)}
+            variant="icon"
             className="xl:hidden"
           >
             <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />
-          </IconButton>
+          </Button>
           {!isSidebarOpen && (
-            <IconButton
+            <Button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              variant="icon"
               className="max-xl:hidden"
             >
               <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />
-            </IconButton>
+            </Button>
           )}
           <div className="min-w-0">{breadcrumbs}</div>
         </div>
