@@ -6,6 +6,7 @@ compatibility_flags = ["nodejs_compat"]
 [[vectorize]]
 binding = "VECTORIZE"
 index_name = "documentation"
+experimental_remote = true
 
 [ai]
 binding = "AI"

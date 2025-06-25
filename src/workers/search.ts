@@ -39,15 +39,25 @@ export default {
 
     if (path.startsWith("/query")) {
       try {
-        const reqBody = await request.json();
-        let query = reqBody.query;
+        let reqBody;
+        try {
+          reqBody = await request.json();
+        } catch (parseError) {
+          return withCors(new Response(JSON.stringify({ error: "Invalid JSON in request body" }), { status: 400 }));
+        }
+        
+        let query = reqBody?.query;
         if (typeof query === "string") {
           query = query.trim();
         }
+        if (!query) {
+          return withCors(new Response(JSON.stringify({ error: "Missing or empty query parameter" }), { status: 400 }));
+        }
+        
         const ai = new Ai(env.AI);
         const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
         const queryVector = embedding.data[0];
-        // Increase topK for more candidates
+        // No mock fallback: VECTORIZE must be available (use experimental_remote = true in wrangler.toml)
         const vectorizeResult = await env.VECTORIZE.query(queryVector, {
           topK: 10,
           returnValues: true,
@@ -111,11 +121,21 @@ export default {
 
     if (path.startsWith("/chat")) {
       try {
-        const reqBody = await request.json();
-        let query = reqBody.query;
+        let reqBody;
+        try {
+          reqBody = await request.json();
+        } catch (parseError) {
+          return withCors(new Response(JSON.stringify({ error: "Invalid JSON in request body" }), { status: 400 }));
+        }
+        
+        let query = reqBody?.query;
         if (typeof query === "string") {
           query = query.trim();
         }
+        if (!query) {
+          return withCors(new Response(JSON.stringify({ error: "Missing or empty query parameter" }), { status: 400 }));
+        }
+        
         const ai = new Ai(env.AI);
         const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
         const queryVector = embedding.data[0];

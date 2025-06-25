@@ -10,7 +10,9 @@
     "format": "prettier --write .",
     "index:content": "tsc --project tsconfig.scripts.json && node scripts/dist/index-content.js",
     "chunk:lessons": "node --loader ts-node/esm scripts/chunk-mdx-lessons.ts",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "test:worker": "node scripts/test-worker.js",
+    "test:worker:prod": "node scripts/test-worker.js --prod"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.12",

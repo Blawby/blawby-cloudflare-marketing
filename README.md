@@ -372,3 +372,18 @@ After any lesson or page change, the following steps are run automatically in CI
 3. **Upsert new/changed chunks:** Adds or updates all current chunks in the index.
 
 This ensures your search index is always in sync with your content. Manual steps are only needed for local development or hotfixes.
+
+## Local Development: VECTORIZE & Workers AI
+
+Blawby uses Cloudflare VECTORIZE and Workers AI for search and chat endpoints. To test these endpoints locally, you must use Cloudflare's new remote bindings feature:
+
+- Start local dev with:
+  
+  ```sh
+  wrangler dev --experimental-vectorize-bind-to-prod
+  ```
+
+- This binds your local VECTORIZE to your production index, allowing /chat and /query endpoints to work in local dev.
+- See the official Cloudflare changelog for details: [Remote Bindings Beta (2025-06-18)](https://developers.cloudflare.com/changelog/2025-06-18-remote-bindings-beta/)
+
+**Warning:** This may incur usage charges and will modify your production VECTORIZE index even in local dev.
