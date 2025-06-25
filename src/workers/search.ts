@@ -131,6 +131,7 @@ class IntentHandler {
         if (pricing.cardFee) pricingLines.push(`- **Card payments:** ${pricing.cardFee}`);
         if (pricing.achFee) pricingLines.push(`- **ACH/bank payments:** ${pricing.achFee}`);
         if (pricing.platformFee) pricingLines.push(`- **Platform fee:** ${pricing.platformFee}`);
+        if (pricing.invoiceFee) pricingLines.push(`- **Invoice fee:** ${pricing.invoiceFee}`);
         if (pricing.chargebackFee) pricingLines.push(`- **Chargeback fee:** ${pricing.chargebackFee}`);
         if (pricing.setupFee) pricingLines.push(`- ${pricing.setupFee}`);
         if (pricing.hiddenFee) pricingLines.push(`- ${pricing.hiddenFee}`);
@@ -154,20 +155,48 @@ class IntentHandler {
 
 // --- Pricing Extraction Utility ---
 function extractPricingInfo(contextText: string) {
-  let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
-  const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
+  let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee, invoiceFee;
+  
+  // Monthly/user fee - multiple patterns
+  const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i) || 
+                      contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*per\s*month\s*per\s*user/i) ||
+                      contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*per\s*month.*user/i);
   if (monthlyMatch) monthlyFee = `$${monthlyMatch[1]} per user per month`;
-  const cardMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i);
+  
+  // Card fee - multiple patterns
+  const cardMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i) ||
+                   contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*transaction/i) ||
+                   contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)/i);
   if (cardMatch) cardFee = `${cardMatch[1]}% + ${cardMatch[2]} per card transaction`;
-  const achMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i);
+  
+  // ACH/bank fee - multiple patterns
+  const achMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i) || 
+                  contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*ACH\s*Direct\s*Debit\s*\(\$([0-9]+)\s*cap\)/i) ||
+                  contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*ACH.*\(\$([0-9]+)\)/i);
   if (achMatch) achFee = `${achMatch[1]}% per ACH (max $${achMatch[2]})`;
-  const platformMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) || contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i);
+  
+  // Platform fee - multiple patterns
+  const platformMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) || 
+                       contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i) ||
+                       contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*platform/i);
   if (platformMatch) platformFee = `${platformMatch[1]}% platform fee (billed monthly)`;
-  const chargebackMatch = contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i);
+  
+  // Invoice fee - multiple patterns
+  const invoiceMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*per\s*paid\s*invoice/i) ||
+                      contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*per.*invoice/i);
+  if (invoiceMatch) invoiceFee = `${invoiceMatch[1]}% per paid invoice`;
+  
+  // Chargeback fee - multiple patterns
+  const chargebackMatch = contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i) || 
+                         contextText.match(/\$([0-9]+)\s*fee.*chargeback/i) ||
+                         contextText.match(/\$([0-9]+).*chargeback/i);
   if (chargebackMatch) chargebackFee = `$${chargebackMatch[1]} per chargeback`;
+  
+  // Setup/hidden fees
   if (/no setup fees?/i.test(contextText)) setupFee = "No setup fees";
   if (/no hidden fees?/i.test(contextText)) hiddenFee = "No hidden fees";
-  return { monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee };
+  
+  return { monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee, invoiceFee };
 }
 
 // --- Route Handlers ---
