@@ -2,592 +2,405 @@ import { Ai } from '@cloudflare/ai';
 
 export interface Env {
   VECTORIZE: any;
-  AI: any;
+  AI: Ai;
   SUPPORT_DB: any;
   RESEND_API_KEY: string;
 }
 
-// --- Consolidated Utility Functions ---
+// --- Config: Intent Patterns ---
+const INTENT_PATTERNS = [
+  { name: 'pricing', pattern: /\b(price|pricing|cost|fee|fees|charge|charges|how much|rate|rates|platform fee|transaction fee|monthly fee|card fee|bank fee|ach fee|chargeback)\b/, exclude: /integrate|setup|configure/ },
+  { name: 'support', pattern: /\b(speak to human|talk to human|human support|real person|speak to someone|talk to someone|human agent|live agent|customer service|support team|not working|broken|issue|problem|error|frustrated|angry|upset|help me|stuck|can't|won't|doesn't work|need help|need support|i need help|get help)\b|\bspeak\b.*\bhuman\b|\btalk\b.*\bhuman\b/, exclude: /does.*support|what.*support|feature.*support|recurring.*support|blawby.*support/ },
+  { name: 'abusive', pattern: /\b(fuck|shit|bitch|asshole|cunt|bastard|dick|suck|faggot|retard|idiot|moron|stupid)\b/ }
+];
 
-function withCors(resp: Response) {
-  const newHeaders = new Headers(resp.headers);
-  newHeaders.set("Access-Control-Allow-Origin", "*");
-  newHeaders.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  newHeaders.set("Access-Control-Allow-Headers", "Content-Type");
-  return new Response(resp.body, {
-    status: resp.status,
-    statusText: resp.statusText,
-    headers: newHeaders,
-  });
+// --- CORS Helper ---
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+// --- Request Validation Helper ---
+async function parseJsonBody(request: Request) {
+  try {
+    return await request.json();
+  } catch {
+    throw new Error("Invalid JSON");
+  }
 }
 
-function jsonResponse(data: any, status: number = 200) {
-  return withCors(Response.json(data, { status }));
-}
-
-function errorResponse(message: string, details?: any, status: number = 500) {
-  return jsonResponse({ error: message, details }, status);
-}
-
-async function getEmbedding(ai: Ai, text: string) {
-  const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text });
-  return embedding.data[0];
-}
-
-async function queryVectorDB(env: Env, queryVector: number[], topK: number = 10) {
-  const vectorizeResult = await env.VECTORIZE.query(queryVector, {
-    topK,
-    returnValues: true,
-    returnMetadata: "all",
-  });
+// --- AIService ---
+class AIService {
+  constructor(private ai: Ai, private env: Env) {}
   
-  let matches = vectorizeResult.matches || vectorizeResult;
-  if (!Array.isArray(matches)) {
-    throw new Error("VECTORIZE.query did not return an array of matches");
+  async getEmbedding(text: string) {
+    const embedding = await this.ai.run("@cf/baai/bge-small-en-v1.5", { text });
+    return embedding.data[0];
   }
   
-  return matches;
+  async queryVectorDB(queryVector: number[], topK: number = 10) {
+    const vectorizeResult = await this.env.VECTORIZE.query(queryVector, {
+      topK,
+      returnValues: true,
+      returnMetadata: "all",
+    });
+    return vectorizeResult.matches || vectorizeResult;
+  }
+  
+  private enhanceMatches(matches: any[], query: string) {
+    const docTypeBoost: Record<string, number> = { lesson: 2, article: 1.5, page: 1.2 };
+    return matches
+      .map(m => ({ ...m, score: (m.score || 1) * (docTypeBoost[m.metadata?.docType as string] || 1) }))
+      .sort((a, b) => b.score - a.score);
+  }
+  
+  async getEnhancedMatches(query: string, topK: number = 10) {
+    const queryVector = await this.getEmbedding(query);
+    const matches = await this.queryVectorDB(queryVector, topK);
+    return this.enhanceMatches(matches, query);
+  }
+  
+  async runLLM(prompt: string) {
+    return this.ai.run("@cf/meta/llama-2-7b-chat-int8", {
+      prompt,
+      max_tokens: 200,
+      temperature: 0.3,
+    });
+  }
 }
 
-function enhanceMatches(matches: any[], query: string) {
-  const queryWords = query.toLowerCase().split(/\s+/);
-  const commonWords = ['what', 'is', 'about', 'how', 'do', 'i', 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'down', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now'];
-  const keyConcepts = queryWords.filter(word => word.length > 2 && !commonWords.includes(word));
+// --- EmailService ---
+class EmailService {
+  constructor(private resendApiKey: string) {}
   
-  // Detect general product questions
-  const isGeneralProductQuestion = (
-    query.toLowerCase().includes("what is") && 
-    (query.toLowerCase().includes("blawby") || query.toLowerCase().includes("platform") || query.toLowerCase().includes("service"))
-  );
-  
-  matches.forEach((match: any) => {
-    const title = (match.metadata?.title || "").toLowerCase();
-    const section = (match.metadata?.section || "").toLowerCase();
-    const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
-    const docType = match.metadata?.docType || "";
-    
-    // Boost for key concept matches with different weights
-    keyConcepts.forEach(concept => {
-      if (title === concept) {
-        match.score += 3.0;
-      } else if (title.includes(concept)) {
-        match.score += 2.5;
-      } else if (section.includes(concept)) {
-        match.score += 1.5;
-      } else if (content.includes(concept)) {
-        match.score += 0.5;
-      }
+  async send({ from, to, subject, text }: { from: string; to: string | string[]; subject: string; text: string; }) {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${this.resendApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to,
+        subject,
+        text,
+        html: this.buildHtml(subject, text)
+      }),
     });
     
-    // Boost for preferred document types (lessons, articles, pages)
-    if (docType === "lesson") {
-      match.score += 2.0;
-    } else if (docType === "article") {
-      match.score += 1.5;
-    } else if (docType === "page") {
-      match.score += 1.0;
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to send email: ${errorText}`);
     }
     
-    // Special boost for general product questions
-    if (isGeneralProductQuestion) {
-      // Boost get-started, overview, and general content
-      if (title.includes("get-started") || title.includes("overview") || title.includes("introduction")) {
-        match.score += 2.0; // High boost for general content
-      }
-      // Reduce boost for very specific feature content
-      if (title.includes("integrating") || title.includes("setup") || title.includes("configure")) {
-        match.score -= 1.0; // Penalty for overly specific content
+    return response;
+  }
+  
+  buildHtml(subject: string, text: string) {
+    return `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px;">
+      <h2 style="color: #18181b;">${subject}</h2>
+      <div style="white-space: pre-line;">${text}</div>
+      <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
+      <p style="color: #888; font-size: 12px;">© ${new Date().getFullYear()} Blawby. All rights reserved.</p>
+    </div>`;
+  }
+}
+
+// --- IntentHandler ---
+class IntentHandler {
+  static detect(query: string) {
+    const q = query.toLowerCase();
+    for (const intent of INTENT_PATTERNS) {
+      if (intent.pattern.test(q) && (!intent.exclude || !intent.exclude.test(q))) {
+        return intent.name;
       }
     }
-  });
+    return 'general';
+  }
   
-  matches.sort((a: any, b: any) => b.score - a.score);
-  return matches;
+  static buildResponse(intent: string, data: any) {
+    switch (intent) {
+      case 'pricing': {
+        const { matches } = data;
+        const contextText = matches.map((m: any) => m.metadata?.description || m.metadata?.text || m.text || "").join("\n");
+        const pricing = extractPricingInfo(contextText);
+        let pricingLines = [];
+        if (pricing.monthlyFee) pricingLines.push(`- **Monthly user license:** ${pricing.monthlyFee}`);
+        if (pricing.cardFee) pricingLines.push(`- **Card payments:** ${pricing.cardFee}`);
+        if (pricing.achFee) pricingLines.push(`- **ACH/bank payments:** ${pricing.achFee}`);
+        if (pricing.platformFee) pricingLines.push(`- **Platform fee:** ${pricing.platformFee}`);
+        if (pricing.chargebackFee) pricingLines.push(`- **Chargeback fee:** ${pricing.chargebackFee}`);
+        if (pricing.setupFee) pricingLines.push(`- ${pricing.setupFee}`);
+        if (pricing.hiddenFee) pricingLines.push(`- ${pricing.hiddenFee}`);
+        let answer = `**Blawby Pricing Overview**\n\n` + (pricingLines.length ? pricingLines.join("\n") : "(Some fees could not be found in the current context.)");
+        answer += `\n\nFor full details and the latest updates, [see our pricing page](/pricing).`;
+        return Response.json({ message: answer, messageFormat: "markdown", matches }, { headers: corsHeaders });
+      }
+      case 'support': {
+        let answer = `If you need help, you can get support right now by clicking the **Create Support Case** button below.\nOur team will get back to you as soon as possible.\n\nFor real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
+        return Response.json({ message: answer, messageFormat: "markdown", matches: [] }, { headers: corsHeaders });
+      }
+      case 'abusive': {
+        const answer = `I'm here to help. Let's keep things respectful—how can I assist you today?`;
+        return Response.json({ message: answer, messageFormat: "markdown", matches: [] }, { headers: corsHeaders });
+      }
+      default:
+        return null;
+    }
+  }
 }
+
+// --- Pricing Extraction Utility ---
+function extractPricingInfo(contextText: string) {
+  let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
+  const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
+  if (monthlyMatch) monthlyFee = `$${monthlyMatch[1]} per user per month`;
+  const cardMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i);
+  if (cardMatch) cardFee = `${cardMatch[1]}% + ${cardMatch[2]} per card transaction`;
+  const achMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i);
+  if (achMatch) achFee = `${achMatch[1]}% per ACH (max $${achMatch[2]})`;
+  const platformMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) || contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i);
+  if (platformMatch) platformFee = `${platformMatch[1]}% platform fee (billed monthly)`;
+  const chargebackMatch = contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i);
+  if (chargebackMatch) chargebackFee = `$${chargebackMatch[1]} per chargeback`;
+  if (/no setup fees?/i.test(contextText)) setupFee = "No setup fees";
+  if (/no hidden fees?/i.test(contextText)) hiddenFee = "No hidden fees";
+  return { monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee };
+}
+
+// --- Route Handlers ---
+async function handleQuery(request: Request, env: Env) {
+  let reqBody;
+  try {
+    reqBody = await parseJsonBody(request);
+  } catch (err) {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const { query } = reqBody;
+  if (!query || typeof query !== "string" || !query.trim()) {
+    return Response.json({ error: "Missing or empty query parameter" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const ai = new AIService(env.AI, env);
+  const matches = await ai.getEnhancedMatches(query.trim(), 10);
+  return Response.json({ matches }, { headers: corsHeaders });
+}
+
+async function handleChat(request: Request, env: Env) {
+  let reqBody;
+  try {
+    reqBody = await parseJsonBody(request);
+  } catch (err) {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const { query } = reqBody;
+  if (!query || typeof query !== "string" || !query.trim()) {
+    return Response.json({ error: "Missing or empty query parameter" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const ai = new AIService(env.AI, env);
+  const matches = await ai.getEnhancedMatches(query.trim(), 10);
+  const intent = IntentHandler.detect(query.trim());
+  const intentResponse = IntentHandler.buildResponse(intent, { matches });
+  if (intentResponse) return intentResponse;
+  
+  // Fallback: LLM
+  const context = matches.map((m: any, i: number) => {
+    const title = m.metadata?.title || "";
+    const url = m.metadata?.url || m.metadata?.slug || "";
+    const description = m.metadata?.description || m.metadata?.text || m.text || "";
+    let link = "";
+    if (url) {
+      link = url.startsWith("http") ? url : (url.startsWith("/") ? url : `/${url}`);
+    }
+    return `${i + 1}. ${title ? `**${title}**\n` : ""}${description}${link ? `\n\nDocumentation: ${link}` : ""}`;
+  }).join("\n\n");
+  
+  const prompt = `\nYou are a helpful support assistant. Answer the user's question in a concise, direct way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.\n\n*Only provide code examples, implementation advice, or technical explanations if they are directly supported by the context below.  \nDo **not** generate code or technical advice based on prior knowledge or assumptions.  \nIf the context does not contain relevant code or instructions, respond by saying you don't know and offer to create a support case.*\n\n**CRITICAL**: If the context includes documentation links (marked as Documentation: url), you MUST include at least one relevant link in your response when answering questions about features, products, or how-to topics.\n\nUser's question: ${query.trim()}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
+  
+  const llmResponse = await ai.runLLM(prompt);
+  let message = (llmResponse && typeof llmResponse === "object" && "response" in llmResponse && typeof (llmResponse as any).response === "string") ? (llmResponse as any).response : "Sorry, I couldn't find an answer.";
+  
+  // Ensure doc link for feature/product queries
+  if (intent === 'general') {
+    let paymentsMatch = matches.find((m: any) => m.metadata?.url === "/lessons/payments");
+    let top = paymentsMatch || matches.find((m: any) => (m.metadata?.url || m.metadata?.slug));
+    const topUrl = top ? (top.metadata?.url || top.metadata?.slug) : null;
+    if (topUrl) {
+      const topLink = topUrl.startsWith("http") ? topUrl : (topUrl.startsWith("/") ? topUrl : `/${topUrl}`);
+      message = message.replace(/\[Read more\]\(\/[^)]+\)/g, `[Read more](${topLink})`);
+      if (!/\[Read more\]\(/.test(message)) {
+        message += `\n\n[Read more](${topLink})`;
+      }
+      if (!message.includes(topLink)) {
+        message += `\n\nDocumentation: ${topLink}`;
+      }
+    }
+  }
+  
+  return Response.json({ message, messageFormat: "markdown", matches }, { headers: corsHeaders });
+}
+
+async function handleUpsertMDX(request: Request, env: Env) {
+  let reqBody;
+  try {
+    reqBody = await parseJsonBody(request);
+  } catch (err) {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const { content, metadata } = reqBody;
+  if (!content || !metadata) {
+    return Response.json({ error: "Missing content or metadata" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const ai = new AIService(env.AI, env);
+  const embedding = await ai.getEmbedding(content);
+  await env.VECTORIZE.insert([
+    { id: metadata.id, values: embedding, metadata: { text: content, ...metadata } }
+  ]);
+  
+  return Response.json({ success: true, id: metadata.id }, { headers: corsHeaders });
+}
+
+async function handleHelpForm(request: Request, env: Env) {
+  let reqBody;
+  try {
+    reqBody = await parseJsonBody(request);
+  } catch (err) {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const { name, email, message } = reqBody;
+  if (!name || !email || !message) {
+    return Response.json({ error: `Missing ${!name ? 'name' : !email ? 'email' : 'message'}` }, { status: 400, headers: corsHeaders });
+  }
+  
+  const emailSvc = new EmailService(env.RESEND_API_KEY);
+  const emailBody = `New help form submission:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`;
+  await emailSvc.send({ from: "noreply@blawby.com", to: "support@blawby.com", subject: "New Help Form Submission", text: emailBody });
+  await emailSvc.send({ from: "noreply@blawby.com", to: email, subject: "We received your message", text: `Thank you for contacting us. We'll get back to you soon.\n\nYour message:\n${message}` });
+  
+  return Response.json({ success: true }, { headers: corsHeaders });
+}
+
+async function handleSupportCaseCreate(request: Request, env: Env) {
+  let reqBody;
+  try {
+    reqBody = await parseJsonBody(request);
+  } catch (err) {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const { userId, chatHistory, otherContext } = reqBody;
+  if (!userId || !Array.isArray(chatHistory)) {
+    return Response.json({ error: "Missing userId or chatHistory" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const db = env.SUPPORT_DB;
+  const caseId = crypto.randomUUID();
+  const chatHistoryStr = JSON.stringify(chatHistory);
+  const otherContextStr = otherContext ? JSON.stringify(otherContext) : null;
+  
+  await db.prepare(
+    `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`
+  ).bind(caseId, userId, chatHistoryStr, otherContextStr).run();
+  
+  const caseUrl = `/support/case/${caseId}`;
+  return Response.json({ caseId, caseUrl, prefilledFields: { userId, chatHistory, otherContext } }, { headers: corsHeaders });
+}
+
+async function handleSupportCaseFeedback(request: Request, env: Env) {
+  let reqBody;
+  try {
+    reqBody = await parseJsonBody(request);
+  } catch (err) {
+    return Response.json({ error: "Invalid JSON" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const { caseId, rating, comments } = reqBody;
+  if (!caseId || typeof rating !== "number" || rating < 1 || rating > 5) {
+    return Response.json({ error: "Missing or invalid caseId or rating" }, { status: 400, headers: corsHeaders });
+  }
+  
+  const db = env.SUPPORT_DB;
+  await db.prepare(
+    `INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`
+  ).bind(caseId, rating, comments || null).run();
+  
+  return Response.json({ ok: true }, { headers: corsHeaders });
+}
+
+async function handleSupportCaseGet(request: Request, env: Env, caseId: string) {
+  const db = env.SUPPORT_DB;
+  const result = await db.prepare(
+    `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`
+  ).bind(caseId).first();
+  
+  if (!result) {
+    return Response.json({ error: "Case not found" }, { status: 404, headers: corsHeaders });
+  }
+  
+  let chatHistory = [];
+  let otherContext = null;
+  try { chatHistory = JSON.parse(result.chat_history); } catch {}
+  try { otherContext = result.other_context ? JSON.parse(result.other_context) : null; } catch {}
+  
+  return Response.json({
+    caseId: result.id,
+    userId: result.user_id,
+    chatHistory,
+    otherContext,
+    createdAt: result.created_at,
+  }, { headers: corsHeaders });
+}
+
+// --- Main Fetch Handler ---
+const routes = {
+  "/query": { handler: handleQuery, methods: ["POST"] },
+  "/chat": { handler: handleChat, methods: ["POST"] },
+  "/upsert-mdx": { handler: handleUpsertMDX, methods: ["POST"] },
+  "/api/help-form": { handler: handleHelpForm, methods: ["POST"] },
+  "/support-case/create": { handler: handleSupportCaseCreate, methods: ["POST"] },
+  "/support-case/feedback": { handler: handleSupportCaseFeedback, methods: ["POST"] },
+  "/support-case/": { handler: (req: Request, env: Env, path: string) => {
+    const match = path.match(/^\/support-case\/(.+)$/);
+    if (req.method === "GET" && match) {
+      return handleSupportCaseGet(req, env, match[1]);
+    }
+    return Response.json({ error: "Not found" }, { status: 404, headers: corsHeaders });
+  }, methods: ["GET"] }
+};
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    // Handle CORS preflight
     if (request.method === "OPTIONS") {
       return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type",
-        },
+        status: 200,
+        headers: corsHeaders
       });
     }
-
-    let path = new URL(request.url).pathname;
+    
+    const url = new URL(request.url);
+    const path = url.pathname;
+    
     if (path.startsWith("/favicon")) {
-      return withCors(new Response("", { status: 404 }));
+      return Response.json({ text: "Not found" }, { status: 404, headers: corsHeaders });
     }
-
-    if (path.startsWith("/query")) {
-      try {
-        let reqBody;
-        try {
-          reqBody = await request.json();
-        } catch (parseError) {
-          return errorResponse("Invalid JSON in request body", null, 400);
-        }
-        
-        let query = reqBody?.query;
-        if (typeof query === "string") {
-          query = query.trim();
-        }
-        if (!query) {
-          return errorResponse("Missing or empty query parameter", null, 400);
-        }
-        
-        const ai = new Ai(env.AI);
-        const queryVector = await getEmbedding(ai, query);
-        const matches = await queryVectorDB(env, queryVector, 10);
-        const enhancedMatches = enhanceMatches(matches, query);
-        
-        return jsonResponse({ matches: enhancedMatches });
-      } catch (err) {
-        console.error("/query endpoint error:", err);
-        return errorResponse("Worker exception in /query", err instanceof Error ? err.message : err);
+    
+    for (const [routePath, route] of Object.entries(routes)) {
+      if (path === routePath && route.methods.includes(request.method)) {
+        return await route.handler(request, env, path);
+      }
+      if (routePath === "/support-case/" && path.startsWith(routePath) && route.methods.includes(request.method)) {
+        return await route.handler(request, env, path);
       }
     }
-
-    // Bulk upsert endpoint for MDX lesson chunks
-    if (path === "/upsert-mdx" && request.method === "POST") {
-      try {
-        const chunks = await request.json(); // [{ id, text, metadata }]
-        if (!Array.isArray(chunks)) {
-          return errorResponse("Invalid input", null, 400);
-        }
-        // Embed and upsert each chunk
-        const ai = new Ai(env.AI);
-        const vectors = [];
-        for (const chunk of chunks) {
-          const vector = await getEmbedding(ai, chunk.text);
-          vectors.push({
-            id: chunk.id,
-            values: vector,
-            metadata: {
-              ...chunk.metadata,
-              description: chunk.text,
-            },
-          });
-        }
-        const result = await env.VECTORIZE.upsert(vectors);
-        return jsonResponse({ mutationId: result.mutationId, count: vectors.length });
-      } catch (err) {
-        return errorResponse("Upsert failed", err instanceof Error ? err.message : err);
-      }
-    }
-
-    if (path.startsWith("/chat")) {
-      try {
-        let reqBody;
-        try {
-          reqBody = await request.json();
-        } catch (parseError) {
-          return errorResponse("Invalid JSON in request body", null, 400);
-        }
-        
-        let query = reqBody?.query;
-        if (typeof query === "string") {
-          query = query.trim();
-        }
-        if (!query) {
-          return errorResponse("Missing or empty query parameter", null, 400);
-        }
-        
-        const ai = new Ai(env.AI);
-        const queryVector = await getEmbedding(ai, query);
-        const matches = await queryVectorDB(env, queryVector, 10);
-        const enhancedMatches = enhanceMatches(matches, query);
-        
-        // --- Pricing Query Detection ---
-        const pricingKeywords = [
-          "price", "pricing", "cost", "fee", "fees", "charge", "charges", "how much", "rate", "rates", "platform fee", "transaction fee", "monthly fee", "card fee", "bank fee", "ach fee", "chargeback"
-        ];
-        const isPricingQuery = pricingKeywords.some(kw => query.toLowerCase().includes(kw)) && 
-          !query.toLowerCase().includes("integrate") && 
-          !query.toLowerCase().includes("setup") &&
-          !query.toLowerCase().includes("configure");
-        
-        // --- Human Request Detection ---
-        const humanRequestKeywords = [
-          "speak to human", "talk to human", "human support", "real person", "speak to someone", "talk to someone", "human agent", "live agent", "customer service", "support team", "speak to a human", "talk to a human"
-        ];
-        const isHumanRequest = humanRequestKeywords.some(kw => query.toLowerCase().includes(kw)) || 
-          (query.toLowerCase().includes("speak") && query.toLowerCase().includes("human")) ||
-          (query.toLowerCase().includes("talk") && query.toLowerCase().includes("human"));
-        
-        // --- Technical/Integration Query Detection ---
-        const technicalKeywords = [
-          "integrate", "integration", "setup", "configure", "api", "webhook", "sdk", "implementation", "technical", "developer", "code", "programming", "how do i", "how to"
-        ];
-        const isTechnicalQuery = technicalKeywords.some(kw => query.toLowerCase().includes(kw)) ||
-          (query.toLowerCase().includes("how") && query.toLowerCase().includes("integrate")) ||
-          (query.toLowerCase().includes("how") && query.toLowerCase().includes("setup"));
-        
-        // --- Frustrated User Detection ---
-        const frustratedKeywords = [
-          "not working", "broken", "issue", "problem", "error", "frustrated", "angry", "upset", "help me", "stuck", "can't", "won't", "doesn't work"
-        ];
-        const isFrustratedUser = frustratedKeywords.some(kw => query.toLowerCase().includes(kw));
-        
-        // --- Support Request Detection ---
-        const supportKeywords = [
-          "help", "support", "assist", "account", "issue", "problem", "trouble", "need help", "need support"
-        ];
-        const isSupportRequest = supportKeywords.some(kw => query.toLowerCase().includes(kw)) &&
-          !isFrustratedUser && !isHumanRequest && !isTechnicalQuery &&
-          !query.toLowerCase().includes("compliance") && !query.toLowerCase().includes("trust") &&
-          !query.toLowerCase().includes("recurring") && !query.toLowerCase().includes("feature") &&
-          !query.toLowerCase().includes("what is") && !query.toLowerCase().includes("does blawby");
-        
-        // Debug logging
-        console.log(`Query: "${query}"`);
-        console.log(`isPricingQuery: ${isPricingQuery}`);
-        console.log(`isHumanRequest: ${isHumanRequest}`);
-        console.log(`isTechnicalQuery: ${isTechnicalQuery}`);
-        console.log(`isFrustratedUser: ${isFrustratedUser}`);
-        
-        if (isPricingQuery) {
-          // Aggregate pricing info from context
-          let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
-          let foundAny = false;
-          let contextText = enhancedMatches.map(m => m.metadata?.description || m.metadata?.text || m.text || "").join("\n");
-          // Use regex to extract fees
-          // Monthly/user fee
-          const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
-          if (monthlyMatch) { monthlyFee = `$${monthlyMatch[1]} per user per month`; foundAny = true; }
-          // Card fee
-          const cardMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i);
-          if (cardMatch) { cardFee = `${cardMatch[1]}% + ${cardMatch[2]} per card transaction`; foundAny = true; }
-          // ACH/bank fee
-          const achMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i);
-          if (achMatch) { achFee = `${achMatch[1]}% per ACH (max $${achMatch[2]})`; foundAny = true; }
-          // Platform fee
-          const platformMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) || contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i);
-          if (platformMatch) { platformFee = `${platformMatch[1]}% platform fee (billed monthly)`; foundAny = true; }
-          // Chargeback fee
-          const chargebackMatch = contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i);
-          if (chargebackMatch) { chargebackFee = `$${chargebackMatch[1]} per chargeback`; foundAny = true; }
-          // Setup/hidden fees
-          if (/no setup fees?/i.test(contextText)) { setupFee = "No setup fees"; foundAny = true; }
-          if (/no hidden fees?/i.test(contextText)) { hiddenFee = "No hidden fees"; foundAny = true; }
-          // Compose answer
-          let pricingLines = [];
-          if (monthlyFee) pricingLines.push(`- **Monthly user license:** ${monthlyFee}`);
-          if (cardFee) pricingLines.push(`- **Card payments:** ${cardFee}`);
-          if (achFee) pricingLines.push(`- **ACH/bank payments:** ${achFee}`);
-          if (platformFee) pricingLines.push(`- **Platform fee:** ${platformFee}`);
-          if (chargebackFee) pricingLines.push(`- **Chargeback fee:** ${chargebackFee}`);
-          if (setupFee) pricingLines.push(`- ${setupFee}`);
-          if (hiddenFee) pricingLines.push(`- ${hiddenFee}`);
-          let answer = `**Blawby Pricing Overview**\n\n` + (pricingLines.length ? pricingLines.join("\n") : "(Some fees could not be found in the current context.)");
-          answer += `\n\nFor full details and the latest updates, [see our pricing page](/pricing).`;
-          return jsonResponse({
-            message: answer,
-            messageFormat: "markdown",
-            matches: enhancedMatches,
-          });
-        }
-        
-        // --- Human Request Handler ---
-        if (isHumanRequest) {
-          const answer = `You can request human help by clicking the **Create Support Case** button below.
-Our team will get back to you as soon as possible.
-
-For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
-          return jsonResponse({
-            message: answer,
-            messageFormat: "markdown",
-            matches: [],
-          });
-        }
-        
-        // --- Technical Query Handler ---
-        if (isTechnicalQuery) {
-          const answer = `For technical integration and setup questions, I recommend checking our documentation or creating a support case for personalized assistance.
-
-**Next steps:**
-1. **Review our documentation** for integration guides and API references
-2. **Create a support case** for specific technical questions at our **[support form](/help)**
-3. **Contact our technical team** for complex integration needs
-
-Our team can provide detailed technical guidance and help with your specific implementation.`;
-          
-          return jsonResponse({
-            message: answer,
-            messageFormat: "markdown",
-            matches: [],
-          });
-        }
-        
-        // --- Frustrated User Handler ---
-        // Detect strong profanity/abusive language
-        const abusiveKeywords = ["fuck", "shit", "bitch", "asshole", "cunt", "bastard", "dick", "suck", "faggot", "retard", "idiot", "moron", "stupid"]; // extend as needed
-        const isAbusive = abusiveKeywords.some(kw => query.toLowerCase().includes(kw));
-        if (isFrustratedUser) {
-          let answer;
-          if (isAbusive) {
-            answer = `I'm here to help. Let's keep things respectful—how can I assist you today?`;
-          } else {
-            answer = `I'm here to help. Can you tell me more about the issue?`;
-          }
-          return jsonResponse({
-            message: answer,
-            messageFormat: "markdown",
-            matches: [],
-          });
-        }
-        
-        // --- Support Request Handler ---
-        if (isSupportRequest) {
-          const answer = `If you need help, you can get support right now by clicking the **Create Support Case** button below.
-Our team will get back to you as soon as possible.
-
-For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
-          return jsonResponse({
-            message: answer,
-            messageFormat: "markdown",
-            matches: [],
-          });
-        }
-        
-        // --- Fallback: normal LLM prompt ---
-        // Build context for LLM
-        const context = enhancedMatches.map((m, i) => {
-          const title = m.metadata?.title || "";
-          const url = m.metadata?.url || m.metadata?.slug || "";
-          const description = m.metadata?.description || m.metadata?.text || m.text || "";
-          let link = "";
-          if (url) {
-            link = url.startsWith("http") ? url : (url.startsWith("/") ? url : `/${url}`);
-          }
-          // Make doc link prominent
-          return `${i + 1}. ${title ? `**${title}**\n` : ""}${description}${link ? `\n\nDocumentation: ${link}` : ""}`;
-        }).join("\n\n");
-        // Create prompt for LLM
-        const prompt = `\nYou are a helpful support assistant. Answer the user's question in a concise, direct way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).
-\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.\n\n*Only provide code examples, implementation advice, or technical explanations if they are directly supported by the context below.  \nDo **not** generate code or technical advice based on prior knowledge or assumptions.  \nIf the context does not contain relevant code or instructions, respond by saying you don't know and offer to create a support case.*\n\n**CRITICAL**: If the context includes documentation links (marked as Documentation: url), you MUST include at least one relevant link in your response when answering questions about features, products, or how-to topics.\n\nUser's question: ${query}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
-        // Call Workers AI LLM (Llama 2 Chat)
-        const llmResponse = await ai.run("@cf/meta/llama-2-7b-chat-int8", {
-          prompt,
-          max_tokens: 200,
-          temperature: 0.3,
-        });
-        
-        let message: string = "";
-        if (
-          llmResponse &&
-          typeof llmResponse === "object" &&
-          "response" in llmResponse &&
-          typeof (llmResponse as any).response === "string"
-        ) {
-          message = (llmResponse as any).response;
-        } else {
-          message = "Sorry, I couldn't find an answer.";
-        }
-        // --- Post-processing: ensure doc link is present for feature/product queries ---
-        // Only for queries that are not pricing, human, technical, frustrated, or support
-        const isFeatureOrProductQuery = !isPricingQuery && !isHumanRequest && !isTechnicalQuery && !isFrustratedUser && !isSupportRequest;
-        if (isFeatureOrProductQuery) {
-          // Get the top match with a URL
-          const top = enhancedMatches.find(m => (m.metadata?.url || m.metadata?.slug));
-          const topUrl = top ? (top.metadata?.url || top.metadata?.slug) : null;
-          if (topUrl) {
-            const topLink = topUrl.startsWith("http") ? topUrl : (topUrl.startsWith("/") ? topUrl : `/${topUrl}`);
-            // Always replace any [Read more](...) link with the top match's link
-            message = message.replace(/\[Read more\]\(\/[^)]+\)/g, `[Read more](${topLink})`);
-            // If no [Read more](...) link exists, append it
-            if (!/\[Read more\]\(/.test(message)) {
-              message += `\n\n[Read more](${topLink})`;
-            }
-          }
-        }
-        return jsonResponse({
-          message,
-          messageFormat: "markdown",
-          matches: enhancedMatches,
-        });
-      } catch (err) {
-        console.error("/chat endpoint error:", err);
-        return errorResponse("Worker exception in /chat", err instanceof Error ? err.message : err);
-      }
-    }
-
-    // --- Support Case Creation Endpoint ---
-    if (path === "/support-case/create" && request.method === "POST") {
-      try {
-        const db = env.SUPPORT_DB;
-        const reqBody = await request.json();
-        const { userId, chatHistory, otherContext } = reqBody;
-        if (!userId || !Array.isArray(chatHistory)) {
-          return withCors(new Response(JSON.stringify({ error: "Missing userId or chatHistory" }), { status: 400 }));
-        }
-        // Insert support case into D1
-        const caseId = crypto.randomUUID();
-        const chatHistoryStr = JSON.stringify(chatHistory);
-        const otherContextStr = otherContext ? JSON.stringify(otherContext) : null;
-        await db.prepare(
-          `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`
-        ).bind(caseId, userId, chatHistoryStr, otherContextStr).run();
-        // Return case URL and ID
-        const caseUrl = `/support/case/${caseId}`;
-        return withCors(Response.json({ caseId, caseUrl, prefilledFields: { userId, chatHistory, otherContext } }));
-      } catch (err) {
-        console.error("/support-case/create error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Failed to create support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
-      }
-    }
-
-    // --- Support Case Feedback Endpoint ---
-    if (path === "/support-case/feedback" && request.method === "POST") {
-      try {
-        const db = env.SUPPORT_DB;
-        const reqBody = await request.json();
-        const { caseId, rating, comments } = reqBody;
-        if (!caseId || typeof rating !== "number" || rating < 1 || rating > 5) {
-          return withCors(new Response(JSON.stringify({ error: "Missing or invalid caseId or rating" }), { status: 400 }));
-        }
-        await db.prepare(
-          `INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`
-        ).bind(caseId, rating, comments || null).run();
-        return withCors(Response.json({ ok: true }));
-      } catch (err) {
-        console.error("/support-case/feedback error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Failed to submit feedback", details: err instanceof Error ? err.message : err }), { status: 500 }));
-      }
-    }
-
-    // --- Support Case Prefill Endpoint ---
-    if (path.startsWith("/support-case/") && request.method === "GET") {
-      const match = path.match(/^\/support-case\/(.+)$/);
-      if (match) {
-        const caseId = match[1];
-        try {
-          const db = env.SUPPORT_DB;
-          const result = await db.prepare(
-            `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`
-          ).bind(caseId).first();
-          if (!result) {
-            return withCors(new Response(JSON.stringify({ error: "Case not found" }), { status: 404 }));
-          }
-          // Parse JSON fields
-          let chatHistory = [];
-          let otherContext = null;
-          try { chatHistory = JSON.parse(result.chat_history); } catch {}
-          try { otherContext = result.other_context ? JSON.parse(result.other_context) : null; } catch {}
-          return withCors(Response.json({
-            caseId: result.id,
-            userId: result.user_id,
-            chatHistory,
-            otherContext,
-            createdAt: result.created_at,
-          }));
-        } catch (err) {
-          console.error("/support-case/:id GET error:", err);
-          return withCors(new Response(JSON.stringify({ error: "Failed to fetch support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
-        }
-      }
-    }
-
-    // --- Help Form Email Endpoint ---
-    if (path === "/api/help-form" && request.method === "POST") {
-      try {
-        const { name, email, message } = await request.json();
-        if (!name || !email || !message) {
-          return withCors(new Response(JSON.stringify({ error: "Missing name, email, or message" }), { status: 400 }));
-        }
-        // Compose plain text email
-        const emailBody = `New help form submission:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`;
-        const resendApiKey = env.RESEND_API_KEY;
-        if (!resendApiKey) {
-          return withCors(new Response(JSON.stringify({ error: "Missing RESEND_API_KEY in environment" }), { status: 500 }));
-        }
-        // HTML email for admin
-        const adminHtml = `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-            <div style="background: #18181b; padding: 24px 0; text-align: center;">
-              <img src=\"https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public\" alt=\"Blawby Logo\" style=\"height:38px;\" />
-            </div>
-            <div style="padding: 32px; background: #fff;">
-              <h2 style="color: #18181b; margin-top: 0;">New help form submission</h2>
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Message:</strong></p>
-              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
-            </div>
-            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
-              &copy; ${new Date().getFullYear()} Blawby. All rights reserved.
-            </div>
-          </div>
-        `;
-        // Send notification to site owner
-        const sendResp = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${resendApiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: "support@blawby.com",
-            to: ["paulchrisluke@gmail.com"],
-            subject: `Help Form Submission from ${name}`,
-            text: emailBody,
-            html: adminHtml,
-          }),
-        });
-        if (!sendResp.ok) {
-          const errText = await sendResp.text();
-          return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
-        }
-        // HTML email for user
-        const userHtml = `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-            <div style="background: #18181b; padding: 24px 0; text-align: center;">
-              <img src=\"https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public\" alt=\"Blawby Logo\" style=\"height:38px;\" />
-            </div>
-            <div style="padding: 32px; background: #fff;">
-              <h2 style="color: #18181b; margin-top: 0;">We've received your support request</h2>
-              <p>Hi ${name},</p>
-              <p>Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.</p>
-              <p><strong>Your message:</strong></p>
-              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
-              <p style="margin-top: 24px;">If you have any additional information, just reply to this email.</p>
-              <p style="margin-top: 24px;">Best,<br/>The Blawby Team</p>
-            </div>
-            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
-              &copy; ${new Date().getFullYear()} Blawby. All rights reserved.
-            </div>
-          </div>
-        `;
-        // Send confirmation to user
-        const confirmBody = `Hi ${name},\n\nThank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.\n\nYour message:\n${message}\n\nIf you have any additional information, just reply to this email.\n\nBest,\nThe Blawby Team`;
-        const confirmResp = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${resendApiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            from: "support@blawby.com",
-            to: [email],
-            subject: "We've received your support request",
-            text: confirmBody,
-            html: userHtml,
-          }),
-        });
-        if (!confirmResp.ok) {
-          const errText = await confirmResp.text();
-          return withCors(new Response(JSON.stringify({ error: "Failed to send confirmation email", details: errText }), { status: 500 }));
-        }
-        return withCors(Response.json({ ok: true }));
-      } catch (err) {
-        return withCors(new Response(JSON.stringify({ error: "Exception in /api/help-form", details: err instanceof Error ? err.message : err }), { status: 500 }));
-      }
-    }
-
-    return withCors(Response.json({ text: "Not found" }, { status: 404 }));
+    
+    return Response.json({ text: "Not found" }, { status: 404, headers: corsHeaders });
   },
 }; 
