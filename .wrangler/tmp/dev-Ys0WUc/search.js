@@ -28,7 +28,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// .wrangler/tmp/bundle-CYYM3R/checked-fetch.js
+// .wrangler/tmp/bundle-le8mmX/checked-fetch.js
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
     (typeof request === "string" ? new Request(request, init) : request).url
@@ -46,7 +46,7 @@ function checkURL(request, init) {
 }
 var urls;
 var init_checked_fetch = __esm({
-  ".wrangler/tmp/bundle-CYYM3R/checked-fetch.js"() {
+  ".wrangler/tmp/bundle-le8mmX/checked-fetch.js"() {
     "use strict";
     urls = /* @__PURE__ */ new Set();
     __name(checkURL, "checkURL");
@@ -185,11 +185,11 @@ var require_base64_js = __commonJS({
   }
 });
 
-// .wrangler/tmp/bundle-CYYM3R/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-le8mmX/middleware-loader.entry.ts
 init_checked_fetch();
 init_modules_watch_stub();
 
-// .wrangler/tmp/bundle-CYYM3R/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-le8mmX/middleware-insertion-facade.js
 init_checked_fetch();
 init_modules_watch_stub();
 
@@ -995,7 +995,72 @@ var search_default = {
           "ach fee",
           "chargeback"
         ];
-        const isPricingQuery = pricingKeywords.some((kw) => query.toLowerCase().includes(kw));
+        const isPricingQuery = pricingKeywords.some((kw) => query.toLowerCase().includes(kw)) && !query.toLowerCase().includes("integrate") && !query.toLowerCase().includes("setup") && !query.toLowerCase().includes("configure");
+        const humanRequestKeywords = [
+          "speak to human",
+          "talk to human",
+          "human support",
+          "real person",
+          "speak to someone",
+          "talk to someone",
+          "human agent",
+          "live agent",
+          "customer service",
+          "support team",
+          "speak to a human",
+          "talk to a human"
+        ];
+        const isHumanRequest = humanRequestKeywords.some((kw) => query.toLowerCase().includes(kw)) || query.toLowerCase().includes("speak") && query.toLowerCase().includes("human") || query.toLowerCase().includes("talk") && query.toLowerCase().includes("human");
+        const technicalKeywords = [
+          "integrate",
+          "integration",
+          "setup",
+          "configure",
+          "api",
+          "webhook",
+          "sdk",
+          "implementation",
+          "technical",
+          "developer",
+          "code",
+          "programming",
+          "how do i",
+          "how to"
+        ];
+        const isTechnicalQuery = technicalKeywords.some((kw) => query.toLowerCase().includes(kw)) || query.toLowerCase().includes("how") && query.toLowerCase().includes("integrate") || query.toLowerCase().includes("how") && query.toLowerCase().includes("setup");
+        const frustratedKeywords = [
+          "not working",
+          "broken",
+          "issue",
+          "problem",
+          "error",
+          "frustrated",
+          "angry",
+          "upset",
+          "help me",
+          "stuck",
+          "can't",
+          "won't",
+          "doesn't work"
+        ];
+        const isFrustratedUser = frustratedKeywords.some((kw) => query.toLowerCase().includes(kw));
+        const supportKeywords = [
+          "help",
+          "support",
+          "assist",
+          "account",
+          "issue",
+          "problem",
+          "trouble",
+          "need help",
+          "need support"
+        ];
+        const isSupportRequest = supportKeywords.some((kw) => query.toLowerCase().includes(kw)) && !isFrustratedUser && !isHumanRequest && !isTechnicalQuery && !query.toLowerCase().includes("compliance") && !query.toLowerCase().includes("trust") && !query.toLowerCase().includes("recurring") && !query.toLowerCase().includes("feature") && !query.toLowerCase().includes("what is") && !query.toLowerCase().includes("does blawby");
+        console.log(`Query: "${query}"`);
+        console.log(`isPricingQuery: ${isPricingQuery}`);
+        console.log(`isHumanRequest: ${isHumanRequest}`);
+        console.log(`isTechnicalQuery: ${isTechnicalQuery}`);
+        console.log(`isFrustratedUser: ${isFrustratedUser}`);
         if (isPricingQuery) {
           let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
           let foundAny = false;
@@ -1051,6 +1116,63 @@ For full details and the latest updates, [see our pricing page](/pricing).`;
             message: answer,
             messageFormat: "markdown",
             matches
+          }));
+        }
+        if (isHumanRequest) {
+          const answer = `I'd be happy to help you get in touch with our support team! 
+
+**Create a support case** and our team will get back to you within 24 hours during business days. 
+
+You can start the support case process by visiting our **[support form](/help)** where you can provide your details and describe your issue.`;
+          return withCors(Response.json({
+            message: answer,
+            messageFormat: "markdown",
+            matches: []
+          }));
+        }
+        if (isTechnicalQuery) {
+          const answer = `For technical integration and setup questions, I recommend checking our documentation or creating a support case for personalized assistance.
+
+**Next steps:**
+1. **Review our documentation** for integration guides and API references
+2. **Create a support case** for specific technical questions at our **[support form](/help)**
+3. **Contact our technical team** for complex integration needs
+
+Our team can provide detailed technical guidance and help with your specific implementation.`;
+          return withCors(Response.json({
+            message: answer,
+            messageFormat: "markdown",
+            matches: []
+          }));
+        }
+        if (isFrustratedUser) {
+          const answer = `I understand you're experiencing issues and I want to help resolve this quickly for you.
+
+**Let's get this sorted out:**
+1. **I can help troubleshoot** - Tell me more about what's not working
+2. **Get immediate support** - Create a support case for priority assistance
+3. **Check our help resources** - Visit our documentation for common solutions
+
+What specific issue are you encountering? I'm here to help get you back on track.`;
+          return withCors(Response.json({
+            message: answer,
+            messageFormat: "markdown",
+            matches: []
+          }));
+        }
+        if (isSupportRequest) {
+          const answer = `I'd be happy to help you with your account or any questions you have!
+
+**How I can help:**
+1. **Answer questions** about Blawby features and functionality
+2. **Guide you** through account setup and configuration
+3. **Connect you to support** for complex issues
+
+What specific help do you need? I'm here to assist you.`;
+          return withCors(Response.json({
+            message: answer,
+            messageFormat: "markdown",
+            matches: []
           }));
         }
         const context = matches.map(
@@ -1318,7 +1440,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// .wrangler/tmp/bundle-CYYM3R/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-le8mmX/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -1352,7 +1474,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-CYYM3R/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-le8mmX/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
