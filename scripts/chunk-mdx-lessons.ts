@@ -49,7 +49,7 @@ function makeSafeId(file: string, section: string, idx: number): string {
   return hash;
 }
 
-function chunkMarkdownByParagraph(content: string, file: string, title: string, urlPrefix: string): any[] {
+function chunkMarkdownByParagraph(content: string, file: string, title: string, urlPrefix: string, docType: string): any[] {
   const tree = unified().use(remarkParse).parse(content);
   let section = '';
   let chunks: any[] = [];
@@ -79,7 +79,7 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string, 
           chunks.push({
             id,
             text: chunk,
-            metadata: { title, file: path.basename(file), section, url: `${urlPrefix}/${path.basename(file, '.mdx')}` }
+            metadata: { title, file: path.basename(file), section, url: `${urlPrefix}/${path.basename(file, '.mdx')}`, docType }
           });
         });
         paraBuffer = [];
@@ -100,7 +100,7 @@ function chunkMarkdownByParagraph(content: string, file: string, title: string, 
       chunks.push({
         id,
         text: chunk,
-        metadata: { title, file: path.basename(file), section, url: `${urlPrefix}/${path.basename(file, '.mdx')}` }
+        metadata: { title, file: path.basename(file), section, url: `${urlPrefix}/${path.basename(file, '.mdx')}`, docType }
       });
     });
   }
@@ -119,7 +119,7 @@ function main() {
     const raw = fs.readFileSync(file, 'utf8');
     const { data: frontmatter, content } = matter(raw);
     const title = frontmatter.title || path.basename(file, '.mdx');
-    const chunks = chunkMarkdownByParagraph(content, file, title, '/lessons');
+    const chunks = chunkMarkdownByParagraph(content, file, title, '/lessons', 'lesson');
     allChunks.push(...chunks);
   }
   
@@ -139,7 +139,7 @@ function main() {
     const category = pathParts[0]; // First directory is the category
     const urlPrefix = `/${category}`;
     
-    const chunks = chunkMarkdownByParagraph(content, file, title, urlPrefix);
+    const chunks = chunkMarkdownByParagraph(content, file, title, urlPrefix, 'article');
     allChunks.push(...chunks);
   }
   
@@ -155,7 +155,7 @@ function main() {
     
     // Pages have direct URLs: /pricing, /help, etc.
     const urlPrefix = '';
-    const chunks = chunkMarkdownByParagraph(content, file, title, urlPrefix);
+    const chunks = chunkMarkdownByParagraph(content, file, title, urlPrefix, 'page');
     allChunks.push(...chunks);
   }
   

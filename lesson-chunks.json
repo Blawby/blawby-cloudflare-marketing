@@ -6,7 +6,8 @@
       "title": "clients",
       "file": "clients.mdx",
       "section": "",
-      "url": "/lessons/clients"
+      "url": "/lessons/clients",
+      "docType": "lesson"
     }
   },
   {
@@ -16,7 +17,8 @@
       "title": "clients",
       "file": "clients.mdx",
       "section": "Overview",
-      "url": "/lessons/clients"
+      "url": "/lessons/clients",
+      "docType": "lesson"
     }
   },
   {
@@ -26,7 +28,8 @@
       "title": "clients",
       "file": "clients.mdx",
       "section": "How to Add and Manage Clients",
-      "url": "/lessons/clients"
+      "url": "/lessons/clients",
+      "docType": "lesson"
     }
   },
   {
@@ -36,7 +39,8 @@
       "title": "clients",
       "file": "clients.mdx",
       "section": "Client Timeline",
-      "url": "/lessons/clients"
+      "url": "/lessons/clients",
+      "docType": "lesson"
     }
   },
   {
@@ -46,7 +50,8 @@
       "title": "clients",
       "file": "clients.mdx",
       "section": "Importing Clients",
-      "url": "/lessons/clients"
+      "url": "/lessons/clients",
+      "docType": "lesson"
     }
   },
   {
@@ -56,7 +61,8 @@
       "title": "clients",
       "file": "clients.mdx",
       "section": "Frequently Asked Questions",
-      "url": "/lessons/clients"
+      "url": "/lessons/clients",
+      "docType": "lesson"
     }
   },
   {
@@ -66,7 +72,8 @@
       "title": "get-started",
       "file": "get-started.mdx",
       "section": "",
-      "url": "/lessons/get-started"
+      "url": "/lessons/get-started",
+      "docType": "lesson"
     }
   },
   {
@@ -76,7 +83,8 @@
       "title": "get-started",
       "file": "get-started.mdx",
       "section": "Quick Start Guide",
-      "url": "/lessons/get-started"
+      "url": "/lessons/get-started",
+      "docType": "lesson"
     }
   },
   {
@@ -86,7 +94,8 @@
       "title": "get-started",
       "file": "get-started.mdx",
       "section": "Frequently Asked Questions",
-      "url": "/lessons/get-started"
+      "url": "/lessons/get-started",
+      "docType": "lesson"
     }
   },
   {
@@ -96,7 +105,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -106,7 +116,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "The Problem I Was Facing",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -116,7 +127,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "My Solution: Simple Payment Links",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -126,7 +138,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "My Complete Automation Setup",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -136,7 +149,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "How I Integrated It with My Workflow",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -146,7 +160,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "The Results I've Seen",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -156,7 +171,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "My Best Practices",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -166,7 +182,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "Questions I Get Asked",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -176,7 +193,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "What I Wish I Knew When I Started",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -186,7 +204,8 @@
       "title": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
       "file": "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments.mdx",
       "section": "Ready to Try It Yourself?",
-      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+      "url": "/lessons/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments",
+      "docType": "lesson"
     }
   },
   {
@@ -196,7 +215,8 @@
       "title": "invoicing",
       "file": "invoicing.mdx",
       "section": "",
-      "url": "/lessons/invoicing"
+      "url": "/lessons/invoicing",
+      "docType": "lesson"
     }
   },
   {
@@ -206,7 +226,8 @@
       "title": "invoicing",
       "file": "invoicing.mdx",
       "section": "Overview",
-      "url": "/lessons/invoicing"
+      "url": "/lessons/invoicing",
+      "docType": "lesson"
     }
   },
   {
@@ -216,7 +237,8 @@
       "title": "invoicing",
       "file": "invoicing.mdx",
       "section": "Creating Invoices",
-      "url": "/lessons/invoicing"
+      "url": "/lessons/invoicing",
+      "docType": "lesson"
     }
   },
   {
@@ -226,7 +248,8 @@
       "title": "invoicing",
       "file": "invoicing.mdx",
       "section": "After Creating an Invoice",
-      "url": "/lessons/invoicing"
+      "url": "/lessons/invoicing",
+      "docType": "lesson"
     }
   },
   {
@@ -236,7 +259,8 @@
       "title": "invoicing",
       "file": "invoicing.mdx",
       "section": "Payment Confirmation",
-      "url": "/lessons/invoicing"
+      "url": "/lessons/invoicing",
+      "docType": "lesson"
     }
   },
   {
@@ -246,7 +270,8 @@
       "title": "invoicing",
       "file": "invoicing.mdx",
       "section": "Frequently Asked Questions",
-      "url": "/lessons/invoicing"
+      "url": "/lessons/invoicing",
+      "docType": "lesson"
     }
   },
   {
@@ -256,7 +281,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "Why Modern Payment Processing Matters for Law Firms",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -266,7 +292,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "What You Can Do with Blawby Payments",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -276,7 +303,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "How to Accept a Payment Using Blawby",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -286,7 +314,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "How Payment Links Work",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -296,7 +325,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "Using Dynamic Payment Links",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -306,7 +336,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "Built-In Compliance, Less Admin",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -316,7 +347,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "Advanced Features for Scaling Firms",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -326,7 +358,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "Frequently Asked Questions",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -336,7 +369,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "Troubleshooting & Tips",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -346,7 +380,8 @@
       "title": "payments",
       "file": "payments.mdx",
       "section": "Ready to Make Payments Effortless?",
-      "url": "/lessons/payments"
+      "url": "/lessons/payments",
+      "docType": "lesson"
     }
   },
   {
@@ -356,7 +391,8 @@
       "title": "payouts",
       "file": "payouts.mdx",
       "section": "",
-      "url": "/lessons/payouts"
+      "url": "/lessons/payouts",
+      "docType": "lesson"
     }
   },
   {
@@ -366,7 +402,8 @@
       "title": "payouts",
       "file": "payouts.mdx",
       "section": "Overview",
-      "url": "/lessons/payouts"
+      "url": "/lessons/payouts",
+      "docType": "lesson"
     }
   },
   {
@@ -376,7 +413,8 @@
       "title": "payouts",
       "file": "payouts.mdx",
       "section": "Setting Up Payouts",
-      "url": "/lessons/payouts"
+      "url": "/lessons/payouts",
+      "docType": "lesson"
     }
   },
   {
@@ -386,7 +424,8 @@
       "title": "payouts",
       "file": "payouts.mdx",
       "section": "How It Works",
-      "url": "/lessons/payouts"
+      "url": "/lessons/payouts",
+      "docType": "lesson"
     }
   },
   {
@@ -396,7 +435,8 @@
       "title": "payouts",
       "file": "payouts.mdx",
       "section": "Payout Schedule",
-      "url": "/lessons/payouts"
+      "url": "/lessons/payouts",
+      "docType": "lesson"
     }
   },
   {
@@ -406,7 +446,8 @@
       "title": "payouts",
       "file": "payouts.mdx",
       "section": "Troubleshooting Payouts",
-      "url": "/lessons/payouts"
+      "url": "/lessons/payouts",
+      "docType": "lesson"
     }
   },
   {
@@ -416,7 +457,8 @@
       "title": "payouts",
       "file": "payouts.mdx",
       "section": "Frequently Asked Questions",
-      "url": "/lessons/payouts"
+      "url": "/lessons/payouts",
+      "docType": "lesson"
     }
   },
   {
@@ -426,7 +468,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Why Predictable Revenue Matters for Law Firms",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -436,7 +479,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Flat Fees: Simplicity Clients Love",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -446,7 +490,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Payment Plans: Make Legal Help Accessible (and Get Paid Faster)",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -456,7 +501,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Payment Plans: Make Legal Help Accessible (and Get Paid Faster)",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -466,7 +512,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Automated Billing: Less Admin, More Results",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -476,7 +523,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Compliance and Trust Accounting: Reducing Friction, Supporting Your Practice",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -486,7 +534,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "What Happens When You Combine All Three?",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -496,7 +545,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Overlooked Details: What Competitors Miss",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -506,7 +556,8 @@
       "title": "future-proof-revenue",
       "file": "future-proof-revenue.mdx",
       "section": "Ready to Make Your Revenue Predictable?",
-      "url": "/business-strategy/future-proof-revenue"
+      "url": "/business-strategy/future-proof-revenue",
+      "docType": "article"
     }
   },
   {
@@ -516,7 +567,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -526,7 +578,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "Understanding IOLTA Accounts",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -536,7 +589,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "The Challenge of Legal Payments",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -546,7 +600,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "How Blawby Helps",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -556,7 +611,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "A Typical Payment Flow",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -566,7 +622,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "What You Need to Use Blawby",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -576,7 +633,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "Good Habits to Maintain Trust Compliance",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -586,7 +644,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "PCI-Compliant Payment Infrastructure",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -596,7 +655,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "Why Firms Use Blawby",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -606,7 +666,8 @@
       "title": "iolta-compliance",
       "file": "iolta-compliance.mdx",
       "section": "Try Blawby",
-      "url": "/compliance/iolta-compliance"
+      "url": "/compliance/iolta-compliance",
+      "docType": "article"
     }
   },
   {
@@ -616,7 +677,8 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "",
-      "url": "/pricing"
+      "url": "/pricing",
+      "docType": "page"
     }
   },
   {
@@ -626,7 +688,8 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Standard  ",
-      "url": "/pricing"
+      "url": "/pricing",
+      "docType": "page"
     }
   },
   {
@@ -636,7 +699,8 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Custom",
-      "url": "/pricing"
+      "url": "/pricing",
+      "docType": "page"
     }
   },
   {
@@ -646,7 +710,8 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Standard pricing for all products",
-      "url": "/pricing"
+      "url": "/pricing",
+      "docType": "page"
     }
   },
   {
@@ -656,7 +721,8 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Frequently asked Questions",
-      "url": "/pricing"
+      "url": "/pricing",
+      "docType": "page"
     }
   },
   {
@@ -666,7 +732,8 @@
       "title": "pricing",
       "file": "pricing.mdx",
       "section": "Ready to Get Started?",
-      "url": "/pricing"
+      "url": "/pricing",
+      "docType": "page"
     }
   }
 ]

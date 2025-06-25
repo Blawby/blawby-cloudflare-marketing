@@ -69,17 +69,49 @@ export default {
           console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
           return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
         }
-        // Hybrid re-ranking: boost score for keyword matches in title or section
+        // Hybrid re-ranking: boost score for keyword matches and preferred doc types
         const queryWords = query.toLowerCase().split(/\s+/);
+        // Extract key concepts (filter out common words)
+        const commonWords = ['what', 'is', 'about', 'how', 'do', 'i', 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'down', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now'];
+        const keyConcepts = queryWords.filter(word => 
+          word.length > 2 && !commonWords.includes(word)
+        );
+        
         matches.forEach((match: any) => {
           const title = (match.metadata?.title || "").toLowerCase();
           const section = (match.metadata?.section || "").toLowerCase();
-          if (
-            queryWords.some((word: string) => title.includes(word)) ||
-            queryWords.some((word: string) => section.includes(word))
-          ) {
-            match.score += 1.0; // Boost for keyword match
+          const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
+          const docType = match.metadata?.docType || "";
+          
+          // Boost for key concept matches with different weights
+          keyConcepts.forEach(concept => {
+            // Highest boost for exact title match
+            if (title === concept) {
+              match.score += 3.0;
+            }
+            // High boost for title containing the concept
+            else if (title.includes(concept)) {
+              match.score += 2.5;
+            }
+            // Medium boost for section containing the concept
+            else if (section.includes(concept)) {
+              match.score += 1.5;
+            }
+            // Lower boost for content containing the concept
+            else if (content.includes(concept)) {
+              match.score += 0.5;
+            }
+          });
+          
+          // Boost for preferred document types (lessons, articles, pages)
+          if (docType === "lesson") {
+            match.score += 2.0; // Highest priority for lessons
+          } else if (docType === "article") {
+            match.score += 1.5; // Medium priority for articles
+          } else if (docType === "page") {
+            match.score += 1.0; // Lower priority for pages
           }
+          // Other doc types (like business-strategy) get no boost
         });
         matches.sort((a: any, b: any) => b.score - a.score);
         return withCors(Response.json({ matches }));
@@ -140,7 +172,7 @@ export default {
         const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
         const queryVector = embedding.data[0];
         const vectorizeResult = await env.VECTORIZE.query(queryVector, {
-          topK: 5, // Increase to get more pricing context
+          topK: 10, // Match /query endpoint
           returnValues: true,
           returnMetadata: "all",
         });
@@ -149,6 +181,37 @@ export default {
           console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
           return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
         }
+        
+        // --- Apply improved re-ranking logic (same as /query) ---
+        const queryWords = query.toLowerCase().split(/\s+/);
+        const commonWords = ['what', 'is', 'about', 'how', 'do', 'i', 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'down', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now'];
+        const keyConcepts = queryWords.filter(word => word.length > 2 && !commonWords.includes(word));
+        matches.forEach((match: any) => {
+          const title = (match.metadata?.title || "").toLowerCase();
+          const section = (match.metadata?.section || "").toLowerCase();
+          const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
+          const docType = match.metadata?.docType || "";
+          keyConcepts.forEach(concept => {
+            if (title === concept) {
+              match.score += 3.0;
+            } else if (title.includes(concept)) {
+              match.score += 2.5;
+            } else if (section.includes(concept)) {
+              match.score += 1.5;
+            } else if (content.includes(concept)) {
+              match.score += 0.5;
+            }
+          });
+          if (docType === "lesson") {
+            match.score += 2.0;
+          } else if (docType === "article") {
+            match.score += 1.5;
+          } else if (docType === "page") {
+            match.score += 1.0;
+          }
+        });
+        matches.sort((a: any, b: any) => b.score - a.score);
+        
         // --- Pricing Query Detection ---
         const pricingKeywords = [
           "price", "pricing", "cost", "fee", "fees", "charge", "charges", "how much", "rate", "rates", "platform fee", "transaction fee", "monthly fee", "card fee", "bank fee", "ach fee", "chargeback"
@@ -241,12 +304,10 @@ export default {
         
         // --- Human Request Handler ---
         if (isHumanRequest) {
-          const answer = `I'd be happy to help you get in touch with our support team! 
+          const answer = `You can request human help by clicking the **Create Support Case** button below.
+Our team will get back to you as soon as possible.
 
-**Create a support case** and our team will get back to you within 24 hours during business days. 
-
-You can start the support case process by visiting our **[support form](/help)** where you can provide your details and describe your issue.`;
-          
+For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
           return withCors(Response.json({
             message: answer,
             messageFormat: "markdown",
@@ -273,16 +334,16 @@ Our team can provide detailed technical guidance and help with your specific imp
         }
         
         // --- Frustrated User Handler ---
+        // Detect strong profanity/abusive language
+        const abusiveKeywords = ["fuck", "shit", "bitch", "asshole", "cunt", "bastard", "dick", "suck", "faggot", "retard", "idiot", "moron", "stupid"]; // extend as needed
+        const isAbusive = abusiveKeywords.some(kw => query.toLowerCase().includes(kw));
         if (isFrustratedUser) {
-          const answer = `I understand you're experiencing issues and I want to help resolve this quickly for you.
-
-**Let's get this sorted out:**
-1. **I can help troubleshoot** - Tell me more about what's not working
-2. **Get immediate support** - Create a support case for priority assistance
-3. **Check our help resources** - Visit our documentation for common solutions
-
-What specific issue are you encountering? I'm here to help get you back on track.`;
-          
+          let answer;
+          if (isAbusive) {
+            answer = `I'm here to help. Let's keep things respectful—how can I assist you today?`;
+          } else {
+            answer = `I'm here to help. Can you tell me more about the issue?`;
+          }
           return withCors(Response.json({
             message: answer,
             messageFormat: "markdown",
@@ -292,15 +353,10 @@ What specific issue are you encountering? I'm here to help get you back on track
         
         // --- Support Request Handler ---
         if (isSupportRequest) {
-          const answer = `I'd be happy to help you with your account or any questions you have!
+          const answer = `If you need help, you can get support right now by clicking the **Create Support Case** button below.
+Our team will get back to you as soon as possible.
 
-**How I can help:**
-1. **Answer questions** about Blawby features and functionality
-2. **Guide you** through account setup and configuration
-3. **Connect you to support** for complex issues
-
-What specific help do you need? I'm here to assist you.`;
-          
+For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
           return withCors(Response.json({
             message: answer,
             messageFormat: "markdown",
@@ -310,21 +366,28 @@ What specific help do you need? I'm here to assist you.`;
         
         // --- Fallback: normal LLM prompt ---
         // Build context for LLM
-        const context = matches.map((m, i) =>
-          `${i + 1}. ${m.metadata?.description || m.metadata?.text || m.text || ""}`
-        ).join("\n");
+        const context = matches.map((m, i) => {
+          const title = m.metadata?.title || "";
+          const url = m.metadata?.url || m.metadata?.slug || "";
+          const description = m.metadata?.description || m.metadata?.text || m.text || "";
+          let link = "";
+          if (url) {
+            link = url.startsWith("http") ? url : (url.startsWith("/") ? url : `/${url}`);
+          }
+          // Make doc link prominent
+          return `${i + 1}. ${title ? `**${title}**\n` : ""}${description}${link ? `\n\nDocumentation: ${link}` : ""}`;
+        }).join("\n\n");
         // Create prompt for LLM
         const prompt = `\nYou are a helpful support assistant. Answer the user's question in a concise, direct way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).
-\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.\n\n*Only provide code examples, implementation advice, or technical explanations if they are directly supported by the context below.  
-Do **not** generate code or technical advice based on prior knowledge or assumptions.  
-If the context does not contain relevant code or instructions, respond by saying you don't know and offer to create a support case.*\n\nUser's question: ${query}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
+\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.\n\n*Only provide code examples, implementation advice, or technical explanations if they are directly supported by the context below.  \nDo **not** generate code or technical advice based on prior knowledge or assumptions.  \nIf the context does not contain relevant code or instructions, respond by saying you don't know and offer to create a support case.*\n\n**CRITICAL**: If the context includes documentation links (marked as Documentation: url), you MUST include at least one relevant link in your response when answering questions about features, products, or how-to topics.\n\nUser's question: ${query}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
         // Call Workers AI LLM (Llama 2 Chat)
         const llmResponse = await ai.run("@cf/meta/llama-2-7b-chat-int8", {
           prompt,
           max_tokens: 200,
           temperature: 0.3,
         });
-        let message: string;
+        
+        let message: string = "";
         if (
           llmResponse &&
           typeof llmResponse === "object" &&
@@ -334,6 +397,23 @@ If the context does not contain relevant code or instructions, respond by saying
           message = (llmResponse as any).response;
         } else {
           message = "Sorry, I couldn't find an answer.";
+        }
+        // --- Post-processing: ensure doc link is present for feature/product queries ---
+        // Only for queries that are not pricing, human, technical, frustrated, or support
+        const isFeatureOrProductQuery = !isPricingQuery && !isHumanRequest && !isTechnicalQuery && !isFrustratedUser && !isSupportRequest;
+        if (isFeatureOrProductQuery) {
+          // Get the top match with a URL
+          const top = matches.find(m => (m.metadata?.url || m.metadata?.slug));
+          const topUrl = top ? (top.metadata?.url || top.metadata?.slug) : null;
+          if (topUrl) {
+            const topLink = topUrl.startsWith("http") ? topUrl : (topUrl.startsWith("/") ? topUrl : `/${topUrl}`);
+            // Always replace any [Read more](...) link with the top match's link
+            message = message.replace(/\[Read more\]\(\/[^)]+\)/g, `[Read more](${topLink})`);
+            // If no [Read more](...) link exists, append it
+            if (!/\[Read more\]\(/.test(message)) {
+              message += `\n\n[Read more](${topLink})`;
+            }
+          }
         }
         return withCors(Response.json({
           message,

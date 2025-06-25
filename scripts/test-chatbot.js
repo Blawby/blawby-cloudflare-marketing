@@ -72,6 +72,13 @@ const CHAT_TESTS = [
     query: 'does blawby support recurring payments',
     expectedKeywords: ['recurring', 'subscription', 'payment'],
     expectedBehavior: 'Should answer about features'
+  },
+  {
+    name: 'Payments Feature Doc Link',
+    query: 'what is payments about?',
+    expectedKeywords: ['payment', 'plan', 'installment', 'link', '/lessons/payments'],
+    expectedBehavior: 'Should provide a context-rich answer with a documentation link',
+    mustContainLink: '/lessons/payments'
   }
 ];
 
@@ -112,6 +119,13 @@ async function testChatResponse(testCase) {
     const hasReasonableLength = message.length > 20 && message.length < 1000;
     const isRelevant = keywordScore > 0.3; // At least 30% of expected keywords
     
+    // Check for required doc link if specified
+    if (testCase.mustContainLink) {
+      if (!message.includes(testCase.mustContainLink)) {
+        logTest(testCase.name, 'FAIL', `Missing required doc link: ${testCase.mustContainLink}`);
+        return false;
+      }
+    }
     if (isRelevant && hasReasonableLength) {
       logTest(testCase.name, 'PASS', `Found ${foundKeywords.length}/${testCase.expectedKeywords.length} keywords`);
       return true;
@@ -120,60 +134,20 @@ async function testChatResponse(testCase) {
       log(`Found keywords: ${foundKeywords.join(', ')}`, 'red');
       return false;
     }
-    
   } catch (error) {
-    logTest(testCase.name, 'FAIL', `Request failed: ${error.message}`);
+    logTest(testCase.name, 'FAIL', `Error: ${error.message}`);
     return false;
   }
 }
 
-async function runChatbotTests() {
-  log(`\n${colors.bright}🤖 Chatbot Response Tests${colors.reset}`, 'cyan');
-  log(`Base URL: ${BASE_URL}`, 'blue');
-  
-  const results = {
-    total: 0,
-    passed: 0,
-    failed: 0
-  };
-  
+async function runTests() {
   for (const testCase of CHAT_TESTS) {
-    results.total++;
-    const passed = await testChatResponse(testCase);
-    if (passed) {
-      results.passed++;
+    if (await testChatResponse(testCase)) {
+      logTest(testCase.name, 'PASS');
     } else {
-      results.failed++;
+      logTest(testCase.name, 'FAIL');
     }
   }
-  
-  // Summary
-  log(`\n${colors.bright}📊 Chatbot Test Summary${colors.reset}`, 'cyan');
-  log(`Total Tests: ${results.total}`, 'blue');
-  log(`Passed: ${results.passed}`, 'green');
-  log(`Failed: ${results.failed}`, results.failed > 0 ? 'red' : 'green');
-  
-  const successRate = (results.passed / results.total) * 100;
-  if (successRate >= 80) {
-    log(`\n${colors.bright}🎉 Chatbot is performing well! (${successRate.toFixed(1)}% success rate)${colors.reset}`, 'green');
-  } else if (successRate >= 60) {
-    log(`\n${colors.bright}⚠️  Chatbot needs improvement (${successRate.toFixed(1)}% success rate)${colors.reset}`, 'yellow');
-  } else {
-    log(`\n${colors.bright}❌ Chatbot needs significant work (${successRate.toFixed(1)}% success rate)${colors.reset}`, 'red');
-  }
-  
-  return results;
 }
 
-// Main execution
-async function main() {
-  try {
-    await runChatbotTests();
-  } catch (error) {
-    log(`\n${colors.red}Chatbot test runner failed: ${error.message}${colors.reset}`, 'red');
-    process.exit(1);
-  }
-}
-
-// Run the tests
-main(); 
+runTests();
