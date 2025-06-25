@@ -7,6 +7,8 @@ export interface Env {
   RESEND_API_KEY: string;
 }
 
+// --- Consolidated Utility Functions ---
+
 function withCors(resp: Response) {
   const newHeaders = new Headers(resp.headers);
   newHeaders.set("Access-Control-Allow-Origin", "*");
@@ -17,6 +19,90 @@ function withCors(resp: Response) {
     statusText: resp.statusText,
     headers: newHeaders,
   });
+}
+
+function jsonResponse(data: any, status: number = 200) {
+  return withCors(Response.json(data, { status }));
+}
+
+function errorResponse(message: string, details?: any, status: number = 500) {
+  return jsonResponse({ error: message, details }, status);
+}
+
+async function getEmbedding(ai: Ai, text: string) {
+  const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text });
+  return embedding.data[0];
+}
+
+async function queryVectorDB(env: Env, queryVector: number[], topK: number = 10) {
+  const vectorizeResult = await env.VECTORIZE.query(queryVector, {
+    topK,
+    returnValues: true,
+    returnMetadata: "all",
+  });
+  
+  let matches = vectorizeResult.matches || vectorizeResult;
+  if (!Array.isArray(matches)) {
+    throw new Error("VECTORIZE.query did not return an array of matches");
+  }
+  
+  return matches;
+}
+
+function enhanceMatches(matches: any[], query: string) {
+  const queryWords = query.toLowerCase().split(/\s+/);
+  const commonWords = ['what', 'is', 'about', 'how', 'do', 'i', 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'down', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now'];
+  const keyConcepts = queryWords.filter(word => word.length > 2 && !commonWords.includes(word));
+  
+  // Detect general product questions
+  const isGeneralProductQuestion = (
+    query.toLowerCase().includes("what is") && 
+    (query.toLowerCase().includes("blawby") || query.toLowerCase().includes("platform") || query.toLowerCase().includes("service"))
+  );
+  
+  matches.forEach((match: any) => {
+    const title = (match.metadata?.title || "").toLowerCase();
+    const section = (match.metadata?.section || "").toLowerCase();
+    const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
+    const docType = match.metadata?.docType || "";
+    
+    // Boost for key concept matches with different weights
+    keyConcepts.forEach(concept => {
+      if (title === concept) {
+        match.score += 3.0;
+      } else if (title.includes(concept)) {
+        match.score += 2.5;
+      } else if (section.includes(concept)) {
+        match.score += 1.5;
+      } else if (content.includes(concept)) {
+        match.score += 0.5;
+      }
+    });
+    
+    // Boost for preferred document types (lessons, articles, pages)
+    if (docType === "lesson") {
+      match.score += 2.0;
+    } else if (docType === "article") {
+      match.score += 1.5;
+    } else if (docType === "page") {
+      match.score += 1.0;
+    }
+    
+    // Special boost for general product questions
+    if (isGeneralProductQuestion) {
+      // Boost get-started, overview, and general content
+      if (title.includes("get-started") || title.includes("overview") || title.includes("introduction")) {
+        match.score += 2.0; // High boost for general content
+      }
+      // Reduce boost for very specific feature content
+      if (title.includes("integrating") || title.includes("setup") || title.includes("configure")) {
+        match.score -= 1.0; // Penalty for overly specific content
+      }
+    }
+  });
+  
+  matches.sort((a: any, b: any) => b.score - a.score);
+  return matches;
 }
 
 export default {
@@ -43,7 +129,7 @@ export default {
         try {
           reqBody = await request.json();
         } catch (parseError) {
-          return withCors(new Response(JSON.stringify({ error: "Invalid JSON in request body" }), { status: 400 }));
+          return errorResponse("Invalid JSON in request body", null, 400);
         }
         
         let query = reqBody?.query;
@@ -51,74 +137,18 @@ export default {
           query = query.trim();
         }
         if (!query) {
-          return withCors(new Response(JSON.stringify({ error: "Missing or empty query parameter" }), { status: 400 }));
+          return errorResponse("Missing or empty query parameter", null, 400);
         }
         
         const ai = new Ai(env.AI);
-        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
-        const queryVector = embedding.data[0];
-        // No mock fallback: VECTORIZE must be available (use experimental_remote = true in wrangler.toml)
-        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
-          topK: 10,
-          returnValues: true,
-          returnMetadata: "all",
-        });
-        let matches = vectorizeResult.matches || vectorizeResult;
-        if (!Array.isArray(matches)) {
-          // Log the unexpected response for debugging
-          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
-          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
-        }
-        // Hybrid re-ranking: boost score for keyword matches and preferred doc types
-        const queryWords = query.toLowerCase().split(/\s+/);
-        // Extract key concepts (filter out common words)
-        const commonWords = ['what', 'is', 'about', 'how', 'do', 'i', 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'down', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now'];
-        const keyConcepts = queryWords.filter(word => 
-          word.length > 2 && !commonWords.includes(word)
-        );
+        const queryVector = await getEmbedding(ai, query);
+        const matches = await queryVectorDB(env, queryVector, 10);
+        const enhancedMatches = enhanceMatches(matches, query);
         
-        matches.forEach((match: any) => {
-          const title = (match.metadata?.title || "").toLowerCase();
-          const section = (match.metadata?.section || "").toLowerCase();
-          const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
-          const docType = match.metadata?.docType || "";
-          
-          // Boost for key concept matches with different weights
-          keyConcepts.forEach(concept => {
-            // Highest boost for exact title match
-            if (title === concept) {
-              match.score += 3.0;
-            }
-            // High boost for title containing the concept
-            else if (title.includes(concept)) {
-              match.score += 2.5;
-            }
-            // Medium boost for section containing the concept
-            else if (section.includes(concept)) {
-              match.score += 1.5;
-            }
-            // Lower boost for content containing the concept
-            else if (content.includes(concept)) {
-              match.score += 0.5;
-            }
-          });
-          
-          // Boost for preferred document types (lessons, articles, pages)
-          if (docType === "lesson") {
-            match.score += 2.0; // Highest priority for lessons
-          } else if (docType === "article") {
-            match.score += 1.5; // Medium priority for articles
-          } else if (docType === "page") {
-            match.score += 1.0; // Lower priority for pages
-          }
-          // Other doc types (like business-strategy) get no boost
-        });
-        matches.sort((a: any, b: any) => b.score - a.score);
-        return withCors(Response.json({ matches }));
+        return jsonResponse({ matches: enhancedMatches });
       } catch (err) {
-        // Log the error for debugging
         console.error("/query endpoint error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Worker exception in /query", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return errorResponse("Worker exception in /query", err instanceof Error ? err.message : err);
       }
     }
 
@@ -127,14 +157,13 @@ export default {
       try {
         const chunks = await request.json(); // [{ id, text, metadata }]
         if (!Array.isArray(chunks)) {
-          return withCors(new Response("Invalid input", { status: 400 }));
+          return errorResponse("Invalid input", null, 400);
         }
         // Embed and upsert each chunk
         const ai = new Ai(env.AI);
         const vectors = [];
         for (const chunk of chunks) {
-          const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: chunk.text });
-          const vector = embedding.data[0];
+          const vector = await getEmbedding(ai, chunk.text);
           vectors.push({
             id: chunk.id,
             values: vector,
@@ -145,9 +174,9 @@ export default {
           });
         }
         const result = await env.VECTORIZE.upsert(vectors);
-        return withCors(Response.json({ mutationId: result.mutationId, count: vectors.length }));
+        return jsonResponse({ mutationId: result.mutationId, count: vectors.length });
       } catch (err) {
-        return withCors(new Response(JSON.stringify({ error: "Upsert failed", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return errorResponse("Upsert failed", err instanceof Error ? err.message : err);
       }
     }
 
@@ -157,7 +186,7 @@ export default {
         try {
           reqBody = await request.json();
         } catch (parseError) {
-          return withCors(new Response(JSON.stringify({ error: "Invalid JSON in request body" }), { status: 400 }));
+          return errorResponse("Invalid JSON in request body", null, 400);
         }
         
         let query = reqBody?.query;
@@ -165,52 +194,13 @@ export default {
           query = query.trim();
         }
         if (!query) {
-          return withCors(new Response(JSON.stringify({ error: "Missing or empty query parameter" }), { status: 400 }));
+          return errorResponse("Missing or empty query parameter", null, 400);
         }
         
         const ai = new Ai(env.AI);
-        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
-        const queryVector = embedding.data[0];
-        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
-          topK: 10, // Match /query endpoint
-          returnValues: true,
-          returnMetadata: "all",
-        });
-        let matches = vectorizeResult.matches || vectorizeResult;
-        if (!Array.isArray(matches)) {
-          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
-          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
-        }
-        
-        // --- Apply improved re-ranking logic (same as /query) ---
-        const queryWords = query.toLowerCase().split(/\s+/);
-        const commonWords = ['what', 'is', 'about', 'how', 'do', 'i', 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'down', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now'];
-        const keyConcepts = queryWords.filter(word => word.length > 2 && !commonWords.includes(word));
-        matches.forEach((match: any) => {
-          const title = (match.metadata?.title || "").toLowerCase();
-          const section = (match.metadata?.section || "").toLowerCase();
-          const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
-          const docType = match.metadata?.docType || "";
-          keyConcepts.forEach(concept => {
-            if (title === concept) {
-              match.score += 3.0;
-            } else if (title.includes(concept)) {
-              match.score += 2.5;
-            } else if (section.includes(concept)) {
-              match.score += 1.5;
-            } else if (content.includes(concept)) {
-              match.score += 0.5;
-            }
-          });
-          if (docType === "lesson") {
-            match.score += 2.0;
-          } else if (docType === "article") {
-            match.score += 1.5;
-          } else if (docType === "page") {
-            match.score += 1.0;
-          }
-        });
-        matches.sort((a: any, b: any) => b.score - a.score);
+        const queryVector = await getEmbedding(ai, query);
+        const matches = await queryVectorDB(env, queryVector, 10);
+        const enhancedMatches = enhanceMatches(matches, query);
         
         // --- Pricing Query Detection ---
         const pricingKeywords = [
@@ -264,7 +254,7 @@ export default {
           // Aggregate pricing info from context
           let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
           let foundAny = false;
-          let contextText = matches.map(m => m.metadata?.description || m.metadata?.text || m.text || "").join("\n");
+          let contextText = enhancedMatches.map(m => m.metadata?.description || m.metadata?.text || m.text || "").join("\n");
           // Use regex to extract fees
           // Monthly/user fee
           const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
@@ -295,11 +285,11 @@ export default {
           if (hiddenFee) pricingLines.push(`- ${hiddenFee}`);
           let answer = `**Blawby Pricing Overview**\n\n` + (pricingLines.length ? pricingLines.join("\n") : "(Some fees could not be found in the current context.)");
           answer += `\n\nFor full details and the latest updates, [see our pricing page](/pricing).`;
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
-            matches,
-          }));
+            matches: enhancedMatches,
+          });
         }
         
         // --- Human Request Handler ---
@@ -308,11 +298,11 @@ export default {
 Our team will get back to you as soon as possible.
 
 For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: [],
-          }));
+          });
         }
         
         // --- Technical Query Handler ---
@@ -326,11 +316,11 @@ For real-time help, you can also [join our Discord](https://discord.com/invite/r
 
 Our team can provide detailed technical guidance and help with your specific implementation.`;
           
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: [],
-          }));
+          });
         }
         
         // --- Frustrated User Handler ---
@@ -344,11 +334,11 @@ Our team can provide detailed technical guidance and help with your specific imp
           } else {
             answer = `I'm here to help. Can you tell me more about the issue?`;
           }
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: [],
-          }));
+          });
         }
         
         // --- Support Request Handler ---
@@ -357,16 +347,16 @@ Our team can provide detailed technical guidance and help with your specific imp
 Our team will get back to you as soon as possible.
 
 For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: [],
-          }));
+          });
         }
         
         // --- Fallback: normal LLM prompt ---
         // Build context for LLM
-        const context = matches.map((m, i) => {
+        const context = enhancedMatches.map((m, i) => {
           const title = m.metadata?.title || "";
           const url = m.metadata?.url || m.metadata?.slug || "";
           const description = m.metadata?.description || m.metadata?.text || m.text || "";
@@ -403,7 +393,7 @@ For real-time help, you can also [join our Discord](https://discord.com/invite/r
         const isFeatureOrProductQuery = !isPricingQuery && !isHumanRequest && !isTechnicalQuery && !isFrustratedUser && !isSupportRequest;
         if (isFeatureOrProductQuery) {
           // Get the top match with a URL
-          const top = matches.find(m => (m.metadata?.url || m.metadata?.slug));
+          const top = enhancedMatches.find(m => (m.metadata?.url || m.metadata?.slug));
           const topUrl = top ? (top.metadata?.url || top.metadata?.slug) : null;
           if (topUrl) {
             const topLink = topUrl.startsWith("http") ? topUrl : (topUrl.startsWith("/") ? topUrl : `/${topUrl}`);
@@ -415,14 +405,14 @@ For real-time help, you can also [join our Discord](https://discord.com/invite/r
             }
           }
         }
-        return withCors(Response.json({
+        return jsonResponse({
           message,
           messageFormat: "markdown",
-          matches,
-        }));
+          matches: enhancedMatches,
+        });
       } catch (err) {
         console.error("/chat endpoint error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Worker exception in /chat", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return errorResponse("Worker exception in /chat", err instanceof Error ? err.message : err);
       }
     }
 

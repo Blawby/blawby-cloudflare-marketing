@@ -863,6 +863,73 @@ function withCors(resp) {
   });
 }
 __name(withCors, "withCors");
+function jsonResponse(data, status = 200) {
+  return withCors(Response.json(data, { status }));
+}
+__name(jsonResponse, "jsonResponse");
+function errorResponse(message, details, status = 500) {
+  return jsonResponse({ error: message, details }, status);
+}
+__name(errorResponse, "errorResponse");
+async function getEmbedding(ai, text) {
+  const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text });
+  return embedding.data[0];
+}
+__name(getEmbedding, "getEmbedding");
+async function queryVectorDB(env, queryVector, topK = 10) {
+  const vectorizeResult = await env.VECTORIZE.query(queryVector, {
+    topK,
+    returnValues: true,
+    returnMetadata: "all"
+  });
+  let matches = vectorizeResult.matches || vectorizeResult;
+  if (!Array.isArray(matches)) {
+    throw new Error("VECTORIZE.query did not return an array of matches");
+  }
+  return matches;
+}
+__name(queryVectorDB, "queryVectorDB");
+function enhanceMatches(matches, query) {
+  const queryWords = query.toLowerCase().split(/\s+/);
+  const commonWords = ["what", "is", "about", "how", "do", "i", "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "from", "up", "down", "out", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "can", "will", "just", "should", "now"];
+  const keyConcepts = queryWords.filter((word) => word.length > 2 && !commonWords.includes(word));
+  const isGeneralProductQuestion = query.toLowerCase().includes("what is") && (query.toLowerCase().includes("blawby") || query.toLowerCase().includes("platform") || query.toLowerCase().includes("service"));
+  matches.forEach((match) => {
+    const title = (match.metadata?.title || "").toLowerCase();
+    const section = (match.metadata?.section || "").toLowerCase();
+    const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
+    const docType = match.metadata?.docType || "";
+    keyConcepts.forEach((concept) => {
+      if (title === concept) {
+        match.score += 3;
+      } else if (title.includes(concept)) {
+        match.score += 2.5;
+      } else if (section.includes(concept)) {
+        match.score += 1.5;
+      } else if (content.includes(concept)) {
+        match.score += 0.5;
+      }
+    });
+    if (docType === "lesson") {
+      match.score += 2;
+    } else if (docType === "article") {
+      match.score += 1.5;
+    } else if (docType === "page") {
+      match.score += 1;
+    }
+    if (isGeneralProductQuestion) {
+      if (title.includes("get-started") || title.includes("overview") || title.includes("introduction")) {
+        match.score += 2;
+      }
+      if (title.includes("integrating") || title.includes("setup") || title.includes("configure")) {
+        match.score -= 1;
+      }
+    }
+  });
+  matches.sort((a2, b) => b.score - a2.score);
+  return matches;
+}
+__name(enhanceMatches, "enhanceMatches");
 var search_default = {
   async fetch(request, env) {
     if (request.method === "OPTIONS") {
@@ -884,75 +951,35 @@ var search_default = {
         try {
           reqBody = await request.json();
         } catch (parseError) {
-          return withCors(new Response(JSON.stringify({ error: "Invalid JSON in request body" }), { status: 400 }));
+          return errorResponse("Invalid JSON in request body", null, 400);
         }
         let query = reqBody?.query;
         if (typeof query === "string") {
           query = query.trim();
         }
         if (!query) {
-          return withCors(new Response(JSON.stringify({ error: "Missing or empty query parameter" }), { status: 400 }));
+          return errorResponse("Missing or empty query parameter", null, 400);
         }
         const ai = new W(env.AI);
-        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
-        const queryVector = embedding.data[0];
-        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
-          topK: 10,
-          returnValues: true,
-          returnMetadata: "all"
-        });
-        let matches = vectorizeResult.matches || vectorizeResult;
-        if (!Array.isArray(matches)) {
-          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
-          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
-        }
-        const queryWords = query.toLowerCase().split(/\s+/);
-        const commonWords = ["what", "is", "about", "how", "do", "i", "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "from", "up", "down", "out", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "can", "will", "just", "should", "now"];
-        const keyConcepts = queryWords.filter(
-          (word) => word.length > 2 && !commonWords.includes(word)
-        );
-        matches.forEach((match) => {
-          const title = (match.metadata?.title || "").toLowerCase();
-          const section = (match.metadata?.section || "").toLowerCase();
-          const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
-          const docType = match.metadata?.docType || "";
-          keyConcepts.forEach((concept) => {
-            if (title === concept) {
-              match.score += 3;
-            } else if (title.includes(concept)) {
-              match.score += 2.5;
-            } else if (section.includes(concept)) {
-              match.score += 1.5;
-            } else if (content.includes(concept)) {
-              match.score += 0.5;
-            }
-          });
-          if (docType === "lesson") {
-            match.score += 2;
-          } else if (docType === "article") {
-            match.score += 1.5;
-          } else if (docType === "page") {
-            match.score += 1;
-          }
-        });
-        matches.sort((a2, b) => b.score - a2.score);
-        return withCors(Response.json({ matches }));
+        const queryVector = await getEmbedding(ai, query);
+        const matches = await queryVectorDB(env, queryVector, 10);
+        const enhancedMatches = enhanceMatches(matches, query);
+        return jsonResponse({ matches: enhancedMatches });
       } catch (err) {
         console.error("/query endpoint error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Worker exception in /query", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return errorResponse("Worker exception in /query", err instanceof Error ? err.message : err);
       }
     }
     if (path === "/upsert-mdx" && request.method === "POST") {
       try {
         const chunks = await request.json();
         if (!Array.isArray(chunks)) {
-          return withCors(new Response("Invalid input", { status: 400 }));
+          return errorResponse("Invalid input", null, 400);
         }
         const ai = new W(env.AI);
         const vectors = [];
         for (const chunk of chunks) {
-          const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: chunk.text });
-          const vector = embedding.data[0];
+          const vector = await getEmbedding(ai, chunk.text);
           vectors.push({
             id: chunk.id,
             values: vector,
@@ -963,9 +990,9 @@ var search_default = {
           });
         }
         const result = await env.VECTORIZE.upsert(vectors);
-        return withCors(Response.json({ mutationId: result.mutationId, count: vectors.length }));
+        return jsonResponse({ mutationId: result.mutationId, count: vectors.length });
       } catch (err) {
-        return withCors(new Response(JSON.stringify({ error: "Upsert failed", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return errorResponse("Upsert failed", err instanceof Error ? err.message : err);
       }
     }
     if (path.startsWith("/chat")) {
@@ -974,57 +1001,19 @@ var search_default = {
         try {
           reqBody = await request.json();
         } catch (parseError) {
-          return withCors(new Response(JSON.stringify({ error: "Invalid JSON in request body" }), { status: 400 }));
+          return errorResponse("Invalid JSON in request body", null, 400);
         }
         let query = reqBody?.query;
         if (typeof query === "string") {
           query = query.trim();
         }
         if (!query) {
-          return withCors(new Response(JSON.stringify({ error: "Missing or empty query parameter" }), { status: 400 }));
+          return errorResponse("Missing or empty query parameter", null, 400);
         }
         const ai = new W(env.AI);
-        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
-        const queryVector = embedding.data[0];
-        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
-          topK: 10,
-          // Match /query endpoint
-          returnValues: true,
-          returnMetadata: "all"
-        });
-        let matches = vectorizeResult.matches || vectorizeResult;
-        if (!Array.isArray(matches)) {
-          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
-          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
-        }
-        const queryWords = query.toLowerCase().split(/\s+/);
-        const commonWords = ["what", "is", "about", "how", "do", "i", "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "from", "up", "down", "out", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "can", "will", "just", "should", "now"];
-        const keyConcepts = queryWords.filter((word) => word.length > 2 && !commonWords.includes(word));
-        matches.forEach((match) => {
-          const title = (match.metadata?.title || "").toLowerCase();
-          const section = (match.metadata?.section || "").toLowerCase();
-          const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
-          const docType = match.metadata?.docType || "";
-          keyConcepts.forEach((concept) => {
-            if (title === concept) {
-              match.score += 3;
-            } else if (title.includes(concept)) {
-              match.score += 2.5;
-            } else if (section.includes(concept)) {
-              match.score += 1.5;
-            } else if (content.includes(concept)) {
-              match.score += 0.5;
-            }
-          });
-          if (docType === "lesson") {
-            match.score += 2;
-          } else if (docType === "article") {
-            match.score += 1.5;
-          } else if (docType === "page") {
-            match.score += 1;
-          }
-        });
-        matches.sort((a2, b) => b.score - a2.score);
+        const queryVector = await getEmbedding(ai, query);
+        const matches = await queryVectorDB(env, queryVector, 10);
+        const enhancedMatches = enhanceMatches(matches, query);
         const pricingKeywords = [
           "price",
           "pricing",
@@ -1113,7 +1102,7 @@ var search_default = {
         if (isPricingQuery) {
           let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
           let foundAny = false;
-          let contextText = matches.map((m2) => m2.metadata?.description || m2.metadata?.text || m2.text || "").join("\n");
+          let contextText = enhancedMatches.map((m2) => m2.metadata?.description || m2.metadata?.text || m2.text || "").join("\n");
           const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
           if (monthlyMatch) {
             monthlyFee = `$${monthlyMatch[1]} per user per month`;
@@ -1161,22 +1150,22 @@ var search_default = {
           answer += `
 
 For full details and the latest updates, [see our pricing page](/pricing).`;
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
-            matches
-          }));
+            matches: enhancedMatches
+          });
         }
         if (isHumanRequest) {
           const answer = `You can request human help by clicking the **Create Support Case** button below.
 Our team will get back to you as soon as possible.
 
 For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: []
-          }));
+          });
         }
         if (isTechnicalQuery) {
           const answer = `For technical integration and setup questions, I recommend checking our documentation or creating a support case for personalized assistance.
@@ -1187,11 +1176,11 @@ For real-time help, you can also [join our Discord](https://discord.com/invite/r
 3. **Contact our technical team** for complex integration needs
 
 Our team can provide detailed technical guidance and help with your specific implementation.`;
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: []
-          }));
+          });
         }
         const abusiveKeywords = ["fuck", "shit", "bitch", "asshole", "cunt", "bastard", "dick", "suck", "faggot", "retard", "idiot", "moron", "stupid"];
         const isAbusive = abusiveKeywords.some((kw) => query.toLowerCase().includes(kw));
@@ -1202,24 +1191,24 @@ Our team can provide detailed technical guidance and help with your specific imp
           } else {
             answer = `I'm here to help. Can you tell me more about the issue?`;
           }
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: []
-          }));
+          });
         }
         if (isSupportRequest) {
           const answer = `If you need help, you can get support right now by clicking the **Create Support Case** button below.
 Our team will get back to you as soon as possible.
 
 For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
-          return withCors(Response.json({
+          return jsonResponse({
             message: answer,
             messageFormat: "markdown",
             matches: []
-          }));
+          });
         }
-        const context = matches.map((m2, i2) => {
+        const context = enhancedMatches.map((m2, i2) => {
           const title = m2.metadata?.title || "";
           const url = m2.metadata?.url || m2.metadata?.slug || "";
           const description = m2.metadata?.description || m2.metadata?.text || m2.text || "";
@@ -1262,7 +1251,7 @@ Respond in Markdown only. Do not use HTML tags.`;
         }
         const isFeatureOrProductQuery = !isPricingQuery && !isHumanRequest && !isTechnicalQuery && !isFrustratedUser && !isSupportRequest;
         if (isFeatureOrProductQuery) {
-          const top = matches.find((m2) => m2.metadata?.url || m2.metadata?.slug);
+          const top = enhancedMatches.find((m2) => m2.metadata?.url || m2.metadata?.slug);
           const topUrl = top ? top.metadata?.url || top.metadata?.slug : null;
           if (topUrl) {
             const topLink = topUrl.startsWith("http") ? topUrl : topUrl.startsWith("/") ? topUrl : `/${topUrl}`;
@@ -1274,14 +1263,14 @@ Respond in Markdown only. Do not use HTML tags.`;
             }
           }
         }
-        return withCors(Response.json({
+        return jsonResponse({
           message,
           messageFormat: "markdown",
-          matches
-        }));
+          matches: enhancedMatches
+        });
       } catch (err) {
         console.error("/chat endpoint error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Worker exception in /chat", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return errorResponse("Worker exception in /chat", err instanceof Error ? err.message : err);
       }
     }
     if (path === "/support-case/create" && request.method === "POST") {
