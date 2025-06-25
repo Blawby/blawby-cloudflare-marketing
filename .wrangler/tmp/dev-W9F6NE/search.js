@@ -851,114 +851,196 @@ var W = class {
 };
 
 // src/workers/search.ts
-var withCors = /* @__PURE__ */ __name((resp) => {
-  const headers = new Headers(resp.headers);
-  headers.set("Access-Control-Allow-Origin", "*");
-  headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  headers.set("Access-Control-Allow-Headers", "Content-Type");
-  return new Response(resp.body, { status: resp.status, statusText: resp.statusText, headers });
-}, "withCors");
-var jsonResponse = /* @__PURE__ */ __name((data, status = 200) => withCors(Response.json(data, { status })), "jsonResponse");
-var errorResponse = /* @__PURE__ */ __name((error, details, status = 500) => jsonResponse({ error, ...details && { details } }, status), "errorResponse");
-var getEmbedding = /* @__PURE__ */ __name(async (ai, text) => {
-  const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text });
-  return embedding.data[0];
-}, "getEmbedding");
-var queryVectorDB = /* @__PURE__ */ __name(async (env, queryVector, topK = 5) => {
-  const result = await env.VECTORIZE.query(queryVector, {
-    topK,
-    returnValues: true,
-    returnMetadata: "all"
+function withCors(resp) {
+  const newHeaders = new Headers(resp.headers);
+  newHeaders.set("Access-Control-Allow-Origin", "*");
+  newHeaders.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  newHeaders.set("Access-Control-Allow-Headers", "Content-Type");
+  return new Response(resp.body, {
+    status: resp.status,
+    statusText: resp.statusText,
+    headers: newHeaders
   });
-  const matches = result.matches || result;
-  if (!Array.isArray(matches)) {
-    throw new Error("VECTORIZE.query did not return an array of matches");
-  }
-  return matches;
-}, "queryVectorDB");
-var enhanceMatches = /* @__PURE__ */ __name((matches, query) => {
-  const queryWords = query.toLowerCase().split(/\s+/);
-  matches.forEach((match) => {
-    const title = (match.metadata?.title || "").toLowerCase();
-    const section = (match.metadata?.section || "").toLowerCase();
-    if (queryWords.some((word) => title.includes(word) || section.includes(word))) {
-      match.score += 1;
+}
+__name(withCors, "withCors");
+var search_default = {
+  async fetch(request, env) {
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type"
+        }
+      });
     }
-  });
-  return matches.sort((a2, b) => b.score - a2.score);
-}, "enhanceMatches");
-var sendEmail = /* @__PURE__ */ __name(async (apiKey, from, to, subject, text, html) => {
-  const resp = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from, to, subject, text, html })
-  });
-  if (!resp.ok) throw new Error(`Email failed: ${await resp.text()}`);
-}, "sendEmail");
-var createEmailTemplate = /* @__PURE__ */ __name((logoUrl, title, content) => `
-  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
-    <div style="background: #18181b; padding: 24px 0; text-align: center;">
-      <img src="${logoUrl}" alt="Blawby Logo" style="height:38px;" />
-    </div>
-    <div style="padding: 32px; background: #fff;">
-      <h2 style="color: #18181b; margin-top: 0;">${title}</h2>
-      ${content}
-    </div>
-    <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
-      &copy; ${(/* @__PURE__ */ new Date()).getFullYear()} Blawby. All rights reserved.
-    </div>
-  </div>
-`, "createEmailTemplate");
-var handleQuery = /* @__PURE__ */ __name(async (request, env) => {
-  const { query } = await request.json();
-  const ai = new W(env.AI);
-  const queryVector = await getEmbedding(ai, query.trim());
-  const matches = await queryVectorDB(env, queryVector, 10);
-  return jsonResponse({ matches: enhanceMatches(matches, query) });
-}, "handleQuery");
-var handleUpsert = /* @__PURE__ */ __name(async (request, env) => {
-  const chunks = await request.json();
-  if (!Array.isArray(chunks)) return errorResponse("Invalid input", null, 400);
-  const ai = new W(env.AI);
-  const vectors = await Promise.all(chunks.map(async (chunk) => ({
-    id: chunk.id,
-    values: await getEmbedding(ai, chunk.text),
-    metadata: { ...chunk.metadata, description: chunk.text }
-  })));
-  const result = await env.VECTORIZE.upsert(vectors);
-  return jsonResponse({ mutationId: result.mutationId, count: vectors.length });
-}, "handleUpsert");
-var handleChat = /* @__PURE__ */ __name(async (request, env) => {
-  const { query } = await request.json();
-  const ai = new W(env.AI);
-  const queryVector = await getEmbedding(ai, query.trim());
-  const matches = await queryVectorDB(env, queryVector, 5);
-  const pricingKeywords = ["price", "pricing", "cost", "fee", "fees", "charge", "charges", "how much", "rate", "rates", "platform fee", "transaction fee", "monthly fee", "card fee", "bank fee", "ach fee", "chargeback"];
-  const isPricingQuery = pricingKeywords.some((kw) => query.toLowerCase().includes(kw));
-  if (isPricingQuery) {
-    const contextText = matches.map((m2) => m2.metadata?.description || m2.metadata?.text || m2.text || "").join("\n");
-    const feePatterns = [
-      { pattern: /\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i, format: /* @__PURE__ */ __name((m2) => `**Monthly user license:** $${m2[1]} per user per month`, "format") },
-      { pattern: /([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i, format: /* @__PURE__ */ __name((m2) => `**Card payments:** ${m2[1]}% + ${m2[2]} per card transaction`, "format") },
-      { pattern: /([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i, format: /* @__PURE__ */ __name((m2) => `**ACH/bank payments:** ${m2[1]}% per ACH (max $${m2[2]})`, "format") },
-      { pattern: /([0-9]+(?:\.[0-9]+)?)%.*platform fee/i, format: /* @__PURE__ */ __name((m2) => `**Platform fee:** ${m2[1]}% platform fee (billed monthly)`, "format") },
-      { pattern: /\$([0-9]+) fee for disputed payments.*chargebacks?/i, format: /* @__PURE__ */ __name((m2) => `**Chargeback fee:** $${m2[1]} per chargeback`, "format") }
-    ];
-    const pricingLines = feePatterns.map(({ pattern, format }) => {
-      const match = contextText.match(pattern);
-      return match ? `- ${format(match)}` : null;
-    }).filter(Boolean);
-    if (/no setup fees?/i.test(contextText)) pricingLines.push("- No setup fees");
-    if (/no hidden fees?/i.test(contextText)) pricingLines.push("- No hidden fees");
-    const answer = `**Blawby Pricing Overview**
+    let path = new URL(request.url).pathname;
+    if (path.startsWith("/favicon")) {
+      return withCors(new Response("", { status: 404 }));
+    }
+    if (path.startsWith("/query")) {
+      try {
+        const reqBody = await request.json();
+        let query = reqBody.query;
+        if (typeof query === "string") {
+          query = query.trim();
+        }
+        const ai = new W(env.AI);
+        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
+        const queryVector = embedding.data[0];
+        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
+          topK: 10,
+          returnValues: true,
+          returnMetadata: "all"
+        });
+        let matches = vectorizeResult.matches || vectorizeResult;
+        if (!Array.isArray(matches)) {
+          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
+          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
+        }
+        const queryWords = query.toLowerCase().split(/\s+/);
+        matches.forEach((match) => {
+          const title = (match.metadata?.title || "").toLowerCase();
+          const section = (match.metadata?.section || "").toLowerCase();
+          if (queryWords.some((word) => title.includes(word)) || queryWords.some((word) => section.includes(word))) {
+            match.score += 1;
+          }
+        });
+        matches.sort((a2, b) => b.score - a2.score);
+        return withCors(Response.json({ matches }));
+      } catch (err) {
+        console.error("/query endpoint error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Worker exception in /query", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
+    }
+    if (path === "/upsert-mdx" && request.method === "POST") {
+      try {
+        const chunks = await request.json();
+        if (!Array.isArray(chunks)) {
+          return withCors(new Response("Invalid input", { status: 400 }));
+        }
+        const ai = new W(env.AI);
+        const vectors = [];
+        for (const chunk of chunks) {
+          const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: chunk.text });
+          const vector = embedding.data[0];
+          vectors.push({
+            id: chunk.id,
+            values: vector,
+            metadata: {
+              ...chunk.metadata,
+              description: chunk.text
+            }
+          });
+        }
+        const result = await env.VECTORIZE.upsert(vectors);
+        return withCors(Response.json({ mutationId: result.mutationId, count: vectors.length }));
+      } catch (err) {
+        return withCors(new Response(JSON.stringify({ error: "Upsert failed", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
+    }
+    if (path.startsWith("/chat")) {
+      try {
+        const reqBody = await request.json();
+        let query = reqBody.query;
+        if (typeof query === "string") {
+          query = query.trim();
+        }
+        const ai = new W(env.AI);
+        const embedding = await ai.run("@cf/baai/bge-small-en-v1.5", { text: query });
+        const queryVector = embedding.data[0];
+        const vectorizeResult = await env.VECTORIZE.query(queryVector, {
+          topK: 5,
+          // Increase to get more pricing context
+          returnValues: true,
+          returnMetadata: "all"
+        });
+        let matches = vectorizeResult.matches || vectorizeResult;
+        if (!Array.isArray(matches)) {
+          console.error("Unexpected VECTORIZE.query response:", JSON.stringify(vectorizeResult));
+          return withCors(new Response(JSON.stringify({ error: "VECTORIZE.query did not return an array of matches", details: vectorizeResult }), { status: 500 }));
+        }
+        const pricingKeywords = [
+          "price",
+          "pricing",
+          "cost",
+          "fee",
+          "fees",
+          "charge",
+          "charges",
+          "how much",
+          "rate",
+          "rates",
+          "platform fee",
+          "transaction fee",
+          "monthly fee",
+          "card fee",
+          "bank fee",
+          "ach fee",
+          "chargeback"
+        ];
+        const isPricingQuery = pricingKeywords.some((kw) => query.toLowerCase().includes(kw));
+        if (isPricingQuery) {
+          let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
+          let foundAny = false;
+          let contextText = matches.map((m2) => m2.metadata?.description || m2.metadata?.text || m2.text || "").join("\n");
+          const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
+          if (monthlyMatch) {
+            monthlyFee = `$${monthlyMatch[1]} per user per month`;
+            foundAny = true;
+          }
+          const cardMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i);
+          if (cardMatch) {
+            cardFee = `${cardMatch[1]}% + ${cardMatch[2]} per card transaction`;
+            foundAny = true;
+          }
+          const achMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i);
+          if (achMatch) {
+            achFee = `${achMatch[1]}% per ACH (max $${achMatch[2]})`;
+            foundAny = true;
+          }
+          const platformMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) || contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i);
+          if (platformMatch) {
+            platformFee = `${platformMatch[1]}% platform fee (billed monthly)`;
+            foundAny = true;
+          }
+          const chargebackMatch = contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i);
+          if (chargebackMatch) {
+            chargebackFee = `$${chargebackMatch[1]} per chargeback`;
+            foundAny = true;
+          }
+          if (/no setup fees?/i.test(contextText)) {
+            setupFee = "No setup fees";
+            foundAny = true;
+          }
+          if (/no hidden fees?/i.test(contextText)) {
+            hiddenFee = "No hidden fees";
+            foundAny = true;
+          }
+          let pricingLines = [];
+          if (monthlyFee) pricingLines.push(`- **Monthly user license:** ${monthlyFee}`);
+          if (cardFee) pricingLines.push(`- **Card payments:** ${cardFee}`);
+          if (achFee) pricingLines.push(`- **ACH/bank payments:** ${achFee}`);
+          if (platformFee) pricingLines.push(`- **Platform fee:** ${platformFee}`);
+          if (chargebackFee) pricingLines.push(`- **Chargeback fee:** ${chargebackFee}`);
+          if (setupFee) pricingLines.push(`- ${setupFee}`);
+          if (hiddenFee) pricingLines.push(`- ${hiddenFee}`);
+          let answer = `**Blawby Pricing Overview**
 
-${pricingLines.length ? pricingLines.join("\n") : "(Some fees could not be found in the current context.)"}
+` + (pricingLines.length ? pricingLines.join("\n") : "(Some fees could not be found in the current context.)");
+          answer += `
 
 For full details and the latest updates, [see our pricing page](/pricing).`;
-    return jsonResponse({ message: answer, messageFormat: "markdown", matches });
-  }
-  const context = matches.map((m2, i2) => `${i2 + 1}. ${m2.metadata?.description || m2.metadata?.text || m2.text || ""}`).join("\n");
-  const prompt = `
+          return withCors(Response.json({
+            message: answer,
+            messageFormat: "markdown",
+            matches
+          }));
+        }
+        const context = matches.map(
+          (m2, i2) => `${i2 + 1}. ${m2.metadata?.description || m2.metadata?.text || m2.text || ""}`
+        ).join("\n");
+        const prompt = `
 You are a helpful support assistant. Answer the user's question in a concise, direct way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).
 
 IMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.
@@ -973,66 +1055,171 @@ Context:
 ${context}
 
 Respond in Markdown only. Do not use HTML tags.`;
-  const llmResponse = await ai.run("@cf/meta/llama-2-7b-chat-int8", {
-    prompt,
-    max_tokens: 200,
-    temperature: 0.3
-  });
-  const message = llmResponse?.response || "Sorry, I couldn't find an answer.";
-  return jsonResponse({ message, messageFormat: "markdown", matches });
-}, "handleChat");
-var handleSupportCase = /* @__PURE__ */ __name(async (request, env, action, caseId) => {
-  const db = env.SUPPORT_DB;
-  if (action === "create") {
-    const { userId, chatHistory, otherContext } = await request.json();
-    if (!userId || !Array.isArray(chatHistory)) {
-      return errorResponse("Missing userId or chatHistory", null, 400);
+        const llmResponse = await ai.run("@cf/meta/llama-2-7b-chat-int8", {
+          prompt,
+          max_tokens: 200,
+          temperature: 0.3
+        });
+        let message;
+        if (llmResponse && typeof llmResponse === "object" && "response" in llmResponse && typeof llmResponse.response === "string") {
+          message = llmResponse.response;
+        } else {
+          message = "Sorry, I couldn't find an answer.";
+        }
+        return withCors(Response.json({
+          message,
+          messageFormat: "markdown",
+          matches
+        }));
+      } catch (err) {
+        console.error("/chat endpoint error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Worker exception in /chat", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
     }
-    const id = crypto.randomUUID();
-    await db.prepare(`INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`).bind(id, userId, JSON.stringify(chatHistory), otherContext ? JSON.stringify(otherContext) : null).run();
-    return jsonResponse({ caseId: id, caseUrl: `/support/case/${id}`, prefilledFields: { userId, chatHistory, otherContext } });
-  }
-  if (action === "feedback") {
-    const { caseId: caseId2, rating, comments } = await request.json();
-    if (!caseId2 || typeof rating !== "number" || rating < 1 || rating > 5) {
-      return errorResponse("Missing or invalid caseId or rating", null, 400);
+    if (path === "/support-case/create" && request.method === "POST") {
+      try {
+        const db = env.SUPPORT_DB;
+        const reqBody = await request.json();
+        const { userId, chatHistory, otherContext } = reqBody;
+        if (!userId || !Array.isArray(chatHistory)) {
+          return withCors(new Response(JSON.stringify({ error: "Missing userId or chatHistory" }), { status: 400 }));
+        }
+        const caseId = crypto.randomUUID();
+        const chatHistoryStr = JSON.stringify(chatHistory);
+        const otherContextStr = otherContext ? JSON.stringify(otherContext) : null;
+        await db.prepare(
+          `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`
+        ).bind(caseId, userId, chatHistoryStr, otherContextStr).run();
+        const caseUrl = `/support/case/${caseId}`;
+        return withCors(Response.json({ caseId, caseUrl, prefilledFields: { userId, chatHistory, otherContext } }));
+      } catch (err) {
+        console.error("/support-case/create error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Failed to create support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
     }
-    await db.prepare(`INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`).bind(caseId2, rating, comments || null).run();
-    return jsonResponse({ ok: true });
-  }
-  if (action === "get" && caseId) {
-    const result = await db.prepare(`SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`).bind(caseId).first();
-    if (!result) return errorResponse("Case not found", null, 404);
-    let chatHistory = [], otherContext = null;
-    try {
-      chatHistory = JSON.parse(result.chat_history);
-    } catch {
+    if (path === "/support-case/feedback" && request.method === "POST") {
+      try {
+        const db = env.SUPPORT_DB;
+        const reqBody = await request.json();
+        const { caseId, rating, comments } = reqBody;
+        if (!caseId || typeof rating !== "number" || rating < 1 || rating > 5) {
+          return withCors(new Response(JSON.stringify({ error: "Missing or invalid caseId or rating" }), { status: 400 }));
+        }
+        await db.prepare(
+          `INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`
+        ).bind(caseId, rating, comments || null).run();
+        return withCors(Response.json({ ok: true }));
+      } catch (err) {
+        console.error("/support-case/feedback error:", err);
+        return withCors(new Response(JSON.stringify({ error: "Failed to submit feedback", details: err instanceof Error ? err.message : err }), { status: 500 }));
+      }
     }
-    try {
-      otherContext = result.other_context ? JSON.parse(result.other_context) : null;
-    } catch {
+    if (path.startsWith("/support-case/") && request.method === "GET") {
+      const match = path.match(/^\/support-case\/(.+)$/);
+      if (match) {
+        const caseId = match[1];
+        try {
+          const db = env.SUPPORT_DB;
+          const result = await db.prepare(
+            `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`
+          ).bind(caseId).first();
+          if (!result) {
+            return withCors(new Response(JSON.stringify({ error: "Case not found" }), { status: 404 }));
+          }
+          let chatHistory = [];
+          let otherContext = null;
+          try {
+            chatHistory = JSON.parse(result.chat_history);
+          } catch {
+          }
+          try {
+            otherContext = result.other_context ? JSON.parse(result.other_context) : null;
+          } catch {
+          }
+          return withCors(Response.json({
+            caseId: result.id,
+            userId: result.user_id,
+            chatHistory,
+            otherContext,
+            createdAt: result.created_at
+          }));
+        } catch (err) {
+          console.error("/support-case/:id GET error:", err);
+          return withCors(new Response(JSON.stringify({ error: "Failed to fetch support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        }
+      }
     }
-    return jsonResponse({ caseId: result.id, userId: result.user_id, chatHistory, otherContext, createdAt: result.created_at });
-  }
-  return errorResponse("Invalid action", null, 400);
-}, "handleSupportCase");
-var handleHelpForm = /* @__PURE__ */ __name(async (request, env) => {
-  const { name, email, message } = await request.json();
-  if (!name || !email || !message) return errorResponse("Missing name, email, or message", null, 400);
-  if (!env.RESEND_API_KEY) return errorResponse("Missing RESEND_API_KEY in environment");
-  const logoUrl = "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public";
-  const adminContent = `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>`;
-  const adminHtml = createEmailTemplate(logoUrl, "New help form submission", adminContent);
-  const adminText = `New help form submission:
+    if (path === "/api/help-form" && request.method === "POST") {
+      try {
+        const { name, email, message } = await request.json();
+        if (!name || !email || !message) {
+          return withCors(new Response(JSON.stringify({ error: "Missing name, email, or message" }), { status: 400 }));
+        }
+        const emailBody = `New help form submission:
 
 Name: ${name}
 Email: ${email}
 Message:
 ${message}`;
-  await sendEmail(env.RESEND_API_KEY, "support@blawby.com", ["paulchrisluke@gmail.com"], `Help Form Submission from ${name}`, adminText, adminHtml);
-  const userContent = `<p>Hi ${name},</p><p>Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.</p><p><strong>Your message:</strong></p><div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div><p style="margin-top: 24px;">If you have any additional information, just reply to this email.</p><p style="margin-top: 24px;">Best,<br/>The Blawby Team</p>`;
-  const userHtml = createEmailTemplate(logoUrl, "We've received your support request", userContent);
-  const userText = `Hi ${name},
+        const resendApiKey = env.RESEND_API_KEY;
+        if (!resendApiKey) {
+          return withCors(new Response(JSON.stringify({ error: "Missing RESEND_API_KEY in environment" }), { status: 500 }));
+        }
+        const adminHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+            <div style="background: #18181b; padding: 24px 0; text-align: center;">
+              <img src="https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public" alt="Blawby Logo" style="height:38px;" />
+            </div>
+            <div style="padding: 32px; background: #fff;">
+              <h2 style="color: #18181b; margin-top: 0;">New help form submission</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Message:</strong></p>
+              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
+            </div>
+            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
+              &copy; ${(/* @__PURE__ */ new Date()).getFullYear()} Blawby. All rights reserved.
+            </div>
+          </div>
+        `;
+        const sendResp = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            from: "support@blawby.com",
+            to: ["paulchrisluke@gmail.com"],
+            subject: `Help Form Submission from ${name}`,
+            text: emailBody,
+            html: adminHtml
+          })
+        });
+        if (!sendResp.ok) {
+          const errText = await sendResp.text();
+          return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
+        }
+        const userHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+            <div style="background: #18181b; padding: 24px 0; text-align: center;">
+              <img src="https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public" alt="Blawby Logo" style="height:38px;" />
+            </div>
+            <div style="padding: 32px; background: #fff;">
+              <h2 style="color: #18181b; margin-top: 0;">We've received your support request</h2>
+              <p>Hi ${name},</p>
+              <p>Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.</p>
+              <p><strong>Your message:</strong></p>
+              <div style="background: #f4f4f5; padding: 16px; border-radius: 4px; color: #18181b; white-space: pre-line;">${message}</div>
+              <p style="margin-top: 24px;">If you have any additional information, just reply to this email.</p>
+              <p style="margin-top: 24px;">Best,<br/>The Blawby Team</p>
+            </div>
+            <div style="background: #f4f4f5; color: #888; text-align: center; font-size: 12px; padding: 16px;">
+              &copy; ${(/* @__PURE__ */ new Date()).getFullYear()} Blawby. All rights reserved.
+            </div>
+          </div>
+        `;
+        const confirmBody = `Hi ${name},
 
 Thank you for contacting Blawby support! We have received your message and will get back to you as soon as possible.
 
@@ -1043,38 +1230,30 @@ If you have any additional information, just reply to this email.
 
 Best,
 The Blawby Team`;
-  await sendEmail(env.RESEND_API_KEY, "support@blawby.com", [email], "We've received your support request", userText, userHtml);
-  return jsonResponse({ ok: true });
-}, "handleHelpForm");
-var search_default = {
-  async fetch(request, env) {
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type"
+        const confirmResp = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            from: "support@blawby.com",
+            to: [email],
+            subject: "We've received your support request",
+            text: confirmBody,
+            html: userHtml
+          })
+        });
+        if (!confirmResp.ok) {
+          const errText = await confirmResp.text();
+          return withCors(new Response(JSON.stringify({ error: "Failed to send confirmation email", details: errText }), { status: 500 }));
         }
-      });
-    }
-    const { pathname } = new URL(request.url);
-    if (pathname.startsWith("/favicon")) return withCors(new Response("", { status: 404 }));
-    try {
-      if (pathname.startsWith("/query")) return await handleQuery(request, env);
-      if (pathname === "/upsert-mdx" && request.method === "POST") return await handleUpsert(request, env);
-      if (pathname.startsWith("/chat")) return await handleChat(request, env);
-      if (pathname === "/support-case/create" && request.method === "POST") return await handleSupportCase(request, env, "create");
-      if (pathname === "/support-case/feedback" && request.method === "POST") return await handleSupportCase(request, env, "feedback");
-      if (pathname.startsWith("/support-case/") && request.method === "GET") {
-        const caseId = pathname.split("/").pop();
-        return await handleSupportCase(request, env, "get", caseId);
+        return withCors(Response.json({ ok: true }));
+      } catch (err) {
+        return withCors(new Response(JSON.stringify({ error: "Exception in /api/help-form", details: err instanceof Error ? err.message : err }), { status: 500 }));
       }
-      if (pathname === "/api/help-form" && request.method === "POST") return await handleHelpForm(request, env);
-      return jsonResponse({ text: "Not found" }, 404);
-    } catch (err) {
-      console.error(`${pathname} error:`, err);
-      return errorResponse("Worker exception", err instanceof Error ? err.message : err);
     }
+    return withCors(Response.json({ text: "Not found" }, { status: 404 }));
   }
 };
 
