@@ -9,6 +9,7 @@ export interface Env {
 
 // --- Config: Intent Patterns ---
 const INTENT_PATTERNS = [
+  { name: 'nonprofit', pattern: /\b(nonprofit|non-profit|501c3|501\(c\)\(3\)|charity|charitable|legal aid|underserved|discount.*nonprofit|nonprofit.*discount)\b/, exclude: null },
   { name: 'pricing', pattern: /\b(price|pricing|cost|fee|fees|charge|charges|how much|rate|rates|platform fee|transaction fee|monthly fee|card fee|bank fee|ach fee|chargeback)\b/, exclude: /integrate|setup|configure/ },
   { name: 'support', pattern: /\b(speak to human|talk to human|human support|real person|speak to someone|talk to someone|human agent|live agent|customer service|support team|not working|broken|issue|problem|error|frustrated|angry|upset|help me|stuck|can't|won't|doesn't work|need help|need support|i need help|get help)\b|\bspeak\b.*\bhuman\b|\btalk\b.*\bhuman\b/, exclude: /does.*support|what.*support|feature.*support|recurring.*support|blawby.*support/ },
   { name: 'abusive', pattern: /\b(fuck|shit|bitch|asshole|cunt|bastard|dick|suck|faggot|retard|idiot|moron|stupid)\b/ }
@@ -122,6 +123,18 @@ class IntentHandler {
   
   static buildResponse(intent: string, data: any) {
     switch (intent) {
+      case 'nonprofit': {
+        const { matches } = data;
+        // Find the pricing page match for nonprofit discount info
+        const pricingMatch = matches.find((m: any) => m.metadata?.url === "/pricing");
+        if (pricingMatch) {
+          const answer = `Blawby offers qualified nonprofits 50% off on user fees. You can apply for this discount by submitting a help form at [blawby.com/nonprofit-commitment](https://blawby.com/nonprofit-commitment).`;
+          return Response.json({ message: answer, messageFormat: "markdown", matches }, { headers: corsHeaders });
+        }
+        // Fallback if pricing page not found
+        const answer = `Blawby offers discounted rates for qualified nonprofit organizations. To learn more about eligibility and apply for the discount, please visit [blawby.com/nonprofit-commitment](https://blawby.com/nonprofit-commitment).`;
+        return Response.json({ message: answer, messageFormat: "markdown", matches }, { headers: corsHeaders });
+      }
       case 'pricing': {
         const { matches } = data;
         const contextText = matches.map((m: any) => m.metadata?.description || m.metadata?.text || m.text || "").join("\n");
@@ -249,7 +262,7 @@ async function handleChat(request: Request, env: Env) {
     return `${i + 1}. ${title ? `**${title}**\n` : ""}${description}${link ? `\n\nDocumentation: ${link}` : ""}`;
   }).join("\n\n");
   
-  const prompt = `\nYou are a helpful support assistant for Blawby. Answer the user's question in a natural, conversational way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.\n\n*Only provide code examples, implementation advice, or technical explanations if they are directly supported by the context below.  \nDo **not** generate code or technical advice based on prior knowledge or assumptions.  \nIf the context does not contain relevant information, respond naturally by saying you don't have that information and offer to create a support case.*\n\n**CRITICAL**: If the context includes documentation links (marked as Documentation: url), you MUST include at least one relevant link in your response when answering questions about features, products, or how-to topics.\n\n**IMPORTANT**: Respond naturally as if you're a human support agent. Do NOT mention "context", "provided information", or any other AI processing terms. Just answer the question directly and naturally.\n\n**ACCURACY**: Be extremely precise about pricing, fees, and discounts. Only state what is explicitly mentioned in the context. Do not make assumptions about discounts or pricing that aren't clearly stated. If the context mentions a specific discount (like "50% off user fees for nonprofits"), only mention that exact discount. Do not suggest other discounts exist unless explicitly stated.
+  const prompt = `\nYou are a helpful support assistant for Blawby. Answer the user's question in a natural, conversational way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.\n\n*Only provide code examples, implementation advice, or technical explanations if they are directly supported by the context below.  \nDo **not** generate code or technical advice based on prior knowledge or assumptions.  \nIf the context does not contain relevant information, respond naturally by saying you don't have that information and offer to create a support case.*\n\n**CRITICAL**: If the context includes documentation links (marked as Documentation: url), you MUST include at least one relevant link in your response when answering questions about features, products, or how-to topics.\n\n**IMPORTANT**: Respond naturally as if you're a human support agent. Do NOT mention "context", "provided information", "according to the context", "according to the documentation", "the documentation shows", or any other AI processing terms. Just answer the question directly and naturally as a human would, without referencing where you got the information.\n\n**ACCURACY**: Be extremely precise about pricing, fees, and discounts. Only state what is explicitly mentioned in the context. Do not make assumptions about discounts or pricing that aren't clearly stated. If the context mentions a specific discount (like "50% off user fees for nonprofits"), only mention that exact discount. Do not suggest other discounts exist unless explicitly stated.
 
 **DOMAIN**: Always use blawby.com (not chat.blawby.com) when generating any URLs or links in your response.\n\nUser's question: ${query.trim()}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
   
@@ -258,9 +271,7 @@ async function handleChat(request: Request, env: Env) {
   
   // Ensure doc link for feature/product queries
   if (intent === 'general') {
-    // For pricing/discount queries, prioritize the pricing page
-    let top = matches.find((m: any) => m.metadata?.url === "/pricing") || 
-              matches.find((m: any) => (m.metadata?.url || m.metadata?.slug));
+    let top = matches.find((m: any) => (m.metadata?.url || m.metadata?.slug));
     const topUrl = top ? (top.metadata?.url || top.metadata?.slug) : null;
     if (topUrl) {
       const topLink = topUrl.startsWith("http") ? topUrl : (topUrl.startsWith("/") ? `https://blawby.com${topUrl}` : `https://blawby.com/${topUrl}`);
