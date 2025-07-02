@@ -671,6 +671,83 @@
     }
   },
   {
+    "id": "77417c15830aa8d659674c1473e37b069fad63be1a72d3069221c7ddfc2bd698",
+    "text": "Blawby is committed to reducing digital and administrative barriers for nonprofit legal aid organizations, empowering them to expand access to justice for underserved populations.",
+    "metadata": {
+      "title": "nonprofit-commitment",
+      "file": "nonprofit-commitment.mdx",
+      "section": "",
+      "url": "/nonprofit-commitment",
+      "docType": "page"
+    }
+  },
+  {
+    "id": "f2b61438e0e1e33d7d5bed2e8c95c6c3504629d4d196ba13edf5d17d8f483ec1",
+    "text": "We develop and maintain secure, affordable digital tools that support IOLTA-compliant accounting, client intake, and operational efficiency. Our work centers on helping mission-driven legal providers—especially small and resource-constrained nonprofits—access the infrastructure they need to carry out their charitable missions.",
+    "metadata": {
+      "title": "nonprofit-commitment",
+      "file": "nonprofit-commitment.mdx",
+      "section": "Our Mission",
+      "url": "/nonprofit-commitment",
+      "docType": "page"
+    }
+  },
+  {
+    "id": "050f790998996274765900bad6ee8698b8e356ae6a1812116372f434c7d94370",
+    "text": "Our core payment processing platform offers nonprofit legal aid organizations discounted access to the same professional-grade tools used by for-profit firms. This includes:\n\n  with credit card and ACH support\n\n  built-in by default\n\n  for easy client payments\n\n  and tracking\n\n  on all payment pages\n\n  for compliance\n\nQualified nonprofits receive significant discounts on our    to help reduce operational costs and expand their ability to serve more clients.",
+    "metadata": {
+      "title": "nonprofit-commitment",
+      "file": "nonprofit-commitment.mdx",
+      "section": "Primary Services at Discounted Rates",
+      "url": "/nonprofit-commitment",
+      "docType": "page"
+    }
+  },
+  {
+    "id": "ade196083ad8cba030ddd0d597af731d9e1d8d850e6736bf4042eb2862ca565a",
+    "text": "In addition to offering subsidized tools to nonprofits, we maintain and actively develop multiple open-source platforms that are freely available to the public and designed to serve the legal aid sector:\n\nA fully open-source IOLTA-compliant workflow tool that includes payments, time entry, retainer tracking, reminders, and client communication — provided at no cost.\n\n\n\nA free, open-source intake form and chatbot platform that helps legal practices validate client requests and manage their intake process efficiently. This helps reduce overhead for small legal aid providers and improves access to services for the public.\n\n\n\nThese tools serve the public directly by:\n\nSupporting legal providers who serve indigent or underserved communities\n\nLowering the cost of ethical compliance for legal aid organizations\n\nCreating a replicable infrastructure that any qualifying organization can use at no cost",
+    "metadata": {
+      "title": "nonprofit-commitment",
+      "file": "nonprofit-commitment.mdx",
+      "section": "Open Source Development for the Public Good",
+      "url": "/nonprofit-commitment",
+      "docType": "page"
+    }
+  },
+  {
+    "id": "883384b8ea223b39b323026fdbfebf1d302ff94306b6ae62cc0ebf55a72b4042",
+    "text": "Interested nonprofits should submit a help form at    to be contacted by a Blawby team member. We'll verify your nonprofit status and discuss how our discounted services can support your mission.\n\nOur open-source tools are freely available to all legal organizations:\n\n : Complete IOLTA-compliant workflow system\n\n : Free intake and chatbot platform",
+    "metadata": {
+      "title": "nonprofit-commitment",
+      "file": "nonprofit-commitment.mdx",
+      "section": "How to Get Started",
+      "url": "/nonprofit-commitment",
+      "docType": "page"
+    }
+  },
+  {
+    "id": "2f93e773464c1bcb8f42dd67a279151be3e34ff2f163cd28aa01bc50a460e49c",
+    "text": "Organizations must provide valid proof of 501(c)(3) status and demonstrate that they provide legal services to underserved communities. Submit a help form at    to start the verification process.\n\nEach approved nonprofit receives discounted access to a comprehensive website with a blog, service pages, and booking functions. The website is professionally designed and optimized for legal service providers.\n\nYes, we serve both nonprofit and for-profit legal organizations. For-profit firms pay our standard rate, which helps support our ability to offer discounted services to nonprofits. See our    for standard rates.\n\nWe maintain a primary focus on supporting nonprofit legal aid organizations while using a portion of our operations to ensure financial sustainability. Any surplus revenue is reinvested to further enhance services for nonprofits.\n\nUnlike general payment processors, we're specifically designed for legal organizations with built-in IOLTA compliance, legal-specific features, and a mission to support access to justice.\n\nYes, our Automatic Lawyer Workflow Tool and AI-Enhanced Legal Intake Chatbot are completely free and open-source.",
+    "metadata": {
+      "title": "nonprofit-commitment",
+      "file": "nonprofit-commitment.mdx",
+      "section": "Frequently Asked Questions",
+      "url": "/nonprofit-commitment",
+      "docType": "page"
+    }
+  },
+  {
+    "id": "e9e1eafe488bd4ce4e813bde213b9c036ec453073a1e10f039016ddaa5d411a8",
+    "text": "Join the growing number of nonprofit legal aid organizations using Blawby to expand their impact and serve more clients effectively.\n\n  to verify your nonprofit status  ",
+    "metadata": {
+      "title": "nonprofit-commitment",
+      "file": "nonprofit-commitment.mdx",
+      "section": "Ready to Get Started?",
+      "url": "/nonprofit-commitment",
+      "docType": "page"
+    }
+  },
+  {
     "id": "525f801bfb2ff805067e1c6338867c42cd6942a3456c0841ae2121c22077b26b",
     "text": "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
     "metadata": {
@@ -683,7 +760,7 @@
   },
   {
     "id": "fe373cef8f12633c37a0af02db47392dff819807e3bf80864663fad7ed4bfb3e",
-    "text": "Cards and wallets - 2.9% + 30¢ per successful transaction for domestic cards + Applicable fees  ",
+    "text": "Cards and wallets - 2.9% + 30¢ per successful transaction for domestic cards + Applicable fees  \n\nQualified nonprofits can get 50% off on user fees.  ",
     "metadata": {
       "title": "pricing",
       "file": "pricing.mdx",
