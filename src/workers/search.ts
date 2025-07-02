@@ -311,7 +311,7 @@ async function handleHelpForm(request: Request, env: Env) {
   
   const emailSvc = new EmailService(env.RESEND_API_KEY);
   const emailBody = `New help form submission:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`;
-  await emailSvc.send({ from: "noreply@blawby.com", to: "support@blawby.com", subject: "New Help Form Submission", text: emailBody });
+  await emailSvc.send({ from: "noreply@blawby.com", to: "paulchrisluke@gmail.com", subject: "New Help Form Submission", text: emailBody });
   await emailSvc.send({ from: "noreply@blawby.com", to: email, subject: "We received your message", text: `Thank you for contacting us. We'll get back to you soon.\n\nYour message:\n${message}` });
   
   return Response.json({ success: true }, { headers: corsHeaders });
