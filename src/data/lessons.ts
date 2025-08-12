@@ -121,4 +121,19 @@ const lessons = [
       },
     ],
   },
+  {
+    id: "ai-intake",
+    title: "AI Legal Intake",
+    description: "Intelligent client intake powered by AI to capture leads and streamline your practice.",
+    lessons: [
+      {
+        id: "ai-legal-intake",
+        title: "AI Legal Intake",
+        description: "Set up and use Blawby's AI-powered legal intake chatbot to automatically collect client information and process consultation fees.",
+        contentType: "lesson" as const,
+        category: "lessons",
+        video: null,
+      },
+    ],
+  },
 ];
