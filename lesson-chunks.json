@@ -1,5 +1,137 @@
 [
   {
+    "id": "cfe28d264807fc8d8a84f8bfb234196b9ac82f3385be4a2761b4cc4c84dbe63e",
+    "text": "Managing client intake shouldn't be a bottleneck that slows down your practice or frustrates potential clients. Yet, many law firms still rely on static forms, manual follow-up, and missed opportunities when clients reach out outside business hours. Blawby's AI-powered legal intake transforms this process—so you can capture qualified leads 24/7 while your team focuses on serving existing clients.\n\n  - Blawby AI is open source and free to use during the beta period, making it accessible to law firms of all sizes.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Why AI-Powered Intake Matters for Law Firms",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "2730453d3a6f0ca36067a21528ad3c4ec5499fbe87d73615ec3cd742b013cd87",
+    "text": "Blawby's open source AI intake system allows you to:\n\nAutomatically collect client information through intelligent conversations\n\nClassify legal matters and route them appropriately\n\nProcess consultation fees automatically\n\nEscalate complex matters to human review\n\nCapture leads even when your office is closed\n\nBlawby AI understands legal context, asks relevant follow-up questions, and guides clients through a natural conversation that feels like talking to a knowledgeable paralegal. As an open source solution, you have full transparency into how the system works and can customize it to fit your specific needs.\n\n  ",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "What You Can Do with Blawby AI Intake",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "ae08e7a474711148188e7273f14ec8cf5e1299926e78bee3e79d2b7705dfc9b4",
+    "text": "Use the following steps to add AI intake to your existing Blawby account.\n\n  If you haven't completed the setup process yet, follow the    to set up your account, including verification and payment processing.\n\n  (2 minutes) Visit the    and request beta access to Blawby AI. Our team will review your request and provide access credentials at no cost.\n\n  (1 minute) Once approved, you'll receive an email notification with your unique AI intake form link (e.g.,  https://ai.blawby.com/?teamId=your-team-id ). This link is ready to use immediately.\n\n  (5 minutes) Try Blawby AI with sample scenarios to ensure it works as expected.\n\n  (1 minute) Start accepting clients through your AI intake form. All payments and matters will appear in your    alongside your other client data.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "How to Set Up AI Intake for Your Firm",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "8e0c99a2f4a45beba94313cfc5997fd6828502f9888460a43cf3250c7e65a5b1",
+    "text": "Unlike static forms that ask the same questions regardless of the legal issue, Blawby AI adapts its conversation based on what the client shares. The system understands legal terminology, recognizes urgency, and asks relevant follow-up questions.\n\nFor example, when a client says \"I got fired for downloading movies on my work laptop,\" Blawby AI immediately recognizes this as an employment law matter and begins collecting the specific information needed for that type of case.\n\nBlawby AI guides clients through a natural conversation that collects all necessary information:\n\n : Blawby AI understands the client's legal situation and categorizes the matter\n\n : Collects name, phone, and email systematically\n\n : Asks relevant questions based on the legal issue type\n\n : Handles consultation fees automatically\n\n : Provides clear guidance on what happens next\n\nComplex or urgent matters are automatically escalated to your review queue, ensuring that sensitive cases get human attention while routine matters are handled efficiently by Blawby AI.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "How AI Intake Works",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "6bd53877a0030e997f7f12edc90cc21c6eb2aef25fdfbd6ae7b653ebd8a69b81",
+    "text": "Blawby AI is trained to handle employment law matters including:\n\nWrongful termination\n\nDiscrimination and harassment\n\nWage and hour disputes\n\nNon-compete agreements\n\nWorkplace safety issues\n\n\n\nClient: \"My boss fired me for being pregnant\"\n\nBlawby AI: \"I understand this is a serious employment discrimination matter. Let me help you get the information we need to assist you properly. Can you please provide your full name?\"\n\nFor family law matters, the AI collects information about:\n\nDivorce proceedings\n\nChild custody and support\n\nProperty division\n\nDomestic violence\n\nAdoption\n\n\n\nClient: \"I need help with my divorce\"\n\nBlawby AI: \"I understand you're going through a difficult time. Let me help you get started with the divorce process. Can you please provide your full name?\"\n\nBlawby AI handles personal injury cases including:\n\nCar accidents\n\nSlip and fall incidents\n\nMedical malpractice\n\nProduct liability\n\nWorkplace injuries\n\n\n\nClient: \"I was hit by a car while walking\"\n\nBlawby AI: \"I understand this is an urgent personal injury matter. Let me help you get the information we need to protect your rights. Can you please provide your full name?\"",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Using AI Intake for Different Practice Areas",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "d89c4c8e7172fa0a4d75fe34d5420c879fc4bc65864df80cb50e28787fcd88ca",
+    "text": "Blawby AI is designed specifically for law firms, with built-in compliance and security features that legal professionals need:\n\n : Automatic separation of earned and unearned funds\n\n : Enterprise-grade encryption for client information\n\n : Seamless processing of consultation fees and retainers\n\n : Full transparency into how the system works\n\n : Currently available at no cost during the beta period\n\nUnlike generic chatbots, Blawby AI understands legal terminology and practice management. It integrates directly with your existing Blawby dashboard, so all client information, payments, and matters appear alongside your other data—no separate system to manage.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Why Choose Blawby AI for Your Practice?",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "58888499ed5b35f5222ec8981002de8d8af017c62320319dabc52684da644d5b",
+    "text": "Blawby AI is designed with the security and compliance features that law firms require:\n\n : Automatic separation of earned and unearned funds\n\n : All client information is encrypted and stored securely\n\n : Clients can upload photos, videos, audio, and documents (25MB max)\n\n : Prevents abuse and ensures reliable performance\n\n : Built to meet legal industry security requirements",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Built-In Security and Compliance",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "0f10bc0c818dfee6c58d136e98046177fa385a6c84cd5abb851ce4026347ac44",
+    "text": "Each team can configure their own settings:\n\n : Set your own rates (e.g., $75 for initial consultation)\n\n : Specify which practice areas you handle\n\n : Define which states/countries you serve\n\n : Customize colors, messaging, and domain\n\n : Choose whether payment is required upfront\n\nBlawby AI integrates directly with your existing Blawby dashboard, so all client information, payments, and matters appear alongside your other data—no separate system to manage.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Advanced Features for Growing Firms",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "36133162e78131aa40005c4baabd95fe506d860a9ee28a62964d45e4153215d5",
+    "text": "Yes. The system has been thoroughly tested with real legal scenarios and is currently handling live client interactions. The free beta program allows you to test it in your own environment with no risk.\n\nComplex or unclear matters are automatically escalated to your review queue for human attention. The system is designed to err on the side of caution.\n\nYes. The system supports file uploads including photos, videos, audio, and documents up to 25MB in size. Supported formats include JPEG, PNG, PDF, MP4, MP3, and many others.\n\nConsultation fees are collected automatically using your team's configured payment settings. The system integrates with your existing payment infrastructure.\n\nUrgent matters are flagged and escalated to your review queue immediately. You can also configure the system to provide emergency contact information.\n\nYes. The complete codebase is available on    under the MIT license. This means you have full transparency into how the system works and can trust that your client data is handled securely and appropriately.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Frequently Asked Questions",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "e30e4a6e5399aebccad5d191650503a42e9bf70ca1af126e3dfd5922e7f97a80",
+    "text": " : Try Blawby AI with different scenarios to ensure it's working as expected\n\n : Check regularly for escalated matters that need human attention\n\n : Keep your services and fees up to date as your practice evolves\n\n : Ensure everyone knows how to access and respond to the review queue\n\n : Let clients know they're talking to an AI agent\n\n : Respond to urgent cases in the review queue quickly\n\n : Update your services and fees as your practice changes\n\n : Track metrics to identify areas for improvement",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Troubleshooting & Tips",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "91e9d7db1125f892063c3f757df08ce10f00efcc694747b0ca385545413fd65d",
+    "text": "Blawby's AI intake system is built for law firms that want to capture more leads, reduce administrative burden, and provide better client service—without the headaches of manual intake processes. As a free beta program, there's no risk to trying it out.\n\n  and see how intelligent intake can transform your practice.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Ready to Transform Your Intake Process?",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
+    "id": "504e7f145fc43dce342d35e96b1ed6d88e44bfa59af8b9481207dc5f59eb0c05",
+    "text": "Blawby AI is an open source project, and we welcome contributions from the legal technology community. Whether you're a developer, legal professional, or simply passionate about improving legal tech, there are many ways to get involved:\n\n : Found a bug or have a feature request?  \n\n : Want to contribute code improvements?    and submit a pull request\n\n : Have ideas for improving the AI's legal knowledge or conversation flow? We'd love to hear from you\n\n : Help other law firms discover this free, open source solution\n\nThe complete source code is available on    under the MIT license. Join us in building better tools for the legal profession.",
+    "metadata": {
+      "title": "ai-powered-legal-intake-chatbot",
+      "file": "ai-powered-legal-intake-chatbot.mdx",
+      "section": "Interested in Contributing?",
+      "url": "/lessons/ai-powered-legal-intake-chatbot",
+      "docType": "lesson"
+    }
+  },
+  {
     "id": "710281d19b36a4e3162f983e322592cb518327d8bee8e3d04b411353ec4c4629",
     "text": "Blawby makes it easy for law firms to manage their clients. The Clients section lets you add, update, and remove clients, and track all client activity in one place.\n\nTo manage your clients, visit   . If you are logged in, this link will automatically redirect you to the correct team page for your account.",
     "metadata": {
