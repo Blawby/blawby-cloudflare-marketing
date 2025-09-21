@@ -21,6 +21,9 @@ export function Financials() {
         <li>
           <strong>Revenue Mix:</strong> SaaS + 1.4% payments
         </li>
+        <li>
+          <strong>Runway:</strong> $200k provides ~16 months runway to validate recurring revenue with early firms
+        </li>
       </ul>
 
       <div className="mb-8">
