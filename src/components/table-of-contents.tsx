@@ -84,9 +84,9 @@ export default function TableOfContents({ contentId }: { contentId: string }) {
         On this page
       </h2>
       <ul className="mt-3 flex flex-col gap-3 border-l border-gray-950/10 text-sm/6 text-gray-700 dark:border-white/10 dark:text-gray-400">
-        {headings.map((heading) => (
+        {headings.map((heading, index) => (
           <li
-            key={heading.id}
+            key={heading.id || `heading-${index}`}
             className={clsx(
               "-ml-px border-l border-transparent pl-4",
               "hover:text-gray-950 hover:not-has-aria-[current=location]:border-gray-400 dark:hover:text-white",

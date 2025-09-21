@@ -204,12 +204,13 @@ export default function CommandPalette() {
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto p-4 sm:p-6 md:p-20">
           <DialogPanel className="mx-auto max-w-2xl transform overflow-hidden rounded-xl bg-white/75 shadow-sm outline outline-gray-950/5 backdrop-blur-sm transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in dark:bg-gray-950/75 dark:outline-white/10">
             <Combobox
-              onChange={(item: SearchResult | null) => {
+              onChange={(item: unknown) => {
+                const searchResult = item as SearchResult | null
                 setOpen(false)
-                if (item?.url) {
-                  navigateToUrl(item.url)
+                if (searchResult?.url) {
+                  navigateToUrl(searchResult.url)
                 }
-                setSelectedResultId(item?.id || null)
+                setSelectedResultId(searchResult?.id || null)
               }}
             >
               <div className="grid grid-cols-1">

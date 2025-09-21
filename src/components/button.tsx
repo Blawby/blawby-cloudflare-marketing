@@ -9,7 +9,7 @@ type ButtonProps = React.ComponentProps<"button"> &
 export function Button({ className, href, type = "button", ...props }: ButtonProps) {
   const classes = clsx(
     className,
-    "cursor-pointer rounded-full bg-gradient-to-r from-[#11FFBD] to-[#AAFFA9] px-3.5 py-2 text-sm/6 font-semibold text-gray-900 focus:outline-2 focus:outline-offset-2 focus:outline-teal-400 dark:bg-gradient-to-r dark:from-[#11998e] dark:to-[#38ef7d] dark:text-gray-900"
+    "cursor-pointer rounded-full bg-[var(--color-accent-400)] hover:bg-[var(--color-accent-500)] px-3.5 py-2 text-sm/6 font-semibold text-gray-900 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--color-accent-400)] dark:bg-[var(--color-accent-500)] dark:hover:bg-[var(--color-accent-600)] dark:text-gray-900"
   );
 
   if (href) {

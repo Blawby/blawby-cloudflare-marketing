@@ -1,14 +1,10 @@
 .prose {
-  color: var(--color-gray-700);
-  font-size: var(--text-sm);
-  line-height: --spacing(7);
-
-  @variant dark {
-    color: var(--color-gray-300);
-  }
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.75;
 
   *+* {
-    margin-top: --spacing(6);
+    margin-top: 1.5rem;
   }
 
   h1,
@@ -17,138 +13,198 @@
   h4,
   h5,
   h6 {
-    color: var(--color-gray-950);
-
-    @variant dark {
-      color: var(--color-white);
-    }
+    color: #111827;
   }
 
   h1 {
-    font-size: var(--text-3xl);
-    line-height: var(--text-3xl--line-height);
+    font-size: 2rem;
+    line-height: 2.5;
     letter-spacing: -0.025em;
   }
 
   h2 {
-    font-size: var(--text-xl);
-    line-height: --spacing(7);
+    font-size: 1.25rem;
+    line-height: 1.75;
     letter-spacing: -0.025em;
-    font-weight: var(--font-weight-medium);
-    margin-top: --spacing(15);
+    font-weight: 500;
+    margin-top: 3.75rem;
   }
 
   h3 {
-    font-size: var(--text-lg);
-    line-height: --spacing(7);
+    font-size: 1.125rem;
+    line-height: 1.75;
     letter-spacing: -0.025em;
-    font-weight: var(--font-weight-medium);
-    margin-top: --spacing(10);
+    font-weight: 500;
+    margin-top: 2.5rem;
   }
 
   a {
-    color: var(--color-gray-950);
-    font-weight: var(--font-weight-semibold);
+    color: #111827;
+    font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-color: --alpha(var(--color-gray-950) / 25%);
+    text-decoration-color: rgba(17, 24, 39, 0.25);
+  }
 
-    @variant hover {
-      text-decoration-color: --alpha(var(--color-gray-950) / 50%);
-    }
-
-    @variant dark {
-      color: var(--color-white);
-      text-decoration-color: --alpha(var(--color-white) / 25%);
-
-      @variant hover {
-        text-decoration-color: --alpha(var(--color-white) / 50%);
-      }
-    }
+  a:hover {
+    text-decoration-color: rgba(17, 24, 39, 0.5);
   }
 
   ol {
     list-style-type: decimal;
-    margin-left: --spacing(6);
+    margin-left: 1.5rem;
+  }
 
-    li {
-      padding-left: --spacing(2.5);
+  ol li {
+    padding-left: 0.625rem;
+    margin-top: 0;
+  }
 
-      &::marker {
-        color: var(--color-gray-700);
-
-        @variant dark {
-          color: var(--color-gray-400);
-        }
-      }
-    }
+  ol li::marker {
+    color: #374151;
   }
 
   ul {
     list-style-type: disc;
-    margin-left: --spacing(6);
+    margin-left: 1.5rem;
+  }
 
-    li {
-      padding-left: --spacing(2.5);
+  ul li {
+    padding-left: 0.625rem;
+    margin-top: 0;
+  }
 
-      &::marker {
-        color: var(--color-gray-300);
-
-        @variant dark {
-          color: var(--color-gray-700);
-        }
-      }
-    }
+  ul li::marker {
+    color: #d1d5db;
   }
 
   pre {
-    border-radius: var(--radius-lg);
-    padding: --spacing(3) --spacing(4);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
     overflow-x: auto;
+  }
 
-    >code {
-      display: block;
-      font-size: var(--text-sm);
-      line-height: --spacing(5);
-      color: var(--color-white);
-    }
+  pre>code {
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    color: #ffffff;
+  }
 
-    &::selection {
-      background-color: --alpha(var(--color-white) / 15%);
-    }
+  pre::selection {
+    background-color: rgba(255, 255, 255, 0.15);
   }
 
   img {
-    border-radius: var(--radius-lg);
-    border: --alpha(var(--color-gray-950) / 10%) solid 1px;
-
-    @variant dark {
-      border: --alpha(var(--color-white) / 10%) solid 1px;
-    }
+    border-radius: 0.5rem;
+    border: rgba(17, 24, 39, 0.1) solid 1px;
   }
 
   strong {
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-gray-950);
-
-    @variant dark {
-      color: var(--color-white);
-    }
+    font-weight: 600;
+    color: #111827;
   }
 
   code:where(:not(pre > code)) {
-    font-size: var(--text-sm);
-    line-height: var(--text-sm--line-height);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-gray-950);
+    font-size: 0.875rem;
+    line-height: 1.25;
+    font-weight: 500;
+    color: #111827;
+  }
 
-    @variant dark {
-      color: var(--color-white);
-    }
+  code:where(:not(pre > code))::before,
+  code:where(:not(pre > code))::after {
+    content: "`";
+  }
 
-    &::before,
-    &::after {
-      content: "`";
-    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+  }
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  th {
+    font-weight: 600;
+    color: #111827;
+    background-color: #f9fafb;
+  }
+
+  td {
+    color: #374151;
+  }
+
+  tr:hover {
+    background-color: #f9fafb;
+  }
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .prose {
+    color: #d1d5db;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    color: #ffffff;
+  }
+
+  .prose a {
+    color: #ffffff;
+    text-decoration-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .prose a:hover {
+    text-decoration-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .prose ol li::marker {
+    color: #9ca3af;
+  }
+
+  .prose ul li::marker {
+    color: #374151;
+  }
+
+  .prose img {
+    border: rgba(255, 255, 255, 0.1) solid 1px;
+  }
+
+  .prose strong {
+    color: #ffffff;
+  }
+
+  .prose code:where(:not(pre > code)) {
+    color: #ffffff;
+  }
+
+  .prose th,
+  .prose td {
+    border-bottom-color: #374151;
+  }
+
+  .prose th {
+    color: #f3f4f6;
+    background-color: #1f2937;
+  }
+
+  .prose td {
+    color: #d1d5db;
+  }
+
+  .prose tr:hover {
+    background-color: #1f2937;
   }
 }

@@ -1,4 +1,5 @@
 import createMDX from "@next/mdx";
+import remarkGfm from "remark-gfm";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -8,7 +9,7 @@ const __dirname = dirname(__filename);
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [],
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [],
   },
 });
