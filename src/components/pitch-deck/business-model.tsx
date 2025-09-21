@@ -34,7 +34,7 @@ export function BusinessModel() {
         <div className="flex justify-center">
           <PieChart
             id="revenue-breakdown-chart"
-            data={[378000, 96000]}
+            data={[378, 96]}
             labels={["Payment Processing (1.4%)", "SaaS Subscriptions"]}
             colors={["var(--chart-primary)", "var(--chart-secondary)"]}
             height={400}

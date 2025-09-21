@@ -97,7 +97,7 @@ export function BarChart({
             fontWeight: "600",
           },
           formatter: function (val: number) {
-            return "$" + val.toLocaleString();
+            return "$" + val.toLocaleString() + "k";
           },
         },
         tooltip: {
@@ -109,7 +109,7 @@ export function BarChart({
           },
           y: {
             formatter: function (value: number) {
-              return "$" + value.toLocaleString();
+              return "$" + value.toLocaleString() + "k";
             },
           },
         },

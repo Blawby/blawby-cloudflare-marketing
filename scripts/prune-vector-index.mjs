@@ -6,6 +6,7 @@ import path from "path";
 const CHUNKS_PATH = path.resolve(process.cwd(), "lesson-chunks.json");
 const MANIFEST_PATH = path.resolve(process.cwd(), "vector-manifest.json");
 const VECTORIZE_API = "https://api.cloudflare.com/client/v4/accounts";
+const VECTORIZE_VERSION = "v2";
 
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
 const API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
@@ -45,7 +46,7 @@ async function deleteVectors(staleIds) {
   const batchSize = 100;
   for (let i = 0; i < staleIds.length; i += batchSize) {
     const batch = staleIds.slice(i, i + batchSize);
-    const url = `${VECTORIZE_API}/${ACCOUNT_ID}/vectorize/v2/indexes/${INDEX_NAME}/delete_by_ids`;
+    const url = `${VECTORIZE_API}/${ACCOUNT_ID}/vectorize/${VECTORIZE_VERSION}/indexes/${INDEX_NAME}/delete_by_ids`;
     console.log("Deleting batch:", url, batch);
     const resp = await fetch(url, {
       method: "POST",

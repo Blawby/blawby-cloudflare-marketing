@@ -145,6 +145,11 @@ export function PieChart({
           style: {
             fontFamily: "Inter, sans-serif",
           },
+          y: {
+            formatter: function (val: number) {
+              return "$" + val.toLocaleString() + "k";
+            },
+          },
         },
         responsive: [
           {

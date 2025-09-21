@@ -57,9 +57,16 @@ export function AreaChart({
     }
 
     let chart: ApexCharts | undefined;
+    let mounted = true;
 
     const loadApexCharts = async () => {
-      const ApexCharts = (await import("apexcharts")).default;
+      const apexChartsPromise = import("apexcharts");
+      const ApexCharts = (await apexChartsPromise).default;
+
+      // Check if component is still mounted after async import
+      if (!mounted || !chartRef.current) {
+        return;
+      }
 
       const textColor = isDark ? "#ffffff" : "#111827";
 
@@ -172,6 +179,11 @@ export function AreaChart({
         ],
       };
 
+      // Final check before rendering
+      if (!mounted || !chartRef.current) {
+        return;
+      }
+
       chart = new ApexCharts(chartRef.current, options);
       chart.render();
     };
@@ -179,6 +191,7 @@ export function AreaChart({
     loadApexCharts();
 
     return () => {
+      mounted = false;
       if (chart) {
         chart.destroy();
       }
