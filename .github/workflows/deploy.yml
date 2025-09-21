@@ -30,9 +30,6 @@ jobs:
       - name: Build Next.js site
         run: pnpm run build
 
-      - name: Generate sitemap
-        run: pnpm exec next-sitemap
-
       - name: Chunk MDX lessons for vector search
         if: |
           ${{
