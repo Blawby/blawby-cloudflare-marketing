@@ -23,17 +23,17 @@ export function Financials() {
             {
               name: "Revenue",
               data: [173, 474, 800, 1200, 1600],
-              color: "var(--color-accent-400)",
+              color: "var(--chart-primary)",
             },
             {
               name: "Annual Burn (OpEx)",
               data: [220, 260, 300, 360, 420],
-              color: "var(--color-accent-600)",
+              color: "var(--chart-danger)",
             },
             {
               name: "Cash Balance",
               data: [84, 108, 288, 648, 1188],
-              color: "var(--color-accent-300)",
+              color: "var(--chart-success)",
             },
           ]}
           categories={["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"]}
@@ -57,12 +57,12 @@ export function Financials() {
             {
               name: "Payment Revenue (1.4%)",
               data: [134.4, 378],
-              color: "var(--color-accent-400)",
+              color: "var(--chart-primary)",
             },
             {
               name: "SaaS Revenue",
               data: [38.4, 96],
-              color: "var(--color-accent-300)",
+              color: "var(--chart-secondary)",
             },
           ]}
           categories={["Year 1", "Year 2"]}
@@ -92,12 +92,12 @@ export function Financials() {
               "Contingency",
             ]}
             colors={[
-              "var(--color-accent-400)",
-              "var(--color-accent-200)",
-              "var(--color-accent-300)",
-              "var(--color-accent-600)",
-              "var(--color-accent-500)",
-              "var(--color-accent-700)",
+              "var(--chart-primary)",    // Key Personnel
+              "var(--chart-secondary)",  // Growth & Acquisition
+              "var(--chart-success)",    // Product Development
+              "var(--chart-info)",       // Infrastructure & Tools
+              "var(--chart-warning)",    // Admin & Legal
+              "var(--chart-purple)",     // Contingency
             ]}
             height={400}
           />

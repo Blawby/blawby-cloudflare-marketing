@@ -29,6 +29,28 @@
   --color-accent-gradient-from-dark: var(--color-accent-600);
   --color-accent-gradient-to-dark: var(--color-accent-400);
 
+  /* Chart colors - high contrast, accessible palette */
+  --chart-primary: var(--color-accent-400);
+  /* Brand gold for primary metrics */
+  --chart-secondary: #3b82f6;
+  /* Blue for secondary data */
+  --chart-success: #10b981;
+  /* Green for positive metrics */
+  --chart-warning: #f59e0b;
+  /* Amber for warnings */
+  --chart-danger: #ef4444;
+  /* Red for negative/costs */
+  --chart-info: #06b6d4;
+  /* Cyan for informational */
+  --chart-purple: #8b5cf6;
+  /* Purple for variety */
+  --chart-pink: #ec4899;
+  /* Pink for highlights */
+  --chart-orange: #f97316;
+  /* Orange for additional variety */
+  --chart-teal: #14b8a6;
+  /* Teal for supporting data */
+
   --text-xs: 0.75rem;
   /* 12px */
   --text-xs--line-height: calc(1 / 0.75);

@@ -68,12 +68,12 @@ export function CostComparisonChart({
         {
           name: "Manual Process Cost (Lost Revenue)",
           data: [450, 450, 450], // Stays flat at $450k/year
-          color: "#ef4444", // Red color for cost/loss
+          color: "var(--chart-danger)", // Red color for cost/loss
         },
         {
           name: "With Blawby AI (Remaining Cost)",
           data: [315, 225, 135], // Decreasing cost as AI efficiency improves
-          color: "#10b981", // Green color for savings
+          color: "var(--chart-success)", // Green color for savings
         },
       ];
 
@@ -182,14 +182,14 @@ export function CostComparisonChart({
               y: 135,
               marker: {
                 size: 8,
-                fillColor: "#10b981",
+                fillColor: "var(--chart-success)",
                 strokeColor: "#ffffff",
                 strokeWidth: 2,
               },
               label: {
                 text: "70% Cost Reduction",
                 style: {
-                  background: "#10b981",
+                  background: "var(--chart-success)",
                   color: "#ffffff",
                   fontSize: "12px",
                   fontFamily: "Inter, sans-serif",

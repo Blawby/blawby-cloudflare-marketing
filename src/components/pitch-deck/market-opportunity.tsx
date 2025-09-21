@@ -28,9 +28,9 @@ export function MarketOpportunity() {
           <FunnelChart
             id="tam-sam-som-funnel"
             series={[
-              { name: "TAM", value: 437, color: "var(--color-accent-400)" },
-              { name: "SAM", value: 30.6, color: "var(--color-accent-300)" },
-              { name: "SOM", value: 0.5, color: "var(--color-accent-200)" },
+              { name: "TAM", value: 437, color: "var(--chart-primary)" },
+              { name: "SAM", value: 30.6, color: "var(--chart-secondary)" },
+              { name: "SOM", value: 0.5, color: "var(--chart-success)" },
             ]}
             height={400}
           />
@@ -58,12 +58,12 @@ export function MarketOpportunity() {
             {
               name: "Status Quo",
               data: [100, 101, 102],
-              color: "var(--color-accent-600)",
+              color: "var(--chart-danger)",
             },
             {
               name: "With Blawby (Revenue Recaptured)",
               data: [100, 109, 121],
-              color: "var(--color-accent-500)",
+              color: "var(--chart-success)",
             },
           ]}
           categories={["Year 1", "Year 2", "Year 3"]}

@@ -13,7 +13,14 @@ interface PieChartProps {
 export function PieChart({
   data,
   labels,
-  colors = ["#11FFBD", "#16BDCA", "#AAFFA9", "#11998e", "#38ef7d", "#1C64F2"],
+  colors = [
+    "var(--chart-primary)",    // Brand gold
+    "var(--chart-secondary)",  // Blue
+    "var(--chart-success)",    // Green
+    "var(--chart-info)",       // Cyan
+    "var(--chart-purple)",     // Purple
+    "var(--chart-orange)",     // Orange
+  ],
   height = 420,
   id,
 }: PieChartProps) {

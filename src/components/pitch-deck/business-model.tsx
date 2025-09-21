@@ -36,7 +36,7 @@ export function BusinessModel() {
             id="revenue-breakdown-chart"
             data={[378000, 96000]}
             labels={["Payment Processing (1.4%)", "SaaS Subscriptions"]}
-            colors={["var(--color-accent-400)", "var(--color-accent-300)"]}
+            colors={["var(--chart-primary)", "var(--chart-secondary)"]}
             height={400}
           />
         </div>

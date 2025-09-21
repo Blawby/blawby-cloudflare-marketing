@@ -49,7 +49,7 @@ export function Team() {
           id="gitesh-senior-software-engineer"
           className="mb-4 text-xl font-semibold text-gray-900 dark:text-white"
         >
-          Gitesh – Senior Software Engineer
+          Gitesh – Lead Software Engineer
         </h3>
         <ul className="space-y-3 text-lg text-gray-700 dark:text-gray-300">
           <li>1+ year dedicated, unpaid technical leadership</li>
