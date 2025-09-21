@@ -1,4 +1,5 @@
 import { Button } from "@/components/button";
+import { CTASection } from "@/components/cta-section";
 import { Logo } from "@/components/logo";
 import {
   BusinessModel,
@@ -12,6 +13,7 @@ import {
   Solution,
   Team,
   Traction,
+  Vision,
   WhyBlawby,
 } from "@/components/pitch-deck";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
@@ -112,8 +114,16 @@ export default function PitchDeckPage() {
                       <GoToMarket />
                       <Financials />
                       <InvestmentAsk />
+                      <Vision />
                       <WhyBlawby />
                     </div>
+                    
+                    <CTASection
+                      title="Join Us"
+                      description="We're raising $200k pre-seed to become the OS for small law firms. Early traction proves the demand — now we're scaling."
+                      buttonText="Get Investment Information"
+                      buttonHref="/help"
+                    />
                   </div>
                   <div className="hidden w-66 lg:block">
                     <TableOfContents contentId="content" />

@@ -1,5 +1,6 @@
 import { BarChart } from "@/components/charts/bar-chart";
 import { PieChart } from "@/components/charts/pie-chart";
+import { LineChart } from "@/components/charts/line-chart";
 
 export function Financials() {
   return (
@@ -11,34 +12,39 @@ export function Financials() {
         Financials & Use of Funds
       </h2>
 
-      <ul className="mb-8 space-y-3 text-lg text-gray-700 dark:text-gray-300">
-        <li>
-          <strong>Projected Burn:</strong> ~$145k annually
-        </li>
-        <li>
-          <strong>Revenue Ramp:</strong> $173k (Yr 1) → $474k (Yr 2)
-        </li>
-        <li>
-          <strong>Revenue Mix:</strong> SaaS + 1.4% payments
-        </li>
-        <li>
-          <strong>Runway:</strong> $200k provides ~16 months runway to validate recurring revenue with early firms
-        </li>
-      </ul>
-
+      {/* Combined Financial Projections Chart */}
       <div className="mb-8">
-        <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
-          Use of Funds ($200k raise):
-        </h3>
-        <ul className="space-y-3 text-lg text-gray-700 dark:text-gray-300">
-          <li>37% Key Personnel</li>
-          <li>25% Growth & Acquisition</li>
-          <li>15% Product Development</li>
-          <li>10% Infrastructure & Tools</li>
-          <li>8% Admin & Legal</li>
-          <li>5% Contingency</li>
-        </ul>
+        <h4 className="mb-4 text-2xl font-semibold text-gray-950 dark:text-white">
+          Financial Projections & Runway Analysis
+        </h4>
+        <LineChart
+          id="financial-projections-chart"
+          series={[
+            {
+              name: "Revenue",
+              data: [173, 474, 800, 1200, 1600],
+              color: "var(--color-accent-400)",
+            },
+            {
+              name: "Annual Burn (OpEx)",
+              data: [220, 260, 300, 360, 420],
+              color: "var(--color-accent-600)",
+            },
+            {
+              name: "Cash Balance",
+              data: [84, 108, 288, 648, 1188],
+              color: "var(--color-accent-300)",
+            },
+          ]}
+          categories={["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"]}
+          height={380}
+          yAxisLabel="Amount ($k)"
+        />
+        <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
+          Revenue grows 174% in Year 2, reaching $1.6M by Year 5. Controlled burn scaling with team growth ensures 16+ months runway and positive cash flow from Year 3.
+        </p>
       </div>
+
 
       {/* Revenue Sources Bar Chart */}
       <div className="mt-8">
@@ -50,12 +56,12 @@ export function Financials() {
           series={[
             {
               name: "Payment Revenue (1.4%)",
-              data: [134400, 378000],
+              data: [134.4, 378],
               color: "var(--color-accent-400)",
             },
             {
               name: "SaaS Revenue",
-              data: [38400, 96000],
+              data: [38.4, 96],
               color: "var(--color-accent-300)",
             },
           ]}
@@ -63,6 +69,9 @@ export function Financials() {
           height={350}
           stacked={true}
         />
+        <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
+          Payment processing drives 78% of revenue in Year 1, scaling to 80% by Year 2. SaaS subscriptions provide predictable recurring revenue foundation.
+        </p>
       </div>
 
       {/* Use of Funds Pie Chart */}

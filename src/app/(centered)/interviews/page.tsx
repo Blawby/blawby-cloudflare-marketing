@@ -34,7 +34,7 @@ export default async function InterviewsPage() {
       <h1 className="mt-10 text-3xl/10 font-normal tracking-tight text-gray-950 sm:mt-14 dark:text-white">
         Interviews
       </h1>
-      <p className="body-text mt-6 max-w-xl text-base/7">
+      <p className="text-base mt-6 max-w-xl text-base/7">
         Explore interviews with industry experts and thought leaders.
       </p>
       <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 pb-32 sm:grid-cols-2 xl:grid-cols-3">

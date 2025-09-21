@@ -349,7 +349,7 @@ export default function CommandPalette() {
                   !isSearching && (
                     <div className="px-6 py-14 text-center">
                       <ArticleIcon className="mx-auto h-6 w-6 fill-gray-950 stroke-gray-950/40 dark:fill-white dark:stroke-white/40" />
-                      <p className="body-text mt-4 text-sm text-gray-700 dark:text-gray-300">
+                      <p className="text-base mt-4 text-sm text-gray-700 dark:text-gray-300">
                         We couldn't find any matches for "{query}". Please try a
                         different search term.
                       </p>

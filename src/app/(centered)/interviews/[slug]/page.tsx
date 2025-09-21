@@ -153,7 +153,7 @@ export default async function Page({
                 {interview.name}
               </h1>
             </hgroup>
-            <p className="body-text text-base/7">{interview.intro}</p>
+            <p className="text-base text-base/7">{interview.intro}</p>
             <div className="flex items-center gap-x-2 text-sm/7 font-semibold text-gray-950 dark:text-white">
               <ClockIcon className="stroke-gray-950/40 dark:stroke-white/40" />
               <span>{formatDuration(interview.video.duration)}</span>

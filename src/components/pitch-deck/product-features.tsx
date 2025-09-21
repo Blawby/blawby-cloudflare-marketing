@@ -1,4 +1,11 @@
 import { ImageGallery } from "@/components/image-gallery";
+import { Button } from "@/components/button";
+import {
+  CreditCardIcon,
+  ChatBubbleLeftRightIcon,
+  ExclamationTriangleIcon,
+  Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
 
 export function ProductFeatures() {
   return (
@@ -10,40 +17,55 @@ export function ProductFeatures() {
         Product Features
       </h2>
       <ul className="space-y-4 text-lg text-gray-700 dark:text-gray-300">
-        <li>
-          <strong>Payments & Billing:</strong> Seamless invoicing, secure client
-          payment links, and highly competitive 1.4% transaction fees with{" "}
-          <a
-            href="/compliance/iolta-compliance"
-            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-          >
-            full IOLTA compliance
-          </a>
-          .
+        <li className="flex items-start gap-3">
+          <CreditCardIcon className="h-6 w-6 shrink-0 text-gray-700 dark:text-gray-300 " />
+          <div>
+            <strong>Payments & Billing:</strong> Seamless invoicing, secure client
+            payment links, and highly competitive 1.4% transaction fees with{" "}
+            <a
+              href="/compliance/iolta-compliance"
+              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              full IOLTA compliance
+            </a>
+            .
+          </div>
         </li>
-        <li>
-          <strong>AI Intake Agent:</strong> Intelligent, conversational intake
-          capturing critical legal context, classifying matters, and
-          facilitating immediate fee capture.
+        <li className="flex items-start gap-3">
+          <ChatBubbleLeftRightIcon className="h-6 w-6 shrink-0 text-gray-700 dark:text-gray-300 " />
+          <div>
+            <strong>AI Intake Agent:</strong> Intelligent, conversational intake
+            capturing critical legal context, classifying matters, and
+            facilitating immediate fee capture.
+          </div>
         </li>
-        <li>
-          <strong>Automated Escalation:</strong> Proactively flags sensitive or
-          complex matters for immediate human review, ensuring compliance and
-          quality.
+        <li className="flex items-start gap-3">
+          <ExclamationTriangleIcon className="h-6 w-6 shrink-0 text-gray-700 dark:text-gray-300 " />
+          <div>
+            <strong>Automated Escalation:</strong> Proactively flags sensitive or
+            complex matters for immediate human review, ensuring compliance and
+            quality.
+          </div>
         </li>
-        <li>
-          <strong>Configurable Admin Panel:</strong> Empowering firms to
-          customize services, pricing, jurisdictions, and branding with
-          unparalleled ease and speed.
+        <li className="flex items-start gap-3">
+          <Cog6ToothIcon className="h-6 w-6 shrink-0 text-gray-700 dark:text-gray-300 " />
+          <div>
+            <strong>Configurable Admin Panel:</strong> Empowering firms to
+            customize services, pricing, jurisdictions, and branding with
+            unparalleled ease and speed.
+          </div>
         </li>
       </ul>
 
       <div className="mt-6">
-        <a
+        <a 
           href="https://github.com/Blawby/preact-cloudflare-intake-chatbot/"
-          className="font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Open‑Source GitHub
+          <Button>
+            Open‑Source GitHub
+          </Button>
         </a>
       </div>
 

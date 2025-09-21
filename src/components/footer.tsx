@@ -6,11 +6,11 @@ import type React from "react";
 
 export function Footer() {
   return (
-    <footer className="body-text border-t border-gray-950/10 bg-white py-8 text-sm text-gray-950 dark:border-white/10 dark:bg-gray-950 dark:text-white">
+    <footer className="text-base border-t border-gray-950/10 bg-white py-8 text-sm text-gray-950 dark:border-white/10 dark:bg-gray-950 dark:text-white">
       <div className="mx-auto flex flex-col items-start gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 xl:ml-[var(--container-2xs)] xl:max-w-none xl:px-12">
         <div className="flex items-center gap-3">
           <Logo height={28} width={110} />
-          <span className="body-text hidden text-gray-700 sm:inline dark:text-gray-400">
+          <span className="text-base hidden text-gray-700 sm:inline dark:text-gray-400">
             &copy; {new Date().getFullYear()} Blawby
           </span>
         </div>
@@ -70,7 +70,7 @@ export function Footer() {
             <GitHubIcon />
           </a>
         </nav>
-        <span className="body-text text-gray-700 sm:hidden dark:text-gray-400">
+        <span className="text-base text-gray-700 sm:hidden dark:text-gray-400">
           &copy; {new Date().getFullYear()} Blawby
         </span>
       </div>

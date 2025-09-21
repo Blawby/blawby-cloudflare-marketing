@@ -148,7 +148,7 @@ export default async function Page() {
                 account compliance with industry-leading security and ease of
                 use.
               </p>
-              <p className="body-text mt-4 text-base/7 text-pretty"></p>
+              <p className="text-base mt-4 text-base/7 text-pretty"></p>
               <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm/7 font-semibold text-gray-950 sm:gap-3 dark:text-white">
                 <div className="flex items-center gap-1.5">
                   <BookIcon className="stroke-gray-950/40 dark:stroke-white/40" />
@@ -172,7 +172,6 @@ export default async function Page() {
               <div className="mt-10">
                 <Button
                   href={`/${modules[0].lessons[0].id}`}
-                  className="inline-flex items-center gap-x-2"
                 >
                   <PlayIcon className="fill-gray-900" />
                   Start accepting payments with Blawby
@@ -188,14 +187,14 @@ export default async function Page() {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
                   Payments Built for Lawyers Who Value Their Time
                 </h2>
-                <p className="body-text mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   Legal professionals didn't go to law school to spend hours
                   sending invoices, chasing payments, or navigating complex
                   billing systems. That's why we built Blawby—a fast, secure,
                   and effortless way for attorneys and law firms to collect
                   payments online.
                 </p>
-                <p className="body-text mt-4 text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   With Blawby, you get a reusable, secure payment link that
                   works for every client. Just update the amount in the URL,
                   send the link, and get paid. No logins, no custom software, no
@@ -205,11 +204,11 @@ export default async function Page() {
                 <h3 className="mt-10 text-xl font-semibold text-gray-950 dark:text-white">
                   Send Payment Requests Instantly—Without Logging In
                 </h3>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   Traditional legal billing software can be bloated and
                   time-consuming. Blawby simplifies everything:
                 </p>
-                <ul className="body-text mt-2 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                <ul className="text-base mt-2 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
                   <li>
                     Share your link with any client, anytime—via email, text, or
                     chat.
@@ -222,7 +221,7 @@ export default async function Page() {
                     No invoice generation, no dashboard navigation, no delay.
                   </li>
                 </ul>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   Whether you're billing for a flat-fee consultation or hourly
                   work, Blawby keeps it simple and secure.
                 </p>
@@ -230,7 +229,7 @@ export default async function Page() {
                 <h3 className="mt-10 text-xl font-semibold text-gray-950 dark:text-white">
                   No Setup. No Code. No Problem.
                 </h3>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   You don't need Zapier. You don't need APIs. You don't need to
                   be a developer. Blawby works out of the box with end-to-end
                   encryption and compliance built for legal practices. No manual
@@ -238,7 +237,7 @@ export default async function Page() {
                   onboarding so you can start sending payment links within
                   minutes.
                 </p>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   You're busy enough. We make it easy to start, stay secure, and
                   scale with your practice.
                 </p>
@@ -246,7 +245,7 @@ export default async function Page() {
                 <h3 className="mt-10 text-xl font-semibold text-gray-950 dark:text-white">
                   More Time for Clients, Less Time on Admin
                 </h3>
-                <ul className="body-text mt-4 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                <ul className="text-base mt-4 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
                   <li>
                     Lawyers using Blawby report saving hours every week by
                     eliminating repetitive billing tasks. That's time you can
@@ -267,13 +266,13 @@ export default async function Page() {
                 <h3 className="mt-10 text-xl font-semibold text-gray-950 dark:text-white">
                   Built for Legal. Trusted by Professionals.
                 </h3>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   Whether you're a solo attorney, small firm, or growing legal
                   team, Blawby was designed for the unique needs of the legal
                   industry. We understand how important it is to protect client
                   data, operate ethically, and keep billing crystal clear.
                 </p>
-                <ul className="body-text mt-2 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                <ul className="text-base mt-2 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
                   <li>
                     Secure by design with PCI compliance and data privacy best
                     practices.
@@ -300,14 +299,14 @@ export default async function Page() {
                 <h2 className="text-2xl font-bold tracking-tight text-gray-950 sm:text-3xl dark:text-white">
                   IOLTA Compliance: Simplified for Modern Legal Practices
                 </h2>
-                <p className="body-text mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   Trust accounts are fundamental to legal ethics. Whether you're
                   holding client retainers, court filing fees, or settlement
                   funds, the rules are clear: those funds must be handled with
                   care and kept separate from operating funds. Mistakes, even
                   honest ones, can carry serious consequences.
                 </p>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   Blawby is designed to make this easier. Our platform routes
                   100% of every client payment to your connected trust account.
                   We never deduct fees from those funds. Instead, processing and
@@ -318,7 +317,7 @@ export default async function Page() {
                 <h3 className="mt-10 text-xl font-semibold text-gray-950 dark:text-white">
                   How Blawby Helps
                 </h3>
-                <ol className="body-text mt-4 list-inside list-decimal space-y-2 text-gray-700 dark:text-gray-300">
+                <ol className="text-base mt-4 list-inside list-decimal space-y-2 text-gray-700 dark:text-gray-300">
                   <li>
                     The entire payment amount is deposited into your connected
                     trust account.
@@ -329,7 +328,7 @@ export default async function Page() {
                     linked to your firm's operating account.
                   </li>
                 </ol>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   This flow ensures that client funds remain whole, and
                   compliance isn't left to manual tracking or trust in the wrong
                   software configuration.
@@ -337,7 +336,7 @@ export default async function Page() {
                 <h3 className="mt-10 text-xl font-semibold text-gray-950 dark:text-white">
                   Why Firms Use Blawby
                 </h3>
-                <ul className="body-text mt-4 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                <ul className="text-base mt-4 list-inside list-disc space-y-2 text-gray-700 dark:text-gray-300">
                   <li>No fees deducted from trust</li>
                   <li>No complex multi-account setup</li>
                   <li>
@@ -346,7 +345,7 @@ export default async function Page() {
                   </li>
                   <li>Transparent monthly billing structure</li>
                 </ul>
-                <p className="body-text mt-4 text-base text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 text-base text-gray-700 dark:text-gray-300">
                   We're not reinventing legal payments—we're refining the flow
                   so it aligns with compliance.
                 </p>
@@ -356,7 +355,7 @@ export default async function Page() {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
                   Simple no-tricks pricing
                 </h2>
-                <p className="body-text mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   Access a complete payments platform with simple, pay-as-you-go
                   pricing. No setup fees, or hidden fees.
                 </p>
@@ -369,7 +368,7 @@ export default async function Page() {
                 <h2 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white">
                   Explore Blawby Documentation & Lessons
                 </h2>
-                <p className="body-text mt-4 mb-10 max-w-2xl text-lg text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 mb-10 max-w-2xl text-lg text-gray-700 dark:text-gray-300">
                   Dive into our comprehensive guides and video lessons to master
                   compliant payments, client management, and more. Whether
                   you're just getting started or looking to deepen your

@@ -88,7 +88,7 @@ export default function HelpPage() {
               <h1 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">
                 Help & Support
               </h1>
-              <p className="body-text mt-7 max-w-lg text-base/7 text-pretty text-gray-700 dark:text-gray-300">
+              <p className="text-base mt-7 max-w-lg text-base/7 text-pretty text-gray-700 dark:text-gray-300">
                 Need assistance with Blawby? Start a live chat with our AI
                 assistant for instant answers about payments, invoicing,
                 compliance, and more. For complex issues, you can create a
@@ -109,7 +109,7 @@ export default function HelpPage() {
                 allow="clipboard-write; microphone; camera"
               />
               <div className="flex justify-center">
-                <p className="body-text mt-4 max-w-lg text-center text-xs text-pretty text-gray-700 dark:text-gray-300">
+                <p className="text-base mt-4 max-w-lg text-center text-xs text-pretty text-gray-700 dark:text-gray-300">
                   Blawby AI can make mistakes. Check important info.
                 </p>
               </div>

@@ -43,45 +43,33 @@ export function MarketOpportunity() {
         </div>
       </div>
 
-      {/* Why Now: Dual Adoption vs Manual Processes */}
+      {/* Why Now: Revenue Impact */}
       <div className="mt-8">
-        <h3 className="mb-4 text-2xl font-semibold text-gray-950 dark:text-white">
-          Why Now: Legal Tech Adoption vs Manual Processes
+        <h3 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
+          Revenue Impact — With Blawby vs Status Quo
         </h3>
+        <ul className="mb-6 space-y-3 text-lg text-gray-700 dark:text-gray-300">
+          <li><strong>With Blawby:</strong> small firms recover <strong>~21% more net revenue by Year 3</strong> vs status quo.</li>
+          <li><strong>For a 5-lawyer firm:</strong> that's <strong>$315k+ per year recaptured</strong> instead of lost to admin.</li>
+        </ul>
         <LineChart
           id="adoption-vs-manual"
           series={[
             {
-              name: "Legal Tech/AI Adoption (%)",
-              data: [15, 18, 22, 28, 35, 42, 50, 58, 66, 74],
-              color: "var(--color-accent-500)",
-            },
-            {
-              name: "Manual/Legacy Processes (%)",
-              data: [85, 80, 75, 68, 62, 55, 48, 42, 35, 28],
+              name: "Status Quo",
+              data: [100, 101, 102],
               color: "var(--color-accent-600)",
             },
+            {
+              name: "With Blawby (Revenue Recaptured)",
+              data: [100, 109, 121],
+              color: "var(--color-accent-500)",
+            },
           ]}
-          categories={[
-            "2020",
-            "2021",
-            "2022",
-            "2023",
-            "2024",
-            "2025",
-            "2026",
-            "2027",
-            "2028",
-            "2029",
-          ]}
+          categories={["Year 1", "Year 2", "Year 3"]}
           height={300}
+          yAxisLabel="Index (100 = current net revenue)"
         />
-        <div className="mt-4 text-center text-base text-gray-600 dark:text-gray-400">
-          <p>
-            <strong>Market Shift:</strong> AI adoption rising • Manual processes
-            declining • 10%+ CAGR
-          </p>
-        </div>
       </div>
     </section>
   );

@@ -10,7 +10,7 @@ export function LogoCloud() {
             <h2 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">
               Integrate with existing workflows
             </h2>
-            <p className="body-text mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+            <p className="text-base mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
               Automatically recognize and defer invoicing revenue within Blawby.
               Sync your data in real time to NetSuite, Xero, QuickBooks, and
               other accounting and ERP systems with apps from the App

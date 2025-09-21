@@ -53,7 +53,7 @@ export function Book({
         <p className="text-sm/6 font-semibold text-gray-950 dark:text-white">
           {title}
         </p>
-        <p className="body-text text-sm/6">{author}</p>
+        <p className="text-base text-sm/6">{author}</p>
       </div>
     </a>
   );

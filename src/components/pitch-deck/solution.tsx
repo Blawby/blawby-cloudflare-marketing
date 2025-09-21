@@ -1,4 +1,5 @@
 import { PlayIcon } from "@/icons/play-icon";
+import { Button } from "@/components/button";
 
 export function Solution() {
   return (
@@ -23,12 +24,15 @@ export function Solution() {
       </p>
 
       <div className="mt-6">
-        <a
+        <a 
           href="https://ai.blawby.com/?teamId=north-carolina-legal-services&position=inline"
-          className="inline-flex items-center gap-x-2 font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <PlayIcon className="fill-current" />
-          Live AI Intake Demo
+          <Button className="inline-flex items-center gap-x-2">
+            <PlayIcon className="fill-gray-900" />
+            Live AI Intake Demo
+          </Button>
         </a>
       </div>
     </section>
