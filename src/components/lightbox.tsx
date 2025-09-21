@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import { clsx } from "clsx";
+import clsx from "clsx";
 import Image from "next/image";
 import type React from "react";
 import { useState } from "react";
@@ -37,9 +37,11 @@ export function Lightbox({
   return (
     <>
       {/* Clickable trigger */}
-      <div 
-        className={clsx("cursor-pointer", className)}
+      <button 
+        type="button"
+        className={clsx("cursor-pointer bg-transparent border-none p-0", className)}
         onClick={handleOpen}
+        aria-label={children ? `Open lightbox for ${alt}` : `View ${alt} in lightbox`}
       >
         {children || (
           <Image
@@ -50,44 +52,45 @@ export function Lightbox({
             className="block object-cover rounded-lg border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow"
           />
         )}
-      </div>
+      </button>
 
       {/* Lightbox modal */}
-      <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
-        <DialogBackdrop className="fixed inset-0 bg-black/80 backdrop-blur-sm" />
-        
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="relative max-w-7xl max-h-full transform transition-all">
-            {/* Close button */}
-            <button
-              onClick={handleClose}
-              className="absolute -top-12 right-0 z-10 p-2 text-white hover:text-gray-300 transition-colors"
-              aria-label="Close lightbox"
-            >
-              <CloseIcon className="h-6 w-6 stroke-white" />
-            </button>
+      {isOpen && (
+        <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
+          <DialogBackdrop className="fixed inset-0 bg-black/80 backdrop-blur-sm" />
+          
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <DialogPanel className="relative max-w-7xl max-h-full transform transition-all">
+              {/* Close button */}
+              <button
+                onClick={handleClose}
+                className="absolute -top-12 right-0 z-10 p-2 text-white hover:text-gray-300 transition-colors"
+                aria-label="Close lightbox"
+              >
+                <CloseIcon className="h-6 w-6 stroke-white" />
+              </button>
 
-            {/* Image container */}
-            <div className="relative">
-              <Image
-                src={src}
-                alt={alt}
-                width={1200}
-                height={800}
-                className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-                priority
-              />
-              
-              {/* Caption */}
-              {caption && (
-                <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-4 rounded-b-lg">
-                  <p className="text-sm text-center">{caption}</p>
-                </div>
-              )}
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
+              {/* Image container */}
+              <div className="relative">
+                <Image
+                  src={src}
+                  alt={alt}
+                  width={1200}
+                  height={800}
+                  className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+                />
+                
+                {/* Caption */}
+                {caption && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-4 rounded-b-lg">
+                    <p className="text-sm text-center">{caption}</p>
+                  </div>
+                )}
+              </div>
+            </DialogPanel>
+          </div>
+        </Dialog>
+      )}
     </>
   );
 }

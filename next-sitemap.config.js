@@ -156,7 +156,7 @@ function generateAllUrls() {
   });
   
   // Add static pages
-  const staticPages = ['/pricing', '/help', '/nonprofit-commitment', '/pitch-deck', '/lightbox-test'];
+  const staticPages = ['/pricing', '/help', '/nonprofit-commitment', '/pitch-deck'];
   for (const page of staticPages) {
     const pageName = page.slice(1);
     const filePath = path.join(__dirname, 'src/app/(sidebar)', pageName, 'page.tsx');

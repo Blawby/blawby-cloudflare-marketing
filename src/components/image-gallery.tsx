@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Lightbox } from "./lightbox";
-import { clsx } from "clsx";
+import clsx from "clsx";
 
 interface GalleryImage {
   src: string;

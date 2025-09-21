@@ -107,8 +107,10 @@ export function BarChart({
           style: {
             fontFamily: "Inter, sans-serif",
           },
-          formatter: function (value: number) {
-            return "$" + value.toLocaleString();
+          y: {
+            formatter: function (value: number) {
+              return "$" + value.toLocaleString();
+            },
           },
         },
         xaxis: {
