@@ -3,11 +3,54 @@
 
 @theme inline {
   --font-sans: var(--font-inter);
-  --font-sans--font-feature-settings: "cv11";
   --font-mono: var(--font-geist-mono);
 }
 
 @theme {
+  /* Accent colors (gold theme) */
+  --color-accent-50: #fefce8;
+  --color-accent-100: #fef9c3;
+  --color-accent-200: #fef08a;
+  --color-accent-300: #fde047;
+  --color-accent-400: #facc15;
+  --color-accent-500: #d4af37;
+  --color-accent-600: #ca8a04;
+  --color-accent-700: #a16207;
+  --color-accent-800: #854d0e;
+  --color-accent-900: #713f12;
+  --color-accent-950: #422006;
+
+  /* Accent color aliases for easier use */
+  --color-accent: var(--color-accent-500);
+  --color-accent-light: var(--color-accent-300);
+  --color-accent-dark: var(--color-accent-700);
+  --color-accent-gradient-from: var(--color-accent-200);
+  --color-accent-gradient-to: var(--color-accent-300);
+  --color-accent-gradient-from-dark: var(--color-accent-600);
+  --color-accent-gradient-to-dark: var(--color-accent-400);
+
+  /* Chart colors - high contrast, accessible palette */
+  --chart-primary: var(--color-accent-400);
+  /* Brand gold for primary metrics */
+  --chart-secondary: #3b82f6;
+  /* Blue for secondary data */
+  --chart-success: #10b981;
+  /* Green for positive metrics */
+  --chart-warning: #f59e0b;
+  /* Amber for warnings */
+  --chart-danger: #ef4444;
+  /* Red for negative/costs */
+  --chart-info: #06b6d4;
+  /* Cyan for informational */
+  --chart-purple: #8b5cf6;
+  /* Purple for variety */
+  --chart-pink: #ec4899;
+  /* Pink for highlights */
+  --chart-orange: #f97316;
+  /* Orange for additional variety */
+  --chart-teal: #14b8a6;
+  /* Teal for supporting data */
+
   --text-xs: 0.75rem;
   /* 12px */
   --text-xs--line-height: calc(1 / 0.75);

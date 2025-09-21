@@ -14,7 +14,7 @@ export function PageSection({
     >
       <div className="col-span-full sm:col-span-1">
         <div className="-mt-px inline-flex border-t border-gray-950 pt-px dark:border-white">
-          <div className="pt-4 text-sm/7 font-semibold body-text sm:pt-10">
+          <div className="text-base pt-4 text-sm/7 font-semibold sm:pt-10">
             {title}
           </div>
         </div>

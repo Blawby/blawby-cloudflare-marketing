@@ -1,9 +1,12 @@
 import fs from "fs";
 import path from "path";
-import { parseHowToStepsFromMarkdown, getHowToSchema } from "../src/utils/howto-schema";
+import {
+  getHowToSchema,
+  parseHowToStepsFromMarkdown,
+} from "../src/utils/howto-schema";
 
 const lessonsDir = path.join(process.cwd(), "src/data/lessons");
-const files = fs.readdirSync(lessonsDir).filter(f => f.endsWith(".mdx"));
+const files = fs.readdirSync(lessonsDir).filter((f) => f.endsWith(".mdx"));
 
 let allValid = true;
 
@@ -19,7 +22,10 @@ for (const file of files) {
   try {
     const schema = getHowToSchema({
       name: file.replace(/\.mdx$/, ""),
-      description: steps.map(s => s.text).join(" ").slice(0, 160),
+      description: steps
+        .map((s) => s.text)
+        .join(" ")
+        .slice(0, 160),
       steps,
     });
     // Basic schema validation: must have at least 2 steps
@@ -39,4 +45,4 @@ if (!allValid) {
   process.exit(1);
 } else {
   console.log("\nAll lessons have valid HowTo steps and schema.");
-} 
+}

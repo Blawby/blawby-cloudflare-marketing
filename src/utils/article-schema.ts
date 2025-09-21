@@ -24,7 +24,7 @@ export function getArticleSchema({
   const formatDate = (dateStr: string) => {
     if (!dateStr) return undefined;
     // If it's already in ISO format with timezone, return as is
-    if (dateStr.includes('T') || dateStr.includes('Z')) return dateStr;
+    if (dateStr.includes("T") || dateStr.includes("Z")) return dateStr;
     // If it's just a date (YYYY-MM-DD), add time and timezone
     return `${dateStr}T00:00:00.000Z`;
   };
@@ -52,17 +52,19 @@ export function getArticleSchema({
     },
     ...(datePublished ? { datePublished: formatDate(datePublished) } : {}),
     ...(dateModified ? { dateModified: formatDate(dateModified) } : {}),
-    ...(image ? { 
-      image: {
-        "@type": "ImageObject",
-        url: image,
-      }
-    } : {
-      image: {
-        "@type": "ImageObject",
-        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-      }
-    }),
+    ...(image
+      ? {
+          image: {
+            "@type": "ImageObject",
+            url: image,
+          },
+        }
+      : {
+          image: {
+            "@type": "ImageObject",
+            url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+          },
+        }),
     ...(category ? { articleSection: category } : {}),
     ...(tags.length > 0 ? { keywords: tags.join(", ") } : {}),
     mainEntityOfPage: {
@@ -98,7 +100,7 @@ export function getBlogPostingSchema({
   const formatDate = (dateStr: string) => {
     if (!dateStr) return undefined;
     // If it's already in ISO format with timezone, return as is
-    if (dateStr.includes('T') || dateStr.includes('Z')) return dateStr;
+    if (dateStr.includes("T") || dateStr.includes("Z")) return dateStr;
     // If it's just a date (YYYY-MM-DD), add time and timezone
     return `${dateStr}T00:00:00.000Z`;
   };
@@ -126,17 +128,19 @@ export function getBlogPostingSchema({
     },
     ...(datePublished ? { datePublished: formatDate(datePublished) } : {}),
     ...(dateModified ? { dateModified: formatDate(dateModified) } : {}),
-    ...(image ? { 
-      image: {
-        "@type": "ImageObject",
-        url: image,
-      }
-    } : {
-      image: {
-        "@type": "ImageObject",
-        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-      }
-    }),
+    ...(image
+      ? {
+          image: {
+            "@type": "ImageObject",
+            url: image,
+          },
+        }
+      : {
+          image: {
+            "@type": "ImageObject",
+            url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+          },
+        }),
     ...(category ? { articleSection: category } : {}),
     ...(tags.length > 0 ? { keywords: tags.join(", ") } : {}),
     mainEntityOfPage: {
@@ -144,4 +148,4 @@ export function getBlogPostingSchema({
       "@id": url,
     },
   };
-} 
+}

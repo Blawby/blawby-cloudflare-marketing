@@ -1,12 +1,13 @@
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
-import PricingContent from "@/data/pages/pricing.mdx";
 import TableOfContents from "@/components/table-of-contents";
-import type { Metadata } from "next";
+import PricingContent from "@/data/pages/pricing.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
+  description:
+    "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
   alternates: { canonical: "https://blawby.com/pricing" },
 };
 
@@ -35,4 +36,4 @@ export default function PrivacyPage() {
       </div>
     </SidebarLayoutContent>
   );
-} 
+}

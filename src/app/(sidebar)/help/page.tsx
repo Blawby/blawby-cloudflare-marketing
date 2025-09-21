@@ -5,23 +5,26 @@ import {
   BreadcrumbSeparator,
 } from "@/components/breadcrumbs";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
-import type { Metadata } from "next";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Help & Support",
-    description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
+    description:
+      "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
     openGraph: {
       title: "Help & Support",
-      description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
+      description:
+        "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
       type: "website",
       images: [],
     },
     twitter: {
       card: "summary",
       title: "Help & Support",
-      description: "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
+      description:
+        "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
     },
     alternates: {
       canonical: "https://blawby.com/help",
@@ -30,16 +33,17 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const helpStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'Help & Support',
-  description: 'Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.',
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Help & Support",
+  description:
+    "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
   provider: {
-    '@type': 'Organization',
-    name: 'Blawby',
+    "@type": "Organization",
+    name: "Blawby",
     logo: {
-      '@type': 'ImageObject',
-      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
+      "@type": "ImageObject",
+      url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
     },
   },
 };
@@ -81,21 +85,32 @@ export default function HelpPage() {
         <div className="mx-auto max-w-6xl">
           <div className="relative">
             <div className="px-4 pt-48 pb-12 lg:py-24">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">Help & Support</h1>
-              <p className="mt-7 max-w-lg text-base/7 text-pretty body-text text-gray-700 dark:text-gray-300">
-                Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.
+              <h1 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">
+                Help & Support
+              </h1>
+              <p className="text-base mt-7 max-w-lg text-base/7 text-pretty text-gray-700 dark:text-gray-300">
+                Need assistance with Blawby? Start a live chat with our AI
+                assistant for instant answers about payments, invoicing,
+                compliance, and more. For complex issues, you can create a
+                support case and our team will follow up promptly.
               </p>
             </div>
             <div className="py-12">
               <iframe
                 src="https://chat.blawby.com/?position=inline"
                 title="Blawby Support Chat"
-                style={{ border: 'none', width: '100%', height: '600px', background: 'transparent' }}
-                className="w-full rounded-2xl shadow-lg bg-transparent"
+                style={{
+                  border: "none",
+                  width: "100%",
+                  height: "600px",
+                  background: "transparent",
+                }}
+                className="w-full rounded-2xl bg-transparent shadow-lg"
                 allow="clipboard-write; microphone; camera"
               />
               <div className="flex justify-center">
-                <p className="mt-4 max-w-lg text-xs text-center text-gray-700 dark:text-gray-300 text-pretty body-text">Blawby AI can make mistakes. Check important info.
+                <p className="text-base mt-4 max-w-lg text-center text-xs text-pretty text-gray-700 dark:text-gray-300">
+                  Blawby AI can make mistakes. Check important info.
                 </p>
               </div>
             </div>

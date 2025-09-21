@@ -125,6 +125,53 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
       return <CodeBlock code={code} lang={lang} />;
     },
+    table: ({ children, className, ...props }) => (
+      <div className="overflow-x-auto">
+        <table
+          className={`w-full border-collapse ${className || ""}`}
+          {...props}
+        >
+          {children}
+        </table>
+      </div>
+    ),
+    thead: ({ children, className, ...props }) => (
+      <thead
+        className={`bg-gray-50 dark:bg-gray-800 ${className || ""}`}
+        {...props}
+      >
+        {children}
+      </thead>
+    ),
+    tbody: ({ children, className, ...props }) => (
+      <tbody className={className || ""} {...props}>
+        {children}
+      </tbody>
+    ),
+    tr: ({ children, className, ...props }) => (
+      <tr
+        className={`border-b border-gray-200 dark:border-gray-700 ${className || ""}`}
+        {...props}
+      >
+        {children}
+      </tr>
+    ),
+    th: ({ children, className, ...props }) => (
+      <th
+        className={`px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-gray-100 ${className || ""}`}
+        {...props}
+      >
+        {children}
+      </th>
+    ),
+    td: ({ children, className, ...props }) => (
+      <td
+        className={`px-4 py-3 text-sm text-gray-700 dark:text-gray-300 ${className || ""}`}
+        {...props}
+      >
+        {children}
+      </td>
+    ),
     ...components,
   };
 }

@@ -4,13 +4,17 @@ import { marked } from "marked";
 // Example: 1. **Sign Up.** `{duration=PT2M}` Visit blawby.com and click Sign Up...
 
 // Extracts duration from plain English in parentheses, e.g., (2 minutes), (1 min), at start or end of step
-function parseDurationFromText(text: string): { text: string; duration?: string } {
+function parseDurationFromText(text: string): {
+  text: string;
+  duration?: string;
+} {
   // Regex: match (2 minutes), (1 min), (5 Minutes), case-insensitive, at start or end
-  const regex = /^\s*\((\d+)\s*(min|minute|minutes)\)\s*|\s*\((\d+)\s*(min|minute|minutes)\)\s*$/i;
+  const regex =
+    /^\s*\((\d+)\s*(min|minute|minutes)\)\s*|\s*\((\d+)\s*(min|minute|minutes)\)\s*$/i;
   let match = text.match(regex);
   if (match) {
     const num = parseInt(match[1] || match[3], 10);
-    const cleanText = text.replace(regex, '').trim();
+    const cleanText = text.replace(regex, "").trim();
     return { text: cleanText, duration: `PT${num}M` };
   }
   // Also check for duration at the end
@@ -24,7 +28,9 @@ function parseDurationFromText(text: string): { text: string; duration?: string 
   return { text, duration: undefined };
 }
 
-export function parseHowToStepsFromMarkdown(md: string): { name: string; text: string; duration?: string }[] {
+export function parseHowToStepsFromMarkdown(
+  md: string,
+): { name: string; text: string; duration?: string }[] {
   // Parse the markdown and extract ordered list steps robustly
   const tokens = marked.lexer(md);
   const steps: { name: string; text: string; duration?: string }[] = [];
@@ -37,8 +43,8 @@ export function parseHowToStepsFromMarkdown(md: string): { name: string; text: s
         // Use the first sentence as the name, rest as text
         const [first, ...rest] = cleanText.split(/\.( |$)/);
         steps.push({
-          name: first.trim() + '.',
-          text: rest.join('. ').trim(),
+          name: first.trim() + ".",
+          text: rest.join(". ").trim(),
           ...(duration ? { duration } : {}),
         });
       }
@@ -61,13 +67,16 @@ function sumDurations(durations: string[]): string | undefined {
   if (totalMinutes > 0) {
     const h = Math.floor(totalMinutes / 60);
     const m = totalMinutes % 60;
-    return `PT${h > 0 ? h + 'H' : ''}${m > 0 ? m + 'M' : ''}`;
+    return `PT${h > 0 ? h + "H" : ""}${m > 0 ? m + "M" : ""}`;
   }
   return undefined;
 }
 
 // Helper: Parse duration from step name like "(2 minutes)" and return [name, duration]
-function extractDurationFromName(name: string): { cleanName: string; duration?: string } {
+function extractDurationFromName(name: string): {
+  cleanName: string;
+  duration?: string;
+} {
   const match = name.match(/^(.*)\s*\((\d+)\s*minute[s]?\)/i);
   if (match) {
     const minutes = parseInt(match[2], 10);
@@ -79,7 +88,15 @@ function extractDurationFromName(name: string): { cleanName: string; duration?: 
   return { cleanName: name };
 }
 
-export function getHowToSchema({ name, description, steps }: { name: string; description: string; steps: { name: string; text: string; duration?: string }[] }) {
+export function getHowToSchema({
+  name,
+  description,
+  steps,
+}: {
+  name: string;
+  description: string;
+  steps: { name: string; text: string; duration?: string }[];
+}) {
   // Calculate totalTime from step durations if present
   // If step.duration is missing, try to extract from name
   const processedSteps = steps.map((s) => {
@@ -92,7 +109,9 @@ export function getHowToSchema({ name, description, steps }: { name: string; des
     }
     return { ...s, name: stepName, duration };
   });
-  const durations = processedSteps.map(s => s.duration).filter(Boolean) as string[];
+  const durations = processedSteps
+    .map((s) => s.duration)
+    .filter(Boolean) as string[];
   const totalTime = durations.length > 0 ? sumDurations(durations) : undefined;
   return {
     "@context": "https://schema.org",
@@ -109,4 +128,4 @@ export function getHowToSchema({ name, description, steps }: { name: string; des
   };
 }
 
-// Usage: Add (2 minutes) or (1 min) to any step in your MDX ordered list to specify step time. If omitted, duration is not included in schema. totalTime is calculated as the sum of step durations if present. 
+// Usage: Add (2 minutes) or (1 min) to any step in your MDX ordered list to specify step time. If omitted, duration is not included in schema. totalTime is calculated as the sum of step durations if present.

@@ -51,13 +51,13 @@ export async function getLessonContent(slug: string) {
   if (slug === "privacy" || slug === "terms") {
     return (await import(`@/data/legal/${slug}.mdx`)).default;
   }
-  
+
   // First try to find the lesson to determine its content type
   const lesson = await getLesson(slug);
   if (!lesson) {
     throw new Error(`Lesson not found: ${slug}`);
   }
-  
+
   // Import from appropriate directory based on content type
   if (lesson.contentType === "guide" || lesson.contentType === "article") {
     return (await import(`@/data/articles/${slug}.mdx`)).default;
@@ -70,27 +70,31 @@ const lessons = [
   {
     id: "getting-started",
     title: "Getting Started",
-    description: "Learn how to get started with Blawby's legal payment solutions.",
+    description:
+      "Learn how to get started with Blawby's legal payment solutions.",
     lessons: [
       {
         id: "get-started",
         title: "Quick Start Guide",
-        description: "Get up and running with Blawby's payment processing platform.",
+        description:
+          "Get up and running with Blawby's payment processing platform.",
         contentType: "lesson" as const,
         category: "lessons",
         video: null,
-      }
+      },
     ],
   },
   {
     id: "payments",
     title: "Legal Payments Solutions",
-    description: "Compliant credit card payments and invoicing solutions for legal practices.",
+    description:
+      "Compliant credit card payments and invoicing solutions for legal practices.",
     lessons: [
       {
         id: "payments",
         title: "Payments",
-        description: "Accept credit card, debit card, and ACH/Bank Transfer payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
+        description:
+          "Accept credit card, debit card, and ACH/Bank Transfer payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
         contentType: "lesson" as const,
         category: "lessons",
         video: null,
@@ -98,7 +102,8 @@ const lessons = [
       {
         id: "invoicing",
         title: "Invoicing",
-        description: "Streamline your billing process with automated invoicing and payment collection.",
+        description:
+          "Streamline your billing process with automated invoicing and payment collection.",
         contentType: "lesson" as const,
         category: "lessons",
         video: null,
@@ -106,7 +111,8 @@ const lessons = [
       {
         id: "clients",
         title: "Clients",
-        description: "Efficiently manage your client information, communications, and payment history.",
+        description:
+          "Efficiently manage your client information, communications, and payment history.",
         contentType: "lesson" as const,
         category: "lessons",
         video: null,
@@ -114,7 +120,25 @@ const lessons = [
       {
         id: "payouts",
         title: "Payouts",
-        description: "Manage your firm's cash flow with secure and efficient payout processing.",
+        description:
+          "Manage your firm's cash flow with secure and efficient payout processing.",
+        contentType: "lesson" as const,
+        category: "lessons",
+        video: null,
+      },
+    ],
+  },
+  {
+    id: "ai-intake",
+    title: "AI Legal Intake",
+    description:
+      "Intelligent client intake powered by AI to capture leads and streamline your practice.",
+    lessons: [
+      {
+        id: "ai-powered-legal-intake-chatbot",
+        title: "AI Legal Intake",
+        description:
+          "Set up and use Blawby's AI-powered legal intake chatbot to automatically collect client information and process consultation fees.",
         contentType: "lesson" as const,
         category: "lessons",
         video: null,

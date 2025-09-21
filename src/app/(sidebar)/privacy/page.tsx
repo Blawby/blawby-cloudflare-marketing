@@ -1,12 +1,13 @@
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
-import PrivacyContent from "@/data/legal/privacy.mdx";
 import TableOfContents from "@/components/table-of-contents";
-import type { Metadata } from "next";
+import PrivacyContent from "@/data/legal/privacy.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Read the Blawby Privacy Policy to learn how we handle your data.",
+  description:
+    "Read the Blawby Privacy Policy to learn how we handle your data.",
   alternates: { canonical: "https://blawby.com/privacy" },
 };
 
@@ -35,4 +36,4 @@ export default function PrivacyPage() {
       </div>
     </SidebarLayoutContent>
   );
-} 
+}

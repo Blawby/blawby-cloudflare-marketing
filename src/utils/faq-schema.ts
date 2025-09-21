@@ -1,14 +1,20 @@
 import { marked } from "marked";
 
 // Parse FAQ from Markdown: only after '## Frequently asked Questions', treat ### as questions, until next ## or end
-export function parseFAQFromMarkdown(md: string): { question: string; answer: string }[] {
+export function parseFAQFromMarkdown(
+  md: string,
+): { question: string; answer: string }[] {
   const tokens = marked.lexer(md);
   const faqs: { question: string; answer: string }[] = [];
   let inFAQ = false;
   let currentQ: string | null = null;
   let currentA: string[] = [];
   for (const token of tokens) {
-    if (token.type === "heading" && token.depth === 2 && /Frequently asked Questions?/i.test(token.text)) {
+    if (
+      token.type === "heading" &&
+      token.depth === 2 &&
+      /Frequently asked Questions?/i.test(token.text)
+    ) {
       inFAQ = true;
       currentQ = null;
       currentA = [];
@@ -28,7 +34,10 @@ export function parseFAQFromMarkdown(md: string): { question: string; answer: st
         }
         currentQ = token.text.trim();
         currentA = [];
-      } else if (currentQ && (token.type === "paragraph" || token.type === "text")) {
+      } else if (
+        currentQ &&
+        (token.type === "paragraph" || token.type === "text")
+      ) {
         currentA.push(token.text.trim());
       } else if (currentQ && token.type === "list") {
         currentA.push(token.items.map((i: any) => i.text.trim()).join(" "));
@@ -42,19 +51,27 @@ export function parseFAQFromMarkdown(md: string): { question: string; answer: st
 }
 
 // Generate FAQPage schema.org JSON-LD
-export function getFAQSchema({ faqs, name, description }: { faqs: { question: string; answer: string }[]; name?: string; description?: string }) {
+export function getFAQSchema({
+  faqs,
+  name,
+  description,
+}: {
+  faqs: { question: string; answer: string }[];
+  name?: string;
+  description?: string;
+}) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     ...(name ? { name } : {}),
     ...(description ? { description } : {}),
-    "mainEntity": faqs.map(faq => ({
+    mainEntity: faqs.map((faq) => ({
       "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
+      name: faq.question,
+      acceptedAnswer: {
         "@type": "Answer",
-        "text": faq.answer,
+        text: faq.answer,
       },
     })),
   };
-} 
+}

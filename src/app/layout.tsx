@@ -1,11 +1,11 @@
+import CookieConsentComponent from "@/components/cookie-consent";
+import { Footer } from "@/components/footer";
 import { clsx } from "clsx";
 import { GeistMono } from "geist/font/mono";
+import { Metadata } from "next";
 import localFont from "next/font/local";
 import type React from "react";
-import { Metadata } from "next";
 import "./globals.css";
-import { Footer } from "@/components/footer";
-import CookieConsentComponent from "@/components/cookie-consent";
 
 const InterVariable = localFont({
   variable: "--font-inter",
@@ -16,39 +16,62 @@ const InterVariable = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://blawby.com'),
+  metadataBase: new URL("https://blawby.com"),
   title: {
-    template: '%s | Blawby',
-    default: 'Blawby - Compliant Credit Card Payments for Legal Practices',
+    template: "%s | Blawby",
+    default: "Blawby - Compliant Credit Card Payments for Legal Practices",
   },
-  description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
-  keywords: ['uncertainty', 'decision making', 'personal development', 'mindfulness', 'determinism'],
-  authors: [{ name: 'Tom Harris' }],
-  creator: 'Tom Harris',
-  publisher: 'Blawby',
+  description:
+    "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
+  keywords: [
+    "legal payment processing",
+    "credit card payments for lawyers",
+    "IOLTA compliance",
+    "ABA compliant payments",
+    "law firm billing",
+    "legal practice management",
+    "trust account compliance",
+    "legal payment gateway",
+    "attorney payment processing",
+    "legal billing software",
+    "law firm credit card processing",
+    "legal payment solutions",
+    "compliance software",
+    "legal technology",
+    "payment security for law firms",
+  ],
+  authors: [{ name: "Paul Chris Luke" }],
+  creator: "Paul Chris Luke",
+  publisher: "Blawby",
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://blawby.com',
-    siteName: 'Blawby',
-    title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
-    description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
-    images: [{
-            url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
-      width: 1200,
-      height: 630,
-      alt: 'Blawby - Compliant Credit Card Payments for Legal Practices'
-    }],
+    type: "website",
+    locale: "en_US",
+    url: "https://blawby.com",
+    siteName: "Blawby",
+    title: "Blawby - Compliant Credit Card Payments for Legal Practices",
+    description:
+      "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
+    images: [
+      {
+        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+        width: 1200,
+        height: 630,
+        alt: "Blawby - Compliant Credit Card Payments for Legal Practices",
+      },
+    ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Blawby - Compliant Credit Card Payments for Legal Practices',
-    description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
-    creator: '@blawby',
-        images: ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'],
+    card: "summary_large_image",
+    title: "Blawby - Compliant Credit Card Payments for Legal Practices",
+    description:
+      "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
+    creator: "@blawby",
+    images: [
+      "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+    ],
   },
   alternates: {
-    canonical: 'https://blawby.com',
+    canonical: "https://blawby.com",
   },
   robots: {
     index: true,
@@ -56,36 +79,37 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: "your-google-verification-code",
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-icon.png',
+    icon: "/favicon.ico",
+    apple: "/apple-icon.png",
   },
-  manifest: '/site.webmanifest',
+  manifest: "/site.webmanifest",
 };
 
 // Add JSON-LD structured data
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'Blawby',
-  description: 'Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.',
-  url: 'https://blawby.com',
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Blawby",
+  description:
+    "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
+  url: "https://blawby.com",
   publisher: {
-    '@type': 'Organization',
-    name: 'Blawby',
+    "@type": "Organization",
+    name: "Blawby",
     logo: {
-      '@type': 'ImageObject',
-      url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'
-    }
-  }
+      "@type": "ImageObject",
+      url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+    },
+  },
 };
 
 export default function RootLayout({
@@ -109,7 +133,10 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
         {/* Google Analytics gtag.js */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LXBVNX707M"></script>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-LXBVNX707M"
+        ></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `

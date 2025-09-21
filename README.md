@@ -47,18 +47,21 @@ Finally, open [http://localhost:3000](http://localhost:3000) in your browser to 
 The site organizes content into three main types:
 
 ### 1. Lessons (`/lessons/[slug]`)
+
 - **Location**: `src/data/lessons/` directory
 - **Configuration**: `src/data/lessons.ts`
 - **URL Structure**: `/lessons/get-started`, `/lessons/payments`, etc.
 - **Purpose**: Educational content for product features and guides
 
 ### 2. Articles & Guides (`/[category]/[slug]`)
+
 - **Location**: `src/data/articles/[category]/` directories
 - **Configuration**: `src/data/articles.ts`
 - **URL Structure**: `/compliance/iolta-compliance`, `/business-strategy/future-proof-revenue`
 - **Purpose**: In-depth articles organized by category
 
 ### 3. Pages (`/[slug]`)
+
 - **Location**: `src/data/pages/` directory
 - **Configuration**: `src/data/pages.ts`
 - **URL Structure**: `/pricing`, `/help`
@@ -97,16 +100,19 @@ The interviews feature is protected by a feature flag. By default, interviews pa
 This project is configured for deployment to Cloudflare Pages. To deploy:
 
 1. Install Wrangler CLI globally:
+
 ```bash
 npm install -g wrangler
 ```
 
 2. Login to Cloudflare:
+
 ```bash
 wrangler login
 ```
 
 3. Build and deploy:
+
 ```bash
 npm run build
 wrangler pages deploy out
@@ -135,20 +141,23 @@ To complete SEO setup:
 The site includes a comprehensive vector search system that indexes all content types:
 
 ### Content Indexing
+
 - **Script**: `scripts/chunk-mdx-lessons.ts`
 - **Output**: `lesson-chunks.json` and `vector-manifest.json`
 - **Coverage**: Lessons, articles, and pages (excludes privacy/terms)
 - **URL Structure**: Matches the actual site routing structure
 
 ### Search Worker
+
 - **Location**: `src/workers/search.ts`
-- **Features**: 
+- **Features**:
   - Vector similarity search
   - Hybrid ranking with keyword matching
   - Special pricing query detection
   - Chat interface with LLM responses
 
 ### Indexing Process
+
 ```bash
 # Generate content chunks for vector search
 npx tsx scripts/chunk-mdx-lessons.ts
@@ -162,6 +171,7 @@ npx wrangler deploy src/workers/search.ts
 To support SEO and rich results, the codebase includes several utilities for generating and injecting structured data (JSON-LD) into your pages:
 
 ### 1. Breadcrumb Schema Utility
+
 - **File:** `src/utils/breadcrumb-schema.ts`
 - **Function:** `getBreadcrumbSchema(items)`
 - **Purpose:** Generates a [BreadcrumbList](https://schema.org/BreadcrumbList) JSON-LD object from an array of breadcrumb items (`{ name, url }`).
@@ -179,6 +189,7 @@ To support SEO and rich results, the codebase includes several utilities for gen
   - Inject as a `<script type="application/ld+json">` in your page component.
 
 ### 2. HowTo Schema Utilities
+
 - **File:** `src/utils/howto-schema.ts`
 - **Functions:**
   - `parseHowToStepsFromMarkdown(md: string)`
@@ -189,7 +200,10 @@ To support SEO and rich results, the codebase includes several utilities for gen
   - Use in lesson page components to auto-generate HowTo schema from MDX content.
   - Example:
     ```ts
-    import { parseHowToStepsFromMarkdown, getHowToSchema } from "@/utils/howto-schema";
+    import {
+      parseHowToStepsFromMarkdown,
+      getHowToSchema,
+    } from "@/utils/howto-schema";
     const steps = parseHowToStepsFromMarkdown(mdxContent);
     const howToSchema = getHowToSchema({
       name: lesson.title,
@@ -200,12 +214,14 @@ To support SEO and rich results, the codebase includes several utilities for gen
   - Inject as a `<script type="application/ld+json">` in your page component if steps are found.
 
 ### 3. Validation Script
+
 - **File:** `scripts/validate-howto-schema.ts`
 - **Purpose:** Scans all lesson MDX files, parses for HowTo steps, and prints a validation report. Ensures your content is eligible for HowTo rich results.
 - **Usage:**
   - Run locally or in CI: `npx tsx scripts/validate-howto-schema.ts`
 
 **Best Practices:**
+
 - Only use HowTo schema for lessons with true step-by-step instructional content.
 - Keep your MDX steps as true ordered lists for best schema extraction.
 - Always match the visible UI breadcrumbs to the schema for consistency.
@@ -231,22 +247,27 @@ You can start editing this template by modifying the files in the `/src` folder.
 ### Content Management
 
 #### Adding New Lessons
+
 1. Create MDX file in `src/data/lessons/`
 2. Add lesson entry to `src/data/lessons.ts`
 3. Update sidebar automatically
 
 #### Adding New Articles
+
 1. Create MDX file in `src/data/articles/[category]/`
 2. Add article entry to `src/data/articles.ts`
 3. Update sidebar automatically
 
 #### Adding New Pages
+
 1. Create MDX file in `src/data/pages/`
 2. Add page entry to `src/data/pages.ts`
 3. Update sidebar automatically
 
 #### Regenerating Search Index
+
 After adding new content, regenerate the vector search index:
+
 ```bash
 npx tsx scripts/chunk-mdx-lessons.ts
 ```
@@ -286,11 +307,11 @@ To learn more about the technologies used in this site template, see the followi
 
 ## ⚡️ Cloudflare Bleeding Edge Integration Notes
 
-This project uses the latest Cloudflare Workers AI and Vectorize features. 
+This project uses the latest Cloudflare Workers AI and Vectorize features.
 
 **Current best practice:**
-- Use the Vectorize v2 REST API from Workers (not the binding) for all vector search operations.
 
+- Use the Vectorize v2 REST API from Workers (not the binding) for all vector search operations.
 
 ## 🔄 Automated Cloudflare Vectorize Indexing & Pruning
 
@@ -334,6 +355,7 @@ This project uses a hybrid search approach for best-in-class relevance:
 - **No extra infra:** This is fully Cloudflare-supported, scalable, and requires no separate keyword index or third-party service.
 
 **Why this approach?**
+
 - Combines the recall of semantic search with the precision of keyword search.
 - Ensures exact matches (e.g., a page literally titled "Pricing") always rank highest for relevant queries.
 - Easy to tune and maintain.
@@ -350,15 +372,18 @@ This project uses [Cloudflare D1](https://developers.cloudflare.com/d1/) as a pr
 - **POST `/support-case/feedback`**: Stores user feedback (rating, comments) for a support case.
 
 **D1 Schema:** See `scripts/d1-support-schema.sql` for the schema. Tables:
+
 - `support_cases`: Stores case ID, user ID, chat history, context, and timestamps.
 - `support_feedback`: Stores feedback for each case (case ID, rating, comments, timestamp).
 
 **How it works:**
+
 - The frontend (Preact) calls the Worker API to create a support case and submit feedback.
 - All data is stored in D1 for strong consistency, analytics, and future admin/reporting needs.
 - See `src/workers/search.ts` for endpoint implementation.
 
 **To update the schema:**
+
 ```bash
 npx wrangler d1 execute support --file=./scripts/d1-support-schema.sql --remote
 ```
@@ -378,7 +403,7 @@ This ensures your search index is always in sync with your content. Manual steps
 Blawby uses Cloudflare VECTORIZE and Workers AI for search and chat endpoints. To test these endpoints locally, you must use Cloudflare's new remote bindings feature:
 
 - Start local dev with:
-  
+
   ```sh
   wrangler dev --experimental-vectorize-bind-to-prod
   ```

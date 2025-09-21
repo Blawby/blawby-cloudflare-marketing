@@ -7,7 +7,11 @@ import {
 import { CenteredPageLayout } from "@/components/centered-layout";
 import { NextPageLink } from "@/components/next-page-link";
 import { TimestampButton, Video } from "@/components/video-player";
-import { getInterview, getInterviewTranscript, getInterviews } from "@/data/interviews";
+import {
+  getInterview,
+  getInterviews,
+  getInterviewTranscript,
+} from "@/data/interviews";
 import { ClockIcon } from "@/icons/clock-icon";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -42,20 +46,24 @@ export async function generateMetadata({
     openGraph: {
       title: `Interview with ${interview.name}`,
       description: interview.subtitle,
-      type: 'video.other',
-      videos: [{
-        url: interview.video.hd,
-        type: 'video/mp4',
-      }],
-      images: [{
-        url: interview.video.thumbnail,
-        width: 1920,
-        height: 1080,
-        alt: `Interview with ${interview.name}`,
-      }],
+      type: "video.other",
+      videos: [
+        {
+          url: interview.video.hd,
+          type: "video/mp4",
+        },
+      ],
+      images: [
+        {
+          url: interview.video.thumbnail,
+          width: 1920,
+          height: 1080,
+          alt: `Interview with ${interview.name}`,
+        },
+      ],
     },
     twitter: {
-      card: 'player',
+      card: "player",
       title: `Interview with ${interview.name}`,
       description: interview.subtitle,
       images: [interview.video.thumbnail],
@@ -69,26 +77,26 @@ export async function generateMetadata({
 // Add JSON-LD structured data for the video
 function generateVideoStructuredData(interview: any) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
     name: `Interview with ${interview.name}`,
     description: interview.subtitle,
     thumbnailUrl: interview.video.thumbnail,
-    uploadDate: new Date().toISOString().split('T')[0],
+    uploadDate: new Date().toISOString().split("T")[0],
     duration: `PT${Math.floor(interview.video.duration / 60)}M${interview.video.duration % 60}S`,
     contentUrl: interview.video.hd,
     embedUrl: interview.video.hd,
     interactionStatistic: {
-      '@type': 'InteractionCounter',
-      interactionType: { '@type': 'WatchAction' },
+      "@type": "InteractionCounter",
+      interactionType: { "@type": "WatchAction" },
       userInteractionCount: 0,
     },
     publisher: {
-      '@type': 'Organization',
-      name: 'Blawby',
+      "@type": "Organization",
+      name: "Blawby",
       logo: {
-        '@type': 'ImageObject',
-        url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
+        "@type": "ImageObject",
+        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
       },
     },
   };
@@ -99,7 +107,7 @@ export default async function Page({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  if (process.env.SHOW_INTERVIEWS !== 'true') {
+  if (process.env.SHOW_INTERVIEWS !== "true") {
     notFound();
   }
   let interview = await getInterview((await params).slug);
@@ -125,7 +133,9 @@ export default async function Page({
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoStructuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(videoStructuredData),
+        }}
       />
       <div className="-mx-2 sm:-mx-4">
         <Video
@@ -143,9 +153,7 @@ export default async function Page({
                 {interview.name}
               </h1>
             </hgroup>
-            <p className="text-base/7 body-text">
-              {interview.intro}
-            </p>
+            <p className="text-base text-base/7">{interview.intro}</p>
             <div className="flex items-center gap-x-2 text-sm/7 font-semibold text-gray-950 dark:text-white">
               <ClockIcon className="stroke-gray-950/40 dark:stroke-white/40" />
               <span>{formatDuration(interview.video.duration)}</span>

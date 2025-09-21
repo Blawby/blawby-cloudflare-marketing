@@ -1,6 +1,7 @@
 import createMDX from "@next/mdx";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname } from "path";
+import remarkGfm from "remark-gfm";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -8,7 +9,7 @@ const __dirname = dirname(__filename);
 const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [],
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [],
   },
 });
@@ -21,26 +22,26 @@ const nextConfig = {
       new URL("https://assets.tailwindcss.com/templates/compass/**"),
     ],
     domains: [],
-    unoptimized: true
+    unoptimized: true,
   },
   // Configure for Cloudflare Pages
-  output: 'export',
+  output: "export",
   // Optimize build output
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(js|jsx)$/,
       include: [/node_modules\/react-pay-icons/],
       use: {
-        loader: 'babel-loader',
+        loader: "babel-loader",
         options: {
-          presets: ['@babel/preset-react']
-        }
-      }
+          presets: ["@babel/preset-react"],
+        },
+      },
     });
 
     // Split chunks into smaller pieces
     config.optimization.splitChunks = {
-      chunks: 'all',
+      chunks: "all",
       maxInitialRequests: 25,
       minSize: 20000,
       maxSize: 24000000, // Keep chunks under 24MB
@@ -48,8 +49,8 @@ const nextConfig = {
         default: false,
         vendors: false,
         commons: {
-          name: 'commons',
-          chunks: 'all',
+          name: "commons",
+          chunks: "all",
           minChunks: 2,
           reuseExistingChunk: true,
         },
@@ -58,10 +59,12 @@ const nextConfig = {
             return module.size() > 160000;
           },
           name(module) {
-            const moduleFileName = module.libIdent ? module.libIdent({ context: __dirname }) : module.identifier();
-            return `chunk-${moduleFileName.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const moduleFileName = module.libIdent
+              ? module.libIdent({ context: __dirname })
+              : module.identifier();
+            return `chunk-${moduleFileName.replace(/[^a-zA-Z0-9]/g, "-")}`;
           },
-          chunks: 'all',
+          chunks: "all",
           minChunks: 1,
           reuseExistingChunk: true,
         },
@@ -73,10 +76,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/site.webmanifest',
-        destination: '/public/site.webmanifest'
-      }
-    ]
+        source: "/site.webmanifest",
+        destination: "/public/site.webmanifest",
+      },
+    ];
   },
 };
 

@@ -82,11 +82,11 @@ export function getCoursePathwaySchema({
         courseWorkload: "PT30M",
       },
     ],
-    hasPart: lessons.map(lesson => ({
+    hasPart: lessons.map((lesson) => ({
       "@type": "Course",
       name: lesson.name,
       description: lesson.description,
       url: lesson.url,
     })),
   };
-} 
+}

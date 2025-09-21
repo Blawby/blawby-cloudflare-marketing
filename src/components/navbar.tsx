@@ -1,5 +1,6 @@
 "use client";
 
+import CommandPalette from "@/components/command-pallete";
 import {
   Dropdown,
   DropdownButton,
@@ -10,7 +11,6 @@ import { IconButton } from "@/components/icon-button";
 import { ChevronDownIcon } from "@/icons/chevron-down-icon";
 import { CloseIcon } from "@/icons/close-icon";
 import { MenuIcon } from "@/icons/menu-icon";
-import CommandPalette from "@/components/command-pallete";
 import {
   CloseButton,
   Dialog,
@@ -100,7 +100,10 @@ function SiteNavigation() {
     <nav className="flex items-center gap-x-6">
       <div className="flex items-center gap-x-2">
         <CommandPalette />
-        <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
+        <IconButton
+          className="lg:hidden"
+          onClick={() => setMobileMenuOpen(true)}
+        >
           <MenuIcon className="fill-gray-950 dark:fill-white" />
         </IconButton>
       </div>
