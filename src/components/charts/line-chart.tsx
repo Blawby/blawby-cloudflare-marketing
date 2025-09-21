@@ -97,6 +97,7 @@ export function LineChart({
           show: true,
           position: "bottom" as const, // always below
           fontFamily: "Inter, sans-serif",
+          fontSize: "16px",
           labels: { colors: textColor },
         },
         dataLabels: { enabled: false },
@@ -111,7 +112,7 @@ export function LineChart({
           categories,
           labels: {
             show: true,
-            style: { fontFamily: "Inter, sans-serif", colors: textColor },
+            style: { fontFamily: "Inter, sans-serif", colors: textColor, fontSize: "16px" },
           },
           axisTicks: { show: false },
           axisBorder: { show: false },
@@ -119,7 +120,7 @@ export function LineChart({
         yaxis: {
           labels: {
             show: true,
-            style: { fontFamily: "Inter, sans-serif", colors: textColor },
+            style: { fontFamily: "Inter, sans-serif", colors: textColor, fontSize: "16px" },
             formatter: (val: number) => `${val}%`,
           },
         },
@@ -135,8 +136,8 @@ export function LineChart({
             options: {
               chart: { height: 350 },
               legend: { position: "bottom" },
-              xaxis: { labels: { style: { fontSize: "12px" } } },
-              yaxis: { labels: { style: { fontSize: "12px" } } },
+              xaxis: { labels: { style: { fontSize: "14px" } } },
+              yaxis: { labels: { style: { fontSize: "14px" } } },
             },
           },
           {
@@ -144,8 +145,8 @@ export function LineChart({
             options: {
               chart: { height: 300 },
               legend: { position: "bottom" },
-              xaxis: { labels: { rotate: -30, style: { fontSize: "11px" } } },
-              yaxis: { labels: { style: { fontSize: "11px" } } },
+              xaxis: { labels: { rotate: -30, style: { fontSize: "13px" } } },
+              yaxis: { labels: { style: { fontSize: "13px" } } },
             },
           },
           {
@@ -153,8 +154,8 @@ export function LineChart({
             options: {
               chart: { height: 250 },
               legend: { position: "bottom" },
-              xaxis: { labels: { rotate: -45, style: { fontSize: "10px" } } },
-              yaxis: { labels: { style: { fontSize: "10px" } } },
+              xaxis: { labels: { rotate: -45, style: { fontSize: "12px" } } },
+              yaxis: { labels: { style: { fontSize: "12px" } } },
               stroke: { width: 2 },
             },
           },

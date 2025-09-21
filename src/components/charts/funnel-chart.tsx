@@ -38,7 +38,6 @@ export function FunnelChart({ series, height = 500, id }: FunnelChartProps) {
         height="auto"
         preserveAspectRatio="xMidYMid meet"
         style={{
-          filter: "drop-shadow(0 6px 14px rgba(0,0,0,0.25))",
           maxWidth: "100%",
           maxHeight: height,
         }}
@@ -79,10 +78,9 @@ export function FunnelChart({ series, height = 500, id }: FunnelChartProps) {
                 x={centerX}
                 y={y + segmentHeight / 2 - 5}
                 textAnchor="middle"
-                fill="white"
-                fontSize="16"
+                fill="#111827"
+                fontSize="20"
                 fontWeight="bold"
-                style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.6)" }}
               >
                 {segment.name}
               </text>
@@ -90,10 +88,9 @@ export function FunnelChart({ series, height = 500, id }: FunnelChartProps) {
                 x={centerX}
                 y={y + segmentHeight / 2 + 15}
                 textAnchor="middle"
-                fill="white"
-                fontSize="14"
+                fill="#111827"
+                fontSize="18"
                 fontWeight="600"
-                style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.6)" }}
               >
                 ${segment.value}B
               </text>

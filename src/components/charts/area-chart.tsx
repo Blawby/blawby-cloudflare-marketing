@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type ApexCharts from "apexcharts";
 
 interface AreaChartProps {
   data: number[];
@@ -51,10 +52,10 @@ export function AreaChart({
 
   useEffect(() => {
     if (!chartRef.current) {
-      throw new Error("Chart container ref is not available");
+      return;
     }
 
-    let chart: any;
+    let chart: ApexCharts | undefined;
 
     const loadApexCharts = async () => {
       const ApexCharts = (await import("apexcharts")).default;
@@ -87,7 +88,7 @@ export function AreaChart({
           enabled: true,
           theme: isDark ? "dark" : "light",
           style: {
-            fontSize: "12px",
+            fontSize: "16px",
             fontFamily: "Inter, sans-serif",
           },
           x: {
@@ -99,7 +100,7 @@ export function AreaChart({
           gradient: {
             opacityFrom: 0.55,
             opacityTo: 0,
-            shade: color,
+            shade: isDark ? "dark" : "light",
             gradientToColors: [color],
           },
         },
@@ -133,6 +134,7 @@ export function AreaChart({
             style: {
               colors: textColor,
               fontFamily: "Inter, sans-serif",
+              fontSize: "16px",
             },
           },
           axisBorder: {
@@ -148,6 +150,7 @@ export function AreaChart({
             style: {
               colors: textColor,
               fontFamily: "Inter, sans-serif",
+              fontSize: "16px",
             },
           },
         },

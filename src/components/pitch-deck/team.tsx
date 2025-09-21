@@ -6,9 +6,9 @@ export function Team() {
       <div className="mb-8">
         <h3 id="chris-luke-founder-ceo" className="text-2xl font-semibold text-gray-950 dark:text-white mb-4">Chris Luke – Founder & CEO</h3>
         <ul className="space-y-2 text-gray-700 dark:text-gray-300 mb-4">
-          <li>• 15+ years SaaS, data & analytics expertise</li>
-          <li>• Former CTO, featured speaker at Google AMP Conference</li>
-          <li>• Build-in-public strategy on <a href="https://twitch.tv/paulchrisluke" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">Twitch</a></li>
+          <li>15+ years SaaS, data & analytics expertise</li>
+          <li>Former CTO, featured speaker at Google AMP Conference</li>
+          <li>Build-in-public strategy on <a href="https://twitch.tv/paulchrisluke" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">Twitch</a></li>
         </ul>
         <div className="aspect-video">
           <iframe 
@@ -29,9 +29,9 @@ export function Team() {
       <div>
         <h3 id="gitesh-senior-software-engineer" className="text-2xl font-semibold text-gray-950 dark:text-white mb-4">Gitesh – Senior Software Engineer</h3>
         <ul className="space-y-2 text-gray-700 dark:text-gray-300">
-          <li>• 1+ year dedicated, unpaid technical leadership</li>
-          <li>• Quality assurance & architectural guidance</li>
-          <li>• $50k/year salary (no equity) upon funding</li>
+          <li>1+ year dedicated, unpaid technical leadership</li>
+          <li>Quality assurance & architectural guidance</li>
+          <li>$50k/year salary (no equity) upon funding</li>
         </ul>
       </div>
     </section>

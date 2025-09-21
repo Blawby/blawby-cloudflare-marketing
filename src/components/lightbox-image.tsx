@@ -33,7 +33,6 @@ export function LightboxImage({
         width={width}
         height={height}
         className={`block object-cover rounded-lg border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow ${className || ""}`}
-        unoptimized
       />
     </Lightbox>
   );

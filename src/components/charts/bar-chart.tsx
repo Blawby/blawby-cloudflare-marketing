@@ -57,7 +57,7 @@ export function BarChart({
           },
           animations: {
             enabled: true,
-            easing: 'easeinout',
+            easing: 'easeInOut',
             speed: 800,
           },
           ...(stacked && { stacked: true }),
@@ -83,6 +83,7 @@ export function BarChart({
           show: true,
           position: "bottom" as const,
           fontFamily: "Inter, sans-serif",
+          fontSize: "16px",
           labels: {
             colors: textColor,
           },
@@ -91,8 +92,8 @@ export function BarChart({
           enabled: true,
           style: {
             fontFamily: "Inter, sans-serif",
-            colors: [textColor],
-            fontSize: "12px",
+            colors: ["#111827"], // Always use dark text for readability on gold backgrounds
+            fontSize: "16px",
             fontWeight: "600",
           },
           formatter: function (val: number) {
@@ -116,9 +117,10 @@ export function BarChart({
             style: {
               fontFamily: "Inter, sans-serif",
               colors: textColor,
+              fontSize: "16px",
             },
-            formatter: function (value: number) {
-              return "$" + value.toLocaleString();
+            formatter: function (value: any) {
+              return String(value);
             },
           },
           categories,
@@ -135,6 +137,7 @@ export function BarChart({
             style: {
               fontFamily: "Inter, sans-serif",
               colors: textColor,
+              fontSize: "16px",
             },
           },
         },

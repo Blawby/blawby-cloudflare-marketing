@@ -29,7 +29,7 @@ export function ProductFeatures() {
       </div>
       
       <div className="mt-8">
-        <h3 id="ai-intake-interface" className="text-xl font-semibold text-gray-950 dark:text-white mb-4">AI Intake Interface</h3>
+        <h3 id="ai-intake-interface" className="text-2xl font-semibold text-gray-950 dark:text-white mb-4">AI Intake Interface</h3>
         <ImageGallery
           images={[
             {

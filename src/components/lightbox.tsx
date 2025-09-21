@@ -48,7 +48,6 @@ export function Lightbox({
             width={400}
             height={300}
             className="block object-cover rounded-lg border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow"
-            unoptimized
           />
         )}
       </div>
@@ -76,7 +75,6 @@ export function Lightbox({
                 width={1200}
                 height={800}
                 className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
-                unoptimized
                 priority
               />
               

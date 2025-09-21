@@ -6,10 +6,10 @@ export function BusinessModel() {
     <section className="mb-16">
       <h2 id="business-model" className="text-3xl font-bold text-gray-950 dark:text-white mb-6">Business Model</h2>
       <ul className="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
-        <li>• SaaS: $40 / user / month</li>
-        <li>• Payments: 1.4% fee per transaction</li>
-        <li>• Social Impact: 50% discount for nonprofits</li>
-        <li>• Expansion: AI legal support, multilingual, compliance</li>
+        <li>SaaS: $40 / user / month</li>
+        <li>Payments: 1.4% fee per transaction</li>
+        <li>Social Impact: 50% discount for nonprofits</li>
+        <li>Expansion: AI legal support, multilingual, compliance</li>
       </ul>
       
       <div className="mb-6">
@@ -23,7 +23,7 @@ export function BusinessModel() {
       
       {/* Revenue Breakdown Pie Chart */}
       <div className="mt-8 mb-8">
-        <h3 className="text-xl font-semibold text-gray-950 dark:text-white mb-4">Revenue Model (Yr 2 Projection)</h3>
+        <h3 className="text-2xl font-semibold text-gray-950 dark:text-white mb-4">Revenue Model (Yr 2 Projection)</h3>
         <div className="flex justify-center">
           <PieChart
             id="revenue-breakdown-chart"
@@ -33,13 +33,13 @@ export function BusinessModel() {
             height={400}
           />
         </div>
-        <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+        <div className="mt-4 text-base text-gray-600 dark:text-gray-400 text-center">
           <p><strong>$378K</strong> from payments • <strong>$96K</strong> from subscriptions</p>
         </div>
       </div>
       
       <div className="mt-8">
-        <h3 id="product-interface-gallery" className="text-xl font-semibold text-gray-950 dark:text-white mb-4">Product Interface Gallery</h3>
+        <h3 id="product-interface-gallery" className="text-2xl font-semibold text-gray-950 dark:text-white mb-4">Product Interface Gallery</h3>
         <ImageGallery
           images={[
             {

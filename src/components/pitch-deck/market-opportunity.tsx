@@ -13,15 +13,15 @@ export function MarketOpportunity() {
         Market Opportunity
       </h2>
       <ul className="space-y-3 text-gray-700 dark:text-gray-300 text-lg">
-        <li>• $437B U.S. Legal Services Market</li>
-        <li>• 70% of attorneys in small firms</li>
-        <li>• 10%+ CAGR in legal tech adoption</li>
-        <li>• AI tailwinds accelerating automation demand</li>
+        <li>$437B U.S. Legal Services Market</li>
+        <li>70% of attorneys in small firms</li>
+        <li>10%+ CAGR in legal tech adoption</li>
+        <li>AI tailwinds accelerating automation demand</li>
       </ul>
 
       {/* TAM/SAM/SOM Funnel Chart */}
       <div className="mt-8 mb-8">
-        <h3 className="text-xl font-semibold text-gray-950 dark:text-white mb-6">
+        <h3 className="text-2xl font-semibold text-gray-950 dark:text-white mb-6">
           Market Size Analysis
         </h3>
         <div className="w-full flex justify-center">
@@ -35,14 +35,14 @@ export function MarketOpportunity() {
             height={400}
           />
         </div>
-        <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+        <div className="mt-4 text-base text-gray-600 dark:text-gray-400 text-center">
           <p><strong>TAM:</strong> $437B • <strong>SAM:</strong> $30.6B • <strong>SOM:</strong> $500M</p>
         </div>
       </div>
 
       {/* Why Now: Dual Adoption vs Manual Processes */}
       <div className="mt-8">
-        <h3 className="text-xl font-semibold text-gray-950 dark:text-white mb-4">
+        <h3 className="text-2xl font-semibold text-gray-950 dark:text-white mb-4">
           Why Now: Legal Tech Adoption vs Manual Processes
         </h3>
         <LineChart
@@ -73,7 +73,7 @@ export function MarketOpportunity() {
           ]}
           height={300}
         />
-        <div className="mt-4 text-sm text-gray-600 dark:text-gray-400 text-center">
+        <div className="mt-4 text-base text-gray-600 dark:text-gray-400 text-center">
           <p><strong>Market Shift:</strong> AI adoption rising • Manual processes declining • 10%+ CAGR</p>
         </div>
       </div>

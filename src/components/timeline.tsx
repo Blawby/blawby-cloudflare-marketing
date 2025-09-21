@@ -1,4 +1,5 @@
 interface TimelineItem {
+  id: string;
   date: string;
   title: string;
   description: string;
@@ -17,7 +18,7 @@ export function Timeline({ items }: TimelineProps) {
     <ol className="relative border-s border-gray-200 dark:border-white/10 list-none">
   {items.map((item, index) => (
     <li
-      key={index}
+      key={item.id}
       className={`relative ms-6 ${index < items.length - 1 ? "mb-10" : ""}`}
     >
       {/* Dot marker */}
