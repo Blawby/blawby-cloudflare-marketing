@@ -1,7 +1,10 @@
-import type React from "react";
 import clsx from "clsx";
+import type React from "react";
 
-export function GitHubIcon({ className, ...props }: React.ComponentProps<"svg">) {
+export function GitHubIcon({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -16,4 +19,4 @@ export function GitHubIcon({ className, ...props }: React.ComponentProps<"svg">)
       />
     </svg>
   );
-} 
+}

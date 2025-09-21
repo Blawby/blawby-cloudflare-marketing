@@ -1,6 +1,6 @@
-import type React from "react";
-import { Alegreya } from "next/font/google";
 import clsx from "clsx";
+import { Alegreya } from "next/font/google";
+import type React from "react";
 
 const alegreya = Alegreya({
   subsets: ["latin"],
@@ -748,7 +748,7 @@ z"
       <span
         className={clsx(
           "text-3xl font-bold text-gray-950 dark:text-white",
-          alegreya.className
+          alegreya.className,
         )}
       >
         Blawby

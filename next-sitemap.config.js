@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,121 +26,118 @@ function getContentTimestamp(content) {
   return null;
 }
 
-// Helper function to read and parse TypeScript data files
-function readDataFile(filePath) {
-  try {
-    const content = fs.readFileSync(filePath, 'utf-8');
-    // Simple parsing for the data arrays - this is a basic approach
-    // We'll look for the array definitions and extract the data
-    return content;
-  } catch (error) {
-    return null;
-  }
-}
-
 // Helper function to get all content files and their timestamps
 function getAllContentFiles() {
   const contentFiles = [];
-  
+
   // Get lessons
   try {
-    const lessonsDir = path.join(__dirname, 'src/data/lessons');
-    const lessonFiles = fs.readdirSync(lessonsDir).filter(f => f.endsWith('.mdx'));
+    const lessonsDir = path.join(__dirname, "src/data/lessons");
+    const lessonFiles = fs
+      .readdirSync(lessonsDir)
+      .filter((f) => f.endsWith(".mdx"));
     for (const file of lessonFiles) {
       const filePath = path.join(lessonsDir, file);
       const mtime = getFileMtime(filePath);
       if (mtime) {
         contentFiles.push({
-          type: 'lesson',
-          slug: file.replace('.mdx', ''),
-          category: 'lessons',
+          type: "lesson",
+          slug: file.replace(".mdx", ""),
+          category: "lessons",
           mtime,
-          filePath
+          filePath,
         });
       }
     }
   } catch (error) {
-    console.warn('Error reading lessons directory:', error.message);
+    console.warn("Error reading lessons directory:", error.message);
   }
-  
+
   // Get articles
   try {
-    const articlesDir = path.join(__dirname, 'src/data/articles');
-    const categories = fs.readdirSync(articlesDir, { withFileTypes: true })
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name);
-    
+    const articlesDir = path.join(__dirname, "src/data/articles");
+    const categories = fs
+      .readdirSync(articlesDir, { withFileTypes: true })
+      .filter((dirent) => dirent.isDirectory())
+      .map((dirent) => dirent.name);
+
     for (const category of categories) {
       const categoryDir = path.join(articlesDir, category);
-      const articleFiles = fs.readdirSync(categoryDir).filter(f => f.endsWith('.mdx'));
+      const articleFiles = fs
+        .readdirSync(categoryDir)
+        .filter((f) => f.endsWith(".mdx"));
       for (const file of articleFiles) {
         const filePath = path.join(categoryDir, file);
         const mtime = getFileMtime(filePath);
         if (mtime) {
           contentFiles.push({
-            type: 'article',
-            slug: file.replace('.mdx', ''),
+            type: "article",
+            slug: file.replace(".mdx", ""),
             category,
             mtime,
-            filePath
+            filePath,
           });
         }
       }
     }
   } catch (error) {
-    console.warn('Error reading articles directory:', error.message);
+    console.warn("Error reading articles directory:", error.message);
   }
-  
+
   // Get interviews
   try {
-    const interviewsDir = path.join(__dirname, 'src/data/interviews');
-    const interviewFiles = fs.readdirSync(interviewsDir).filter(f => f.endsWith('.vtt'));
+    const interviewsDir = path.join(__dirname, "src/data/interviews");
+    const interviewFiles = fs
+      .readdirSync(interviewsDir)
+      .filter((f) => f.endsWith(".vtt"));
     for (const file of interviewFiles) {
       const filePath = path.join(interviewsDir, file);
       const mtime = getFileMtime(filePath);
       if (mtime) {
         contentFiles.push({
-          type: 'interview',
-          slug: file.replace('.vtt', ''),
-          category: 'interviews',
+          type: "interview",
+          slug: file.replace(".vtt", ""),
+          category: "interviews",
           mtime,
-          filePath
+          filePath,
         });
       }
     }
   } catch (error) {
-    console.warn('Error reading interviews directory:', error.message);
+    console.warn("Error reading interviews directory:", error.message);
   }
-  
+
   // Get legal pages
   try {
-    const legalDir = path.join(__dirname, 'src/data/legal');
-    const legalFiles = fs.readdirSync(legalDir).filter(f => f.endsWith('.mdx'));
+    const legalDir = path.join(__dirname, "src/data/legal");
+    const legalFiles = fs
+      .readdirSync(legalDir)
+      .filter((f) => f.endsWith(".mdx"));
     for (const file of legalFiles) {
       const filePath = path.join(legalDir, file);
       const mtime = getFileMtime(filePath);
       if (mtime) {
         contentFiles.push({
-          type: 'legal',
-          slug: file.replace('.mdx', ''),
-          category: 'legal',
+          type: "legal",
+          slug: file.replace(".mdx", ""),
+          category: "legal",
           mtime,
-          filePath
+          filePath,
         });
       }
     }
   } catch (error) {
-    console.warn('Error reading legal directory:', error.message);
+    console.warn("Error reading legal directory:", error.message);
   }
-  
+
   return contentFiles;
 }
 
 // Generate all URLs with proper lastmod timestamps
-function generateAllUrls() {
+function generateAllUrls(siteUrl) {
   const contentFiles = getAllContentFiles();
   const urls = [];
-  
+
   // Add home page
   let latestTime = null;
   for (const file of contentFiles) {
@@ -149,76 +146,89 @@ function generateAllUrls() {
     }
   }
   urls.push({
-    loc: 'https://blawby.com',
+    loc: siteUrl,
     lastmod: latestTime || new Date().toISOString(),
-    changefreq: 'daily',
+    changefreq: "daily",
     priority: 0.7,
   });
-  
+
   // Add static pages
-  const staticPages = ['/pricing', '/help', '/nonprofit-commitment', '/pitch-deck'];
+  const staticPages = [
+    "/pricing",
+    "/help",
+    "/nonprofit-commitment",
+    "/pitch-deck",
+  ];
   for (const page of staticPages) {
     const pageName = page.slice(1);
-    const filePath = path.join(__dirname, 'src/app/(sidebar)', pageName, 'page.tsx');
+    const filePath = path.join(
+      __dirname,
+      "src/app/(sidebar)",
+      pageName,
+      "page.tsx",
+    );
     const mtime = getFileMtime(filePath);
     urls.push({
-      loc: `https://blawby.com${page}`,
+      loc: `${siteUrl}${page}`,
       lastmod: mtime || new Date().toISOString(),
-      changefreq: 'daily',
+      changefreq: "daily",
       priority: 0.7,
     });
   }
-  
+
   // Add content pages
   for (const file of contentFiles) {
     let url;
-    if (file.type === 'lesson') {
-      url = `https://blawby.com/lessons/${file.slug}`;
-    } else if (file.type === 'article') {
-      url = `https://blawby.com/${file.category}/${file.slug}`;
-    } else if (file.type === 'interview') {
-      url = `https://blawby.com/interviews/${file.slug}`;
-    } else if (file.type === 'legal') {
-      url = `https://blawby.com/${file.slug}`;
+    if (file.type === "lesson") {
+      url = `${siteUrl}/lessons/${file.slug}`;
+    } else if (file.type === "article") {
+      url = `${siteUrl}/${file.category}/${file.slug}`;
+    } else if (file.type === "interview") {
+      url = `${siteUrl}/interviews/${file.slug}`;
+    } else if (file.type === "legal") {
+      url = `${siteUrl}/${file.slug}`;
     }
-    
+
     if (url) {
       urls.push({
         loc: url,
         lastmod: file.mtime,
-        changefreq: 'daily',
+        changefreq: "daily",
         priority: 0.7,
       });
     }
   }
-  
+
   // Add interviews index page
-  const interviewFiles = contentFiles.filter(f => f.type === 'interview');
+  const interviewFiles = contentFiles.filter((f) => f.type === "interview");
   let latestInterviewTime = null;
   for (const file of interviewFiles) {
-    if (file.mtime && (!latestInterviewTime || file.mtime > latestInterviewTime)) {
+    if (
+      file.mtime &&
+      (!latestInterviewTime || file.mtime > latestInterviewTime)
+    ) {
       latestInterviewTime = file.mtime;
     }
   }
   if (latestInterviewTime) {
     urls.push({
-      loc: 'https://blawby.com/interviews',
+      loc: `${siteUrl}/interviews`,
       lastmod: latestInterviewTime,
-      changefreq: 'daily',
+      changefreq: "daily",
       priority: 0.7,
     });
   }
-  
+
   return urls;
 }
 
 export default {
-  siteUrl: 'https://blawby.com',
+  siteUrl: "https://blawby.com",
   generateRobotsTxt: true,
-  
+
   // Generate additional paths with custom lastmod
   additionalPaths: async (config) => {
-    const urls = generateAllUrls();
+    const urls = generateAllUrls(config.siteUrl);
     return urls;
   },
-}; 
+};

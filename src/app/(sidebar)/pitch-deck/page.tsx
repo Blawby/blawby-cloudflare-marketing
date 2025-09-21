@@ -1,28 +1,28 @@
+import { Button } from "@/components/button";
+import { Logo } from "@/components/logo";
+import {
+  BusinessModel,
+  CompetitiveLandscape,
+  Financials,
+  GoToMarket,
+  InvestmentAsk,
+  MarketOpportunity,
+  Problem,
+  ProductFeatures,
+  Solution,
+  Team,
+  Traction,
+  WhyBlawby,
+} from "@/components/pitch-deck";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
-import type { Metadata } from "next";
-import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import Image from "next/image";
-import { Logo } from "@/components/logo";
-import { Button } from "@/components/button";
-import { PlayIcon } from "@/icons/play-icon";
-import { LessonsIcon } from "@/icons/lessons-icon";
 import { BookIcon } from "@/icons/book-icon";
 import { ClockIcon } from "@/icons/clock-icon";
-import {
-  Problem,
-  Solution,
-  ProductFeatures,
-  MarketOpportunity,
-  BusinessModel,
-  Traction,
-  Team,
-  CompetitiveLandscape,
-  GoToMarket,
-  Financials,
-  InvestmentAsk,
-  WhyBlawby
-} from "@/components/pitch-deck";
+import { LessonsIcon } from "@/icons/lessons-icon";
+import { PlayIcon } from "@/icons/play-icon";
+import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Blawby Investor Pitch",
@@ -61,7 +61,7 @@ export default function PitchDeckPage() {
               <div className="flex items-center gap-3">
                 <Logo className="h-8 dark:text-white" />
               </div>
-              <h1 className="mt-7 text-4xl font-bold tracking-tight text-gray-950 dark:text-white sm:text-5xl">
+              <h1 className="mt-7 text-4xl font-bold tracking-tight text-gray-950 sm:text-5xl dark:text-white">
                 Investor Pitch Deck
               </h1>
               <p className="mt-4 max-w-2xl text-lg/7 text-pretty text-gray-700 dark:text-gray-300">

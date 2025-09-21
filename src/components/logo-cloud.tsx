@@ -1,5 +1,5 @@
-import React from "react";
 import Image from "next/image";
+import React from "react";
 
 export function LogoCloud() {
   return (
@@ -10,8 +10,11 @@ export function LogoCloud() {
             <h2 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">
               Integrate with existing workflows
             </h2>
-            <p className="mt-6 text-lg leading-8 body-text text-gray-700 dark:text-gray-300">
-              Automatically recognize and defer invoicing revenue within Blawby. Sync your data in real time to NetSuite, Xero, QuickBooks, and other accounting and ERP systems with apps from the App Marketplace.
+            <p className="body-text mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+              Automatically recognize and defer invoicing revenue within Blawby.
+              Sync your data in real time to NetSuite, Xero, QuickBooks, and
+              other accounting and ERP systems with apps from the App
+              Marketplace.
             </p>
           </div>
           <div className="mx-auto grid w-full grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:pl-8">
@@ -68,4 +71,4 @@ export function LogoCloud() {
       </div>
     </div>
   );
-} 
+}

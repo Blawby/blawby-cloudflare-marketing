@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import type ApexCharts from "apexcharts";
+import { useEffect, useRef, useState } from "react";
 
 interface AreaChartProps {
   data: number[];
@@ -12,13 +12,13 @@ interface AreaChartProps {
   name?: string;
 }
 
-export function AreaChart({ 
-  data, 
-  categories, 
-  color = "#11FFBD", 
+export function AreaChart({
+  data,
+  categories,
+  color = "#11FFBD",
   height = 400,
   id,
-  name = "Growth"
+  name = "Growth",
 }: AreaChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
   const [isDark, setIsDark] = useState(false);
@@ -26,8 +26,9 @@ export function AreaChart({
   // Monitor dark mode changes
   useEffect(() => {
     const checkDarkMode = () => {
-      const dark = document.documentElement.classList.contains("dark") ||
-                   window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const dark =
+        document.documentElement.classList.contains("dark") ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
       setIsDark(dark);
     };
 
@@ -37,16 +38,16 @@ export function AreaChart({
     const observer = new MutationObserver(checkDarkMode);
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ["class"],
     });
 
     // Watch for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', checkDarkMode);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", checkDarkMode);
 
     return () => {
       observer.disconnect();
-      mediaQuery.removeEventListener('change', checkDarkMode);
+      mediaQuery.removeEventListener("change", checkDarkMode);
     };
   }, []);
 
@@ -59,9 +60,9 @@ export function AreaChart({
 
     const loadApexCharts = async () => {
       const ApexCharts = (await import("apexcharts")).default;
-      
+
       const textColor = isDark ? "#ffffff" : "#111827";
-      
+
       const options = {
         chart: {
           height: height,
@@ -77,7 +78,7 @@ export function AreaChart({
           },
           animations: {
             enabled: true,
-            easing: 'easeinout',
+            easing: "easeinout",
             speed: 800,
           },
         },
@@ -117,7 +118,7 @@ export function AreaChart({
           padding: {
             left: 2,
             right: 2,
-            top: 0
+            top: 0,
           },
         },
         series: [
@@ -154,19 +155,21 @@ export function AreaChart({
             },
           },
         },
-        responsive: [{
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 300,
-            },
-            xaxis: {
-              labels: {
-                show: true,
+        responsive: [
+          {
+            breakpoint: 768,
+            options: {
+              chart: {
+                height: 300,
+              },
+              xaxis: {
+                labels: {
+                  show: true,
+                },
               },
             },
           },
-        }],
+        ],
       };
 
       chart = new ApexCharts(chartRef.current, options);

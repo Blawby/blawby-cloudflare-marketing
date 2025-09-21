@@ -1,12 +1,13 @@
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
-import TermsContent from "@/data/legal/terms.mdx";
 import TableOfContents from "@/components/table-of-contents";
-import type { Metadata } from "next";
+import TermsContent from "@/data/legal/terms.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Read the Blawby Terms of Service to understand your rights and responsibilities.",
+  description:
+    "Read the Blawby Terms of Service to understand your rights and responsibilities.",
   alternates: { canonical: "https://blawby.com/terms" },
 };
 
@@ -35,4 +36,4 @@ export default function TermsPage() {
       </div>
     </SidebarLayoutContent>
   );
-} 
+}

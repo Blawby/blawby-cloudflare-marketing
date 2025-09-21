@@ -53,7 +53,7 @@ jobs:
         run: |
           curl -X POST https://compass-ts.paulchrisluke.workers.dev/upsert-mdx \
             -H "Content-Type: application/json" \
-            --data-binary @lesson-chunks.json 
+            --data-binary @lesson-chunks.json
 
       - name: Prune stale vectors from Vectorize
         if: |
@@ -66,4 +66,4 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           VECTORIZE_INDEX_NAME: documentation
-        run: npx tsx scripts/prune-vector-index.mjs 
+        run: npx tsx scripts/prune-vector-index.mjs

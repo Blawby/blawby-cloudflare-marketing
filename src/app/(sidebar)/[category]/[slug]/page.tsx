@@ -8,45 +8,49 @@ import { NextPageLink } from "@/components/next-page-link";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import { Video } from "@/components/video-player";
+import { getArticle, getArticleContent, getArticles } from "@/data/articles";
+import { getCategoryById } from "@/data/categories";
 import { getLesson, getLessonContent, getModules } from "@/data/lessons";
+import { getArticleSchema } from "@/utils/article-schema";
+import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { getCourseSchema } from "@/utils/course-schema";
+import { getFAQSchema, parseFAQFromMarkdown } from "@/utils/faq-schema";
+import {
+  getHowToSchema,
+  parseHowToStepsFromMarkdown,
+} from "@/utils/howto-schema";
+import fs from "fs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { parseHowToStepsFromMarkdown, getHowToSchema } from "@/utils/howto-schema";
-import { parseFAQFromMarkdown, getFAQSchema } from "@/utils/faq-schema";
-import { getCourseSchema } from "@/utils/course-schema";
-import { getArticleSchema } from "@/utils/article-schema";
-import { getCategoryById } from "@/data/categories";
-import fs from "fs";
 import path from "path";
-import { getArticle, getArticleContent, getArticles } from "@/data/articles";
 
 export async function generateStaticParams() {
   const modules = getModules();
   const articles = getArticles();
-  
+
   // Get lesson slugs from modules with "lessons" category
-  const lessonSlugs = modules.flatMap(module => 
-    module.lessons.map(lesson => ({
+  const lessonSlugs = modules.flatMap((module) =>
+    module.lessons.map((lesson) => ({
       category: lesson.category || "lessons",
       slug: lesson.id,
-    }))
+    })),
   );
-  
+
   // Get article slugs with their categories
-  const articleSlugs = articles.map(article => ({
+  const articleSlugs = articles.map((article) => ({
     category: article.category,
     slug: article.id,
   }));
-  
+
   // Combine all slugs
   const allSlugs = [...lessonSlugs, ...articleSlugs];
-  
+
   // Filter out any non-content slugs
-  return allSlugs.filter(({ slug }) => 
-    !slug.endsWith('.png') && 
-    !slug.endsWith('.ico') && 
-    !slug.endsWith('.webmanifest')
+  return allSlugs.filter(
+    ({ slug }) =>
+      !slug.endsWith(".png") &&
+      !slug.endsWith(".ico") &&
+      !slug.endsWith(".webmanifest"),
   );
 }
 
@@ -58,7 +62,7 @@ export async function generateMetadata({
   let { category, slug } = await params;
   let lesson = await getLesson(slug);
   let article = await getArticle(slug);
-  
+
   if (!lesson && !article) return {};
 
   const content = lesson || article;
@@ -73,11 +77,11 @@ export async function generateMetadata({
       ? {
           title: `${content.title}`,
           description: content.description,
-          type: 'video.other',
+          type: "video.other",
           videos: [
             {
               url: content.video.url,
-              type: 'video/mp4',
+              type: "video/mp4",
             },
           ],
           images: [
@@ -92,21 +96,25 @@ export async function generateMetadata({
       : {
           title: `${content.title}`,
           description: content.description,
-          type: 'article',
+          type: "article",
           images: [
             {
-              url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
+              url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
               width: 1200,
               height: 630,
-              alt: 'Blawby - Compliant Credit Card Payments for Legal Practices'
-            }
+              alt: "Blawby - Compliant Credit Card Payments for Legal Practices",
+            },
           ],
         },
     twitter: {
-      card: content.video ? 'player' : 'summary_large_image',
+      card: content.video ? "player" : "summary_large_image",
       title: `${content.title}`,
       description: content.description,
-      images: content.video ? [content.video.thumbnail] : ['https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public'],
+      images: content.video
+        ? [content.video.thumbnail]
+        : [
+            "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+          ],
     },
     alternates: {
       canonical: `https://blawby.com/${category}/${slug}`,
@@ -119,32 +127,32 @@ function generateLessonStructuredData(lesson: any, category: string) {
   // Use Course schema for lessons, Article schema for guides
   if (lesson.contentType === "lesson") {
     const baseData = {
-      '@context': 'https://schema.org',
-      '@type': 'LearningResource',
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
       name: lesson.title,
       description: lesson.description,
       provider: {
-        '@type': 'Organization',
-        name: 'Blawby',
+        "@type": "Organization",
+        name: "Blawby",
         logo: {
-          '@type': 'ImageObject',
-          url: 'https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public',
+          "@type": "ImageObject",
+          url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
         },
       },
-      learningResourceType: 'Lesson',
-      educationalLevel: 'Beginner',
+      learningResourceType: "Lesson",
+      educationalLevel: "Beginner",
       audience: {
-        '@type': 'Audience',
-        audienceType: 'General public',
+        "@type": "Audience",
+        audienceType: "General public",
       },
     };
 
     if (lesson.video) {
       return {
         ...baseData,
-        '@type': ['LearningResource', 'VideoObject'],
+        "@type": ["LearningResource", "VideoObject"],
         thumbnailUrl: lesson.video.thumbnail,
-        uploadDate: new Date().toISOString().split('T')[0],
+        uploadDate: new Date().toISOString().split("T")[0],
         duration: `PT${Math.floor(lesson.video.duration / 60)}M${lesson.video.duration % 60}S`,
         contentUrl: lesson.video.url,
         embedUrl: lesson.video.url,
@@ -154,7 +162,9 @@ function generateLessonStructuredData(lesson: any, category: string) {
     return baseData;
   } else {
     // Use Article schema for guides and articles
-    const categoryData = lesson.category ? getCategoryById(lesson.category) : undefined;
+    const categoryData = lesson.category
+      ? getCategoryById(lesson.category)
+      : undefined;
     return getArticleSchema({
       name: lesson.title,
       description: lesson.description,
@@ -175,11 +185,11 @@ export default async function Page({
   params: Promise<{ category: string; slug: string }>;
 }) {
   let { category, slug } = await params;
-  
+
   // Try to find content in both lessons and articles
   let lesson = await getLesson(slug);
   let article = await getArticle(slug);
-  
+
   if (!lesson && !article) {
     notFound();
   }
@@ -187,11 +197,11 @@ export default async function Page({
   // Use lesson or article data
   const content = lesson || article;
   const isArticle = !!article;
-  
+
   if (!content) {
     notFound();
   }
-  
+
   let Content;
   if (isArticle) {
     Content = await getArticleContent(category, slug);
@@ -200,13 +210,15 @@ export default async function Page({
   }
 
   const lessonStructuredData = generateLessonStructuredData(content, category);
-  
+
   // Handle breadcrumbs differently for articles vs lessons
   const breadcrumbItems = [
     { name: "Home", url: "https://blawby.com" },
-    { 
-      name: isArticle ? "Articles" : (lesson?.module?.title || "Content"), 
-      url: isArticle ? "https://blawby.com/articles" : `https://blawby.com/#${lesson?.module?.id || ""}` 
+    {
+      name: isArticle ? "Articles" : lesson?.module?.title || "Content",
+      url: isArticle
+        ? "https://blawby.com/articles"
+        : `https://blawby.com/#${lesson?.module?.id || ""}`,
     },
     { name: content.title, url: `https://blawby.com/${category}/${slug}` },
   ];
@@ -218,12 +230,20 @@ export default async function Page({
   try {
     // Determine the correct file path based on content type
     let contentPath: string;
-    if (isArticle || content.contentType === "guide" || content.contentType === "article") {
-      contentPath = path.join(process.cwd(), "src/data/articles", `${slug}.mdx`);
+    if (
+      isArticle ||
+      content.contentType === "guide" ||
+      content.contentType === "article"
+    ) {
+      contentPath = path.join(
+        process.cwd(),
+        "src/data/articles",
+        `${slug}.mdx`,
+      );
     } else {
       contentPath = path.join(process.cwd(), "src/data/lessons", `${slug}.mdx`);
     }
-    
+
     const mdxContent = fs.readFileSync(contentPath, "utf-8");
     const steps = parseHowToStepsFromMarkdown(mdxContent);
     if (steps.length >= 2) {
@@ -252,7 +272,10 @@ export default async function Page({
         <Breadcrumbs>
           <BreadcrumbHome />
           <BreadcrumbSeparator className="max-md:hidden" />
-          <Breadcrumb href={isArticle ? "/articles" : `/#${lesson?.module?.id || ""}`} className="max-md:hidden">
+          <Breadcrumb
+            href={isArticle ? "/articles" : `/#${lesson?.module?.id || ""}`}
+            className="max-md:hidden"
+          >
             {isArticle ? "Articles" : lesson?.module?.title || "Content"}
           </Breadcrumb>
           <BreadcrumbSeparator />
@@ -262,7 +285,9 @@ export default async function Page({
     >
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(lessonStructuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(lessonStructuredData),
+        }}
       />
       <script
         type="application/ld+json"
@@ -277,7 +302,7 @@ export default async function Page({
                 name: content.title,
                 description: content.description,
                 url: `https://blawby.com/${category}/${slug}`,
-              })
+              }),
             ),
           }}
         />
@@ -294,7 +319,7 @@ export default async function Page({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      
+
       {/* Video section */}
       <div className="mx-auto max-w-7xl">
         <div className="-mx-2 sm:-mx-4">

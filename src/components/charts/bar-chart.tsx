@@ -57,7 +57,7 @@ export function BarChart({
           },
           animations: {
             enabled: true,
-            easing: 'easeInOut',
+            easing: "easeInOut",
             speed: 800,
           },
           ...(stacked && { stacked: true }),

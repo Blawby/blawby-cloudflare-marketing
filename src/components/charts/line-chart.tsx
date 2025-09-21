@@ -20,7 +20,15 @@ export function LineChart({
   id,
 }: LineChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
-  const [isDark, setIsDark] = useState(false);
+  const chartInstanceRef = useRef<any>(null);
+  const [isDark, setIsDark] = useState(() => {
+    // Initialize with actual dark mode state to prevent double render
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark') ||
+             window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
 
   // Dark mode detection
   useEffect(() => {
@@ -32,7 +40,7 @@ export function LineChart({
       setIsDark(dark);
     };
 
-    checkDarkMode();
+    // Remove initial checkDarkMode() call to prevent double render
 
     if (typeof document !== "undefined") {
       const observer = new MutationObserver(checkDarkMode);
@@ -54,9 +62,13 @@ export function LineChart({
   useEffect(() => {
     if (!chartRef.current) return;
 
-    let chart: any;
-
     const loadApexCharts = async () => {
+      // Clean up existing chart instance before creating new one
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+        chartInstanceRef.current = null;
+      }
+
       const ApexCharts = (await import("apexcharts")).default;
 
       const textColor = isDark ? "#ffffff" : "#111827";
@@ -112,7 +124,11 @@ export function LineChart({
           categories,
           labels: {
             show: true,
-            style: { fontFamily: "Inter, sans-serif", colors: textColor, fontSize: "16px" },
+            style: {
+              fontFamily: "Inter, sans-serif",
+              colors: textColor,
+              fontSize: "16px",
+            },
           },
           axisTicks: { show: false },
           axisBorder: { show: false },
@@ -120,7 +136,11 @@ export function LineChart({
         yaxis: {
           labels: {
             show: true,
-            style: { fontFamily: "Inter, sans-serif", colors: textColor, fontSize: "16px" },
+            style: {
+              fontFamily: "Inter, sans-serif",
+              colors: textColor,
+              fontSize: "16px",
+            },
             formatter: (val: number) => `${val}%`,
           },
         },
@@ -162,14 +182,17 @@ export function LineChart({
         ],
       };
 
-      chart = new ApexCharts(chartRef.current, options);
-      chart.render();
+      chartInstanceRef.current = new ApexCharts(chartRef.current, options);
+      chartInstanceRef.current.render();
     };
 
     loadApexCharts();
 
     return () => {
-      if (chart) chart.destroy();
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+        chartInstanceRef.current = null;
+      }
     };
   }, [series, categories, height, isDark]);
 

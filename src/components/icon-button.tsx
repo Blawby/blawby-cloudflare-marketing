@@ -16,7 +16,7 @@ export function IconButton({
         "before:bg-white/75 before:backdrop-blur-sm dark:before:bg-gray-950/75",
         "data-hover:before:bg-gray-950/5 dark:data-hover:before:bg-white/5",
         "focus:outline-hidden data-focus:before:outline-2 data-focus:before:outline-[var(--color-accent-400)] data-focus:before:outline-solid",
-        className
+        className,
       )}
       {...props}
     />

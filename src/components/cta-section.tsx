@@ -1,6 +1,6 @@
 import { Button } from "@/components/button";
-import type React from "react";
 import Link from "next/link";
+import type React from "react";
 
 export function CTASection({
   title,
@@ -19,12 +19,16 @@ export function CTASection({
   return (
     <section
       className={
-        "my-16 rounded-2xl border border-gray-200 dark:border-white/10 px-8 py-12 text-center bg-transparent " +
+        "my-16 rounded-2xl border border-gray-200 bg-transparent px-8 py-12 text-center dark:border-white/10 " +
         (className || "")
       }
     >
-      <h2 className="text-2xl font-bold text-gray-950 dark:text-white mb-4">{title}</h2>
-      <p className="mb-8 text-lg body-text max-w-2xl mx-auto text-gray-700 dark:text-gray-300">{description}</p>
+      <h2 className="mb-4 text-2xl font-bold text-gray-950 dark:text-white">
+        {title}
+      </h2>
+      <p className="body-text mx-auto mb-8 max-w-2xl text-lg text-gray-700 dark:text-gray-300">
+        {description}
+      </p>
       {isExternal ? (
         <a href={buttonHref} target="_blank" rel="noopener noreferrer">
           <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
@@ -40,4 +44,4 @@ export function CTASection({
       )}
     </section>
   );
-} 
+}

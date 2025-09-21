@@ -20,10 +20,8 @@ export function getArticles(): Article[] {
   return articles;
 }
 
-export async function getArticle(
-  slug: string,
-): Promise<Article | null> {
-  return articles.find(article => article.id === slug) || null;
+export async function getArticle(slug: string): Promise<Article | null> {
+  return articles.find((article) => article.id === slug) || null;
 }
 
 export async function getArticleContent(category: string, slug: string) {
@@ -40,19 +38,28 @@ const articles: Article[] = [
     tags: ["iolta", "trust-accounts", "legal-compliance", "payment-processing"],
     datePublished: "2024-01-15",
     dateModified: "2024-01-15",
-    image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+    image:
+      "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
     video: null,
   },
   {
     id: "future-proof-revenue",
     title: "Future-Proof Revenue",
-    description: "How to use flat fees, payment plans, and automated billing to stabilize your law firm's cash flow.",
+    description:
+      "How to use flat fees, payment plans, and automated billing to stabilize your law firm's cash flow.",
     contentType: "guide",
     category: "business-strategy",
-    tags: ["revenue-optimization", "flat-fees", "payment-plans", "automated-billing", "cash-flow"],
+    tags: [
+      "revenue-optimization",
+      "flat-fees",
+      "payment-plans",
+      "automated-billing",
+      "cash-flow",
+    ],
     datePublished: "2024-01-20",
     dateModified: "2024-01-20",
-    image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+    image:
+      "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
     video: null,
-  }
-]; 
+  },
+];

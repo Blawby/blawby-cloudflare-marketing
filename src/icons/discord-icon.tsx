@@ -1,7 +1,10 @@
-import type React from "react";
 import clsx from "clsx";
+import type React from "react";
 
-export function DiscordIcon({ className, ...props }: React.ComponentProps<"svg">) {
+export function DiscordIcon({
+  className,
+  ...props
+}: React.ComponentProps<"svg">) {
   return (
     <svg
       viewBox="0 -28.5 256 256"
@@ -19,4 +22,4 @@ export function DiscordIcon({ className, ...props }: React.ComponentProps<"svg">
       </g>
     </svg>
   );
-} 
+}

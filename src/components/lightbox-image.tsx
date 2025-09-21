@@ -11,19 +11,19 @@ interface LightboxImageProps {
   lightboxClassName?: string;
 }
 
-export function LightboxImage({ 
-  src, 
-  alt, 
-  caption, 
-  width = 400, 
+export function LightboxImage({
+  src,
+  alt,
+  caption,
+  width = 400,
   height = 300,
   className,
-  lightboxClassName 
+  lightboxClassName,
 }: LightboxImageProps) {
   return (
-    <Lightbox 
-      src={src} 
-      alt={alt} 
+    <Lightbox
+      src={src}
+      alt={alt}
       caption={caption}
       className={lightboxClassName}
     >
@@ -32,7 +32,7 @@ export function LightboxImage({
         alt={alt}
         width={width}
         height={height}
-        className={`block object-cover rounded-lg border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow ${className || ""}`}
+        className={`block rounded-lg border border-gray-200 object-cover shadow-sm transition-shadow hover:shadow-md dark:border-white/10 ${className || ""}`}
       />
     </Lightbox>
   );

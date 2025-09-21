@@ -1,7 +1,9 @@
 "use client";
 
 import { IconButton } from "@/components/icon-button";
+import type { Article } from "@/data/articles";
 import type { Module } from "@/data/lessons";
+import type { Page } from "@/data/pages";
 import { SidebarIcon } from "@/icons/sidebar-icon";
 import {
   CloseButton,
@@ -15,8 +17,6 @@ import { usePathname } from "next/navigation";
 import type React from "react";
 import { createContext, useContext, useState } from "react";
 import { Navbar } from "./navbar";
-import type { Article } from "@/data/articles";
-import type { Page } from "@/data/pages";
 
 export const SidebarContext = createContext<{
   isSidebarOpen: boolean;
@@ -61,7 +61,9 @@ function CourseNavigation({
                 <Link
                   href={`/${lesson.category}/${lesson.id}`}
                   aria-current={
-                    `/${lesson.category}/${lesson.id}` === pathname ? "page" : undefined
+                    `/${lesson.category}/${lesson.id}` === pathname
+                      ? "page"
+                      : undefined
                   }
                   onNavigate={onNavigate}
                   className="aria-[current=page]:font-medium aria-[current=page]:text-gray-950 dark:aria-[current=page]:text-white"
@@ -89,7 +91,7 @@ function ArticlesNavigation({
   let pathname = usePathname();
   if (!articles.length) return null;
   return (
-    <div className={clsx(className, "space-y-8 mt-10")}>
+    <div className={clsx(className, "mt-10 space-y-8")}>
       <div>
         <h2 className="text-base/7 font-semibold text-pretty text-gray-950 sm:text-sm/6 dark:text-white">
           Articles & Guides
@@ -107,7 +109,9 @@ function ArticlesNavigation({
               <Link
                 href={`/${article.category}/${article.id}`}
                 aria-current={
-                  `/${article.category}/${article.id}` === pathname ? "page" : undefined
+                  `/${article.category}/${article.id}` === pathname
+                    ? "page"
+                    : undefined
                 }
                 onClick={onNavigate}
                 className="aria-[current=page]:font-medium aria-[current=page]:text-gray-950 dark:aria-[current=page]:text-white"
@@ -134,7 +138,7 @@ function PagesNavigation({
   let pathname = usePathname();
   if (!pages.length) return null;
   return (
-    <div className={clsx(className, "space-y-8 mt-10")}>
+    <div className={clsx(className, "mt-10 space-y-8")}>
       <div>
         <h2 className="text-base/7 font-semibold text-pretty text-gray-950 sm:text-sm/6 dark:text-white">
           Pages
@@ -151,9 +155,7 @@ function PagesNavigation({
             >
               <Link
                 href={page.href}
-                aria-current={
-                  page.href === pathname ? "page" : undefined
-                }
+                aria-current={page.href === pathname ? "page" : undefined}
                 onClick={onNavigate}
                 className="aria-[current=page]:font-medium aria-[current=page]:text-gray-950 dark:aria-[current=page]:text-white"
               >
@@ -254,7 +256,10 @@ export function SidebarLayout({
             </div>
             <div className="mt-3">
               <CourseNavigation modules={modules} className="max-xl:hidden" />
-              <ArticlesNavigation articles={articles} className="max-xl:hidden" />
+              <ArticlesNavigation
+                articles={articles}
+                className="max-xl:hidden"
+              />
               <PagesNavigation pages={pages} className="max-xl:hidden" />
             </div>
           </nav>

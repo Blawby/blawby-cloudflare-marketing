@@ -4,42 +4,63 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
-var __esm = (fn, res) => function __init() {
-  return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
-};
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
+var __name = (target, value) =>
+  __defProp(target, "name", { value, configurable: true });
+var __esm = (fn, res) =>
+  function __init() {
+    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
+  };
+var __commonJS = (cb, mod) =>
+  function __require() {
+    return (
+      mod ||
+        (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod),
+      mod.exports
+    );
+  };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
+var __toESM = (mod, isNodeMode, target) => (
+  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
+  __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule
+      ? __defProp(target, "default", { value: mod, enumerable: true })
+      : target,
+    mod,
+  )
+);
 
 // .wrangler/tmp/bundle-mlKrDW/checked-fetch.js
 function checkURL(request, init) {
-  const url = request instanceof URL ? request : new URL(
-    (typeof request === "string" ? new Request(request, init) : request).url
-  );
+  const url =
+    request instanceof URL
+      ? request
+      : new URL(
+          (typeof request === "string"
+            ? new Request(request, init)
+            : request
+          ).url,
+        );
   if (url.port && url.port !== "443" && url.protocol === "https:") {
     if (!urls.has(url.toString())) {
       urls.add(url.toString());
       console.warn(
         `WARNING: known issue with \`fetch()\` requests to custom HTTPS ports in published Workers:
  - ${url.toString()} - the custom port will be ignored when the Worker is published using the \`wrangler deploy\` command.
-`
+`,
       );
     }
   }
@@ -55,9 +76,9 @@ var init_checked_fetch = __esm({
         const [request, init] = argArray;
         checkURL(request, init);
         return Reflect.apply(target, thisArg, argArray);
-      }
+      },
     });
-  }
+  },
 });
 
 // wrangler-modules-watch:wrangler:modules-watch
@@ -65,14 +86,14 @@ var init_wrangler_modules_watch = __esm({
   "wrangler-modules-watch:wrangler:modules-watch"() {
     init_checked_fetch();
     init_modules_watch_stub();
-  }
+  },
 });
 
 // ../../.nvm/versions/node/v20.19.2/lib/node_modules/wrangler/templates/modules-watch-stub.js
 var init_modules_watch_stub = __esm({
   "../../.nvm/versions/node/v20.19.2/lib/node_modules/wrangler/templates/modules-watch-stub.js"() {
     init_wrangler_modules_watch();
-  }
+  },
 });
 
 // node_modules/base64-js/index.js
@@ -87,7 +108,8 @@ var require_base64_js = __commonJS({
     var lookup2 = [];
     var revLookup = [];
     var Arr = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
-    var code = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    var code =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     for (i2 = 0, len = code.length; i2 < len; ++i2) {
       lookup2[i2] = code[i2];
       revLookup[code.charCodeAt(i2)] = i2;
@@ -103,7 +125,7 @@ var require_base64_js = __commonJS({
       }
       var validLen = b64.indexOf("=");
       if (validLen === -1) validLen = len2;
-      var placeHoldersLen = validLen === len2 ? 0 : 4 - validLen % 4;
+      var placeHoldersLen = validLen === len2 ? 0 : 4 - (validLen % 4);
       return [validLen, placeHoldersLen];
     }
     __name(getLens, "getLens");
@@ -111,11 +133,11 @@ var require_base64_js = __commonJS({
       var lens = getLens(b64);
       var validLen = lens[0];
       var placeHoldersLen = lens[1];
-      return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
+      return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
     }
     __name(byteLength, "byteLength");
     function _byteLength(b64, validLen, placeHoldersLen) {
-      return (validLen + placeHoldersLen) * 3 / 4 - placeHoldersLen;
+      return ((validLen + placeHoldersLen) * 3) / 4 - placeHoldersLen;
     }
     __name(_byteLength, "_byteLength");
     function toByteArray(b64) {
@@ -128,32 +150,49 @@ var require_base64_js = __commonJS({
       var len2 = placeHoldersLen > 0 ? validLen - 4 : validLen;
       var i3;
       for (i3 = 0; i3 < len2; i3 += 4) {
-        tmp = revLookup[b64.charCodeAt(i3)] << 18 | revLookup[b64.charCodeAt(i3 + 1)] << 12 | revLookup[b64.charCodeAt(i3 + 2)] << 6 | revLookup[b64.charCodeAt(i3 + 3)];
-        arr[curByte++] = tmp >> 16 & 255;
-        arr[curByte++] = tmp >> 8 & 255;
+        tmp =
+          (revLookup[b64.charCodeAt(i3)] << 18) |
+          (revLookup[b64.charCodeAt(i3 + 1)] << 12) |
+          (revLookup[b64.charCodeAt(i3 + 2)] << 6) |
+          revLookup[b64.charCodeAt(i3 + 3)];
+        arr[curByte++] = (tmp >> 16) & 255;
+        arr[curByte++] = (tmp >> 8) & 255;
         arr[curByte++] = tmp & 255;
       }
       if (placeHoldersLen === 2) {
-        tmp = revLookup[b64.charCodeAt(i3)] << 2 | revLookup[b64.charCodeAt(i3 + 1)] >> 4;
+        tmp =
+          (revLookup[b64.charCodeAt(i3)] << 2) |
+          (revLookup[b64.charCodeAt(i3 + 1)] >> 4);
         arr[curByte++] = tmp & 255;
       }
       if (placeHoldersLen === 1) {
-        tmp = revLookup[b64.charCodeAt(i3)] << 10 | revLookup[b64.charCodeAt(i3 + 1)] << 4 | revLookup[b64.charCodeAt(i3 + 2)] >> 2;
-        arr[curByte++] = tmp >> 8 & 255;
+        tmp =
+          (revLookup[b64.charCodeAt(i3)] << 10) |
+          (revLookup[b64.charCodeAt(i3 + 1)] << 4) |
+          (revLookup[b64.charCodeAt(i3 + 2)] >> 2);
+        arr[curByte++] = (tmp >> 8) & 255;
         arr[curByte++] = tmp & 255;
       }
       return arr;
     }
     __name(toByteArray, "toByteArray");
     function tripletToBase64(num) {
-      return lookup2[num >> 18 & 63] + lookup2[num >> 12 & 63] + lookup2[num >> 6 & 63] + lookup2[num & 63];
+      return (
+        lookup2[(num >> 18) & 63] +
+        lookup2[(num >> 12) & 63] +
+        lookup2[(num >> 6) & 63] +
+        lookup2[num & 63]
+      );
     }
     __name(tripletToBase64, "tripletToBase64");
     function encodeChunk(uint8, start, end) {
       var tmp;
       var output = [];
       for (var i3 = start; i3 < end; i3 += 3) {
-        tmp = (uint8[i3] << 16 & 16711680) + (uint8[i3 + 1] << 8 & 65280) + (uint8[i3 + 2] & 255);
+        tmp =
+          ((uint8[i3] << 16) & 16711680) +
+          ((uint8[i3 + 1] << 8) & 65280) +
+          (uint8[i3 + 2] & 255);
         output.push(tripletToBase64(tmp));
       }
       return output.join("");
@@ -165,24 +204,35 @@ var require_base64_js = __commonJS({
       var extraBytes = len2 % 3;
       var parts = [];
       var maxChunkLength = 16383;
-      for (var i3 = 0, len22 = len2 - extraBytes; i3 < len22; i3 += maxChunkLength) {
-        parts.push(encodeChunk(uint8, i3, i3 + maxChunkLength > len22 ? len22 : i3 + maxChunkLength));
+      for (
+        var i3 = 0, len22 = len2 - extraBytes;
+        i3 < len22;
+        i3 += maxChunkLength
+      ) {
+        parts.push(
+          encodeChunk(
+            uint8,
+            i3,
+            i3 + maxChunkLength > len22 ? len22 : i3 + maxChunkLength,
+          ),
+        );
       }
       if (extraBytes === 1) {
         tmp = uint8[len2 - 1];
-        parts.push(
-          lookup2[tmp >> 2] + lookup2[tmp << 4 & 63] + "=="
-        );
+        parts.push(lookup2[tmp >> 2] + lookup2[(tmp << 4) & 63] + "==");
       } else if (extraBytes === 2) {
         tmp = (uint8[len2 - 2] << 8) + uint8[len2 - 1];
         parts.push(
-          lookup2[tmp >> 10] + lookup2[tmp >> 4 & 63] + lookup2[tmp << 2 & 63] + "="
+          lookup2[tmp >> 10] +
+            lookup2[(tmp >> 4) & 63] +
+            lookup2[(tmp << 2) & 63] +
+            "=",
         );
       }
       return parts.join("");
     }
     __name(fromByteArray, "fromByteArray");
-  }
+  },
 });
 
 // .wrangler/tmp/bundle-mlKrDW/middleware-loader.entry.ts
@@ -206,9 +256,11 @@ var e = __toESM(require_base64_js(), 1);
 init_checked_fetch();
 init_modules_watch_stub();
 var objectToString = Object.prototype.toString;
-var isArray = Array.isArray || /* @__PURE__ */ __name(function isArrayPolyfill(object) {
-  return objectToString.call(object) === "[object Array]";
-}, "isArrayPolyfill");
+var isArray =
+  Array.isArray ||
+  /* @__PURE__ */ __name(function isArrayPolyfill(object) {
+    return objectToString.call(object) === "[object Array]";
+  }, "isArrayPolyfill");
 function isFunction(object) {
   return typeof object === "function";
 }
@@ -226,7 +278,12 @@ function hasProperty(obj, propName) {
 }
 __name(hasProperty, "hasProperty");
 function primitiveHasOwnProperty(primitive, propName) {
-  return primitive != null && typeof primitive !== "object" && primitive.hasOwnProperty && primitive.hasOwnProperty(propName);
+  return (
+    primitive != null &&
+    typeof primitive !== "object" &&
+    primitive.hasOwnProperty &&
+    primitive.hasOwnProperty(propName)
+  );
 }
 __name(primitiveHasOwnProperty, "primitiveHasOwnProperty");
 var regExpTest = RegExp.prototype.test;
@@ -247,12 +304,15 @@ var entityMap = {
   "'": "&#39;",
   "/": "&#x2F;",
   "`": "&#x60;",
-  "=": "&#x3D;"
+  "=": "&#x3D;",
 };
 function escapeHtml(string) {
-  return String(string).replace(/[&<>"'`=\/]/g, /* @__PURE__ */ __name(function fromEntityMap(s2) {
-    return entityMap[s2];
-  }, "fromEntityMap"));
+  return String(string).replace(
+    /[&<>"'`=\/]/g,
+    /* @__PURE__ */ __name(function fromEntityMap(s2) {
+      return entityMap[s2];
+    }, "fromEntityMap"),
+  );
 }
 __name(escapeHtml, "escapeHtml");
 var whiteRe = /\s*/;
@@ -261,8 +321,7 @@ var equalsRe = /\s*=/;
 var curlyRe = /\s*\}/;
 var tagRe = /#|\^|\/|>|\{|&|=|!/;
 function parseTemplate(template, tags) {
-  if (!template)
-    return [];
+  if (!template) return [];
   var lineHasNonSpace = false;
   var sections = [];
   var tokens = [];
@@ -273,8 +332,7 @@ function parseTemplate(template, tags) {
   var tagIndex = 0;
   function stripSpace() {
     if (hasTag && !nonSpace) {
-      while (spaces.length)
-        delete tokens[spaces.pop()];
+      while (spaces.length) delete tokens[spaces.pop()];
     } else {
       spaces = [];
     }
@@ -320,8 +378,7 @@ function parseTemplate(template, tags) {
         }
       }
     }
-    if (!scanner.scan(openingTagRe))
-      break;
+    if (!scanner.scan(openingTagRe)) break;
     hasTag = true;
     type = scanner.scan(tagRe) || "name";
     scanner.scan(whiteRe);
@@ -340,7 +397,15 @@ function parseTemplate(template, tags) {
     if (!scanner.scan(closingTagRe))
       throw new Error("Unclosed tag at " + scanner.pos);
     if (type == ">") {
-      token = [type, value, start, scanner.pos, indentation, tagIndex, lineHasNonSpace];
+      token = [
+        type,
+        value,
+        start,
+        scanner.pos,
+        indentation,
+        tagIndex,
+        lineHasNonSpace,
+      ];
     } else {
       token = [type, value, start, scanner.pos];
     }
@@ -353,7 +418,9 @@ function parseTemplate(template, tags) {
       if (!openSection)
         throw new Error('Unopened section "' + value + '" at ' + start);
       if (openSection[1] !== value)
-        throw new Error('Unclosed section "' + openSection[1] + '" at ' + start);
+        throw new Error(
+          'Unclosed section "' + openSection[1] + '" at ' + start,
+        );
     } else if (type === "name" || type === "{" || type === "&") {
       nonSpace = true;
     } else if (type === "=") {
@@ -363,7 +430,9 @@ function parseTemplate(template, tags) {
   stripSpace();
   openSection = sections.pop();
   if (openSection)
-    throw new Error('Unclosed section "' + openSection[1] + '" at ' + scanner.pos);
+    throw new Error(
+      'Unclosed section "' + openSection[1] + '" at ' + scanner.pos,
+    );
   return nestTokens(squashTokens(tokens));
 }
 __name(parseTemplate, "parseTemplate");
@@ -402,7 +471,8 @@ function nestTokens(tokens) {
       case "/":
         section = sections.pop();
         section[5] = token[2];
-        collector = sections.length > 0 ? sections[sections.length - 1][4] : nestedTokens;
+        collector =
+          sections.length > 0 ? sections[sections.length - 1][4] : nestedTokens;
         break;
       default:
         collector.push(token);
@@ -422,15 +492,15 @@ Scanner.prototype.eos = /* @__PURE__ */ __name(function eos() {
 }, "eos");
 Scanner.prototype.scan = /* @__PURE__ */ __name(function scan(re) {
   var match = this.tail.match(re);
-  if (!match || match.index !== 0)
-    return "";
+  if (!match || match.index !== 0) return "";
   var string = match[0];
   this.tail = this.tail.substring(string.length);
   this.pos += string.length;
   return string;
 }, "scan");
 Scanner.prototype.scanUntil = /* @__PURE__ */ __name(function scanUntil(re) {
-  var index = this.tail.search(re), match;
+  var index = this.tail.search(re),
+    match;
   switch (index) {
     case -1:
       match = this.tail;
@@ -461,7 +531,11 @@ Context.prototype.lookup = /* @__PURE__ */ __name(function lookup(name) {
   if (cache.hasOwnProperty(name)) {
     value = cache[name];
   } else {
-    var context = this, intermediateValue, names, index, lookupHit = false;
+    var context = this,
+      intermediateValue,
+      names,
+      index,
+      lookupHit = false;
     while (context) {
       if (name.indexOf(".") > 0) {
         intermediateValue = context.view;
@@ -469,7 +543,9 @@ Context.prototype.lookup = /* @__PURE__ */ __name(function lookup(name) {
         index = 0;
         while (intermediateValue != null && index < names.length) {
           if (index === names.length - 1)
-            lookupHit = hasProperty(intermediateValue, names[index]) || primitiveHasOwnProperty(intermediateValue, names[index]);
+            lookupHit =
+              hasProperty(intermediateValue, names[index]) ||
+              primitiveHasOwnProperty(intermediateValue, names[index]);
           intermediateValue = intermediateValue[names[index++]];
         }
       } else {
@@ -484,8 +560,7 @@ Context.prototype.lookup = /* @__PURE__ */ __name(function lookup(name) {
     }
     cache[name] = value;
   }
-  if (isFunction(value))
-    value = value.call(this.view);
+  if (isFunction(value)) value = value.call(this.view);
   return value;
 }, "lookup");
 function Writer() {
@@ -499,7 +574,7 @@ function Writer() {
     }, "get"),
     clear: /* @__PURE__ */ __name(function clear() {
       this._cache = {};
-    }, "clear")
+    }, "clear"),
   };
 }
 __name(Writer, "Writer");
@@ -519,31 +594,63 @@ Writer.prototype.parse = /* @__PURE__ */ __name(function parse(template, tags) {
   }
   return tokens;
 }, "parse");
-Writer.prototype.render = /* @__PURE__ */ __name(function render(template, view, partials, config) {
+Writer.prototype.render = /* @__PURE__ */ __name(function render(
+  template,
+  view,
+  partials,
+  config,
+) {
   var tags = this.getConfigTags(config);
   var tokens = this.parse(template, tags);
   var context = view instanceof Context ? view : new Context(view, void 0);
   return this.renderTokens(tokens, context, partials, template, config);
 }, "render");
-Writer.prototype.renderTokens = /* @__PURE__ */ __name(function renderTokens(tokens, context, partials, originalTemplate, config) {
+Writer.prototype.renderTokens = /* @__PURE__ */ __name(function renderTokens(
+  tokens,
+  context,
+  partials,
+  originalTemplate,
+  config,
+) {
   var buffer = "";
   var token, symbol, value;
   for (var i2 = 0, numTokens = tokens.length; i2 < numTokens; ++i2) {
     value = void 0;
     token = tokens[i2];
     symbol = token[0];
-    if (symbol === "#") value = this.renderSection(token, context, partials, originalTemplate, config);
-    else if (symbol === "^") value = this.renderInverted(token, context, partials, originalTemplate, config);
-    else if (symbol === ">") value = this.renderPartial(token, context, partials, config);
+    if (symbol === "#")
+      value = this.renderSection(
+        token,
+        context,
+        partials,
+        originalTemplate,
+        config,
+      );
+    else if (symbol === "^")
+      value = this.renderInverted(
+        token,
+        context,
+        partials,
+        originalTemplate,
+        config,
+      );
+    else if (symbol === ">")
+      value = this.renderPartial(token, context, partials, config);
     else if (symbol === "&") value = this.unescapedValue(token, context);
-    else if (symbol === "name") value = this.escapedValue(token, context, config);
+    else if (symbol === "name")
+      value = this.escapedValue(token, context, config);
     else if (symbol === "text") value = this.rawValue(token);
-    if (value !== void 0)
-      buffer += value;
+    if (value !== void 0) buffer += value;
   }
   return buffer;
 }, "renderTokens");
-Writer.prototype.renderSection = /* @__PURE__ */ __name(function renderSection(token, context, partials, originalTemplate, config) {
+Writer.prototype.renderSection = /* @__PURE__ */ __name(function renderSection(
+  token,
+  context,
+  partials,
+  originalTemplate,
+  config,
+) {
   var self = this;
   var buffer = "";
   var value = context.lookup(token[1]);
@@ -554,27 +661,67 @@ Writer.prototype.renderSection = /* @__PURE__ */ __name(function renderSection(t
   if (!value) return;
   if (isArray(value)) {
     for (var j = 0, valueLength = value.length; j < valueLength; ++j) {
-      buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate, config);
+      buffer += this.renderTokens(
+        token[4],
+        context.push(value[j]),
+        partials,
+        originalTemplate,
+        config,
+      );
     }
-  } else if (typeof value === "object" || typeof value === "string" || typeof value === "number") {
-    buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate, config);
+  } else if (
+    typeof value === "object" ||
+    typeof value === "string" ||
+    typeof value === "number"
+  ) {
+    buffer += this.renderTokens(
+      token[4],
+      context.push(value),
+      partials,
+      originalTemplate,
+      config,
+    );
   } else if (isFunction(value)) {
     if (typeof originalTemplate !== "string")
-      throw new Error("Cannot use higher-order sections without the original template");
-    value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender);
-    if (value != null)
-      buffer += value;
+      throw new Error(
+        "Cannot use higher-order sections without the original template",
+      );
+    value = value.call(
+      context.view,
+      originalTemplate.slice(token[3], token[5]),
+      subRender,
+    );
+    if (value != null) buffer += value;
   } else {
-    buffer += this.renderTokens(token[4], context, partials, originalTemplate, config);
+    buffer += this.renderTokens(
+      token[4],
+      context,
+      partials,
+      originalTemplate,
+      config,
+    );
   }
   return buffer;
 }, "renderSection");
-Writer.prototype.renderInverted = /* @__PURE__ */ __name(function renderInverted(token, context, partials, originalTemplate, config) {
-  var value = context.lookup(token[1]);
-  if (!value || isArray(value) && value.length === 0)
-    return this.renderTokens(token[4], context, partials, originalTemplate, config);
-}, "renderInverted");
-Writer.prototype.indentPartial = /* @__PURE__ */ __name(function indentPartial(partial, indentation, lineHasNonSpace) {
+Writer.prototype.renderInverted = /* @__PURE__ */ __name(
+  function renderInverted(token, context, partials, originalTemplate, config) {
+    var value = context.lookup(token[1]);
+    if (!value || (isArray(value) && value.length === 0))
+      return this.renderTokens(
+        token[4],
+        context,
+        partials,
+        originalTemplate,
+        config,
+      );
+  },
+  "renderInverted",
+);
+Writer.prototype.indentPartial = /* @__PURE__ */ __name(function indentPartial(
+  partial,
+  indentation,
+  lineHasNonSpace,
+) {
   var filteredIndentation = indentation.replace(/[^ \t]/g, "");
   var partialByNl = partial.split("\n");
   for (var i2 = 0; i2 < partialByNl.length; i2++) {
@@ -584,7 +731,12 @@ Writer.prototype.indentPartial = /* @__PURE__ */ __name(function indentPartial(p
   }
   return partialByNl.join("\n");
 }, "indentPartial");
-Writer.prototype.renderPartial = /* @__PURE__ */ __name(function renderPartial(token, context, partials, config) {
+Writer.prototype.renderPartial = /* @__PURE__ */ __name(function renderPartial(
+  token,
+  context,
+  partials,
+  config,
+) {
   if (!partials) return;
   var tags = this.getConfigTags(config);
   var value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
@@ -600,21 +752,31 @@ Writer.prototype.renderPartial = /* @__PURE__ */ __name(function renderPartial(t
     return this.renderTokens(tokens, context, partials, indentedValue, config);
   }
 }, "renderPartial");
-Writer.prototype.unescapedValue = /* @__PURE__ */ __name(function unescapedValue(token, context) {
-  var value = context.lookup(token[1]);
-  if (value != null)
-    return value;
-}, "unescapedValue");
-Writer.prototype.escapedValue = /* @__PURE__ */ __name(function escapedValue(token, context, config) {
+Writer.prototype.unescapedValue = /* @__PURE__ */ __name(
+  function unescapedValue(token, context) {
+    var value = context.lookup(token[1]);
+    if (value != null) return value;
+  },
+  "unescapedValue",
+);
+Writer.prototype.escapedValue = /* @__PURE__ */ __name(function escapedValue(
+  token,
+  context,
+  config,
+) {
   var escape = this.getConfigEscape(config) || mustache.escape;
   var value = context.lookup(token[1]);
   if (value != null)
-    return typeof value === "number" && escape === mustache.escape ? String(value) : escape(value);
+    return typeof value === "number" && escape === mustache.escape
+      ? String(value)
+      : escape(value);
 }, "escapedValue");
 Writer.prototype.rawValue = /* @__PURE__ */ __name(function rawValue(token) {
   return token[1];
 }, "rawValue");
-Writer.prototype.getConfigTags = /* @__PURE__ */ __name(function getConfigTags(config) {
+Writer.prototype.getConfigTags = /* @__PURE__ */ __name(function getConfigTags(
+  config,
+) {
   if (isArray(config)) {
     return config;
   } else if (config && typeof config === "object") {
@@ -623,13 +785,16 @@ Writer.prototype.getConfigTags = /* @__PURE__ */ __name(function getConfigTags(c
     return void 0;
   }
 }, "getConfigTags");
-Writer.prototype.getConfigEscape = /* @__PURE__ */ __name(function getConfigEscape(config) {
-  if (config && typeof config === "object" && !isArray(config)) {
-    return config.escape;
-  } else {
-    return void 0;
-  }
-}, "getConfigEscape");
+Writer.prototype.getConfigEscape = /* @__PURE__ */ __name(
+  function getConfigEscape(config) {
+    if (config && typeof config === "object" && !isArray(config)) {
+      return config.escape;
+    } else {
+      return void 0;
+    }
+  },
+  "getConfigEscape",
+);
 var mustache = {
   name: "mustache.js",
   version: "4.2.0",
@@ -654,7 +819,7 @@ var mustache = {
    */
   get templateCache() {
     return defaultWriter.templateCache;
-  }
+  },
 };
 var defaultWriter = new Writer();
 mustache.clearCache = /* @__PURE__ */ __name(function clearCache2() {
@@ -663,9 +828,18 @@ mustache.clearCache = /* @__PURE__ */ __name(function clearCache2() {
 mustache.parse = /* @__PURE__ */ __name(function parse2(template, tags) {
   return defaultWriter.parse(template, tags);
 }, "parse");
-mustache.render = /* @__PURE__ */ __name(function render2(template, view, partials, config) {
+mustache.render = /* @__PURE__ */ __name(function render2(
+  template,
+  view,
+  partials,
+  config,
+) {
   if (typeof template !== "string") {
-    throw new TypeError('Invalid template! Template should be a "string" but "' + typeStr(template) + '" was given as the first argument for mustache#render(template, view, partials)');
+    throw new TypeError(
+      'Invalid template! Template should be a "string" but "' +
+        typeStr(template) +
+        '" was given as the first argument for mustache#render(template, view, partials)',
+    );
   }
   return defaultWriter.render(template, view, partials, config);
 }, "render");
@@ -677,16 +851,29 @@ var mustache_default = mustache;
 
 // node_modules/@cloudflare/ai/dist/index.js
 var s;
-!function(e2) {
-  e2.String = "str", e2.Bool = "bool", e2.Float16 = "float16", e2.Float32 = "float32", e2.Int16 = "int16", e2.Int32 = "int32", e2.Int64 = "int64", e2.Int8 = "int8", e2.Uint16 = "uint16", e2.Uint32 = "uint32", e2.Uint64 = "uint64", e2.Uint8 = "uint8";
-}(s || (s = {}));
+!(function (e2) {
+  ((e2.String = "str"),
+    (e2.Bool = "bool"),
+    (e2.Float16 = "float16"),
+    (e2.Float32 = "float32"),
+    (e2.Int16 = "int16"),
+    (e2.Int32 = "int32"),
+    (e2.Int64 = "int64"),
+    (e2.Int8 = "int8"),
+    (e2.Uint16 = "uint16"),
+    (e2.Uint32 = "uint32"),
+    (e2.Uint64 = "uint64"),
+    (e2.Uint8 = "uint8"));
+})(s || (s = {}));
 var n = Object.getPrototypeOf(Uint8Array);
 function r(e2) {
   return Array.isArray(e2) || e2 instanceof n;
 }
 __name(r, "r");
 function a(e2) {
-  return e2 instanceof n ? e2.length : e2.flat(1 / 0).reduce((e3, t) => e3 + (t instanceof n ? t.length : 1), 0);
+  return e2 instanceof n
+    ? e2.length
+    : e2.flat(1 / 0).reduce((e3, t) => e3 + (t instanceof n ? t.length : 1), 0);
 }
 __name(a, "a");
 function o(e2, t) {
@@ -770,20 +957,38 @@ var p = class _p {
   name;
   shape;
   constructor(e2, t, s2 = {}) {
-    this.type = e2, this.value = t, s2.validate && o(e2, this.value), void 0 === s2.shape ? r(this.value) ? this.shape = [a(t)] : this.shape = [] : this.shape = s2.shape, s2.validate && function(e3, t2) {
-      if (0 === e3.length && !r(t2)) return;
-      const s3 = e3.reduce((e4, t3) => {
-        if (!Number.isInteger(t3)) throw new Error(`expected shape to be array-like of integers but found non-integer element "${t3}"`);
-        return e4 * t3;
-      }, 1);
-      if (s3 != a(t2)) throw new Error(`invalid shape: expected ${s3} elements for shape ${e3} but value array has length ${t2.length}`);
-    }(this.shape, this.value), this.name = s2.name || null;
+    ((this.type = e2),
+      (this.value = t),
+      s2.validate && o(e2, this.value),
+      void 0 === s2.shape
+        ? r(this.value)
+          ? (this.shape = [a(t)])
+          : (this.shape = [])
+        : (this.shape = s2.shape),
+      s2.validate &&
+        (function (e3, t2) {
+          if (0 === e3.length && !r(t2)) return;
+          const s3 = e3.reduce((e4, t3) => {
+            if (!Number.isInteger(t3))
+              throw new Error(
+                `expected shape to be array-like of integers but found non-integer element "${t3}"`,
+              );
+            return e4 * t3;
+          }, 1);
+          if (s3 != a(t2))
+            throw new Error(
+              `invalid shape: expected ${s3} elements for shape ${e3} but value array has length ${t2.length}`,
+            );
+        })(this.shape, this.value),
+      (this.name = s2.name || null));
   }
   static fromJSON(e2) {
-    const { type: t, shape: s2, value: n2, b64Value: r2, name: a2 } = e2, o2 = { shape: s2, name: a2 };
+    const { type: t, shape: s2, value: n2, b64Value: r2, name: a2 } = e2,
+      o2 = { shape: s2, name: a2 };
     if (void 0 !== r2) {
-      const e3 = function(e4, t2) {
-        const s3 = atob(e4), n3 = new Uint8Array(s3.length);
+      const e3 = (function (e4, t2) {
+        const s3 = atob(e4),
+          n3 = new Uint8Array(s3.length);
         for (let e5 = 0; e5 < s3.length; e5++) n3[e5] = s3.charCodeAt(e5);
         const r3 = new DataView(n3.buffer).buffer;
         switch (t2) {
@@ -798,37 +1003,192 @@ var p = class _p {
           default:
             throw Error(`invalid data type for base64 input: ${t2}`);
         }
-      }(r2, t)[0];
+      })(r2, t)[0];
       return new _p(t, e3, o2);
     }
     return new _p(t, E(t, n2), o2);
   }
   toJSON() {
-    return { type: this.type, shape: this.shape, name: this.name, value: i(this.type, this.value) };
+    return {
+      type: this.type,
+      shape: this.shape,
+      name: this.name,
+      value: i(this.type, this.value),
+    };
   }
 };
-var A = "A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions.";
-var R = "Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using   ```:";
-var c = /* @__PURE__ */ __name((e2, t) => [{ role: "system", content: e2 }, { role: "user", content: t }], "c");
+var A =
+  "A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions.";
+var R =
+  "Write code to solve the following coding problem that obeys the constraints and passes the example test cases. Please wrap your code answer using   ```:";
+var c = /* @__PURE__ */ __name(
+  (e2, t) => [
+    { role: "system", content: e2 },
+    { role: "user", content: t },
+  ],
+  "c",
+);
 var m = /* @__PURE__ */ __name((e2) => {
   const t = {};
-  e2.temperature && (t.temperature = e2.temperature), e2.max_tokens && (t.max_tokens = e2.max_tokens);
-  const n2 = [new p(s.String, [e2.prompt], { shape: [1], name: "text_input" }), new p(s.String, [JSON.stringify(t)], { shape: [1], name: "sampling_parameters" })];
-  return e2.stream && n2.push(new p(s.Bool, true, { name: "stream" })), e2.image && (n2.push(new p(s.Uint8, e2.image, { shape: [1, e2.image.length], name: "image" })), n2.push(new p(s.Bool, true, { name: "exclude_input_in_output" }))), n2;
+  (e2.temperature && (t.temperature = e2.temperature),
+    e2.max_tokens && (t.max_tokens = e2.max_tokens));
+  const n2 = [
+    new p(s.String, [e2.prompt], { shape: [1], name: "text_input" }),
+    new p(s.String, [JSON.stringify(t)], {
+      shape: [1],
+      name: "sampling_parameters",
+    }),
+  ];
+  return (
+    e2.stream && n2.push(new p(s.Bool, true, { name: "stream" })),
+    e2.image &&
+      (n2.push(
+        new p(s.Uint8, e2.image, {
+          shape: [1, e2.image.length],
+          name: "image",
+        }),
+      ),
+      n2.push(new p(s.Bool, true, { name: "exclude_input_in_output" }))),
+    n2
+  );
 }, "m");
 var u = /* @__PURE__ */ __name((e2, t) => {
   let s2 = e2.generated_text.value[0];
   if (t) for (const e3 in t) s2 = s2.replace(t[e3], "");
   return s2;
 }, "u");
-var O = /* @__PURE__ */ __name((e2) => (e2.inputsDefaultsStream = { max_tokens: 1800, ...e2.inputsDefaultsStream || {} }, e2.inputsDefaults = { max_tokens: 256, ...e2.inputsDefaults || {} }, e2.preProcessingArgs = { promptTemplate: "bare", defaultContext: A, defaultPromptMessages: c, ...e2.preProcessingArgs || {} }, e2 = { type: "triton", ...e2 }), "O");
-var l = /* @__PURE__ */ __name((e2) => (e2.inputsDefaultsStream = { max_tokens: 512, ...e2.inputsDefaultsStream || {} }, e2.inputsDefaults = { max_tokens: 512, ...e2.inputsDefaults || {} }, e2.preProcessingArgs = { promptTemplate: "bare", defaultContext: A, defaultPromptMessages: c, ...e2.preProcessingArgs || {} }, e2 = { type: "vllm", generateTensorsFunc: /* @__PURE__ */ __name((e3) => m(e3), "generateTensorsFunc"), postProcessingFunc: /* @__PURE__ */ __name((e3, t) => e3.name.value[0].slice(t.prompt.length), "postProcessingFunc"), postProcessingFuncStream: /* @__PURE__ */ __name((e3, t, s2) => e3.name.value[0], "postProcessingFuncStream"), ...e2 }), "l");
-var I = /* @__PURE__ */ __name((e2, t, s2) => ({ type: "tgi", inputsDefaultsStream: { max_tokens: 512 }, inputsDefaults: { max_tokens: 256 }, preProcessingArgs: { promptTemplate: e2, defaultContext: t, defaultPromptMessages: c }, postProcessingFunc: /* @__PURE__ */ __name((e3, t2) => u(e3, s2), "postProcessingFunc"), postProcessingFuncStream: /* @__PURE__ */ __name((e3, t2, n2) => u(e3, s2), "postProcessingFuncStream") }), "I");
+var O = /* @__PURE__ */ __name(
+  (e2) => (
+    (e2.inputsDefaultsStream = {
+      max_tokens: 1800,
+      ...(e2.inputsDefaultsStream || {}),
+    }),
+    (e2.inputsDefaults = { max_tokens: 256, ...(e2.inputsDefaults || {}) }),
+    (e2.preProcessingArgs = {
+      promptTemplate: "bare",
+      defaultContext: A,
+      defaultPromptMessages: c,
+      ...(e2.preProcessingArgs || {}),
+    }),
+    (e2 = { type: "triton", ...e2 })
+  ),
+  "O",
+);
+var l = /* @__PURE__ */ __name(
+  (e2) => (
+    (e2.inputsDefaultsStream = {
+      max_tokens: 512,
+      ...(e2.inputsDefaultsStream || {}),
+    }),
+    (e2.inputsDefaults = { max_tokens: 512, ...(e2.inputsDefaults || {}) }),
+    (e2.preProcessingArgs = {
+      promptTemplate: "bare",
+      defaultContext: A,
+      defaultPromptMessages: c,
+      ...(e2.preProcessingArgs || {}),
+    }),
+    (e2 = {
+      type: "vllm",
+      generateTensorsFunc: /* @__PURE__ */ __name(
+        (e3) => m(e3),
+        "generateTensorsFunc",
+      ),
+      postProcessingFunc: /* @__PURE__ */ __name(
+        (e3, t) => e3.name.value[0].slice(t.prompt.length),
+        "postProcessingFunc",
+      ),
+      postProcessingFuncStream: /* @__PURE__ */ __name(
+        (e3, t, s2) => e3.name.value[0],
+        "postProcessingFuncStream",
+      ),
+      ...e2,
+    })
+  ),
+  "l",
+);
+var I = /* @__PURE__ */ __name(
+  (e2, t, s2) => ({
+    type: "tgi",
+    inputsDefaultsStream: { max_tokens: 512 },
+    inputsDefaults: { max_tokens: 256 },
+    preProcessingArgs: {
+      promptTemplate: e2,
+      defaultContext: t,
+      defaultPromptMessages: c,
+    },
+    postProcessingFunc: /* @__PURE__ */ __name(
+      (e3, t2) => u(e3, s2),
+      "postProcessingFunc",
+    ),
+    postProcessingFuncStream: /* @__PURE__ */ __name(
+      (e3, t2, n2) => u(e3, s2),
+      "postProcessingFuncStream",
+    ),
+  }),
+  "I",
+);
 var D = mustache_default.parse;
 var y = mustache_default.render;
 TransformStream;
 TransformStream;
-I("deepseek", R, ["<|EOT|>"]), I("bare", R), I("inst", A), I("openchat", A), I("chatml", A, ["<|im_end|>"]), I("orca-hashes", A), I("llama2", A), I("zephyr", A), I("mistral-instruct", A), I("mistral-instruct", A), I("gemma", A), I("hermes2-pro", A), I("starling", A), I("llama2", R), l({ preProcessingArgs: { promptTemplate: "phi-2", defaultPromptMessages: /* @__PURE__ */ __name((e2, t) => [{ role: "question", content: t }], "defaultPromptMessages") } }), l({ preProcessingArgs: { promptTemplate: "sqlcoder" } }), l({ preProcessingArgs: { defaultContext: "" } }), l({ preProcessingArgs: { promptTemplate: "falcon" } }), l({ preProcessingArgs: { promptTemplate: "chatml" } }), l({ preProcessingArgs: { promptTemplate: "chatml" } }), l({ preProcessingArgs: { promptTemplate: "chatml" } }), l({ preProcessingArgs: { promptTemplate: "chatml" } }), l({ preProcessingArgs: { promptTemplate: "chatml" } }), l({ preProcessingArgs: { promptTemplate: "tinyllama" } }), l({ preProcessingArgs: { promptTemplate: "openchat-alt" } }), l({ preProcessingArgs: { promptTemplate: "gemma" } }), l({ preProcessingArgs: { promptTemplate: "gemma" } }), l({ preProcessingArgs: { promptTemplate: "mistral-instruct" } }), l({ experimental: true, preProcessingArgs: { promptTemplate: "mistral-instruct" } }), l({ preProcessingArgs: { promptTemplate: "llama2" } }), l({ experimental: true, inputsDefaultsStream: { max_tokens: 1800 }, inputsDefaults: { max_tokens: 256 }, preProcessingArgs: { promptTemplate: "mistral-instruct" } }), l({ preProcessingArgs: { promptTemplate: "llama3" } }), l({ experimental: true }), l({ experimental: true }), l({ preProcessingArgs: { promptTemplate: "chatml" } }), l({ experimental: true }), O({ inputsDefaultsStream: { max_tokens: 2500 }, preProcessingArgs: { promptTemplate: "llama2" } }), O({ preProcessingArgs: { promptTemplate: "llama2" } }), O({ preProcessingArgs: { promptTemplate: "mistral-instruct" } });
+(I("deepseek", R, ["<|EOT|>"]),
+  I("bare", R),
+  I("inst", A),
+  I("openchat", A),
+  I("chatml", A, ["<|im_end|>"]),
+  I("orca-hashes", A),
+  I("llama2", A),
+  I("zephyr", A),
+  I("mistral-instruct", A),
+  I("mistral-instruct", A),
+  I("gemma", A),
+  I("hermes2-pro", A),
+  I("starling", A),
+  I("llama2", R),
+  l({
+    preProcessingArgs: {
+      promptTemplate: "phi-2",
+      defaultPromptMessages: /* @__PURE__ */ __name(
+        (e2, t) => [{ role: "question", content: t }],
+        "defaultPromptMessages",
+      ),
+    },
+  }),
+  l({ preProcessingArgs: { promptTemplate: "sqlcoder" } }),
+  l({ preProcessingArgs: { defaultContext: "" } }),
+  l({ preProcessingArgs: { promptTemplate: "falcon" } }),
+  l({ preProcessingArgs: { promptTemplate: "chatml" } }),
+  l({ preProcessingArgs: { promptTemplate: "chatml" } }),
+  l({ preProcessingArgs: { promptTemplate: "chatml" } }),
+  l({ preProcessingArgs: { promptTemplate: "chatml" } }),
+  l({ preProcessingArgs: { promptTemplate: "chatml" } }),
+  l({ preProcessingArgs: { promptTemplate: "tinyllama" } }),
+  l({ preProcessingArgs: { promptTemplate: "openchat-alt" } }),
+  l({ preProcessingArgs: { promptTemplate: "gemma" } }),
+  l({ preProcessingArgs: { promptTemplate: "gemma" } }),
+  l({ preProcessingArgs: { promptTemplate: "mistral-instruct" } }),
+  l({
+    experimental: true,
+    preProcessingArgs: { promptTemplate: "mistral-instruct" },
+  }),
+  l({ preProcessingArgs: { promptTemplate: "llama2" } }),
+  l({
+    experimental: true,
+    inputsDefaultsStream: { max_tokens: 1800 },
+    inputsDefaults: { max_tokens: 256 },
+    preProcessingArgs: { promptTemplate: "mistral-instruct" },
+  }),
+  l({ preProcessingArgs: { promptTemplate: "llama3" } }),
+  l({ experimental: true }),
+  l({ experimental: true }),
+  l({ preProcessingArgs: { promptTemplate: "chatml" } }),
+  l({ experimental: true }),
+  O({
+    inputsDefaultsStream: { max_tokens: 2500 },
+    preProcessingArgs: { promptTemplate: "llama2" },
+  }),
+  O({ preProcessingArgs: { promptTemplate: "llama2" } }),
+  O({ preProcessingArgs: { promptTemplate: "mistral-instruct" } }));
 var W = class {
   static {
     __name(this, "W");
@@ -838,12 +1198,19 @@ var W = class {
   logs;
   lastRequestId;
   constructor(e2, t = {}) {
-    if (!e2) throw new Error("Ai binding is undefined. Please provide a valid binding.");
-    this.binding = e2, this.options = t, this.lastRequestId = "";
+    if (!e2)
+      throw new Error(
+        "Ai binding is undefined. Please provide a valid binding.",
+      );
+    ((this.binding = e2), (this.options = t), (this.lastRequestId = ""));
   }
   async run(e2, t) {
     const s2 = await this.binding.run(e2, t, this.options);
-    return this.lastRequestId = this.binding.lastRequestId, this.options.debug && (this.logs = this.binding.getLogs()), s2;
+    return (
+      (this.lastRequestId = this.binding.lastRequestId),
+      this.options.debug && (this.logs = this.binding.getLogs()),
+      s2
+    );
   }
   getLogs() {
     return this.logs;
@@ -859,7 +1226,7 @@ function withCors(resp) {
   return new Response(resp.body, {
     status: resp.status,
     statusText: resp.statusText,
-    headers: newHeaders
+    headers: newHeaders,
   });
 }
 __name(withCors, "withCors");
@@ -880,7 +1247,7 @@ async function queryVectorDB(env, queryVector, topK = 10) {
   const vectorizeResult = await env.VECTORIZE.query(queryVector, {
     topK,
     returnValues: true,
-    returnMetadata: "all"
+    returnMetadata: "all",
   });
   let matches = vectorizeResult.matches || vectorizeResult;
   if (!Array.isArray(matches)) {
@@ -891,13 +1258,87 @@ async function queryVectorDB(env, queryVector, topK = 10) {
 __name(queryVectorDB, "queryVectorDB");
 function enhanceMatches(matches, query) {
   const queryWords = query.toLowerCase().split(/\s+/);
-  const commonWords = ["what", "is", "about", "how", "do", "i", "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with", "by", "from", "up", "down", "out", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "can", "will", "just", "should", "now"];
-  const keyConcepts = queryWords.filter((word) => word.length > 2 && !commonWords.includes(word));
-  const isGeneralProductQuestion = query.toLowerCase().includes("what is") && (query.toLowerCase().includes("blawby") || query.toLowerCase().includes("platform") || query.toLowerCase().includes("service"));
+  const commonWords = [
+    "what",
+    "is",
+    "about",
+    "how",
+    "do",
+    "i",
+    "the",
+    "a",
+    "an",
+    "and",
+    "or",
+    "but",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "with",
+    "by",
+    "from",
+    "up",
+    "down",
+    "out",
+    "off",
+    "over",
+    "under",
+    "again",
+    "further",
+    "then",
+    "once",
+    "here",
+    "there",
+    "when",
+    "where",
+    "why",
+    "how",
+    "all",
+    "any",
+    "both",
+    "each",
+    "few",
+    "more",
+    "most",
+    "other",
+    "some",
+    "such",
+    "no",
+    "nor",
+    "not",
+    "only",
+    "own",
+    "same",
+    "so",
+    "than",
+    "too",
+    "very",
+    "can",
+    "will",
+    "just",
+    "should",
+    "now",
+  ];
+  const keyConcepts = queryWords.filter(
+    (word) => word.length > 2 && !commonWords.includes(word),
+  );
+  const isGeneralProductQuestion =
+    query.toLowerCase().includes("what is") &&
+    (query.toLowerCase().includes("blawby") ||
+      query.toLowerCase().includes("platform") ||
+      query.toLowerCase().includes("service"));
   matches.forEach((match) => {
     const title = (match.metadata?.title || "").toLowerCase();
     const section = (match.metadata?.section || "").toLowerCase();
-    const content = (match.metadata?.description || match.metadata?.text || match.text || "").toLowerCase();
+    const content = (
+      match.metadata?.description ||
+      match.metadata?.text ||
+      match.text ||
+      ""
+    ).toLowerCase();
     const docType = match.metadata?.docType || "";
     keyConcepts.forEach((concept) => {
       if (title === concept) {
@@ -918,10 +1359,18 @@ function enhanceMatches(matches, query) {
       match.score += 1;
     }
     if (isGeneralProductQuestion) {
-      if (title.includes("get-started") || title.includes("overview") || title.includes("introduction")) {
+      if (
+        title.includes("get-started") ||
+        title.includes("overview") ||
+        title.includes("introduction")
+      ) {
         match.score += 2;
       }
-      if (title.includes("integrating") || title.includes("setup") || title.includes("configure")) {
+      if (
+        title.includes("integrating") ||
+        title.includes("setup") ||
+        title.includes("configure")
+      ) {
         match.score -= 1;
       }
     }
@@ -932,7 +1381,7 @@ function enhanceMatches(matches, query) {
 __name(enhanceMatches, "enhanceMatches");
 function createEmailTemplate(type, data) {
   const { name, email, message, subject } = data;
-  const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
+  const currentYear = /* @__PURE__ */ new Date().getFullYear();
   const baseStyles = `
     font-family: Arial, sans-serif; 
     max-width: 600px; 
@@ -1009,10 +1458,10 @@ async function sendEmail(resendApiKey, options) {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${resendApiKey}`,
-      "Content-Type": "application/json"
+      Authorization: `Bearer ${resendApiKey}`,
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(options)
+    body: JSON.stringify(options),
   });
   if (!response.ok) {
     const errorText = await response.text();
@@ -1028,8 +1477,8 @@ var search_default = {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type"
-        }
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
       });
     }
     let path = new URL(request.url).pathname;
@@ -1058,7 +1507,10 @@ var search_default = {
         return jsonResponse({ matches: enhancedMatches });
       } catch (err) {
         console.error("/query endpoint error:", err);
-        return errorResponse("Worker exception in /query", err instanceof Error ? err.message : err);
+        return errorResponse(
+          "Worker exception in /query",
+          err instanceof Error ? err.message : err,
+        );
       }
     }
     if (path === "/upsert-mdx" && request.method === "POST") {
@@ -1076,14 +1528,20 @@ var search_default = {
             values: vector,
             metadata: {
               ...chunk.metadata,
-              description: chunk.text
-            }
+              description: chunk.text,
+            },
           });
         }
         const result = await env.VECTORIZE.upsert(vectors);
-        return jsonResponse({ mutationId: result.mutationId, count: vectors.length });
+        return jsonResponse({
+          mutationId: result.mutationId,
+          count: vectors.length,
+        });
       } catch (err) {
-        return errorResponse("Upsert failed", err instanceof Error ? err.message : err);
+        return errorResponse(
+          "Upsert failed",
+          err instanceof Error ? err.message : err,
+        );
       }
     }
     if (path.startsWith("/chat")) {
@@ -1122,9 +1580,13 @@ var search_default = {
           "card fee",
           "bank fee",
           "ach fee",
-          "chargeback"
+          "chargeback",
         ];
-        const isPricingQuery = pricingKeywords.some((kw) => query.toLowerCase().includes(kw)) && !query.toLowerCase().includes("integrate") && !query.toLowerCase().includes("setup") && !query.toLowerCase().includes("configure");
+        const isPricingQuery =
+          pricingKeywords.some((kw) => query.toLowerCase().includes(kw)) &&
+          !query.toLowerCase().includes("integrate") &&
+          !query.toLowerCase().includes("setup") &&
+          !query.toLowerCase().includes("configure");
         const humanRequestKeywords = [
           "speak to human",
           "talk to human",
@@ -1137,9 +1599,14 @@ var search_default = {
           "customer service",
           "support team",
           "speak to a human",
-          "talk to a human"
+          "talk to a human",
         ];
-        const isHumanRequest = humanRequestKeywords.some((kw) => query.toLowerCase().includes(kw)) || query.toLowerCase().includes("speak") && query.toLowerCase().includes("human") || query.toLowerCase().includes("talk") && query.toLowerCase().includes("human");
+        const isHumanRequest =
+          humanRequestKeywords.some((kw) => query.toLowerCase().includes(kw)) ||
+          (query.toLowerCase().includes("speak") &&
+            query.toLowerCase().includes("human")) ||
+          (query.toLowerCase().includes("talk") &&
+            query.toLowerCase().includes("human"));
         const technicalKeywords = [
           "integrate",
           "integration",
@@ -1154,9 +1621,14 @@ var search_default = {
           "code",
           "programming",
           "how do i",
-          "how to"
+          "how to",
         ];
-        const isTechnicalQuery = technicalKeywords.some((kw) => query.toLowerCase().includes(kw)) || query.toLowerCase().includes("how") && query.toLowerCase().includes("integrate") || query.toLowerCase().includes("how") && query.toLowerCase().includes("setup");
+        const isTechnicalQuery =
+          technicalKeywords.some((kw) => query.toLowerCase().includes(kw)) ||
+          (query.toLowerCase().includes("how") &&
+            query.toLowerCase().includes("integrate")) ||
+          (query.toLowerCase().includes("how") &&
+            query.toLowerCase().includes("setup"));
         const frustratedKeywords = [
           "not working",
           "broken",
@@ -1170,9 +1642,11 @@ var search_default = {
           "stuck",
           "can't",
           "won't",
-          "doesn't work"
+          "doesn't work",
         ];
-        const isFrustratedUser = frustratedKeywords.some((kw) => query.toLowerCase().includes(kw));
+        const isFrustratedUser = frustratedKeywords.some((kw) =>
+          query.toLowerCase().includes(kw),
+        );
         const supportKeywords = [
           "help",
           "support",
@@ -1182,39 +1656,70 @@ var search_default = {
           "problem",
           "trouble",
           "need help",
-          "need support"
+          "need support",
         ];
-        const isSupportRequest = supportKeywords.some((kw) => query.toLowerCase().includes(kw)) && !isFrustratedUser && !isHumanRequest && !isTechnicalQuery && !query.toLowerCase().includes("compliance") && !query.toLowerCase().includes("trust") && !query.toLowerCase().includes("recurring") && !query.toLowerCase().includes("feature") && !query.toLowerCase().includes("what is") && !query.toLowerCase().includes("does blawby");
+        const isSupportRequest =
+          supportKeywords.some((kw) => query.toLowerCase().includes(kw)) &&
+          !isFrustratedUser &&
+          !isHumanRequest &&
+          !isTechnicalQuery &&
+          !query.toLowerCase().includes("compliance") &&
+          !query.toLowerCase().includes("trust") &&
+          !query.toLowerCase().includes("recurring") &&
+          !query.toLowerCase().includes("feature") &&
+          !query.toLowerCase().includes("what is") &&
+          !query.toLowerCase().includes("does blawby");
         console.log(`Query: "${query}"`);
         console.log(`isPricingQuery: ${isPricingQuery}`);
         console.log(`isHumanRequest: ${isHumanRequest}`);
         console.log(`isTechnicalQuery: ${isTechnicalQuery}`);
         console.log(`isFrustratedUser: ${isFrustratedUser}`);
         if (isPricingQuery) {
-          let monthlyFee, cardFee, achFee, platformFee, chargebackFee, setupFee, hiddenFee;
+          let monthlyFee,
+            cardFee,
+            achFee,
+            platformFee,
+            chargebackFee,
+            setupFee,
+            hiddenFee;
           let foundAny = false;
-          let contextText = enhancedMatches.map((m2) => m2.metadata?.description || m2.metadata?.text || m2.text || "").join("\n");
-          const monthlyMatch = contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i);
+          let contextText = enhancedMatches
+            .map(
+              (m2) =>
+                m2.metadata?.description || m2.metadata?.text || m2.text || "",
+            )
+            .join("\n");
+          const monthlyMatch = contextText.match(
+            /\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i,
+          );
           if (monthlyMatch) {
             monthlyFee = `$${monthlyMatch[1]} per user per month`;
             foundAny = true;
           }
-          const cardMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i);
+          const cardMatch = contextText.match(
+            /([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i,
+          );
           if (cardMatch) {
             cardFee = `${cardMatch[1]}% + ${cardMatch[2]} per card transaction`;
             foundAny = true;
           }
-          const achMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i);
+          const achMatch = contextText.match(
+            /([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i,
+          );
           if (achMatch) {
             achFee = `${achMatch[1]}% per ACH (max $${achMatch[2]})`;
             foundAny = true;
           }
-          const platformMatch = contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) || contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i);
+          const platformMatch =
+            contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) ||
+            contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i);
           if (platformMatch) {
             platformFee = `${platformMatch[1]}% platform fee (billed monthly)`;
             foundAny = true;
           }
-          const chargebackMatch = contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i);
+          const chargebackMatch = contextText.match(
+            /\$([0-9]+) fee for disputed payments.*chargebacks?/i,
+          );
           if (chargebackMatch) {
             chargebackFee = `$${chargebackMatch[1]} per chargeback`;
             foundAny = true;
@@ -1228,23 +1733,30 @@ var search_default = {
             foundAny = true;
           }
           let pricingLines = [];
-          if (monthlyFee) pricingLines.push(`- **Monthly user license:** ${monthlyFee}`);
+          if (monthlyFee)
+            pricingLines.push(`- **Monthly user license:** ${monthlyFee}`);
           if (cardFee) pricingLines.push(`- **Card payments:** ${cardFee}`);
           if (achFee) pricingLines.push(`- **ACH/bank payments:** ${achFee}`);
-          if (platformFee) pricingLines.push(`- **Platform fee:** ${platformFee}`);
-          if (chargebackFee) pricingLines.push(`- **Chargeback fee:** ${chargebackFee}`);
+          if (platformFee)
+            pricingLines.push(`- **Platform fee:** ${platformFee}`);
+          if (chargebackFee)
+            pricingLines.push(`- **Chargeback fee:** ${chargebackFee}`);
           if (setupFee) pricingLines.push(`- ${setupFee}`);
           if (hiddenFee) pricingLines.push(`- ${hiddenFee}`);
-          let answer = `**Blawby Pricing Overview**
+          let answer =
+            `**Blawby Pricing Overview**
 
-` + (pricingLines.length ? pricingLines.join("\n") : "(Some fees could not be found in the current context.)");
+` +
+            (pricingLines.length
+              ? pricingLines.join("\n")
+              : "(Some fees could not be found in the current context.)");
           answer += `
 
 For full details and the latest updates, [see our pricing page](/pricing).`;
           return jsonResponse({
             message: answer,
             messageFormat: "markdown",
-            matches: enhancedMatches
+            matches: enhancedMatches,
           });
         }
         if (isHumanRequest) {
@@ -1255,7 +1767,7 @@ For real-time help, you can also [join our Discord](https://discord.com/invite/r
           return jsonResponse({
             message: answer,
             messageFormat: "markdown",
-            matches: []
+            matches: [],
           });
         }
         if (isTechnicalQuery) {
@@ -1270,11 +1782,27 @@ Our team can provide detailed technical guidance and help with your specific imp
           return jsonResponse({
             message: answer,
             messageFormat: "markdown",
-            matches: []
+            matches: [],
           });
         }
-        const abusiveKeywords = ["fuck", "shit", "bitch", "asshole", "cunt", "bastard", "dick", "suck", "faggot", "retard", "idiot", "moron", "stupid"];
-        const isAbusive = abusiveKeywords.some((kw) => query.toLowerCase().includes(kw));
+        const abusiveKeywords = [
+          "fuck",
+          "shit",
+          "bitch",
+          "asshole",
+          "cunt",
+          "bastard",
+          "dick",
+          "suck",
+          "faggot",
+          "retard",
+          "idiot",
+          "moron",
+          "stupid",
+        ];
+        const isAbusive = abusiveKeywords.some((kw) =>
+          query.toLowerCase().includes(kw),
+        );
         if (isFrustratedUser) {
           let answer;
           if (isAbusive) {
@@ -1285,7 +1813,7 @@ Our team can provide detailed technical guidance and help with your specific imp
           return jsonResponse({
             message: answer,
             messageFormat: "markdown",
-            matches: []
+            matches: [],
           });
         }
         if (isSupportRequest) {
@@ -1296,22 +1824,37 @@ For real-time help, you can also [join our Discord](https://discord.com/invite/r
           return jsonResponse({
             message: answer,
             messageFormat: "markdown",
-            matches: []
+            matches: [],
           });
         }
-        const context = enhancedMatches.map((m2, i2) => {
-          const title = m2.metadata?.title || "";
-          const url = m2.metadata?.url || m2.metadata?.slug || "";
-          const description = m2.metadata?.description || m2.metadata?.text || m2.text || "";
-          let link = "";
-          if (url) {
-            link = url.startsWith("http") ? url : url.startsWith("/") ? url : `/${url}`;
-          }
-          return `${i2 + 1}. ${title ? `**${title}**
-` : ""}${description}${link ? `
+        const context = enhancedMatches
+          .map((m2, i2) => {
+            const title = m2.metadata?.title || "";
+            const url = m2.metadata?.url || m2.metadata?.slug || "";
+            const description =
+              m2.metadata?.description || m2.metadata?.text || m2.text || "";
+            let link = "";
+            if (url) {
+              link = url.startsWith("http")
+                ? url
+                : url.startsWith("/")
+                  ? url
+                  : `/${url}`;
+            }
+            return `${i2 + 1}. ${
+              title
+                ? `**${title}**
+`
+                : ""
+            }${description}${
+              link
+                ? `
 
-Documentation: ${link}` : ""}`;
-        }).join("\n\n");
+Documentation: ${link}`
+                : ""
+            }`;
+          })
+          .join("\n\n");
         const prompt = `
 You are a helpful support assistant. Answer the user's question in a concise, direct way (2-3 sentences max), using Markdown for formatting (e.g., lists, links, bold).
 
@@ -1332,21 +1875,40 @@ Respond in Markdown only. Do not use HTML tags.`;
         const llmResponse = await ai.run("@cf/meta/llama-2-7b-chat-int8", {
           prompt,
           max_tokens: 200,
-          temperature: 0.3
+          temperature: 0.3,
         });
         let message = "";
-        if (llmResponse && typeof llmResponse === "object" && "response" in llmResponse && typeof llmResponse.response === "string") {
+        if (
+          llmResponse &&
+          typeof llmResponse === "object" &&
+          "response" in llmResponse &&
+          typeof llmResponse.response === "string"
+        ) {
           message = llmResponse.response;
         } else {
           message = "Sorry, I couldn't find an answer.";
         }
-        const isFeatureOrProductQuery = !isPricingQuery && !isHumanRequest && !isTechnicalQuery && !isFrustratedUser && !isSupportRequest;
+        const isFeatureOrProductQuery =
+          !isPricingQuery &&
+          !isHumanRequest &&
+          !isTechnicalQuery &&
+          !isFrustratedUser &&
+          !isSupportRequest;
         if (isFeatureOrProductQuery) {
-          const top = enhancedMatches.find((m2) => m2.metadata?.url || m2.metadata?.slug);
+          const top = enhancedMatches.find(
+            (m2) => m2.metadata?.url || m2.metadata?.slug,
+          );
           const topUrl = top ? top.metadata?.url || top.metadata?.slug : null;
           if (topUrl) {
-            const topLink = topUrl.startsWith("http") ? topUrl : topUrl.startsWith("/") ? topUrl : `/${topUrl}`;
-            message = message.replace(/\[Read more\]\(\/[^)]+\)/g, `[Read more](${topLink})`);
+            const topLink = topUrl.startsWith("http")
+              ? topUrl
+              : topUrl.startsWith("/")
+                ? topUrl
+                : `/${topUrl}`;
+            message = message.replace(
+              /\[Read more\]\(\/[^)]+\)/g,
+              `[Read more](${topLink})`,
+            );
             if (!/\[Read more\]\(/.test(message)) {
               message += `
 
@@ -1357,11 +1919,14 @@ Respond in Markdown only. Do not use HTML tags.`;
         return jsonResponse({
           message,
           messageFormat: "markdown",
-          matches: enhancedMatches
+          matches: enhancedMatches,
         });
       } catch (err) {
         console.error("/chat endpoint error:", err);
-        return errorResponse("Worker exception in /chat", err instanceof Error ? err.message : err);
+        return errorResponse(
+          "Worker exception in /chat",
+          err instanceof Error ? err.message : err,
+        );
       }
     }
     if (path === "/support-case/create" && request.method === "POST") {
@@ -1370,19 +1935,43 @@ Respond in Markdown only. Do not use HTML tags.`;
         const reqBody = await request.json();
         const { userId, chatHistory, otherContext } = reqBody;
         if (!userId || !Array.isArray(chatHistory)) {
-          return withCors(new Response(JSON.stringify({ error: "Missing userId or chatHistory" }), { status: 400 }));
+          return withCors(
+            new Response(
+              JSON.stringify({ error: "Missing userId or chatHistory" }),
+              { status: 400 },
+            ),
+          );
         }
         const caseId = crypto.randomUUID();
         const chatHistoryStr = JSON.stringify(chatHistory);
-        const otherContextStr = otherContext ? JSON.stringify(otherContext) : null;
-        await db.prepare(
-          `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`
-        ).bind(caseId, userId, chatHistoryStr, otherContextStr).run();
+        const otherContextStr = otherContext
+          ? JSON.stringify(otherContext)
+          : null;
+        await db
+          .prepare(
+            `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`,
+          )
+          .bind(caseId, userId, chatHistoryStr, otherContextStr)
+          .run();
         const caseUrl = `/support/case/${caseId}`;
-        return withCors(Response.json({ caseId, caseUrl, prefilledFields: { userId, chatHistory, otherContext } }));
+        return withCors(
+          Response.json({
+            caseId,
+            caseUrl,
+            prefilledFields: { userId, chatHistory, otherContext },
+          }),
+        );
       } catch (err) {
         console.error("/support-case/create error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Failed to create support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return withCors(
+          new Response(
+            JSON.stringify({
+              error: "Failed to create support case",
+              details: err instanceof Error ? err.message : err,
+            }),
+            { status: 500 },
+          ),
+        );
       }
     }
     if (path === "/support-case/feedback" && request.method === "POST") {
@@ -1391,15 +1980,31 @@ Respond in Markdown only. Do not use HTML tags.`;
         const reqBody = await request.json();
         const { caseId, rating, comments } = reqBody;
         if (!caseId || typeof rating !== "number" || rating < 1 || rating > 5) {
-          return withCors(new Response(JSON.stringify({ error: "Missing or invalid caseId or rating" }), { status: 400 }));
+          return withCors(
+            new Response(
+              JSON.stringify({ error: "Missing or invalid caseId or rating" }),
+              { status: 400 },
+            ),
+          );
         }
-        await db.prepare(
-          `INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`
-        ).bind(caseId, rating, comments || null).run();
+        await db
+          .prepare(
+            `INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`,
+          )
+          .bind(caseId, rating, comments || null)
+          .run();
         return withCors(Response.json({ ok: true }));
       } catch (err) {
         console.error("/support-case/feedback error:", err);
-        return withCors(new Response(JSON.stringify({ error: "Failed to submit feedback", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return withCors(
+          new Response(
+            JSON.stringify({
+              error: "Failed to submit feedback",
+              details: err instanceof Error ? err.message : err,
+            }),
+            { status: 500 },
+          ),
+        );
       }
     }
     if (path.startsWith("/support-case/") && request.method === "GET") {
@@ -1408,32 +2013,49 @@ Respond in Markdown only. Do not use HTML tags.`;
         const caseId = match[1];
         try {
           const db = env.SUPPORT_DB;
-          const result = await db.prepare(
-            `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`
-          ).bind(caseId).first();
+          const result = await db
+            .prepare(
+              `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`,
+            )
+            .bind(caseId)
+            .first();
           if (!result) {
-            return withCors(new Response(JSON.stringify({ error: "Case not found" }), { status: 404 }));
+            return withCors(
+              new Response(JSON.stringify({ error: "Case not found" }), {
+                status: 404,
+              }),
+            );
           }
           let chatHistory = [];
           let otherContext = null;
           try {
             chatHistory = JSON.parse(result.chat_history);
-          } catch {
-          }
+          } catch {}
           try {
-            otherContext = result.other_context ? JSON.parse(result.other_context) : null;
-          } catch {
-          }
-          return withCors(Response.json({
-            caseId: result.id,
-            userId: result.user_id,
-            chatHistory,
-            otherContext,
-            createdAt: result.created_at
-          }));
+            otherContext = result.other_context
+              ? JSON.parse(result.other_context)
+              : null;
+          } catch {}
+          return withCors(
+            Response.json({
+              caseId: result.id,
+              userId: result.user_id,
+              chatHistory,
+              otherContext,
+              createdAt: result.created_at,
+            }),
+          );
         } catch (err) {
           console.error("/support-case/:id GET error:", err);
-          return withCors(new Response(JSON.stringify({ error: "Failed to fetch support case", details: err instanceof Error ? err.message : err }), { status: 500 }));
+          return withCors(
+            new Response(
+              JSON.stringify({
+                error: "Failed to fetch support case",
+                details: err instanceof Error ? err.message : err,
+              }),
+              { status: 500 },
+            ),
+          );
         }
       }
     }
@@ -1441,7 +2063,12 @@ Respond in Markdown only. Do not use HTML tags.`;
       try {
         const { name, email, message } = await request.json();
         if (!name || !email || !message) {
-          return withCors(new Response(JSON.stringify({ error: "Missing name, email, or message" }), { status: 400 }));
+          return withCors(
+            new Response(
+              JSON.stringify({ error: "Missing name, email, or message" }),
+              { status: 400 },
+            ),
+          );
         }
         const emailBody = `New help form submission:
 
@@ -1451,19 +2078,38 @@ Message:
 ${message}`;
         const resendApiKey = env.RESEND_API_KEY;
         if (!resendApiKey) {
-          return withCors(new Response(JSON.stringify({ error: "Missing RESEND_API_KEY in environment" }), { status: 500 }));
+          return withCors(
+            new Response(
+              JSON.stringify({
+                error: "Missing RESEND_API_KEY in environment",
+              }),
+              { status: 500 },
+            ),
+          );
         }
-        const adminHtml = createEmailTemplate("admin", { name, email, message });
+        const adminHtml = createEmailTemplate("admin", {
+          name,
+          email,
+          message,
+        });
         const sendResp = await sendEmail(resendApiKey, {
           from: "support@blawby.com",
           to: ["paulchrisluke@gmail.com"],
           subject: `Help Form Submission from ${name}`,
           text: emailBody,
-          html: adminHtml
+          html: adminHtml,
         });
         if (!sendResp.ok) {
           const errText = await sendResp.text();
-          return withCors(new Response(JSON.stringify({ error: "Failed to send email", details: errText }), { status: 500 }));
+          return withCors(
+            new Response(
+              JSON.stringify({
+                error: "Failed to send email",
+                details: errText,
+              }),
+              { status: 500 },
+            ),
+          );
         }
         const userHtml = createEmailTemplate("user", { name, email, message });
         const confirmBody = `Hi ${name},
@@ -1482,39 +2128,57 @@ The Blawby Team`;
           to: [email],
           subject: "We've received your support request",
           text: confirmBody,
-          html: userHtml
+          html: userHtml,
         });
         if (!confirmResp.ok) {
           const errText = await confirmResp.text();
-          return withCors(new Response(JSON.stringify({ error: "Failed to send confirmation email", details: errText }), { status: 500 }));
+          return withCors(
+            new Response(
+              JSON.stringify({
+                error: "Failed to send confirmation email",
+                details: errText,
+              }),
+              { status: 500 },
+            ),
+          );
         }
         return withCors(Response.json({ ok: true }));
       } catch (err) {
-        return withCors(new Response(JSON.stringify({ error: "Exception in /api/help-form", details: err instanceof Error ? err.message : err }), { status: 500 }));
+        return withCors(
+          new Response(
+            JSON.stringify({
+              error: "Exception in /api/help-form",
+              details: err instanceof Error ? err.message : err,
+            }),
+            { status: 500 },
+          ),
+        );
       }
     }
     return withCors(Response.json({ text: "Not found" }, { status: 404 }));
-  }
+  },
 };
 
 // ../../.nvm/versions/node/v20.19.2/lib/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
 init_checked_fetch();
 init_modules_watch_stub();
-var drainBody = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
-  try {
-    return await middlewareCtx.next(request, env);
-  } finally {
+var drainBody = /* @__PURE__ */ __name(
+  async (request, env, _ctx, middlewareCtx) => {
     try {
-      if (request.body !== null && !request.bodyUsed) {
-        const reader = request.body.getReader();
-        while (!(await reader.read()).done) {
+      return await middlewareCtx.next(request, env);
+    } finally {
+      try {
+        if (request.body !== null && !request.bodyUsed) {
+          const reader = request.body.getReader();
+          while (!(await reader.read()).done) {}
         }
+      } catch (e2) {
+        console.error("Failed to drain the unused request body.", e2);
       }
-    } catch (e2) {
-      console.error("Failed to drain the unused request body.", e2);
     }
-  }
-}, "drainBody");
+  },
+  "drainBody",
+);
 var middleware_ensure_req_body_drained_default = drainBody;
 
 // ../../.nvm/versions/node/v20.19.2/lib/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
@@ -1525,27 +2189,30 @@ function reduceError(e2) {
     name: e2?.name,
     message: e2?.message ?? String(e2),
     stack: e2?.stack,
-    cause: e2?.cause === void 0 ? void 0 : reduceError(e2.cause)
+    cause: e2?.cause === void 0 ? void 0 : reduceError(e2.cause),
   };
 }
 __name(reduceError, "reduceError");
-var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
-  try {
-    return await middlewareCtx.next(request, env);
-  } catch (e2) {
-    const error = reduceError(e2);
-    return Response.json(error, {
-      status: 500,
-      headers: { "MF-Experimental-Error-Stack": "true" }
-    });
-  }
-}, "jsonError");
+var jsonError = /* @__PURE__ */ __name(
+  async (request, env, _ctx, middlewareCtx) => {
+    try {
+      return await middlewareCtx.next(request, env);
+    } catch (e2) {
+      const error = reduceError(e2);
+      return Response.json(error, {
+        status: 500,
+        headers: { "MF-Experimental-Error-Stack": "true" },
+      });
+    }
+  },
+  "jsonError",
+);
 var middleware_miniflare3_json_error_default = jsonError;
 
 // .wrangler/tmp/bundle-mlKrDW/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
-  middleware_miniflare3_json_error_default
+  middleware_miniflare3_json_error_default,
 ];
 var middleware_insertion_facade_default = search_default;
 
@@ -1563,7 +2230,7 @@ function __facade_invokeChain__(request, env, ctx, dispatch, middlewareChain) {
     dispatch,
     next(newRequest, newEnv) {
       return __facade_invokeChain__(newRequest, newEnv, ctx, dispatch, tail);
-    }
+    },
   };
   return head(request, env, ctx, middlewareCtx);
 }
@@ -1571,7 +2238,7 @@ __name(__facade_invokeChain__, "__facade_invokeChain__");
 function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
   return __facade_invokeChain__(request, env, ctx, dispatch, [
     ...__facade_middleware__,
-    finalMiddleware
+    finalMiddleware,
   ]);
 }
 __name(__facade_invoke__, "__facade_invoke__");
@@ -1595,13 +2262,16 @@ var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   }
 };
 function wrapExportedHandler(worker) {
-  if (__INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0) {
+  if (
+    __INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 ||
+    __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0
+  ) {
     return worker;
   }
   for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__) {
     __facade_register__(middleware);
   }
-  const fetchDispatcher = /* @__PURE__ */ __name(function(request, env, ctx) {
+  const fetchDispatcher = /* @__PURE__ */ __name(function (request, env, ctx) {
     if (worker.fetch === void 0) {
       throw new Error("Handler does not export a fetch() function.");
     }
@@ -1610,24 +2280,26 @@ function wrapExportedHandler(worker) {
   return {
     ...worker,
     fetch(request, env, ctx) {
-      const dispatcher = /* @__PURE__ */ __name(function(type, init) {
+      const dispatcher = /* @__PURE__ */ __name(function (type, init) {
         if (type === "scheduled" && worker.scheduled !== void 0) {
           const controller = new __Facade_ScheduledController__(
             Date.now(),
             init.cron ?? "",
-            () => {
-            }
+            () => {},
           );
           return worker.scheduled(controller, env, ctx);
         }
       }, "dispatcher");
       return __facade_invoke__(request, env, ctx, dispatcher, fetchDispatcher);
-    }
+    },
   };
 }
 __name(wrapExportedHandler, "wrapExportedHandler");
 function wrapWorkerEntrypoint(klass) {
-  if (__INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 || __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0) {
+  if (
+    __INTERNAL_WRANGLER_MIDDLEWARE__ === void 0 ||
+    __INTERNAL_WRANGLER_MIDDLEWARE__.length === 0
+  ) {
     return klass;
   }
   for (const middleware of __INTERNAL_WRANGLER_MIDDLEWARE__) {
@@ -1647,8 +2319,7 @@ function wrapWorkerEntrypoint(klass) {
         const controller = new __Facade_ScheduledController__(
           Date.now(),
           init.cron ?? "",
-          () => {
-          }
+          () => {},
         );
         return super.scheduled(controller);
       }
@@ -1659,7 +2330,7 @@ function wrapWorkerEntrypoint(klass) {
         this.env,
         this.ctx,
         this.#dispatcher,
-        this.#fetchDispatcher
+        this.#fetchDispatcher,
       );
     }
   };
@@ -1674,7 +2345,7 @@ if (typeof middleware_insertion_facade_default === "object") {
 var middleware_loader_entry_default = WRAPPED_ENTRY;
 export {
   __INTERNAL_WRANGLER_MIDDLEWARE__,
-  middleware_loader_entry_default as default
+  middleware_loader_entry_default as default,
 };
 /*! Bundled license information:
 

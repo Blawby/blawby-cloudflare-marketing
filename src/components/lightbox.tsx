@@ -1,11 +1,11 @@
 "use client";
 
+import { CloseIcon } from "@/icons/close-icon";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import clsx from "clsx";
 import Image from "next/image";
 import type React from "react";
 import { useState } from "react";
-import { CloseIcon } from "@/icons/close-icon";
 
 interface LightboxProps {
   src: string;
@@ -15,33 +15,38 @@ interface LightboxProps {
   children?: React.ReactNode;
 }
 
-export function Lightbox({ 
-  src, 
-  alt, 
-  caption, 
+export function Lightbox({
+  src,
+  alt,
+  caption,
   className,
-  children 
+  children,
 }: LightboxProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
-    console.log('Opening lightbox for:', src);
+    console.log("Opening lightbox for:", src);
     setIsOpen(true);
   };
 
   const handleClose = () => {
-    console.log('Closing lightbox');
+    console.log("Closing lightbox");
     setIsOpen(false);
   };
 
   return (
     <>
       {/* Clickable trigger */}
-      <button 
+      <button
         type="button"
-        className={clsx("cursor-pointer bg-transparent border-none p-0", className)}
+        className={clsx(
+          "cursor-pointer border-none bg-transparent p-0",
+          className,
+        )}
         onClick={handleOpen}
-        aria-label={children ? `Open lightbox for ${alt}` : `View ${alt} in lightbox`}
+        aria-label={
+          children ? `Open lightbox for ${alt}` : `View ${alt} in lightbox`
+        }
       >
         {children || (
           <Image
@@ -49,7 +54,7 @@ export function Lightbox({
             alt={alt}
             width={400}
             height={300}
-            className="block object-cover rounded-lg border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-md transition-shadow"
+            className="block rounded-lg border border-gray-200 object-cover shadow-sm transition-shadow hover:shadow-md dark:border-white/10"
           />
         )}
       </button>
@@ -58,13 +63,13 @@ export function Lightbox({
       {isOpen && (
         <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
           <DialogBackdrop className="fixed inset-0 bg-black/80 backdrop-blur-sm" />
-          
+
           <div className="fixed inset-0 flex items-center justify-center p-4">
-            <DialogPanel className="relative max-w-7xl max-h-full transform transition-all">
+            <DialogPanel className="relative max-h-full max-w-7xl transform transition-all">
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute -top-12 right-0 z-10 p-2 text-white hover:text-gray-300 transition-colors"
+                className="absolute -top-12 right-0 z-10 p-2 text-white transition-colors hover:text-gray-300"
                 aria-label="Close lightbox"
               >
                 <CloseIcon className="h-6 w-6 stroke-white" />
@@ -77,13 +82,13 @@ export function Lightbox({
                   alt={alt}
                   width={1200}
                   height={800}
-                  className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl"
+                  className="max-h-[80vh] max-w-full rounded-lg object-contain shadow-2xl"
                 />
-                
+
                 {/* Caption */}
                 {caption && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-4 rounded-b-lg">
-                    <p className="text-sm text-center">{caption}</p>
+                  <div className="absolute right-0 bottom-0 left-0 rounded-b-lg bg-black/70 p-4 text-white">
+                    <p className="text-center text-sm">{caption}</p>
                   </div>
                 )}
               </div>
@@ -97,19 +102,21 @@ export function Lightbox({
 
 // Higher-order component to wrap existing images
 export function withLightbox<T extends React.ComponentProps<"img">>(
-  Component: React.ComponentType<T>
+  Component: React.ComponentType<T>,
 ) {
-  return function LightboxWrapper(props: T & { lightboxSrc?: string; lightboxCaption?: string }) {
+  return function LightboxWrapper(
+    props: T & { lightboxSrc?: string; lightboxCaption?: string },
+  ) {
     const { lightboxSrc, lightboxCaption, ...imageProps } = props;
-    
+
     if (!lightboxSrc) {
       return <Component {...(imageProps as T)} />;
     }
 
     return (
-      <Lightbox 
-        src={lightboxSrc} 
-        alt={imageProps.alt || ""} 
+      <Lightbox
+        src={lightboxSrc}
+        alt={imageProps.alt || ""}
         caption={lightboxCaption}
       >
         <Component {...(imageProps as T)} />

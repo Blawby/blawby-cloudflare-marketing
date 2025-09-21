@@ -19,13 +19,15 @@ const pages: Page[] = [
   {
     id: "nonprofit-commitment",
     title: "Nonprofit Commitment",
-    description: "Dedicated to supporting nonprofit legal aid organizations with affordable digital infrastructure.",
+    description:
+      "Dedicated to supporting nonprofit legal aid organizations with affordable digital infrastructure.",
     href: "/nonprofit-commitment",
   },
   {
     id: "pitch-deck",
     title: "Blawby Investor Pitch",
-    description: "Unified Platform for Legal Payments & AI‑Driven Client Intake",
+    description:
+      "Unified Platform for Legal Payments & AI‑Driven Client Intake",
     href: "/pitch-deck",
   },
   {
@@ -34,4 +36,4 @@ const pages: Page[] = [
     description: "Get help and support for Blawby.",
     href: "/help",
   },
-]; 
+];

@@ -18,41 +18,54 @@ export function PieChart({
   id,
 }: PieChartProps) {
   const chartRef = useRef<HTMLDivElement>(null);
-  const [isDark, setIsDark] = useState(false);
+  const chartInstanceRef = useRef<any>(null);
+  const [isDark, setIsDark] = useState(() => {
+    // Initialize with actual dark mode state to prevent double render
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark') ||
+             window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
 
   // Monitor dark mode changes
   useEffect(() => {
     const checkDarkMode = () => {
-      const dark = document.documentElement.classList.contains("dark") ||
-                   window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const dark =
+        document.documentElement.classList.contains("dark") ||
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
       setIsDark(dark);
     };
 
-    checkDarkMode();
+    // Remove initial checkDarkMode() call to prevent double render
 
     // Watch for class changes on html element
     const observer = new MutationObserver(checkDarkMode);
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ["class"],
     });
 
     // Watch for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', checkDarkMode);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", checkDarkMode);
 
     return () => {
       observer.disconnect();
-      mediaQuery.removeEventListener('change', checkDarkMode);
+      mediaQuery.removeEventListener("change", checkDarkMode);
     };
   }, []);
 
   useEffect(() => {
     if (!chartRef.current) return;
 
-    let chart: any;
-
     const loadApexCharts = async () => {
+      // Clean up existing chart instance before creating new one
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+        chartInstanceRef.current = null;
+      }
+
       const ApexCharts = (await import("apexcharts")).default;
 
       const textColor = isDark ? "#ffffff" : "#111827";
@@ -72,7 +85,7 @@ export function PieChart({
           },
           animations: {
             enabled: true,
-            easing: 'easeinout',
+            easing: "easeinout",
             speed: 800,
           },
         },
@@ -126,28 +139,31 @@ export function PieChart({
             fontFamily: "Inter, sans-serif",
           },
         },
-        responsive: [{
-          breakpoint: 768,
-          options: {
-            chart: {
-              height: 350,
-            },
-            legend: {
-              position: "bottom",
+        responsive: [
+          {
+            breakpoint: 768,
+            options: {
+              chart: {
+                height: 350,
+              },
+              legend: {
+                position: "bottom",
+              },
             },
           },
-        }],
+        ],
       };
 
-      chart = new ApexCharts(chartRef.current, options);
-      chart.render();
+      chartInstanceRef.current = new ApexCharts(chartRef.current, options);
+      chartInstanceRef.current.render();
     };
 
     loadApexCharts();
 
     return () => {
-      if (chart) {
-        chart.destroy();
+      if (chartInstanceRef.current) {
+        chartInstanceRef.current.destroy();
+        chartInstanceRef.current = null;
       }
     };
   }, [data, labels, colors, height, isDark]);
