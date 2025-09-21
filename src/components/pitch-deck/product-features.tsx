@@ -4,7 +4,7 @@ export function ProductFeatures() {
   return (
     <section className="mb-16">
       <h2 id="product-features" className="text-3xl font-bold text-gray-950 dark:text-white mb-6">Product Features</h2>
-      <ul className="space-y-4 text-gray-700 dark:text-gray-300">
+      <ul className="space-y-4 text-lg text-gray-700 dark:text-gray-300">
         <li>
             <strong>Payments & Billing:</strong> Seamless invoicing, secure client payment links, and highly competitive 1.4% transaction fees with <a href="/compliance/iolta-compliance" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">full IOLTA compliance</a>.
         </li>
