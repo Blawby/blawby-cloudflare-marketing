@@ -64,6 +64,7 @@
     "remark-parse": "^10.0.2",
     "remark-stringify": "^11.0.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
     "typescript": "^5",
     "undici-types": "^7.10.0",
     "unified": "^10.1.2",
