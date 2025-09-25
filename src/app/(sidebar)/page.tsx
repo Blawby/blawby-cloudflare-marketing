@@ -172,8 +172,9 @@ export default async function Page() {
               <div className="mt-10">
                 <Button
                   href={`/${modules[0].lessons[0].id}`}
+                  className="inline-flex items-center gap-x-2"
                 >
-                  <PlayIcon className="fill-gray-900" />
+                  <PlayIcon className="h-4 w-4 fill-gray-900" />
                   Start accepting payments with Blawby
                 </Button>
               </div>

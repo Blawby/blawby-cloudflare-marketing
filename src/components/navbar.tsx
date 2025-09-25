@@ -8,6 +8,7 @@ import {
   DropdownMenu,
 } from "@/components/dropdown";
 import { IconButton } from "@/components/icon-button";
+import { Logo } from "@/components/logo";
 import { ChevronDownIcon } from "@/icons/chevron-down-icon";
 import { CloseIcon } from "@/icons/close-icon";
 import { MenuIcon } from "@/icons/menu-icon";
@@ -31,7 +32,12 @@ export function Navbar({ children, ...props }: React.ComponentProps<"div">) {
       )}
       {...props}
     >
-      {children}
+      <Link href="/" className="flex items-center">
+        <Logo className="h-8 dark:text-white" />
+      </Link>
+      <div className="flex-1 flex items-center justify-start">
+        {children}
+      </div>
       <SiteNavigation />
     </div>
   );
