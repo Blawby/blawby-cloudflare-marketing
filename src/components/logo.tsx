@@ -1,11 +1,4 @@
-import clsx from "clsx";
-import { Alegreya } from "next/font/google";
 import type React from "react";
-
-const alegreya = Alegreya({
-  subsets: ["latin"],
-  weight: ["500"], // Medium
-});
 
 export function Logo(props: React.ComponentProps<"svg">) {
   return (
@@ -745,12 +738,7 @@ M503.094177,1267.999512
 z"
         />
       </svg>
-      <span
-        className={clsx(
-          "text-3xl font-bold text-gray-950 dark:text-white",
-          alegreya.className,
-        )}
-      >
+      <span className="font-serif text-3xl font-bold text-gray-950 dark:text-white">
         Blawby
       </span>
     </div>

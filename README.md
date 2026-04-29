@@ -76,24 +76,33 @@ The interviews feature is protected by a feature flag. By default, interviews pa
 #### How to enable/disable interviews:
 
 - **Local development:**
-  - Add to your `.env` file:
+  - Add to your `.env.local` file:
     ```
     SHOW_INTERVIEWS=false
     ```
     (Set to `true` to enable interviews locally.)
 
-- **Cloudflare Pages/Workers:**
-  - Add the secret using Wrangler:
-    ```
-    npx wrangler secret put SHOW_INTERVIEWS
-    ```
-    (You will be prompted to enter the value. Use `false` to hide, `true` to show.)
-  - Or, add as an environment variable in the Cloudflare Pages dashboard.
+- **Cloudflare Pages:**
+  - Add `SHOW_INTERVIEWS` as a plaintext environment variable in the Pages project's build variables. This is a feature flag, not a secret.
 
 - **GitHub Actions/CI:**
-  - Add `SHOW_INTERVIEWS` as a variable or secret in your repository settings if your build/deploy workflow needs it.
+  - Add `SHOW_INTERVIEWS` as a repository variable if your build/deploy workflow needs it.
 
 **Default:** Interviews are hidden unless you explicitly set `SHOW_INTERVIEWS=true` in your environment.
+
+## Secrets and Environment Variables
+
+Do not put API keys, auth tokens, or passwords in `wrangler.toml`. Use:
+
+- `.env.local` for Next.js local/build-time values such as `SHOW_INTERVIEWS`.
+- `.env` for local Wrangler CLI/system values such as `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN`.
+- `.dev.vars` for local Worker runtime secrets used by `wrangler dev`, such as `RESEND_API_KEY`.
+- `pnpm wrangler secret put RESEND_API_KEY` for the deployed Worker.
+- Cloudflare Pages project variables/secrets for Pages build/runtime values.
+
+Copy `.env.example` and `.dev.vars.example` locally, then fill in real values. These local files are ignored by git.
+
+When the project upgrades to a Wrangler version that supports the `secrets` configuration property without warnings, declare required Worker secrets in `wrangler.toml`.
 
 ## Deployment
 

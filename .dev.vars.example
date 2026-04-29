@@ -1,0 +1,3 @@
+# Used by `wrangler dev` for the Cloudflare Worker runtime.
+RESEND_API_KEY="replace-with-resend-api-key"
+
