@@ -1,4 +1,4 @@
-name = "compass-ts"
+name = "blawby-marketing-backend"
 main = "src/workers/search.ts"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
