@@ -77,7 +77,7 @@ The interviews feature is protected by a feature flag. By default, interviews pa
 
 - **Local development:**
   - Add to your `.env.local` file:
-    ```
+    ```env
     SHOW_INTERVIEWS=false
     ```
     (Set to `true` to enable interviews locally.)
