@@ -1,15 +1,14 @@
 name = "blawby-marketing-backend"
 main = "src/workers/search.ts"
-compatibility_date = "2024-01-01"
+compatibility_date = "2026-04-29"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = "out"
 
-[[vectorize]]
-binding = "VECTORIZE"
-index_name = "documentation"
-
 [ai]
 binding = "AI"
+
+[vars]
+AI_SEARCH_NAME = "your-autorag-instance-name"
 
 [[d1_databases]]
 binding = "SUPPORT_DB"

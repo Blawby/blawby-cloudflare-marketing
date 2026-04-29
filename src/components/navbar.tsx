@@ -35,9 +35,7 @@ export function Navbar({ children, ...props }: React.ComponentProps<"div">) {
       <Link href="/" className="flex items-center">
         <Logo className="h-8 dark:text-white" />
       </Link>
-      <div className="flex-1 flex items-center justify-start">
-        {children}
-      </div>
+      <div className="flex flex-1 items-center justify-start">{children}</div>
       <SiteNavigation />
     </div>
   );

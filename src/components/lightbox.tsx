@@ -61,9 +61,9 @@ export function Lightbox({
 
       {/* Lightbox modal */}
       {isOpen && (
-        <Dialog 
-          open={isOpen} 
-          onClose={handleClose} 
+        <Dialog
+          open={isOpen}
+          onClose={handleClose}
           className="relative z-50"
           aria-label={`Image lightbox: ${alt}`}
         >

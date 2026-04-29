@@ -17,12 +17,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20.11.1
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: latest
+          version: 9.12.3
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -30,42 +30,13 @@ jobs:
       - name: Build Next.js site
         run: pnpm run build
 
-      - name: Chunk MDX lessons for vector search
-        if: |
-          ${{
-            (github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'src/data/lessons/')) ||
-            (github.event.head_commit.removed && contains(join(github.event.head_commit.removed, ','), 'src/data/lessons/')) ||
-            (github.event.head_commit.added && contains(join(github.event.head_commit.added, ','), 'src/data/lessons/'))
-          }}
-        run: pnpm run chunk:lessons
+      - name: Upload MDX content to R2 for AI Search
+        env:
+          R2_CONTENT_BUCKET: ${{ vars.R2_CONTENT_BUCKET }}
+        run: pnpm run r2:upload-content
 
       - name: Deploy to Cloudflare Pages
         run: pnpm exec wrangler pages deploy out --project-name=blawby-cloudflare-marketing
 
       - name: Deploy Worker
         run: pnpm exec wrangler deploy
-
-      - name: Upsert MDX chunks to Vectorize
-        if: |
-          ${{
-            (github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'src/data/lessons/')) ||
-            (github.event.head_commit.removed && contains(join(github.event.head_commit.removed, ','), 'src/data/lessons/')) ||
-            (github.event.head_commit.added && contains(join(github.event.head_commit.added, ','), 'src/data/lessons/'))
-          }}
-        run: |
-          curl -X POST https://compass-ts.paulchrisluke.workers.dev/upsert-mdx \
-            -H "Content-Type: application/json" \
-            --data-binary @lesson-chunks.json
-
-      - name: Prune stale vectors from Vectorize
-        if: |
-          ${{
-            (github.event.head_commit.modified && contains(join(github.event.head_commit.modified, ','), 'src/data/lessons/')) ||
-            (github.event.head_commit.removed && contains(join(github.event.head_commit.removed, ','), 'src/data/lessons/')) ||
-            (github.event.head_commit.added && contains(join(github.event.head_commit.added, ','), 'src/data/lessons/'))
-          }}
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          VECTORIZE_INDEX_NAME: documentation
-        run: pnpm exec tsx scripts/prune-vector-index.mjs
