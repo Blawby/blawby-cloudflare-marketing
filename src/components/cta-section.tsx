@@ -26,7 +26,7 @@ export function CTASection({
       <h2 className="mb-4 text-2xl font-bold text-gray-950 dark:text-white">
         {title}
       </h2>
-      <p className="mx-auto mb-8 max-w-2xl text-base text-lg text-gray-700 dark:text-gray-300">
+      <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-700 dark:text-gray-300">
         {description}
       </p>
       {isExternal ? (

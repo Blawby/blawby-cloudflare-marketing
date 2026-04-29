@@ -148,7 +148,7 @@ export default async function Page() {
                 account compliance with industry-leading security and ease of
                 use.
               </p>
-              <p className="mt-4 text-base text-base/7 text-pretty"></p>
+
               <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm/7 font-semibold text-gray-950 sm:gap-3 dark:text-white">
                 <div className="flex items-center gap-1.5">
                   <BookIcon className="stroke-gray-950/40 dark:stroke-white/40" />
@@ -188,14 +188,14 @@ export default async function Page() {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
                   Payments Built for Lawyers Who Value Their Time
                 </h2>
-                <p className="mt-6 text-base text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   Legal professionals didn't go to law school to spend hours
                   sending invoices, chasing payments, or navigating complex
                   billing systems. That's why we built Blawby—a fast, secure,
                   and effortless way for attorneys and law firms to collect
                   payments online.
                 </p>
-                <p className="mt-4 text-base text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="mt-4 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   With Blawby, you get a reusable, secure payment link that
                   works for every client. Just update the amount in the URL,
                   send the link, and get paid. No logins, no custom software, no

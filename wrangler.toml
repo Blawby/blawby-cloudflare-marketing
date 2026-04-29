@@ -8,7 +8,7 @@ pages_build_output_dir = "out"
 binding = "AI"
 
 [vars]
-AI_SEARCH_NAME = "your-autorag-instance-name"
+AI_SEARCH_NAME = "blawby-autorag-instance"
 
 [[d1_databases]]
 binding = "SUPPORT_DB"

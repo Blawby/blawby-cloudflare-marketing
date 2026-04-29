@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 /**
- * sync-content-to-r2.mjs
+ * upload-content-to-r2.mjs
  *
  * Uploads all MDX content files from src/data to an R2 bucket so that
  * Cloudflare AI Search can index them automatically.
  *
  * Usage:
- *   node scripts/sync-content-to-r2.mjs <bucket-name>
- *   R2_CONTENT_BUCKET=my-bucket node scripts/sync-content-to-r2.mjs
- *   R2_CONTENT_BUCKET=my-bucket DRY_RUN=true node scripts/sync-content-to-r2.mjs
+ *   node scripts/upload-content-to-r2.mjs <bucket-name>
+ *   R2_CONTENT_BUCKET=my-bucket node scripts/upload-content-to-r2.mjs
+ *   R2_CONTENT_BUCKET=my-bucket DRY_RUN=true node scripts/upload-content-to-r2.mjs
  *
  * Options (environment variables):
  *   R2_CONTENT_BUCKET  — bucket name (or pass as first CLI argument)
@@ -29,7 +29,12 @@ import process from "node:process";
 const DATA_DIR = path.resolve(process.cwd(), "src/data");
 const BUCKET = process.env.R2_CONTENT_BUCKET || process.argv[2];
 const DRY_RUN = process.env.DRY_RUN === "true";
-const CONCURRENCY = parseInt(process.env.CONCURRENCY || "10", 10);
+
+let parsedConcurrency = parseInt(process.env.CONCURRENCY || "10", 10);
+if (isNaN(parsedConcurrency) || parsedConcurrency <= 0) {
+  parsedConcurrency = 10;
+}
+const CONCURRENCY = Math.max(1, parsedConcurrency);
 
 if (!BUCKET) {
   console.error(

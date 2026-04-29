@@ -88,13 +88,13 @@ export default function HelpPage() {
               <h1 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">
                 Help & Support
               </h1>
-              <p className="mt-7 max-w-lg text-base text-base/7 text-pretty text-gray-700 dark:text-gray-300">
-                Need assistance with Blawby? Start a live chat with our AI
-                assistant for instant answers about payments, invoicing,
-                compliance, and more. For complex issues, you can create a
-                support case and our team will follow up promptly.
+              <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-950 dark:text-gray-300">
+                Blawby is the all-in-one, ABA and IOLTA-compliant credit card
+                payment solution for law firms and legal professionals. Accept
+                payments securely, streamline billing, and ensure full trust
+                account compliance with industry-leading security and ease of
+                use.
               </p>
-            </div>
             <div className="py-12">
               <iframe
                 src="https://chat.blawby.com/?position=inline"
@@ -109,7 +109,7 @@ export default function HelpPage() {
                 allow="clipboard-write; microphone; camera"
               />
               <div className="flex justify-center">
-                <p className="mt-4 max-w-lg text-center text-base text-xs text-pretty text-gray-700 dark:text-gray-300">
+                <p className="mt-4 max-w-lg text-center text-xs text-pretty text-gray-700 dark:text-gray-300">
                   Blawby AI can make mistakes. Check important info.
                 </p>
               </div>

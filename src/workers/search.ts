@@ -1,3 +1,15 @@
+// ---------------------------------------------------------------------------
+// HTML escaping utility
+// ---------------------------------------------------------------------------
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 /**
  * Blawby Search & Support Worker
  *
@@ -57,6 +69,8 @@ export interface Env {
   RESEND_API_KEY: string;
   /** Name of your AI Search instance, set in wrangler.toml as a var */
   AI_SEARCH_NAME: string;
+  /** Support email address for help form submissions */
+  SUPPORT_EMAIL: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -440,11 +454,23 @@ async function handleHelpForm(request: Request, env: Env): Promise<Response> {
     return corsJson({ error: `Missing ${missing}` }, request, 400, true);
   }
 
+  if (!env.SUPPORT_EMAIL) {
+    return corsJson(
+      {
+        error:
+          "Support email is not configured. Please set SUPPORT_EMAIL in your environment.",
+      },
+      request,
+      500,
+      true,
+    );
+  }
+
   const emailSvc = new EmailService(env.RESEND_API_KEY);
   await Promise.all([
     emailSvc.send({
       from: "noreply@blawby.com",
-      to: "paulchrisluke@gmail.com",
+      to: env.SUPPORT_EMAIL,
       subject: "New Help Form Submission",
       text: `Name: ${body.name}\nEmail: ${body.email}\nMessage:\n${body.message}`,
     }),
@@ -636,9 +662,11 @@ class EmailService {
 
   private buildHtml(subject: string, text: string): string {
     const year = new Date().getFullYear();
+    const safeSubject = escapeHtml(subject);
+    const safeText = escapeHtml(text);
     return `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px">
-      <h2 style="color:#18181b">${subject}</h2>
-      <div style="white-space:pre-line">${text}</div>
+      <h2 style="color:#18181b">${safeSubject}</h2>
+      <div style="white-space:pre-line">${safeText}</div>
       <hr style="margin:20px 0;border:none;border-top:1px solid #eee">
       <p style="color:#888;font-size:12px">© ${year} Blawby. All rights reserved.</p>
     </div>`;
@@ -728,6 +756,19 @@ export default {
       const match = route.pattern.exec(path);
       if (!match) continue;
 
+      // Early reject mutation requests from disallowed origins
+      if (route.mutation) {
+        const origin = request.headers.get("Origin") ?? "";
+        if (!ALLOWED_ORIGINS.includes(origin)) {
+          return corsJson(
+            { error: "Forbidden: Origin not allowed for mutation." },
+            request,
+            403,
+            true,
+          );
+        }
+      }
+
       try {
         return await route.handler(
           request,
@@ -739,7 +780,9 @@ export default {
         return corsJson(
           { error: message },
           request,
-          message === "Invalid JSON" ? 400 : 500,
+          typeof message === "string" && message.startsWith("Invalid JSON")
+            ? 400
+            : 500,
           route.mutation,
         );
       }

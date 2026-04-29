@@ -46,7 +46,7 @@ export function Pricing({
         </div>
         <ul
           role="list"
-          className="mt-8 grid grid-cols-1 gap-4 text-base text-sm leading-6 sm:grid-cols-2 sm:gap-6"
+          className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 sm:grid-cols-2 sm:gap-6"
         >
           {includedFeatures.map((feature) => (
             <li key={feature} className="flex items-center gap-x-3">
@@ -83,7 +83,7 @@ export function Pricing({
             >
               Get access
             </Button>
-            <p className="mt-6 text-base text-xs leading-5 text-gray-700 dark:text-gray-300">
+            <p className="mt-6 text-xs leading-5 text-gray-700 dark:text-gray-300">
               +Applicable fees{" "}
               <span className="text-gray-950 dark:text-white">
                 <a href="/pricing#pricingDetail">Learn More</a>
