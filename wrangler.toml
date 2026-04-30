@@ -2,7 +2,6 @@ name = "blawby-marketing-backend"
 main = "src/workers/search.ts"
 compatibility_date = "2026-04-29"
 compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = "out"
 
 [ai]
 binding = "AI"
