@@ -330,6 +330,8 @@ function filenameToUrl(filename: string): string {
     key = key.replace(/^pages\//, "");
   } else if (key.startsWith("legal/")) {
     key = key.replace(/^legal\//, "");
+  } else if (key.startsWith("articles/")) {
+    key = key.replace(/^articles\//, "");
   }
 
   return `/${key}`;
@@ -454,6 +456,10 @@ async function handleHelpForm(request: Request, env: Env): Promise<Response> {
     return corsJson({ error: `Missing ${missing}` }, request, 400, true);
   }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email!)) {
+    return corsJson({ error: "Invalid email format" }, request, 400, true);
+  }
+
   if (!env.SUPPORT_EMAIL) {
     return corsJson(
       {
@@ -467,20 +473,24 @@ async function handleHelpForm(request: Request, env: Env): Promise<Response> {
   }
 
   const emailSvc = new EmailService(env.RESEND_API_KEY);
-  await Promise.all([
-    emailSvc.send({
-      from: "noreply@blawby.com",
-      to: env.SUPPORT_EMAIL,
-      subject: "New Help Form Submission",
-      text: `Name: ${body.name}\nEmail: ${body.email}\nMessage:\n${body.message}`,
-    }),
-    emailSvc.send({
+  
+  await emailSvc.send({
+    from: "noreply@blawby.com",
+    to: env.SUPPORT_EMAIL,
+    subject: "New Help Form Submission",
+    text: `Name: ${body.name}\nEmail: ${body.email}\nMessage:\n${body.message}`,
+  });
+
+  try {
+    await emailSvc.send({
       from: "noreply@blawby.com",
       to: body.email!,
       subject: "We received your message",
       text: `Thank you for contacting us. We'll get back to you soon.\n\nYour message:\n${body.message}`,
-    }),
-  ]);
+    });
+  } catch (err) {
+    console.error("Failed to send user confirmation email", err);
+  }
 
   return corsJson({ success: true }, request, 200, true);
 }
@@ -739,9 +749,12 @@ export default {
 
     // CORS preflight
     if (request.method === "OPTIONS") {
+      const isMutation = ROUTES.some(
+        (r) => r.mutation && r.pattern.test(path),
+      );
       return new Response(null, {
         status: 204,
-        headers: getCorsHeaders(request),
+        headers: getCorsHeaders(request, isMutation),
       });
     }
 

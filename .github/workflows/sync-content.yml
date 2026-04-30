@@ -7,6 +7,10 @@ on:
     paths:
       - "src/data/**/*.mdx" # only runs when content actually changes
 
+concurrency:
+  group: "sync-content-${{ github.ref }}"
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest

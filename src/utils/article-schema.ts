@@ -1,9 +1,27 @@
+import { siteConfig } from "@/config/site";
+
+type SchemaAuthor = { name: string; url: string } | string;
+
+function normalizeAuthor(author: SchemaAuthor) {
+  if (typeof author === "string") {
+    return { name: author, url: siteConfig.url };
+  }
+
+  return author;
+}
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return undefined;
+  if (dateStr.includes("T") || dateStr.includes("Z")) return dateStr;
+  return `${dateStr}T00:00:00.000Z`;
+}
+
 // Generate Article schema.org JSON-LD for blog posts and guides
 export function getArticleSchema({
   name,
   description,
   url,
-  author = { name: "Blawby", url: "https://blawby.com" },
+  author = { name: siteConfig.name, url: siteConfig.url },
   datePublished,
   dateModified,
   image,
@@ -13,21 +31,14 @@ export function getArticleSchema({
   name: string;
   description: string;
   url: string;
-  author?: { name: string; url: string };
+  author?: SchemaAuthor;
   datePublished?: string;
   dateModified?: string;
   image?: string;
   category?: string;
   tags?: string[];
 }) {
-  // Convert date strings to ISO format with timezone if they're just dates
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return undefined;
-    // If it's already in ISO format with timezone, return as is
-    if (dateStr.includes("T") || dateStr.includes("Z")) return dateStr;
-    // If it's just a date (YYYY-MM-DD), add time and timezone
-    return `${dateStr}T00:00:00.000Z`;
-  };
+  const normalizedAuthor = normalizeAuthor(author);
 
   return {
     "@context": "https://schema.org",
@@ -38,16 +49,16 @@ export function getArticleSchema({
     url,
     author: {
       "@type": "Organization",
-      name: author.name,
-      url: author.url,
+      name: normalizedAuthor.name,
+      url: normalizedAuthor.url,
     },
     publisher: {
       "@type": "Organization",
-      name: "Blawby",
-      url: "https://blawby.com",
+      name: siteConfig.name,
+      url: siteConfig.url,
       logo: {
         "@type": "ImageObject",
-        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+        url: siteConfig.defaultImage,
       },
     },
     ...(datePublished ? { datePublished: formatDate(datePublished) } : {}),
@@ -62,7 +73,7 @@ export function getArticleSchema({
       : {
           image: {
             "@type": "ImageObject",
-            url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+            url: siteConfig.defaultImage,
           },
         }),
     ...(category ? { articleSection: category } : {}),
@@ -79,7 +90,7 @@ export function getBlogPostingSchema({
   name,
   description,
   url,
-  author = { name: "Blawby", url: "https://blawby.com" },
+  author = { name: siteConfig.name, url: siteConfig.url },
   datePublished,
   dateModified,
   image,
@@ -89,21 +100,14 @@ export function getBlogPostingSchema({
   name: string;
   description: string;
   url: string;
-  author?: { name: string; url: string };
+  author?: SchemaAuthor;
   datePublished?: string;
   dateModified?: string;
   image?: string;
   category?: string;
   tags?: string[];
 }) {
-  // Convert date strings to ISO format with timezone if they're just dates
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return undefined;
-    // If it's already in ISO format with timezone, return as is
-    if (dateStr.includes("T") || dateStr.includes("Z")) return dateStr;
-    // If it's just a date (YYYY-MM-DD), add time and timezone
-    return `${dateStr}T00:00:00.000Z`;
-  };
+  const normalizedAuthor = normalizeAuthor(author);
 
   return {
     "@context": "https://schema.org",
@@ -114,16 +118,16 @@ export function getBlogPostingSchema({
     url,
     author: {
       "@type": "Organization",
-      name: author.name,
-      url: author.url,
+      name: normalizedAuthor.name,
+      url: normalizedAuthor.url,
     },
     publisher: {
       "@type": "Organization",
-      name: "Blawby",
-      url: "https://blawby.com",
+      name: siteConfig.name,
+      url: siteConfig.url,
       logo: {
         "@type": "ImageObject",
-        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+        url: siteConfig.defaultImage,
       },
     },
     ...(datePublished ? { datePublished: formatDate(datePublished) } : {}),
@@ -138,7 +142,7 @@ export function getBlogPostingSchema({
       : {
           image: {
             "@type": "ImageObject",
-            url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
+            url: siteConfig.defaultImage,
           },
         }),
     ...(category ? { articleSection: category } : {}),

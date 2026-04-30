@@ -99,6 +99,7 @@ Do not put API keys, auth tokens, or passwords in `wrangler.toml`. Use:
 - `.dev.vars` for local Worker runtime secrets used by `wrangler dev`, such as `RESEND_API_KEY`.
 - `pnpm wrangler secret put RESEND_API_KEY` for the deployed Worker.
 - Cloudflare Pages project variables/secrets for Pages build/runtime values.
+- GitHub Actions repository variables for values consumed by the GitHub build, such as `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
 
 Copy `.env.example` and `.dev.vars.example` locally, then fill in real values. These local files are ignored by git.
 
@@ -131,19 +132,21 @@ wrangler pages deploy out
 
 The project includes comprehensive SEO support. Key files:
 
+- `src/config/site.ts` - Shared site name, URL, default description, social handle, and default image
+- `src/utils/seo.ts` - Shared URL, image, organization, website, video, web page, and application schema helpers
 - `src/app/layout.tsx` - Root metadata configuration
+- `src/app/sitemap.ts` - Native Next.js sitemap generation
+- `src/app/robots.ts` - Native Next.js robots.txt generation
 - `src/app/(centered)/interviews/[slug]/page.tsx` - Video content metadata
 - `src/app/(sidebar)/[category]/[slug]/page.tsx` - Educational content metadata
 
 To complete SEO setup:
 
-1. Update `metadataBase` in `src/app/layout.tsx` with your domain
-2. Add Open Graph images:
-   - `/public/og-image.jpg` (1200x630)
-   - `/public/twitter-image.jpg` (1200x600)
-3. Add Google Search Console verification code
+1. Update `url` in `src/config/site.ts` if the production domain changes
+2. Update `defaultImage` in `src/config/site.ts` when the production Open Graph image changes
+3. Add `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` when Google Search Console verification is available. This workflow builds the site in GitHub Actions, so set it as a GitHub Actions repository/environment variable. Use a Cloudflare Pages build variable only if Cloudflare Pages builds the Next.js site directly.
 4. Update `site.webmanifest` for PWA support
-5. Add proper favicon and apple-touch-icon files
+5. Add proper favicon and apple-touch-icon files if the metadata starts referencing them
 
 ## AI Search Indexing
 
@@ -187,14 +190,18 @@ To support SEO and rich results, the codebase includes several utilities for gen
 - **Usage:**
   - Import and use in any page where breadcrumbs are rendered.
   - Example:
+
     ```ts
     import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+    import { absoluteUrl } from "@/utils/seo";
+
     const breadcrumbItems = [
-      { name: "Home", url: "https://blawby.com" },
-      { name: "Overview", url: "https://blawby.com/" },
+      { name: "Home", url: absoluteUrl() },
+      { name: "Overview", url: absoluteUrl() },
     ];
     const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
     ```
+
   - Inject as a `<script type="application/ld+json">` in your page component.
 
 ### 2. HowTo Schema Utilities
@@ -237,17 +244,16 @@ To support SEO and rich results, the codebase includes several utilities for gen
 
 ## Sitemap Generation
 
-This project uses [next-sitemap](https://github.com/iamvishnusankar/next-sitemap) to automatically generate `sitemap.xml` and `robots.txt` after each build.
+This project uses the native Next.js App Router metadata routes for sitemap and robots output.
 
-- The config file is `next-sitemap.config.js` and uses ES module syntax (`export default`).
-- The sitemap is generated automatically in the deployment workflow.
-- To generate the sitemap locally, run:
+- `src/app/sitemap.ts` generates `sitemap.xml` from static pages and content files.
+- `src/app/robots.ts` generates `robots.txt` and points crawlers to the sitemap.
+- There is no `next-sitemap` dependency or config file.
+- To verify locally, run a build and inspect the generated output:
 
 ```bash
-npx next-sitemap
+pnpm build
 ```
-
-This will use the default config file and output the sitemap and robots.txt in the appropriate directory.
 
 ## Customizing
 

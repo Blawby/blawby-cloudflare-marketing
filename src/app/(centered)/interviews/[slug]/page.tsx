@@ -13,6 +13,7 @@ import {
   getInterviewTranscript,
 } from "@/data/interviews";
 import { ClockIcon } from "@/icons/clock-icon";
+import { absoluteUrl, getVideoSchema } from "@/utils/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -37,8 +38,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   let interview = await getInterview((await params).slug);
   if (!interview) return {};
-
-  const formattedDuration = formatDuration(interview.video.duration);
 
   return {
     title: `Interview with ${interview.name}`,
@@ -69,7 +68,7 @@ export async function generateMetadata({
       images: [interview.video.thumbnail],
     },
     alternates: {
-      canonical: `https://blawby.com/interviews/${interview.id}`,
+      canonical: absoluteUrl(`/interviews/${interview.id}`),
     },
   };
 }
@@ -77,27 +76,17 @@ export async function generateMetadata({
 // Add JSON-LD structured data for the video
 function generateVideoStructuredData(interview: any) {
   return {
-    "@context": "https://schema.org",
-    "@type": "VideoObject",
-    name: `Interview with ${interview.name}`,
-    description: interview.subtitle,
-    thumbnailUrl: interview.video.thumbnail,
-    uploadDate: new Date().toISOString().split("T")[0],
-    duration: `PT${Math.floor(interview.video.duration / 60)}M${interview.video.duration % 60}S`,
-    contentUrl: interview.video.hd,
-    embedUrl: interview.video.hd,
+    ...getVideoSchema({
+      name: `Interview with ${interview.name}`,
+      description: interview.subtitle,
+      thumbnailUrl: interview.video.thumbnail,
+      duration: interview.video.duration,
+      contentUrl: interview.video.hd,
+    }),
     interactionStatistic: {
       "@type": "InteractionCounter",
       interactionType: { "@type": "WatchAction" },
       userInteractionCount: 0,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Blawby",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-      },
     },
   };
 }

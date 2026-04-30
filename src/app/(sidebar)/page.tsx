@@ -11,24 +11,24 @@ import { Logo } from "@/components/logo";
 import { PageSection } from "@/components/page-section";
 import { Pricing } from "@/components/pricing";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
-import { getArticles, type Article } from "@/data/articles";
 import { getModules, type Module } from "@/data/lessons";
 import { BookIcon } from "@/icons/book-icon";
 import { ClockIcon } from "@/icons/clock-icon";
 import { LessonsIcon } from "@/icons/lessons-icon";
 import { PlayIcon } from "@/icons/play-icon";
 import type { Metadata } from "next";
-import Link from "next/link";
 // import { LogoCloud } from "@/components/logo-cloud";
+import { siteConfig } from "@/config/site";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 import { getCoursePathwaySchema } from "@/utils/course-schema";
+import { absoluteUrl, getSoftwareApplicationSchema } from "@/utils/seo";
 import fs from "fs";
 import Image from "next/image";
 import path from "path";
 
 export const metadata: Metadata = {
   title: "Blawby - Compliant Credit Card Payments for Legal Practices",
-  description: "Compliant credit card payments for legal practices",
+  description: siteConfig.description,
 };
 
 function formatDuration(seconds: number): string {
@@ -49,7 +49,7 @@ function getLessonReadingDuration(slug: string): number {
     const wordCount = content.split(/\s+/).filter(Boolean).length;
     // 200 words per minute reading speed
     return Math.ceil((wordCount / 200) * 60); // seconds
-  } catch (e) {
+  } catch {
     // If file not found or error, fallback to 0
     return 0;
   }
@@ -57,7 +57,6 @@ function getLessonReadingDuration(slug: string): number {
 
 export default async function Page() {
   let modules = await getModules();
-  let articles = await getArticles();
   let lessons = modules.flatMap(({ lessons }) => lessons);
   let duration = lessons.reduce((sum, lesson) => {
     if (lesson.video?.duration) return sum + lesson.video.duration;
@@ -65,8 +64,8 @@ export default async function Page() {
   }, 0);
 
   const breadcrumbItems = [
-    { name: "Home", url: "https://blawby.com" },
-    { name: "Overview", url: "https://blawby.com/" },
+    { name: "Home", url: absoluteUrl() },
+    { name: "Overview", url: absoluteUrl() },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
@@ -95,7 +94,9 @@ export default async function Page() {
               lessons: lessons.map((lesson) => ({
                 name: lesson.title,
                 description: lesson.description,
-                url: `https://blawby.com/${lesson.id}`,
+                url: absoluteUrl(
+                  `/${lesson.category || "lessons"}/${lesson.id}`,
+                ),
               })),
             }),
           ),
@@ -104,22 +105,7 @@ export default async function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "Blawby",
-            operatingSystem: "Web",
-            applicationCategory: "BusinessApplication",
-            description:
-              "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance.",
-            url: "https://blawby.com",
-            image: "https://blawby.com/favicon.ico",
-            offers: {
-              "@type": "Offer",
-              price: "40",
-              priceCurrency: "USD",
-            },
-          }),
+          __html: JSON.stringify(getSoftwareApplicationSchema()),
         }}
       />
       <div className="relative mx-auto max-w-7xl">
@@ -142,11 +128,7 @@ export default async function Page() {
               </div>
               <h1 className="sr-only">Course overview</h1>
               <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-950 dark:text-gray-300">
-                Blawby is the all-in-one, ABA and IOLTA-compliant credit card
-                payment solution for law firms and legal professionals. Accept
-                payments securely, streamline billing, and ensure full trust
-                account compliance with industry-leading security and ease of
-                use.
+                {siteConfig.description}
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-sm/7 font-semibold text-gray-950 sm:gap-3 dark:text-white">
@@ -300,7 +282,7 @@ export default async function Page() {
                 <h2 className="text-2xl font-bold tracking-tight text-gray-950 sm:text-3xl dark:text-white">
                   IOLTA Compliance: Simplified for Modern Legal Practices
                 </h2>
-                <p className="mt-6 text-base text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   Trust accounts are fundamental to legal ethics. Whether you're
                   holding client retainers, court filing fees, or settlement
                   funds, the rules are clear: those funds must be handled with
@@ -356,7 +338,7 @@ export default async function Page() {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-950 sm:text-4xl dark:text-white">
                   Simple no-tricks pricing
                 </h2>
-                <p className="mt-6 text-base text-lg leading-8 text-gray-700 dark:text-gray-300">
+                <p className="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
                   Access a complete payments platform with simple, pay-as-you-go
                   pricing. No setup fees, or hidden fees.
                 </p>
@@ -369,7 +351,7 @@ export default async function Page() {
                 <h2 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white">
                   Explore Blawby Documentation & Lessons
                 </h2>
-                <p className="mt-4 mb-10 max-w-2xl text-base text-lg text-gray-700 dark:text-gray-300">
+                <p className="mt-4 mb-10 max-w-2xl text-lg text-gray-700 dark:text-gray-300">
                   Dive into our comprehensive guides and video lessons to master
                   compliant payments, client management, and more. Whether
                   you're just getting started or looking to deepen your

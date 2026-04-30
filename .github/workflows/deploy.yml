@@ -28,6 +28,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Next.js site
+        env:
+          NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}
         run: pnpm run build
 
       - name: Upload MDX content to R2 for AI Search

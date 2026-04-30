@@ -19,6 +19,11 @@ import {
   getHowToSchema,
   parseHowToStepsFromMarkdown,
 } from "@/utils/howto-schema";
+import {
+  absoluteUrl,
+  defaultSeoImage,
+  getLearningResourceSchema,
+} from "@/utils/seo";
 import fs from "fs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -66,8 +71,6 @@ export async function generateMetadata({
   if (!lesson && !article) return {};
 
   const content = lesson || article;
-  const isArticle = !!article;
-
   if (!content) return {};
 
   return {
@@ -97,84 +100,51 @@ export async function generateMetadata({
           title: `${content.title}`,
           description: content.description,
           type: "article",
-          images: [
-            {
-              url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-              width: 1200,
-              height: 630,
-              alt: "Blawby - Compliant Credit Card Payments for Legal Practices",
-            },
-          ],
+          images: [defaultSeoImage],
         },
     twitter: {
       card: content.video ? "player" : "summary_large_image",
       title: `${content.title}`,
       description: content.description,
-      images: content.video
-        ? [content.video.thumbnail]
-        : [
-            "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-          ],
+      images: content.video ? [content.video.thumbnail] : [defaultSeoImage.url],
     },
     alternates: {
-      canonical: `https://blawby.com/${category}/${slug}`,
+      canonical: absoluteUrl(`/${category}/${slug}`),
     },
   };
 }
 
 // Add JSON-LD structured data for the lesson
-function generateLessonStructuredData(lesson: any, category: string) {
+function generateContentStructuredData(
+  content:
+    | Awaited<ReturnType<typeof getLesson>>
+    | Awaited<ReturnType<typeof getArticle>>,
+  category: string,
+) {
+  if (!content) return null;
+
   // Use Course schema for lessons, Article schema for guides
-  if (lesson.contentType === "lesson") {
-    const baseData = {
-      "@context": "https://schema.org",
-      "@type": "LearningResource",
-      name: lesson.title,
-      description: lesson.description,
-      provider: {
-        "@type": "Organization",
-        name: "Blawby",
-        logo: {
-          "@type": "ImageObject",
-          url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-        },
-      },
-      learningResourceType: "Lesson",
-      educationalLevel: "Beginner",
-      audience: {
-        "@type": "Audience",
-        audienceType: "General public",
-      },
-    };
-
-    if (lesson.video) {
-      return {
-        ...baseData,
-        "@type": ["LearningResource", "VideoObject"],
-        thumbnailUrl: lesson.video.thumbnail,
-        uploadDate: new Date().toISOString().split("T")[0],
-        duration: `PT${Math.floor(lesson.video.duration / 60)}M${lesson.video.duration % 60}S`,
-        contentUrl: lesson.video.url,
-        embedUrl: lesson.video.url,
-      };
-    }
-
-    return baseData;
+  if (content.contentType === "lesson") {
+    return getLearningResourceSchema({
+      name: content.title,
+      description: content.description,
+      video: content.video,
+    });
   } else {
     // Use Article schema for guides and articles
-    const categoryData = lesson.category
-      ? getCategoryById(lesson.category)
+    const categoryData = content.category
+      ? getCategoryById(content.category)
       : undefined;
     return getArticleSchema({
-      name: lesson.title,
-      description: lesson.description,
-      url: `https://blawby.com/${category}/${lesson.id}`,
+      name: content.title,
+      description: content.description,
+      url: absoluteUrl(`/${category}/${content.id}`),
       category: categoryData?.name,
-      tags: lesson.tags,
-      datePublished: lesson.datePublished,
-      dateModified: lesson.dateModified,
-      author: lesson.author,
-      image: lesson.image,
+      tags: content.tags,
+      datePublished: content.datePublished,
+      dateModified: content.dateModified,
+      author: content.author,
+      image: "image" in content ? content.image : undefined,
     });
   }
 }
@@ -209,18 +179,21 @@ export default async function Page({
     Content = await getLessonContent(slug);
   }
 
-  const lessonStructuredData = generateLessonStructuredData(content, category);
+  const contentStructuredData = generateContentStructuredData(
+    content,
+    category,
+  );
 
   // Handle breadcrumbs differently for articles vs lessons
   const breadcrumbItems = [
-    { name: "Home", url: "https://blawby.com" },
+    { name: "Home", url: absoluteUrl() },
     {
       name: isArticle ? "Articles" : lesson?.module?.title || "Content",
       url: isArticle
-        ? "https://blawby.com/articles"
-        : `https://blawby.com/#${lesson?.module?.id || ""}`,
+        ? absoluteUrl("/articles")
+        : `${absoluteUrl()}#${lesson?.module?.id || ""}`,
     },
-    { name: content.title, url: `https://blawby.com/${category}/${slug}` },
+    { name: content.title, url: absoluteUrl(`/${category}/${slug}`) },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
@@ -238,6 +211,7 @@ export default async function Page({
       contentPath = path.join(
         process.cwd(),
         "src/data/articles",
+        category,
         `${slug}.mdx`,
       );
     } else {
@@ -262,7 +236,7 @@ export default async function Page({
         description: content.description,
       });
     }
-  } catch (e) {
+  } catch {
     // Ignore if file not found or parse error
   }
 
@@ -283,12 +257,14 @@ export default async function Page({
         </Breadcrumbs>
       }
     >
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(lessonStructuredData),
-        }}
-      />
+      {contentStructuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(contentStructuredData),
+          }}
+        />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -301,7 +277,7 @@ export default async function Page({
               getCourseSchema({
                 name: content.title,
                 description: content.description,
-                url: `https://blawby.com/${category}/${slug}`,
+                url: absoluteUrl(`/${category}/${slug}`),
               }),
             ),
           }}

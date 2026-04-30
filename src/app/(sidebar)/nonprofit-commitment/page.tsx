@@ -2,21 +2,22 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import NonprofitCommitmentContent from "@/data/pages/nonprofit-commitment.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Nonprofit Commitment",
   description:
     "Dedicated to reducing digital barriers for nonprofit legal aid organizations through open-source development and affordable tools.",
-  alternates: { canonical: "https://blawby.com/nonprofit-commitment" },
+  alternates: { canonical: absoluteUrl("/nonprofit-commitment") },
 };
 
 export default function NonprofitCommitmentPage() {
   const breadcrumbItems = [
-    { name: "Home", url: "https://blawby.com" },
+    { name: "Home", url: absoluteUrl() },
     {
       name: "Nonprofit Commitment",
-      url: "https://blawby.com/nonprofit-commitment",
+      url: absoluteUrl("/nonprofit-commitment"),
     },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);

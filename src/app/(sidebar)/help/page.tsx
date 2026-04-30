@@ -5,52 +5,41 @@ import {
   BreadcrumbSeparator,
 } from "@/components/breadcrumbs";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
+import { siteConfig } from "@/config/site";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { absoluteUrl, getWebPageSchema } from "@/utils/seo";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Help & Support",
-    description:
-      "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
+    description: siteConfig.description,
     openGraph: {
       title: "Help & Support",
-      description:
-        "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
+      description: siteConfig.description,
       type: "website",
       images: [],
     },
     twitter: {
       card: "summary",
       title: "Help & Support",
-      description:
-        "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
+      description: siteConfig.description,
     },
     alternates: {
-      canonical: "https://blawby.com/help",
+      canonical: absoluteUrl("/help"),
     },
   };
 }
 
-const helpStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
+const helpStructuredData = getWebPageSchema({
   name: "Help & Support",
-  description:
-    "Need assistance with Blawby? Start a live chat with our AI assistant for instant answers about payments, invoicing, compliance, and more. For complex issues, you can create a support case and our team will follow up promptly.",
-  provider: {
-    "@type": "Organization",
-    name: "Blawby",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-    },
-  },
-};
+  description: siteConfig.description,
+  path: "/help",
+});
 
 const breadcrumbItems = [
-  { name: "Home", url: "https://blawby.com" },
-  { name: "Help & Support", url: "https://blawby.com/help" },
+  { name: "Home", url: absoluteUrl() },
+  { name: "Help & Support", url: absoluteUrl("/help") },
 ];
 const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
@@ -89,12 +78,9 @@ export default function HelpPage() {
                 Help & Support
               </h1>
               <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-950 dark:text-gray-300">
-                Blawby is the all-in-one, ABA and IOLTA-compliant credit card
-                payment solution for law firms and legal professionals. Accept
-                payments securely, streamline billing, and ensure full trust
-                account compliance with industry-leading security and ease of
-                use.
+                {siteConfig.description}
               </p>
+            </div>
             <div className="py-12">
               <iframe
                 src="https://chat.blawby.com/?position=inline"

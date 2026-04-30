@@ -1,3 +1,6 @@
+import { siteConfig } from "@/config/site";
+import { getArticles } from "@/data/articles";
+import { getModules } from "@/data/lessons";
 import fs from "fs";
 import { MetadataRoute } from "next";
 import path from "path";
@@ -9,13 +12,19 @@ function getFileMtime(filePath: string): string | null {
   try {
     const stats = fs.statSync(filePath);
     return stats.mtime.toISOString();
-  } catch (error) {
+  } catch {
     return null;
   }
 }
 
 // Helper function to get all content files and their timestamps
 function getAllContentFiles() {
+  const registeredLessons = new Set(
+    getModules().flatMap((module) => module.lessons.map((lesson) => lesson.id)),
+  );
+  const registeredArticles = new Map(
+    getArticles().map((article) => [article.id, article.category]),
+  );
   const contentFiles: Array<{
     type: string;
     slug: string;
@@ -31,12 +40,15 @@ function getAllContentFiles() {
       .readdirSync(lessonsDir)
       .filter((f) => f.endsWith(".mdx"));
     for (const file of lessonFiles) {
+      const slug = file.replace(".mdx", "");
+      if (!registeredLessons.has(slug)) continue;
+
       const filePath = path.join(lessonsDir, file);
       const mtime = getFileMtime(filePath);
       if (mtime) {
         contentFiles.push({
           type: "lesson",
-          slug: file.replace(".mdx", ""),
+          slug,
           category: "lessons",
           mtime,
           filePath,
@@ -61,12 +73,15 @@ function getAllContentFiles() {
         .readdirSync(categoryDir)
         .filter((f) => f.endsWith(".mdx"));
       for (const file of articleFiles) {
+        const slug = file.replace(".mdx", "");
+        if (registeredArticles.get(slug) !== category) continue;
+
         const filePath = path.join(categoryDir, file);
         const mtime = getFileMtime(filePath);
         if (mtime) {
           contentFiles.push({
             type: "article",
-            slug: file.replace(".mdx", ""),
+            slug,
             category,
             mtime,
             filePath,
@@ -128,7 +143,7 @@ function getAllContentFiles() {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = "https://blawby.com";
+  const siteUrl = siteConfig.url;
   const contentFiles = getAllContentFiles();
   const urlMap = new Map<string, MetadataRoute.Sitemap[0]>();
 
@@ -147,12 +162,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
 
   // Add static pages
-  const staticPages = [
-    "/pricing",
-    "/help",
-    "/nonprofit-commitment",
-    "/pitch-deck",
-  ];
+  const staticPages = ["/pricing", "/help", "/nonprofit-commitment"];
   for (const page of staticPages) {
     const pageName = page.slice(1);
     const filePath = path.join(
@@ -162,10 +172,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "page.tsx",
     );
     const mtime = getFileMtime(filePath);
+    if (!mtime) continue;
+
     const url = `${siteUrl}${page}`;
     urlMap.set(url, {
       url,
-      lastModified: mtime || new Date().toISOString(),
+      lastModified: mtime,
       changeFrequency: "daily",
       priority: 0.7,
     });
