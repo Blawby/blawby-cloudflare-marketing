@@ -1,0 +1,227 @@
+---
+title: "Set Up Client Intake"
+metaTitle: "Client Intake Setup | Blawby Practice Management"
+metaDescription: "Learn how to set up client intake workflows in Blawby. Configure intake forms, client management, and automated workflows for efficient practice operations."
+desc: "Configure client intake workflows and client management in Blawby."
+canonicalUrl: "https://blawby.com/docs/set-up-client-intake"
+author: "Team Blawby"
+authorImage: "/images/logo.png"
+category: "core-features"
+contentType: "guide"
+order: 10
+createdAt: "2024-02-15"
+updatedAt: "2024-02-15"
+tags:
+  - client-intake
+  - client-management
+  - workflows
+  - automation
+keywords:
+  - client intake setup
+  - practice management
+  - client workflows
+  - blawby features
+difficulty: "intermediate"
+prerequisites: ["create-practice-account"]
+timeToComplete: "45 minutes"
+nextSteps: ["ai-chat-configuration"]
+schemaType: "HowTo"
+faq:
+  - question: "How do I create custom intake forms?"
+    answer: "Use the intake form builder in your dashboard to create custom fields and validation rules for your specific practice needs."
+  - question: "Can I automate client onboarding?"
+    answer: "Yes, Blawby supports automated workflows for client onboarding, document signing, and initial consultation scheduling."
+noindex: false
+---
+
+# Set Up Client Intake
+
+Transform your client onboarding process from manual paperwork to streamlined digital workflows. This guide shows you how to configure intake forms, manage client information, and automate routine tasks for maximum efficiency.
+
+## Why Client Intake Matters
+
+Efficient client intake is the foundation of a successful law practice. Manual processes create friction, increase errors, and waste valuable time that could be spent serving clients. Blawby's client intake features help you:
+
+- **Reduce Administrative Overhead**: Automate form submissions and data entry
+- **Improve Client Experience**: Professional intake forms that work on any device
+- **Ensure Compliance**: Built-in validation and IOLTA compliance checks
+- **Scale Your Practice**: Handle more clients without increasing staff workload
+
+## Getting Started
+
+### Before You Begin
+
+You'll need:
+- Active Blawby practice account
+- Admin access to intake settings
+- Basic understanding of your current intake process
+
+### Step 1: Configure Intake Forms
+
+Create custom intake forms that match your practice areas:
+
+```javascript
+// Example: Personal injury intake form
+const personalInjuryFields = [
+  {
+    name: 'incident_type',
+    label: 'Incident Type',
+    type: 'select',
+    required: true,
+    options: [
+      { value: 'auto_accident', label: 'Auto Accident' },
+      { value: 'slip_fall', label: 'Slip and Fall' },
+      { value: 'premises_liability', label: 'Premises Liability' }
+    ]
+  },
+  {
+    name: 'injury_date',
+    label: 'Date of Injury',
+    type: 'date',
+    required: true
+  },
+  {
+    name: 'injury_description',
+    label: 'Injury Description',
+    type: 'textarea',
+    required: true
+  }
+];
+```
+
+### Step 2: Set Up Client Management
+
+Configure client information management:
+
+```javascript
+// Client data structure
+const clientData = {
+  personalInfo: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: ''
+  },
+  caseDetails: {
+    status: 'active',
+    practiceArea: '',
+    urgency: 'medium'
+  },
+  documents: [],
+  communications: []
+};
+```
+
+### Step 3: Automate Workflows
+
+Set up automated workflows for common tasks:
+
+```javascript
+// Automated document generation
+const generateDocument = async (clientId, template) => {
+  // Generate PDF or Word document
+  // Send to client for signature
+  // Track document status
+};
+
+// Automated follow-up scheduling
+const scheduleFollowUp = async (clientId, delayDays) => {
+  // Schedule reminder for follow-up
+  // Send automated email/SMS reminders
+};
+```
+
+## Best Practices
+
+### Form Design
+- **Mobile-First**: Ensure forms work perfectly on mobile devices
+- **Progress Indicators**: Show completion status for multi-step forms
+- **Conditional Logic**: Show/hide fields based on practice area
+- **Validation**: Real-time validation with helpful error messages
+
+### Data Management
+- **Centralized Storage**: All client data in one searchable system
+- **Version History**: Track changes to client information over time
+- **Document Association**: Link documents to specific cases and clients
+
+### Automation Rules
+- **Smart Notifications**: Alert staff when high-priority clients submit forms
+- **Batch Processing**: Process multiple intakes simultaneously during peak hours
+- **Integration Ready**: Pre-built connections to common practice management software
+
+## Advanced Features
+
+### Custom Workflows
+Create custom workflows for your specific practice needs:
+
+```javascript
+// Example: Estate planning workflow
+const estatePlanningWorkflow = {
+  name: 'Estate Planning Intake',
+  trigger: 'new_client',
+  steps: [
+    'collect_family_info',
+    'assess_assets',
+    'generate_documents',
+    'schedule_consultation'
+  ],
+  notifications: {
+    email: ['attorney', 'client'],
+    sms: ['client']
+  }
+};
+```
+
+### Integration Options
+
+Connect with your existing tools:
+
+- **Practice Management Software**: Clio, MyCase, PracticePanther
+- **Document Storage**: Google Drive, Dropbox, OneDrive
+- **Calendar Systems**: Google Calendar, Outlook Calendar
+- **Communication Tools**: Slack, Microsoft Teams
+
+## Troubleshooting
+
+### Common Issues
+- **Form Not Submitting**: Check browser compatibility and JavaScript errors
+- **Missing Data**: Verify all required fields are completed
+- **Duplicate Clients**: Search by email or phone before creating new client
+
+## Next Steps
+
+After completing intake setup:
+
+1. **Test Your Forms**: Submit test applications to verify everything works
+2. **Train Your Team**: Ensure staff understands the new workflows
+3. **Monitor Performance**: Track conversion rates and completion times
+4. **Gather Feedback**: Collect client experience feedback and optimize
+
+## API Reference
+
+### Key Endpoints
+- `POST /api/v1/intake/forms`: Submit intake form data
+- `GET /api/v1/clients/{id}`: Retrieve client information
+- `PUT /api/v1/clients/{id}`: Update client data
+- `POST /api/v1/documents`: Generate and manage documents
+
+### Webhook Support
+
+Configure webhooks for real-time updates:
+
+```javascript
+// Client intake webhook
+const intakeWebhook = {
+  url: 'https://your-domain.com/webhooks/intake',
+  events: ['client_submitted', 'form_completed'],
+  secret: 'your-webhook-secret'
+};
+```
+
+## Compliance Notes
+
+- **Data Privacy**: All client data is encrypted and stored securely
+- **Audit Trail**: Complete audit logs of all client interactions
+- **Retention Policies**: Configure automatic data purging according to your jurisdiction
+- **Access Controls**: Role-based permissions for sensitive client information

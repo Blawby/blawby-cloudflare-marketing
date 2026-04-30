@@ -5,6 +5,13 @@ import { notFound } from "next/navigation";
  * This decouples the filesystem location from the SEO category.
  */
 export async function getContentComponent(origin: string, folder: string, slug: string) {
+  // Path traversal protection: only allow alphanumeric, hyphens, and underscores
+  const validPath = /^[a-zA-Z0-9_-]+$/;
+  if (!validPath.test(slug) || (folder !== origin && !validPath.test(folder))) {
+    console.error(`[Content Server] Rejected potentially malicious path: ${origin}/${folder}/${slug}`);
+    return notFound();
+  }
+
   try {
     if (origin === "lessons") {
       return (await import(`@/data/lessons/${slug}.mdx`)).default;

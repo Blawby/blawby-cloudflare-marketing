@@ -164,21 +164,31 @@ app.post('/webhooks/blawby', (req, res) => {
 
 ### React Integration
 ```typescript
-// React hook for API integration
+// React hook for API integration (client-side)
 function useBlawbyAPI() {
   const [client, setClient] = useState<BlawbyClient | null>(null);
   
   useEffect(() => {
-    const apiClient = new BlawbyClient({
-      apiKey: process.env.BLAWBY_API_KEY,
-      practiceId: process.env.PRACTICE_ID,
-      baseUrl: 'https://api.blawby.com'
-    });
-    
-    setClient(apiClient);
+    // Call your own API route instead of exposing secrets
+    fetch('/api/blawby/client')
+      .then(res => res.json())
+      .then(data => {
+        setClient(data.client);
+      });
   }, []);
+
+// Server Component / API route (server-side only)
+// pages/api/blawby/client.js or app/api/blawby/client/route.js
+import { BlawbyClient } from '@blawby/sdk';
+
+export async function GET() {
+  const client = new BlawbyClient({
+    apiKey: process.env.BLAWBY_API_KEY, // Safe on server
+    practiceId: process.env.PRACTICE_ID,
+    baseUrl: 'https://api.blawby.com'
+  });
   
-  return client;
+  return Response.json({ client });
 }
 ```
 

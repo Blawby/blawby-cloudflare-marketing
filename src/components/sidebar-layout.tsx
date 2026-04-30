@@ -179,7 +179,7 @@ export function SidebarLayout({
               // Sits below the single-row navbar (h-14 = 56px)
               "fixed inset-y-0 top-14 left-0 w-64 overflow-y-auto",
               "border-r border-gray-950/10 dark:border-white/10",
-              "group-data-sidebar-collapsed:hidden max-xl:hidden",
+              "group-data-[sidebar-collapsed]:hidden max-xl:hidden",
             )}
           >
             <div className="flex h-14 items-center px-5">
@@ -196,7 +196,7 @@ export function SidebarLayout({
         {/* Page content — shift right when desktop sidebar is visible */}
         <div
           className={clsx(
-            hasSidebar && "xl:not-group-data-sidebar-collapsed:ml-64",
+            hasSidebar && "xl:group-data-[sidebar-collapsed]:ml-0 xl:ml-64",
           )}
         >
           {children}
@@ -245,7 +245,8 @@ export function SidebarLayoutContent({
           <IconButton
             onClick={() => setIsMobileDialogOpen(!isMobileDialogOpen)}
             className="xl:hidden"
-            aria-label="Open navigation"
+            aria-label={isMobileDialogOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={isMobileDialogOpen}
           >
             <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />
           </IconButton>

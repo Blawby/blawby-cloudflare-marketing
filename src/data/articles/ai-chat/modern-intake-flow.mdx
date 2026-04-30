@@ -3,16 +3,14 @@ title: "From Anonymous Visitor to Paying Client: The Modern Intake Flow"
 metaTitle: "Anonymous to Client Flow | Modern Legal Intake Automation"
 metaDescription: "Convert anonymous website visitors into paying clients through AI-powered conversations. Complete guide to modern legal intake automation."
 desc: "How to seamlessly convert anonymous website visitors into authenticated clients through AI-powered conversations."
-canonicalUrl: ""
+canonicalUrl: "https://blawby.com/articles/modern-intake-flow"
 author: "Team Blawby"
-authorImage: ""
-image: ""
-imageAlt: "Anonymous to authenticated client conversion flow"
+authorImage: "/images/logo.png"
 category: "ai-chat"
 contentType: "article"
 order: 20
-createdAt: "02/05/2024"
-updatedAt: "02/05/2024"
+createdAt: "2024-02-05"
+updatedAt: "2024-02-05"
 tags:
   - client-intake
   - client-acquisition
@@ -175,12 +173,30 @@ Your AI chat should handle anonymous users gracefully:
 
 ```javascript
 // Anonymous user session
+// IMPORTANT: Obtain user consent before persisting any session data to localStorage
+// Privacy compliance required for GDPR/CCPA
 blawby('init', {
   practiceId: 'YOUR_PRACTICE_ID',
   anonymousMode: true,
   sessionTimeout: 30 * 60 * 1000, // 30 minutes
-  persistentStorage: 'localStorage'
+  persistentStorage: 'localStorage' // Alternative: 'memory' for no persistence
 });
+
+// Stored data in localStorage (for user disclosure):
+// - sessionId: Anonymous session identifier
+// - conversationHistory: Chat messages during session
+// - userPreferences: Widget settings and preferences
+// - sessionTimestamp: When session was created
+// - lastActivity: Last user interaction time
+
+// Data retention policy:
+// - Automatic purge after sessionTimeout (30 minutes of inactivity)
+// - Maximum retention: 24 hours for anonymous sessions
+// - User can clear data via browser localStorage clearing
+
+// Opt-out alternatives:
+// persistentStorage: 'memory' // No localStorage persistence
+// persistentStorage: null // Disable all storage
 ```
 
 ### Progress Tracking
@@ -188,6 +204,9 @@ blawby('init', {
 Monitor conversion through each stage:
 
 ```javascript
+// Generate or retrieve session ID before use
+const sessionId = crypto.randomUUID() || session.id || Date.now().toString();
+
 // Track anonymous user progress
 blawby('track', {
   stage: 'engagement', // engagement, trust, qualification, conversion
@@ -203,6 +222,7 @@ When users decide to share information:
 
 ```javascript
 // Convert anonymous to authenticated
+// sessionId should be defined from previous tracking or generated here
 blawby('authenticate', {
   anonymousId: 'anonymous_' + sessionId,
   contactInfo: {
@@ -333,6 +353,7 @@ blawby('authenticate', {
 Collect information gradually across multiple sessions:
 
 ```javascript
+// sessionId should be available from previous tracking or generate here
 blawby('progressiveProfile', {
   anonymousId: 'anonymous_' + sessionId,
   profileFields: ['practiceArea', 'location', 'urgency'],
@@ -345,9 +366,11 @@ blawby('progressiveProfile', {
 Re-engage anonymous visitors who didn't convert:
 
 ```javascript
+// Use current date and defined sessionId
+const currentDate = new Date().toISOString().split('T')[0];
 blawby('retarget', {
-  anonymousId: 'anonymous_' + sessionId,
-  lastVisit: '2024-01-15',
+  anonymousId: 'anonymous_' + (sessionId || crypto.randomUUID()),
+  lastVisit: currentDate,
   conversationStage: 'qualification',
   retargetMessage: 'I noticed we were discussing your car accident case. Would you like to continue our conversation?'
 });

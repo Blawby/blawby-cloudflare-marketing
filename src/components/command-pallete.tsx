@@ -158,31 +158,36 @@ export default function CommandPalette() {
       const matches =
         vectorResults.matches?.matches || vectorResults.matches || [];
       // Transform AI Search results to match our SearchResult interface
-      const transformedResults: SearchResult[] = matches.map((result: any) => {
-        return {
-          id: result.id,
-          title:
-            result.title ||
-            result.metadata?.title ||
-            result.metadata?.name ||
-            "Untitled",
-          description:
-            result.description ||
-            result.metadata?.content ||
-            result.metadata?.description ||
-            result.metadata?.text ||
-            result.metadata?.body,
-          type: result.type || result.metadata?.type || "lesson",
-          url: result.url || result.metadata?.url,
-          score: result.score,
-          module:
-            result.module ||
-            result.section ||
-            result.metadata?.section ||
-            result.metadata?.module,
-          section: result.section || result.metadata?.section,
-        };
-      });
+       const transformedResults: SearchResult[] = matches
+        .map((result: any) => {
+          const url = result.url || result.metadata?.url;
+          if (!url || typeof url !== "string") return null;
+
+          return {
+            id: result.id,
+            title:
+              result.title ||
+              result.metadata?.title ||
+              result.metadata?.name ||
+              "Untitled",
+            description:
+              result.description ||
+              result.metadata?.content ||
+              result.metadata?.description ||
+              result.metadata?.text ||
+              result.metadata?.body,
+            type: result.type || result.metadata?.type || "lesson",
+            url: url,
+            score: result.score,
+            module:
+              result.module ||
+              result.section ||
+              result.metadata?.section ||
+              result.metadata?.module,
+            section: result.section || result.metadata?.section,
+          };
+        })
+        .filter((r: SearchResult | null): r is SearchResult => !!r);
 
       setResults(transformedResults);
     } catch (err) {
@@ -206,7 +211,11 @@ export default function CommandPalette() {
 
   // Navigate to URL function
   const navigateToUrl = (url: string) => {
-    if (url && url.startsWith("/lessons/")) {
+    if (!url) {
+      console.warn("[Command Palette] Attempted to navigate to an empty URL");
+      return;
+    }
+    if (url.startsWith("/lessons/")) {
       url = "/" + url.replace(/^\/lessons\//, "");
     }
     window.location.href = url;

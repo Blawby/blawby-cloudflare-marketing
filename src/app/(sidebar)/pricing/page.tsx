@@ -24,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default function PrivacyPage() {
+export default function PricingPage() {
   const breadcrumbItems = [
     { name: "Home", url: absoluteUrl() },
     { name: "Pricing", url: absoluteUrl("/pricing") },

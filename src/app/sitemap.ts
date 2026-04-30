@@ -90,7 +90,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         });
       }
     }
-  } catch {}
+    } catch (e) {
+      console.error("[Sitemap] Failed to process interviews directory:", e);
+    }
 
   return Array.from(urlMap.values());
 }

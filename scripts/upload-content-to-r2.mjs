@@ -133,7 +133,18 @@ function fmToR2Meta(fm) {
   if (allKeywords.length) m["keywords"] = allKeywords.join(", ").slice(0, 512);
 
   if (fm.faq && Array.isArray(fm.faq)) {
-    m["faq"] = JSON.stringify(fm.faq).slice(0, 1024);
+    let faqToStore = [];
+    for (const item of fm.faq) {
+      const nextSlice = [...faqToStore, item];
+      if (JSON.stringify(nextSlice).length <= 1024) {
+        faqToStore = nextSlice;
+      } else {
+        break;
+      }
+    }
+    if (faqToStore.length > 0) {
+      m["faq"] = JSON.stringify(faqToStore);
+    }
   }
 
   return m;

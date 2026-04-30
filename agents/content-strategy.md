@@ -94,13 +94,11 @@ Educate lawyers, legal staff, and office managers on how specific product featur
 Establish a consistent publishing strategy that balances SEO-focused articles with user journey documentation while addressing product education, persona balance, and rotation needs.
 
 ### 🗓️ Publishing Goals
-**SEO Articles**: Publish **1 blog post per week** (minimum 4 posts per month) for traffic capture and lead generation.
+**SEO Articles**: Rotate across buckets within the 4 posts/month (approx. 1 post per bucket per month) for traffic capture and lead generation.
 
 **User Journey Documentation**: Create and update documentation based on feature releases and user needs. No fixed schedule - update as needed.
 
-Content must rotate through buckets strategically but prioritize ongoing business pain points and high-conversion topics.
-
-### 🔁 SEO Article Priority Buckets (1–2x per month each)
+### 🔁 SEO Article Priority Buckets (rotate across buckets within the 4 posts/month)
 | Bucket | Post Type | Notes |
 |--------|-----------|-------|
 | AI Chat & Client Acquisition | Conversational intake, lead generation | High-growth area, addresses modern practice needs |

@@ -1,5 +1,4 @@
 import yaml from "js-yaml";
-import { siteConfig } from "@/config/site";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -162,7 +161,18 @@ export function frontmatterToR2Metadata(fm: Frontmatter) {
   if (allKeywords.length) meta["keywords"] = allKeywords.join(", ").slice(0, 512);
 
   if (fm.faq && fm.faq.length) {
-    meta["faq"] = JSON.stringify(fm.faq).slice(0, 1024);
+    let faqToStore = [];
+    for (const item of fm.faq) {
+      const nextSlice = [...faqToStore, item];
+      if (JSON.stringify(nextSlice).length <= 1024) {
+        faqToStore = nextSlice;
+      } else {
+        break;
+      }
+    }
+    if (faqToStore.length > 0) {
+      meta["faq"] = JSON.stringify(faqToStore);
+    }
   }
 
   return meta;

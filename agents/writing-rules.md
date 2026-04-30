@@ -83,7 +83,7 @@ When writing, do not explicitly mention or compare us to competitors like LawPay
 
 ### 1. Frontmatter Requirements
 
-Every post MUST include a YAML frontmatter block. The filesystem is the source of truth; do not add entries to `articles.ts` or `lessons.ts` manually.
+Every post MUST include a YAML frontmatter block. The filesystem is the source of truth; do not add entries to `articles.ts` or `lessons.ts` manually. These are generated TypeScript index modules that aggregate metadata from MDX files - create new content by adding files with proper frontmatter.
 
 ```yaml
 ---
@@ -92,7 +92,7 @@ metaTitle: "SEO Optimized Title | Blawby"
 desc: "Meta description for SEO (replaces 'description' if present)"
 author: "Team Blawby"
 authorImage: ""
-category: "compliance"     # Must match folder name in src/data/articles/
+category: "compliance"     # Must match folder name. Valid categories: payment-processing, ai-chat, practice-management, legal-tech, quick-start, core-features, advanced-features, reference
 contentType: "article"    # article | guide | reference | lesson
 order: 10                 # Controls sidebar sorting (lower = higher)
 difficulty: "Beginner"    # For lessons: Beginner | Intermediate | Advanced

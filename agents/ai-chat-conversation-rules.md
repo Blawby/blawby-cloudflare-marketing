@@ -83,14 +83,17 @@
 
 ### API Documentation Format
 ```typescript
-// WebSocket connection example
-const wsUrl = `wss://api.blawby.com/conversations/${conversationId}/ws`;
-const ws = new WebSocket(wsUrl, [], {
-  headers: {
-    'Authorization': `Bearer ${token}`,
-    'Practice-Id': practiceId
-  }
-});
+// WebSocket connection example (browser)
+const wsUrl = `wss://api.blawby.com/conversations/${conversationId}/ws?token=${encodeURIComponent(token)}&practiceId=${encodeURIComponent(practiceId)}`;
+const ws = new WebSocket(wsUrl);
+
+// For Node.js server-side usage with ws library:
+// const ws = new WebSocket(wsUrl, [], {
+//   headers: {
+//     'Authorization': `Bearer ${token}`,
+//     'Practice-Id': practiceId
+//   }
+// });
 ```
 
 ### Message Format Examples

@@ -81,11 +81,13 @@ export default async function Page() {
               name: "Blawby Legal Payments Curriculum",
               description:
                 "A comprehensive set of lessons for legal professionals to master compliant payments.",
-              lessons: lessons.map((lesson) => ({
-                name: lesson.title || "",
-                description: lesson.description || "",
-                url: absoluteUrl(getLessonHref(lesson)),
-              })),
+              lessons: lessons
+                .filter((lesson) => lesson.title)
+                .map((lesson) => ({
+                  name: lesson.title!,
+                  description: lesson.description || "No description available",
+                  url: absoluteUrl(getLessonHref(lesson)),
+                })),
             }),
           ),
         }}
@@ -371,8 +373,8 @@ export default async function Page() {
                         {module.lessons.map((lesson) => (
                           <li key={lesson.slug}>
                             <ContentLink
-                              title={lesson.title || ""}
-                              description={lesson.description || ""}
+                              title={lesson.title || "Untitled Lesson"}
+                              description={lesson.description || "No description available"}
                               href={getLessonHref(lesson)}
                               type={lesson.video ? "video" : "article"}
                               duration={

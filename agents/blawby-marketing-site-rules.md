@@ -27,11 +27,12 @@
    - JSON-LD structured data
 
 2. **Content Management (Filesystem-First):**
-   - **Source of Truth**: The filesystem is the single source of truth. Metadata is derived from MDX frontmatter. Do NOT add entries to `articles.ts` or `lessons.ts` manually for registration.
+   - **Automatic: File-based Registration**: Content is automatically registered from the filesystem. Do NOT manually add entries to `articles.ts` or `lessons.ts` - these are generated TypeScript index modules that aggregate metadata from MDX files.
+   - **Manual: ModuleRegistry Grouping**: Module grouping (sidebar organization) is manually configured in `src/data/lessons.ts` via the `moduleRegistry` export.
    - **SEO Articles**: Blog-style content in `/src/data/articles/{category}/` for traffic capture.
    - **Lessons**: Product education in `/src/data/lessons/`.
    - **Categories**: Managed in `src/data/categories.ts`.
-   - **Module Grouping**: Lesson sidebar grouping is managed in `src/data/lessons.ts` via `moduleRegistry`.
+   - **Required Frontmatter**: See `src/data/_template.mdx` for mandatory fields: `title`, `metaTitle`, `metaDescription`, `category`, `contentType`, `order`, `summary`.
    - **Templates**: Use `src/data/_template.mdx` for the required frontmatter schema.
 
 3. **Image Requirements:**

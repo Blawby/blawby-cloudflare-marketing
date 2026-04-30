@@ -6,13 +6,14 @@ export async function getArticles(): Promise<ContentItem[]> {
   return all.map(item => ({ ...item, id: item.slug }));
 }
 
-export async function getArticle(slug: string): Promise<any | null> {
+export type Article = ContentItem & { id: string };
+
+export async function getArticle(slug: string): Promise<Article | null> {
   const content = await getContent(slug);
   if (!content) return null;
   return {
     ...content,
     id: content.slug,
-    // Add any mappings if types differ significantly
   };
 }
 

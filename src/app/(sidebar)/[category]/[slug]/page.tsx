@@ -159,7 +159,11 @@ export default async function Page({
         });
       }
     }
-  } catch {}
+    } catch (e: any) {
+      if (e.code !== "ENOENT") {
+        console.warn(`[Structured Data] Failed to parse MDX for ${category}/${slug}:`, e.message);
+      }
+    }
 
   return (
     <SidebarLayoutContent

@@ -48,8 +48,6 @@ export function getArticleSchema({
   category?: string;
   tags?: string[];
 }) {
-  const normalizedAuthor = normalizeAuthor(author);
-
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -57,11 +55,7 @@ export function getArticleSchema({
     name,
     description,
     url,
-    author: {
-      "@type": "Organization",
-      name: normalizedAuthor.name,
-      url: normalizedAuthor.url,
-    },
+    author: getAuthorSchema(author),
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
@@ -117,8 +111,6 @@ export function getBlogPostingSchema({
   category?: string;
   tags?: string[];
 }) {
-  const normalizedAuthor = normalizeAuthor(author);
-
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -126,11 +118,7 @@ export function getBlogPostingSchema({
     name,
     description,
     url,
-    author: {
-      "@type": "Organization",
-      name: normalizedAuthor.name,
-      url: normalizedAuthor.url,
-    },
+    author: getAuthorSchema(author),
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
