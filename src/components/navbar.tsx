@@ -243,7 +243,7 @@ function MobileNavigation({
   const activeSection = useActiveSection();
   const isProductActive = PRODUCT_SECTION_IDS.has(activeSection as any) || activeSection === "products";
   const isDocsActive    = DOCS_SECTION_IDS.has(activeSection as any) || activeSection === "docs";
-  const isSolutionsActive = SOLUTIONS_SECTION_IDS.has(activeSection as any) || activeSection === "solutions" || activeSection === "articles";
+  const isSolutionsActive = activeSection === "solutions" || SOLUTIONS_SECTION_IDS.has(activeSection as any);
 
   return (
     <Dialog open={open} onClose={onClose} className="lg:hidden">

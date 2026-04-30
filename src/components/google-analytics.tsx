@@ -84,11 +84,21 @@ export function GoogleAnalytics() {
             
             // Only run config if consent was already found during SSR/initial load
             // Otherwise initAnalytics will run it
-            if (document.cookie.includes('analytics')) {
-              gtag('config', '${gaId}');
-              gtag('consent', 'update', {
-                'analytics_storage': 'granted'
-              });
+            try {
+              const consent = document.cookie
+                .split('; ')
+                .find((row) => row.startsWith('cc_cookie='));
+              if (consent) {
+                const cookieData = JSON.parse(decodeURIComponent(consent.split('=')[1]));
+                if (cookieData.categories && Array.isArray(cookieData.categories) && cookieData.categories.includes('analytics')) {
+                  gtag('config', '${gaId}');
+                  gtag('consent', 'update', {
+                    'analytics_storage': 'granted'
+                  });
+                }
+              }
+            } catch (e) {
+              // Ignore parse errors
             }
           `,
         }}

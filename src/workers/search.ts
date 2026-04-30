@@ -315,8 +315,8 @@ function filenameToTitle(filename: string): string {
 
 function filenameToUrl(filename: string, attributes?: Record<string, any>): string {
   // Prefer indexed canonical href/url metadata if available
-  if (attributes?.href) return attributes.href.startsWith("/") ? attributes.href : `/${attributes.href}`;
-  if (attributes?.url) return attributes.url.startsWith("/") ? attributes.url : `/${attributes.url}`;
+  if (attributes?.href && typeof attributes.href === "string") return attributes.href.startsWith("/") ? attributes.href : `/${attributes.href}`;
+  if (attributes?.url && typeof attributes.url === "string") return attributes.url.startsWith("/") ? attributes.url : `/${attributes.url}`;
 
   let key = stripExtension(filename).replace(/\\/g, "/").replace(/^\/+/, "");
 
@@ -805,7 +805,7 @@ export default {
     const route = ROUTES.find(
       (r) =>
         r.method === request.method &&
-        (path.match(r.pattern) || (path === r.pattern.toString().slice(2, -2))),
+        path.match(r.pattern),
     );
 
     if (!route) {

@@ -91,12 +91,11 @@ jobs:
           configPath: ./.lighthouserc.json
           uploadArtifacts: true
 
-      - name: Promote to Production
+      - name: Deploy to Cloudflare Pages (Production)
         run: |
-          pnpm exec wrangler pages promote \
+          pnpm exec wrangler pages deploy out \
             --project-name=${{ vars.CF_PAGES_PROJECT_NAME }} \
-            --branch=preview-${{ github.run_id }} \
-            --to=master
+            --branch=master
 
       - name: Deploy Worker
         run: pnpm exec wrangler deploy
