@@ -8,29 +8,26 @@ import { NextPageLink } from "@/components/next-page-link";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import { Video } from "@/components/video-player";
-import { getLesson } from "@/data/lessons";
 import { siteConfig } from "@/config/site";
+import { getLesson } from "@/data/lessons";
 import { getAllContent, getContent } from "@/lib/content";
 import { getContentComponent } from "@/lib/content-server";
 import { getArticleSchema } from "@/utils/article-schema";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 import { getFAQSchema, parseFAQFromMarkdown } from "@/utils/faq-schema";
+import { mergeMetadata, normalizeKeywords } from "@/utils/frontmatter";
 import {
   getHowToSchema,
   parseHowToStepsFromMarkdown,
 } from "@/utils/howto-schema";
-import {
-  mergeMetadata,
-  normalizeKeywords,
-} from "@/utils/frontmatter";
-import {
-  absoluteUrl,
-  getLearningResourceSchema,
-} from "@/utils/seo";
+import { absoluteUrl, getLearningResourceSchema } from "@/utils/seo";
 import fs from "fs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import path from "path";
+function escapeJsonLd(data: any) {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
 
 export async function generateStaticParams() {
   const content = await getAllContent();
@@ -47,18 +44,13 @@ export async function generateMetadata({
   params: Promise<{ category: string; slug: string }>;
 }): Promise<Metadata> {
   const { category, slug } = await params;
-  const content = await getContent(slug);
+  const content = await getContent(slug, category);
 
   if (!content) return {};
 
   return mergeMetadata({
     fm: content,
     path: `/${category}/${slug}`,
-    fallback: {
-      title: content.title || "",
-      description: content.description || "",
-      keywords: normalizeKeywords(content.keywords),
-    },
   });
 }
 
@@ -80,11 +72,13 @@ function generateContentStructuredData(content: any) {
       tags: normalizeKeywords(content.tags),
       datePublished: content.createdAt,
       dateModified: content.updatedAt || content.createdAt,
-      author: content.author ? {
-        name: content.author,
-        url: siteConfig.url,
-        image: content.authorImage,
-      } : undefined,
+      author: content.author
+        ? {
+            name: content.author,
+            url: siteConfig.url,
+            image: content.authorImage,
+          }
+        : undefined,
       image: content.image,
     });
   }
@@ -96,14 +90,18 @@ export default async function Page({
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { category, slug } = await params;
-  const content = await getContent(slug);
+  const content = await getContent(slug, category);
 
   if (!content) {
     notFound();
   }
 
   const isLesson = content.origin === "lessons";
-  const Content = await getContentComponent(content.origin, content.folder, slug);
+  const Content = await getContentComponent(
+    content.origin,
+    content.folder,
+    slug,
+  );
 
   // For breadcrumbs/navigation, we still need module context if it's a lesson
   const lessonData = isLesson ? await getLesson(slug) : null;
@@ -112,7 +110,12 @@ export default async function Page({
   const breadcrumbItems = [
     { name: "Home", url: absoluteUrl() },
     ...(isLesson && lessonData?.module
-      ? [{ name: lessonData.module.title, url: absoluteUrl(`/#${lessonData.module.id}`) }]
+      ? [
+          {
+            name: lessonData.module.title,
+            url: absoluteUrl(`/#${lessonData.module.id}`),
+          },
+        ]
       : []),
     { name: content.title || "", url: absoluteUrl(content.href) },
   ];
@@ -134,11 +137,13 @@ export default async function Page({
   try {
     const filePath = path.join(
       process.cwd(),
-      isLesson ? "src/data/lessons" : `src/data/articles/${category}`,
+      "src/data",
+      content.origin,
+      content.folder === content.origin ? "" : content.folder,
       `${slug}.mdx`,
     );
     const mdxContent = fs.readFileSync(filePath, "utf-8");
-    
+
     const steps = parseHowToStepsFromMarkdown(mdxContent);
     if (steps.length >= 2) {
       howToSchema = getHowToSchema({
@@ -159,11 +164,14 @@ export default async function Page({
         });
       }
     }
-    } catch (e: any) {
-      if (e.code !== "ENOENT") {
-        console.warn(`[Structured Data] Failed to parse MDX for ${category}/${slug}:`, e.message);
-      }
+  } catch (e: any) {
+    if (e.code !== "ENOENT") {
+      console.warn(
+        `[Structured Data] Failed to parse MDX for ${category}/${slug}:`,
+        e.message,
+      );
     }
+  }
 
   return (
     <SidebarLayoutContent
@@ -189,23 +197,23 @@ export default async function Page({
       {structuredData && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ __html: escapeJsonLd(structuredData) }}
         />
       )}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: escapeJsonLd(breadcrumbSchema) }}
       />
       {howToSchema && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+          dangerouslySetInnerHTML={{ __html: escapeJsonLd(howToSchema) }}
         />
       )}
       {faqSchema && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          dangerouslySetInnerHTML={{ __html: escapeJsonLd(faqSchema) }}
         />
       )}
 
@@ -229,7 +237,7 @@ export default async function Page({
               <NextPageLink
                 title={lessonData.next.title}
                 description={lessonData.next.description}
-                href={`/${lessonData.next.category || "lessons"}/${lessonData.next.id}`}
+                href={`/${lessonData.next.category}/${lessonData.next.id}`}
               />
             ) : (
               <div className="text-center">

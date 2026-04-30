@@ -133,7 +133,7 @@ function fmToR2Meta(fm) {
   if (allKeywords.length) m["keywords"] = allKeywords.join(", ").slice(0, 512);
 
   if (fm.faq && Array.isArray(fm.faq)) {
-    let faqToStore = [];
+    let faqToStore: any[] = [];
     for (const item of fm.faq) {
       const nextSlice = [...faqToStore, item];
       if (JSON.stringify(nextSlice).length <= 1024) {

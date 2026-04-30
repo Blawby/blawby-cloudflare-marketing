@@ -6,6 +6,8 @@ import path from "path";
 
 export const dynamic = "force-static";
 
+const interviewsEnabled = process.env.SHOW_INTERVIEWS === "true";
+
 function getFileMtime(filePath: string): string | null {
   try {
     const stats = fs.statSync(filePath);
@@ -37,7 +39,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = [
     { path: "/pricing", file: "src/data/pages/pricing.mdx", priority: 0.8 },
     { path: "/help", file: "src/data/pages/help.mdx", priority: 0.8 },
-    { path: "/nonprofit-commitment", file: "src/data/pages/nonprofit-commitment.mdx", priority: 0.8 },
+    {
+      path: "/nonprofit-commitment",
+      file: "src/data/pages/nonprofit-commitment.mdx",
+      priority: 0.8,
+    },
   ];
 
   for (const { path: p, file: f, priority } of staticPages) {
@@ -56,7 +62,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const url = `${siteUrl}${item.href}`;
     urlMap.set(url, {
       url,
-      lastModified: item.updatedAt || item.createdAt || new Date().toISOString(),
+      lastModified:
+        item.updatedAt || item.createdAt || new Date().toISOString(),
       changeFrequency: "daily",
       priority: 0.7,
     });
@@ -75,24 +82,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // 5. Add Interviews (they are still JSON/VTT based)
-  try {
-    const interviewsDir = path.join(process.cwd(), "src/data/interviews");
-    if (fs.existsSync(interviewsDir)) {
-      const interviewFiles = fs.readdirSync(interviewsDir).filter(f => f.endsWith(".vtt"));
-      for (const file of interviewFiles) {
-        const slug = file.replace(".vtt", "");
-        const url = `${siteUrl}/interviews/${slug}`;
-        urlMap.set(url, {
-          url,
-          lastModified: getFileMtime(path.join(interviewsDir, file)) || new Date().toISOString(),
-          changeFrequency: "weekly",
-          priority: 0.6,
-        });
+  if (interviewsEnabled) {
+    try {
+      const interviewsDir = path.join(process.cwd(), "src/data/interviews");
+      if (fs.existsSync(interviewsDir)) {
+        const interviewFiles = fs
+          .readdirSync(interviewsDir)
+          .filter((file) => file.endsWith(".vtt"));
+        for (const file of interviewFiles) {
+          const slug = file.replace(".vtt", "");
+          const url = `${siteUrl}/interviews/${slug}`;
+          urlMap.set(url, {
+            url,
+            lastModified:
+              getFileMtime(path.join(interviewsDir, file)) ||
+              new Date().toISOString(),
+            changeFrequency: "weekly",
+            priority: 0.6,
+          });
+        }
       }
-    }
     } catch (e) {
       console.error("[Sitemap] Failed to process interviews directory:", e);
     }
+  }
 
   return Array.from(urlMap.values());
 }

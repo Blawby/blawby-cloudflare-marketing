@@ -1,9 +1,8 @@
 ---
 title: "API Reference"
 metaTitle: "Blawby API Reference | Complete API Documentation"
-metaDescription: "Complete reference documentation for Blawby API endpoints, authentication, webhooks, and SDK usage. Technical specifications for developers."
-desc: "Complete API reference documentation for Blawby platform integration and development."
-canonicalUrl: "https://blawby.com/docs/api-reference"
+desc: "Complete API reference for the Blawby platform. Explore endpoints, authentication methods, webhooks, and SDKs to integrate legal payment processing."
+image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Team Blawby"
 authorImage: "/images/logo.png"
 category: "reference"
@@ -49,11 +48,13 @@ Complete technical documentation for integrating with the Blawby platform. This 
 The most straightforward method for server-to-server communication.
 
 #### Endpoint
+
 ```
 POST /api/v1/authenticate
 ```
 
 #### Request Body
+
 ```json
 {
   "apiKey": "your-api-key",
@@ -62,6 +63,7 @@ POST /api/v1/authenticate
 ```
 
 #### Response
+
 ```json
 {
   "token": "jwt_token_here",
@@ -76,11 +78,13 @@ POST /api/v1/authenticate
 For client applications that maintain user sessions.
 
 #### Endpoint
+
 ```
 POST /api/v1/auth/session
 ```
 
 #### Request Body
+
 ```json
 {
   "token": "jwt_token_here",
@@ -89,6 +93,7 @@ POST /api/v1/auth/session
 ```
 
 #### Response
+
 ```json
 {
   "sessionId": "session_abc123",
@@ -106,11 +111,13 @@ POST /api/v1/auth/session
 ### Client Management
 
 #### Get Client
+
 ```
 GET /api/v1/clients/{id}
 ```
 
 #### Response
+
 ```json
 {
   "id": "client_456",
@@ -124,11 +131,13 @@ GET /api/v1/clients/{id}
 ```
 
 #### Create Client
+
 ```
 POST /api/v1/clients
 ```
 
 #### Request Body
+
 ```json
 {
   "name": "Jane Smith",
@@ -139,6 +148,7 @@ POST /api/v1/clients
 ```
 
 #### Response
+
 ```json
 {
   "id": "client_457",
@@ -152,11 +162,13 @@ POST /api/v1/clients
 ```
 
 #### Update Client
+
 ```
 PUT /api/v1/clients/{id}
 ```
 
 #### Request Body
+
 ```json
 {
   "name": "John Doe Updated",
@@ -168,11 +180,13 @@ PUT /api/v1/clients/{id}
 ### Payments
 
 #### Create Invoice
+
 ```
 POST /api/v1/invoices
 ```
 
 #### Request Body
+
 ```json
 {
   "clientId": "client_456",
@@ -184,6 +198,7 @@ POST /api/v1/invoices
 ```
 
 #### Response
+
 ```json
 {
   "id": "inv_123",
@@ -193,11 +208,13 @@ POST /api/v1/invoices
 ```
 
 #### Process Payment
+
 ```
 POST /api/v1/payments
 ```
 
 #### Request Body
+
 ```json
 {
   "invoiceId": "inv_123",
@@ -208,6 +225,7 @@ POST /api/v1/payments
 ```
 
 #### Response
+
 ```json
 {
   "id": "pay_456",
@@ -221,11 +239,13 @@ POST /api/v1/payments
 ### Supported Events
 
 #### Payment Events
+
 - `payment.succeeded` - Payment completed successfully
 - `payment.failed` - Payment failed
 - `payment.requires_action` - Payment requires additional action
 
 #### Invoice Events
+
 - `invoice.sent` - Invoice sent to client
 - `invoice.paid` - Invoice marked as paid
 - `invoice.overdue` - Invoice is overdue
@@ -233,11 +253,13 @@ POST /api/v1/payments
 #### Webhook Configuration
 
 #### Endpoint
+
 ```
 POST /api/v1/webhooks
 ```
 
 #### Request Headers
+
 ```
 json
 {
@@ -247,6 +269,7 @@ json
 ```
 
 #### Request Body
+
 ```json
 {
   "url": "https://your-domain.com/webhooks",
@@ -265,12 +288,12 @@ json
 
 ```javascript
 function verifyWebhookSignature(payload, signature, secret) {
-  const crypto = require('crypto');
+  const crypto = require("crypto");
   const expectedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(JSON.stringify(payload), 'utf8')
-    .digest('hex');
-  
+    .createHmac("sha256", secret)
+    .update(JSON.stringify(payload), "utf8")
+    .digest("hex");
+
   return signature === expectedSignature;
 }
 ```
@@ -278,18 +301,20 @@ function verifyWebhookSignature(payload, signature, secret) {
 ## SDK Integration
 
 ### JavaScript/TypeScript
+
 ```javascript
-import { BlawbyClient } from '@blawby/sdk';
+import { BlawbyClient } from "@blawby/sdk";
 
 const client = new BlawbyClient({
   apiKey: process.env.BLAWBY_API_KEY,
   practiceId: process.env.PRACTICE_ID,
-  baseUrl: 'https://api.blawby.com'
+  baseUrl: "https://api.blawby.com",
 });
 ```
 
 ### Python
-```python
+
+```text
 import requests
 import hmac
 import hashlib
@@ -301,14 +326,14 @@ class BlawbyClient:
         self.practice_id = practice_id
         self.base_url = base_url
         self.session = requests.Session()
-    
+
     def authenticate(self):
         response = self.session.post(f"{self.base_url}/api/v1/authenticate", json={
             "apiKey": self.api_key,
             "practiceId": self.practice_id
         })
         return response.json()
-    
+
     def create_invoice(self, client_id, amount, description):
         return self.session.post(f"{self.base_url}/api/v1/invoices", json={
             "clientId": client_id,
@@ -327,6 +352,7 @@ class BlawbyClient:
 ## Error Handling
 
 ### Standard Response Format
+
 ```json
 {
   "error": {
@@ -342,6 +368,7 @@ class BlawbyClient:
 ```
 
 ### HTTP Status Codes
+
 - `200` - Success
 - `400` - Bad Request
 - `401` - Unauthorized
@@ -351,6 +378,7 @@ class BlawbyClient:
 ## Best Practices
 
 ### Security
+
 - Never expose API keys in client-side code
 - Use HTTPS for all API calls
 - Validate all input data
@@ -358,6 +386,7 @@ class BlawbyClient:
 - Use environment variables for sensitive configuration
 
 ### Performance
+
 - Implement request queuing for rate limit handling
 - Use connection pooling for high-volume applications
 - Cache frequently accessed data
@@ -366,6 +395,7 @@ class BlawbyClient:
 ## Testing
 
 ### Test Environment
+
 - Use `https://api-staging.blawby.com` for development
 - Test webhook delivery using tools like ngrok or webhook.site
 - Validate all error scenarios and edge cases

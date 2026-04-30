@@ -15,14 +15,14 @@ export type ContentItem = Frontmatter & {
 let _cache: ContentItem[] | null = null;
 
 /**
- * Scans src/data/lessons and src/data/articles recursively to build
+ * Scans src/data/lessons, src/data/articles, and src/data/docs recursively to build
  * the content registry at build-time. Memoized for performance.
  */
 export async function getAllContent(): Promise<ContentItem[]> {
   const isDev = process.env.NODE_ENV === "development";
   if (_cache && !isDev) return _cache;
 
-  const baseDirs = ["lessons", "articles"];
+  const baseDirs = ["lessons", "articles", "docs"];
   const items: ContentItem[] = [];
 
   for (const baseDir of baseDirs) {
@@ -40,16 +40,13 @@ export async function getAllContent(): Promise<ContentItem[]> {
 
       const slug = path.basename(file, ".mdx");
 
-      // Category derivation:
-      // 1. Explicitly set in frontmatter (highest priority)
-      // 2. Folder name (for articles/category/slug.mdx)
-      // 3. Fallback to baseDir name (e.g., 'lessons')
-      let category = fm.category;
-      if (!category) {
-        const relative = path.relative(fullBaseDir, file);
-        const parts = relative.split(path.sep);
-        category = parts.length > 1 ? parts[0] : baseDir;
-      }
+      // Strict required fields
+      if (!fm.title)
+        throw new Error(`Missing title in frontmatter for ${file}`);
+      if (!fm.desc && !fm.description)
+        throw new Error(`Missing description in frontmatter for ${file}`);
+      if (!fm.category)
+        throw new Error(`Missing category in frontmatter for ${file}`);
 
       const relativePath = path.relative(fullBaseDir, file);
       const folder = path.dirname(relativePath);
@@ -59,8 +56,9 @@ export async function getAllContent(): Promise<ContentItem[]> {
         slug,
         origin: baseDir,
         folder: folder === "." ? baseDir : folder,
-        category: category!,
-        href: `/${category}/${slug}`,
+        category: fm.category,
+        href: `/${fm.category}/${slug}`,
+        author: fm.author || "Team Blawby",
       });
     }
   }
@@ -80,14 +78,27 @@ export async function getAllContent(): Promise<ContentItem[]> {
   return _cache;
 }
 
-/** Helper to find a specific piece of content by slug */
-export async function getContent(slug: string): Promise<ContentItem | null> {
+/** Helper to find a specific piece of content by slug and optional category */
+export async function getContent(
+  slug: string,
+  category?: string,
+): Promise<ContentItem | null> {
   const all = await getAllContent();
+
+  if (category) {
+    return (
+      all.find((item) => item.slug === slug && item.category === category) ||
+      null
+    );
+  }
+
   return all.find((item) => item.slug === slug) || null;
 }
 
 /** Helper to find all content within a specific category */
-export async function getContentByCategory(category: string): Promise<ContentItem[]> {
+export async function getContentByCategory(
+  category: string,
+): Promise<ContentItem[]> {
   const all = await getAllContent();
   return all.filter((item) => item.category === category);
 }

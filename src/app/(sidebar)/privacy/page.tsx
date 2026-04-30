@@ -5,22 +5,17 @@ import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-import { parseFrontmatter, mergeMetadata } from "@/utils/frontmatter";
+import { mergeMetadata, parseFrontmatter } from "@/utils/frontmatter";
 import path from "path";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const fm = await parseFrontmatter(
-    path.join(process.cwd(), "src/data/legal/privacy.mdx"),
-  );
+  const filePath = path.join(process.cwd(), "src/data/legal/privacy.mdx");
+  const raw = require("fs").readFileSync(filePath, "utf-8");
+  const fm = await parseFrontmatter(raw);
 
   return mergeMetadata({
     fm,
     path: "/privacy",
-    fallback: {
-      title: "Privacy Policy",
-      description:
-        "Read the Blawby Privacy Policy to learn how we handle your data.",
-    },
   });
 }
 

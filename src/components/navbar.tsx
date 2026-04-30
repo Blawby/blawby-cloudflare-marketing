@@ -10,17 +10,38 @@ import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
 } from "@headlessui/react";
 import { clsx } from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
 import { useState } from "react";
+import { Button } from "./button";
 
 // Top-level nav sections — add new categories here.
 // The sidebar auto-populates from articles.ts based on the active category.
 export const NAV_SECTIONS = [
-  { id: "lessons", label: "Get started", href: "/lessons/get-started" },
+  { id: "guides", label: "Get started", href: "/guides/get-started" },
+  { id: "payments", label: "Payments", href: "/payments/accepting-payments" },
+  {
+    id: "ai-intake",
+    label: "AI Intake",
+    href: "/ai-intake/ai-powered-legal-intake-chatbot",
+  },
+  {
+    id: "quick-start",
+    label: "Quick Start",
+    href: "/quick-start/create-practice-account",
+  },
+  {
+    id: "core-features",
+    label: "Core Features",
+    href: "/core-features/set-up-client-intake",
+  },
   {
     id: "compliance",
     label: "Compliance",
@@ -36,39 +57,53 @@ export const NAV_SECTIONS = [
     label: "Business Strategy",
     href: "/business-strategy/future-proof-revenue",
   },
+  { id: "reference", label: "Reference", href: "/reference/api-reference" },
 ] as const;
+
+const PRIMARY_NAV_SECTION_IDS = new Set([
+  "guides",
+  "payments",
+  "ai-intake",
+  "compliance",
+  "ai-chat",
+]);
+
+// Dev-only duplicate ID check for NAV_SECTIONS
+if (process.env.NODE_ENV !== "production") {
+  const ids = new Set();
+  for (const section of NAV_SECTIONS) {
+    if (ids.has(section.id)) {
+      console.warn(`[Navbar] Duplicate NAV_SECTION ID detected: ${section.id}`);
+    }
+    ids.add(section.id);
+  }
+}
+
+const SIDEBAR_SEGMENTS: string[] = NAV_SECTIONS.map((s) => s.id);
 
 export function useActiveSection() {
   const pathname = usePathname();
   const segment = pathname.split("/")[1] ?? "";
-  if (segment === "lessons") return "lessons";
   return segment;
 }
 
 // ─── Single-row navbar (Stripe-style) ─────────────────────────────────────────
 
 export function Navbar() {
-  const pathname = usePathname();
-  const isSidebarPage =
-    pathname.startsWith("/lessons") ||
-    pathname.startsWith("/compliance") ||
-    pathname.startsWith("/ai-chat") ||
-    pathname.startsWith("/business-strategy");
   return (
     <div
       className={clsx(
         "sticky top-0 z-20",
-        "border-b border-gray-950/10 bg-white/95 backdrop-blur-sm dark:border-white/10 dark:bg-gray-950/95",
+        // No max-width, just full width and padding
+        "bg-white/95 backdrop-blur-sm dark:bg-gray-950/95",
+        "border-b border-gray-950/10 dark:border-white/10",
         "flex h-14 items-center gap-x-0 px-4 sm:px-6",
-        "mx-auto w-full max-w-screen-xl",
+        "w-full",
       )}
     >
-      {/* Logo: only show on non-sidebar pages */}
-      {!isSidebarPage && (
-        <Link href="/" className="flex shrink-0 items-center pr-6">
-          <Logo className="h-7 dark:text-white" />
-        </Link>
-      )}
+      <Link href="/" className="flex shrink-0 items-center pr-6">
+        <Logo className="h-7 dark:text-white" />
+      </Link>
 
       {/* Category tabs — hidden on mobile */}
       <CategoryTabs className="hidden h-full lg:flex" />
@@ -83,20 +118,29 @@ export function Navbar() {
 
 function CategoryTabs({ className }: { className?: string }) {
   const activeSection = useActiveSection();
+  const primarySections = NAV_SECTIONS.filter((section) =>
+    PRIMARY_NAV_SECTION_IDS.has(section.id),
+  );
+  const secondarySections = NAV_SECTIONS.filter(
+    (section) => !PRIMARY_NAV_SECTION_IDS.has(section.id),
+  );
+  const isSecondaryActive = secondarySections.some(
+    (section) => activeSection === section.id,
+  );
 
   return (
     <nav
       aria-label="Documentation sections"
-      className={clsx("flex items-stretch gap-x-1", className)}
+      className={clsx("flex items-stretch gap-x-0.5", className)}
     >
-      {NAV_SECTIONS.map((section) => {
+      {primarySections.map((section) => {
         const isActive = activeSection === section.id;
         return (
           <Link
             key={section.id}
             href={section.href}
             className={clsx(
-              "flex items-center border-b-2 px-3 text-sm font-medium transition-colors",
+              "flex items-center border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
               isActive
                 ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
                 : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
@@ -107,6 +151,41 @@ function CategoryTabs({ className }: { className?: string }) {
           </Link>
         );
       })}
+      <Menu as="div" className="relative flex">
+        <MenuButton
+          className={clsx(
+            "flex items-center border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
+            isSecondaryActive
+              ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
+              : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
+          )}
+        >
+          More
+        </MenuButton>
+        <MenuItems
+          anchor="bottom start"
+          className="z-30 mt-2 min-w-52 rounded-lg bg-white p-1 shadow-lg ring-1 ring-gray-950/10 focus:outline-none dark:bg-gray-900 dark:ring-white/10"
+        >
+          {secondarySections.map((section) => {
+            const isActive = activeSection === section.id;
+            return (
+              <MenuItem key={section.id}>
+                <Link
+                  href={section.href}
+                  className={clsx(
+                    "block rounded-md px-3 py-2 text-sm font-medium",
+                    isActive
+                      ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
+                      : "text-gray-700 data-focus:bg-gray-950/5 data-focus:text-gray-950 dark:text-gray-300 dark:data-focus:bg-white/10 dark:data-focus:text-white",
+                  )}
+                >
+                  {section.label}
+                </Link>
+              </MenuItem>
+            );
+          })}
+        </MenuItems>
+      </Menu>
     </nav>
   );
 }
@@ -185,21 +264,21 @@ function SiteNavigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="flex items-center gap-x-3">
+    <nav className="flex items-center gap-x-4 xl:gap-x-6">
       <CommandPalette />
-      <div className="hidden items-center gap-x-4 text-sm font-medium text-gray-700 lg:flex dark:text-gray-300">
+      <div className="hidden items-center gap-x-3 text-sm font-medium lg:flex xl:gap-x-4">
         <Link
           href="https://app.blawby.com/login"
-          className="hover:text-gray-950 dark:hover:text-white"
+          className="text-gray-600 hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
         >
           Login
         </Link>
-        <Link
+        <Button
           href="https://app.blawby.com/register"
-          className="rounded-md bg-gray-950 px-3 py-1.5 text-sm font-semibold text-white hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-100"
+          className="w-auto px-3 py-1.5 text-sm font-semibold"
         >
           Register
-        </Link>
+        </Button>
       </div>
       <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
         <MenuIcon className="fill-gray-950 dark:fill-white" />

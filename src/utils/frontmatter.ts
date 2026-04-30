@@ -27,13 +27,11 @@ export type Frontmatter = {
   metaTitle?: string;
   /** Primary meta description — overrides summary and description */
   desc?: string;
-  /** Canonical URL override */
-  canonicalUrl?: string;
   /** OpenGraph/Twitter image URL */
   image?: string;
   /** Alt text for the OG image */
   alt?: string;
-  
+
   // Structured Data & Logic
   /** Override the automatic schema.org type (Article, HowTo, etc.) */
   schemaType?: string;
@@ -57,6 +55,10 @@ export type Frontmatter = {
   difficulty?: string;
   /** Array of prerequisite slugs or titles */
   prerequisites?: string[];
+  /** Estimated completion time shown in docs UI */
+  timeToComplete?: string;
+  /** Follow-up content slugs for docs flows */
+  nextSteps?: string[];
 };
 
 // ─── Parser ───────────────────────────────────────────────────────────────────
@@ -95,42 +97,48 @@ export function normalizeDate(raw?: string): string | undefined {
 export function normalizeKeywords(raw?: string | string[]): string[] {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw.map((v) => String(v).trim());
-  return String(raw).split(",").map((v) => v.trim()).filter(Boolean);
+  return String(raw)
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
 }
 
 export function mergeMetadata({
   fm,
   path: currentPath,
-  fallback,
 }: {
   fm: Frontmatter;
   path: string;
-  fallback?: Partial<Frontmatter>;
 }) {
-  const title = fm.metaTitle || fm.title || fallback?.title || "Blawby";
-  const description = fm.desc || fm.description || fallback?.description;
-  const canonical = fm.canonicalUrl || currentPath;
-  
+  const title = fm.metaTitle || fm.title;
+  const description = fm.desc || fm.description;
+
+  if (!title) {
+    throw new Error(`Missing title in frontmatter for: ${currentPath}`);
+  }
+
+  if (!description) {
+    throw new Error(`Missing description for: ${currentPath}`);
+  }
+
+  const canonical = `https://blawby.com${currentPath}`;
+
   const keywords = [
     ...normalizeKeywords(fm.tags),
     ...normalizeKeywords(fm.keywords),
-    ...normalizeKeywords(fallback?.keywords),
   ];
+  const uniqueKeywords = Array.from(new Set(keywords));
 
   return {
     title,
     description,
-    keywords: Array.from(new Set(keywords)).join(", "),
+    ...(uniqueKeywords.length ? { keywords: uniqueKeywords.join(", ") } : {}),
     authors: fm.author ? [{ name: fm.author }] : undefined,
     openGraph: {
       title,
       description,
       url: canonical,
-      images: fm.image
-        ? [{ url: fm.image, alt: fm.alt || title }]
-        : fallback?.image
-          ? [{ url: fallback.image }]
-          : undefined,
+      images: fm.image ? [{ url: fm.image, alt: fm.alt || title }] : undefined,
       type: "article",
     },
     alternates: {
@@ -144,7 +152,8 @@ export function frontmatterToR2Metadata(fm: Frontmatter) {
   const meta: Record<string, string> = {};
 
   if (fm.title) meta["title"] = fm.title;
-  if (fm.desc || fm.description) meta["description"] = fm.desc || fm.description || "";
+  if (fm.desc || fm.description)
+    meta["description"] = fm.desc || fm.description || "";
   if (fm.author) meta["author"] = fm.author;
   if (fm.category) meta["category"] = fm.category;
   if (fm.createdAt) meta["date-published"] = fm.createdAt;
@@ -158,10 +167,11 @@ export function frontmatterToR2Metadata(fm: Frontmatter) {
   const kw = normalizeKeywords(fm.keywords);
   const tags = normalizeKeywords(fm.tags);
   const allKeywords = Array.from(new Set([...kw, ...tags]));
-  if (allKeywords.length) meta["keywords"] = allKeywords.join(", ").slice(0, 512);
+  if (allKeywords.length)
+    meta["keywords"] = allKeywords.join(", ").slice(0, 512);
 
   if (fm.faq && fm.faq.length) {
-    let faqToStore = [];
+    let faqToStore: any[] = [];
     for (const item of fm.faq) {
       const nextSlice = [...faqToStore, item];
       if (JSON.stringify(nextSlice).length <= 1024) {

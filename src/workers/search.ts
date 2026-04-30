@@ -319,7 +319,19 @@ function filenameToUrl(filename: string): string {
   if (key.startsWith("src/data/articles/")) {
     key = key.replace(/^src\/data\/articles\//, "");
   } else if (key.startsWith("src/data/lessons/")) {
-    key = key.replace(/^src\/data\//, "");
+    const slug = key.split("/").pop() || "";
+    // Manual mapping for lessons to their new SEO categories
+    const lessonMapping: Record<string, string> = {
+      "get-started": "guides/get-started",
+      "accepting-payments": "payments/accepting-payments",
+      "payments": "payments/accepting-payments", // legacy compat
+      "invoicing": "payments/invoicing",
+      "clients": "payments/clients",
+      "payouts": "payments/payouts",
+      "ai-powered-legal-intake-chatbot": "ai-intake/ai-powered-legal-intake-chatbot",
+      "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments": "ai-intake/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
+    };
+    key = lessonMapping[slug] || key.replace(/^src\/data\/lessons\//, "");
   } else if (key.startsWith("src/data/pages/")) {
     key = key.replace(/^src\/data\/pages\//, "");
   } else if (key.startsWith("src/data/legal/")) {

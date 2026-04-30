@@ -79,7 +79,7 @@ export function Pricing({
               href="https://app.blawby.com/register"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-10 w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+              className="mt-10 w-full"
             >
               Get access
             </Button>

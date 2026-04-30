@@ -92,7 +92,7 @@ metaTitle: "SEO Optimized Title | Blawby"
 desc: "Meta description for SEO (replaces 'description' if present)"
 author: "Team Blawby"
 authorImage: ""
-category: "compliance"     # Must match folder name. Valid categories: payment-processing, ai-chat, practice-management, legal-tech, quick-start, core-features, advanced-features, reference
+category: "compliance"     # Must match folder name. Valid categories: guides, payments, ai-intake, compliance, ai-chat, business-strategy, technical-integration
 contentType: "article"    # article | guide | reference | lesson
 order: 10                 # Controls sidebar sorting (lower = higher)
 difficulty: "Beginner"    # For lessons: Beginner | Intermediate | Advanced

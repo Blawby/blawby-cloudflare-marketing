@@ -109,29 +109,36 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <link rel="manifest" href="/site.webmanifest" />
-        {/* Google Analytics gtag.js */}
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-LXBVNX707M"
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-LXBVNX707M');
-            `,
-          }}
-        />
+        {/* Manifest is handled by metadata.manifest, no need for manual <link> */}
       </head>
-      <body>
+      <body className="dark:bg-gray-950">
         <div className="isolate">{children}</div>
         <Footer />
         <CookieConsentComponent />
+        {/* Google Analytics gtag.js */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          />
+        )}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <Script
+            id="google-analytics"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                // Define initAnalytics but don't call config yet
+                window.initAnalytics = function() {
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                };
+              `,
+            }}
+          />
+        )}
       </body>
     </html>
   );

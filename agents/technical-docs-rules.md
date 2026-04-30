@@ -173,22 +173,36 @@ function useBlawbyAPI() {
     fetch('/api/blawby/client')
       .then(res => res.json())
       .then(data => {
-        setClient(data.client);
+        // Initialize client with data from server if needed
+        // or just set readiness state
+        setClient(new BlawbyClient(data.config));
       });
   }, []);
 
+  return client;
+}
+```
+
+```typescript
 // Server Component / API route (server-side only)
 // pages/api/blawby/client.js or app/api/blawby/client/route.js
 import { BlawbyClient } from '@blawby/sdk';
 
 export async function GET() {
+  // Secrets are safe here on the server
   const client = new BlawbyClient({
-    apiKey: process.env.BLAWBY_API_KEY, // Safe on server
+    apiKey: process.env.BLAWBY_API_KEY,
     practiceId: process.env.PRACTICE_ID,
     baseUrl: 'https://api.blawby.com'
   });
   
-  return Response.json({ client });
+  // Return only non-sensitive configuration to the client
+  return Response.json({ 
+    status: 'ready',
+    config: {
+      baseUrl: 'https://api.blawby.com'
+    }
+  });
 }
 ```
 

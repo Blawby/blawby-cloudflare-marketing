@@ -5,22 +5,17 @@ import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-import { parseFrontmatter, mergeMetadata } from "@/utils/frontmatter";
+import { mergeMetadata, parseFrontmatter } from "@/utils/frontmatter";
 import path from "path";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const fm = await parseFrontmatter(
-    path.join(process.cwd(), "src/data/legal/terms.mdx"),
-  );
+  const filePath = path.join(process.cwd(), "src/data/legal/terms.mdx");
+  const raw = require("fs").readFileSync(filePath, "utf-8");
+  const fm = await parseFrontmatter(raw);
 
   return mergeMetadata({
     fm,
     path: "/terms",
-    fallback: {
-      title: "Terms of Service",
-      description:
-        "Read the Blawby Terms of Service to understand your rights and responsibilities.",
-    },
   });
 }
 

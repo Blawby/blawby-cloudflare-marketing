@@ -10,8 +10,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
 import { createContext, useContext, useState } from "react";
-import { Logo } from "./logo";
-import { Navbar } from "./navbar";
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 
@@ -44,12 +42,12 @@ function useSidebarSections(
   if (pathname === "/") return [];
 
   const segment = pathname.split("/")[1] ?? "";
-
-  if (segment === "lessons") {
+  const lessonCategories = ["guides", "payments", "ai-intake"];
+  if (lessonCategories.includes(segment)) {
     return modules.map((mod) => ({
       sectionTitle: mod.title,
       items: mod.lessons.map((lesson) => ({
-        href: `/${lesson.category || "lessons"}/${lesson.slug}`,
+        href: `/${lesson.category}/${lesson.slug}`,
         label: lesson.title || "",
       })),
     }));
@@ -182,11 +180,6 @@ export function SidebarLayout({
               "group-data-[sidebar-collapsed]:hidden max-xl:hidden",
             )}
           >
-            <div className="flex h-14 items-center px-5">
-              <Link href="/" className="flex items-center">
-                <Logo className="h-7 dark:text-white" />
-              </Link>
-            </div>
             <nav aria-label="Sidebar navigation" className="px-5 py-6">
               <SidebarNav sections={sections} />
             </nav>
@@ -196,7 +189,7 @@ export function SidebarLayout({
         {/* Page content — shift right when desktop sidebar is visible */}
         <div
           className={clsx(
-            hasSidebar && "xl:group-data-[sidebar-collapsed]:ml-0 xl:ml-64",
+            hasSidebar && "xl:ml-64 xl:group-data-[sidebar-collapsed]:ml-0",
           )}
         >
           {children}
@@ -236,7 +229,6 @@ export function SidebarLayoutContent({
 
   return (
     <>
-      <Navbar />
 
       {/* Sub-header: breadcrumbs + sidebar toggles. Below sticky nav, inside content flow. */}
       {!isHome && (
@@ -245,7 +237,9 @@ export function SidebarLayoutContent({
           <IconButton
             onClick={() => setIsMobileDialogOpen(!isMobileDialogOpen)}
             className="xl:hidden"
-            aria-label={isMobileDialogOpen ? "Close navigation" : "Open navigation"}
+            aria-label={
+              isMobileDialogOpen ? "Close navigation" : "Open navigation"
+            }
             aria-expanded={isMobileDialogOpen}
           >
             <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />

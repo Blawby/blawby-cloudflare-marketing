@@ -1,9 +1,8 @@
 ---
 title: "Install the Chat Widget"
-metaTitle: "Install Blawby Chat Widget | WordPress, React, HTML Guide"
-metaDescription: "Complete guide to install Blawby AI chat widget on any website. WordPress, React, HTML, and all major platforms supported."
-desc: "Add the Blawby AI chat widget to your website in minutes."
-canonicalUrl: "https://blawby.com/docs/install-chat-widget"
+metaTitle: "Install Chat Widget | Web & CMS Guide"
+desc: "Complete guide to install the Blawby AI chat widget on any website. Support for WordPress, React, HTML, and all major platforms. No coding skills required."
+image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Team Blawby"
 authorImage: "/images/logo.png"
 category: "quick-start"
@@ -47,18 +46,21 @@ Add the Blawby AI chat widget to your website in minutes. This guide covers all 
 ## Option 1: WordPress (Recommended)
 
 ### Plugin Installation
+
 1. Log into your WordPress admin dashboard
 2. Go to **Plugins → Add New**
 3. Search for "Blawby Chat Widget"
 4. Click **Install Now**, then **Activate**
 
 ### Configuration
+
 1. Go to **Settings → Blawby Chat**
 2. Enter your Practice ID (found in your Blawby dashboard)
 3. Choose your widget position and appearance
 4. Click **Save Changes**
 
 ### Customization Options
+
 - **Position**: Bottom-right, bottom-left, top-right, top-left
 - **Theme**: Light, dark, or auto (matches user preference)
 - **Colors**: Match your brand colors
@@ -67,26 +69,35 @@ Add the Blawby AI chat widget to your website in minutes. This guide covers all 
 ## Option 2: HTML/CSS Websites
 
 ### Basic Installation
+
 Add this code before your closing `</body>` tag:
 
 ```html
 <script>
-  (function(w, d, s, o, f, js, fjs) {
-    w['BlawbyWidget'] = o;
-    w[o] = w[o] || function() {
-      (w[o].q = w[o].q || []).push(arguments)
-    };
+  (function (w, d, s, o, f, js, fjs) {
+    w["BlawbyWidget"] = o;
+    w[o] =
+      w[o] ||
+      function () {
+        (w[o].q = w[o].q || []).push(arguments);
+      };
     js = d.createElement(s);
     fjs = d.getElementsByTagName(s)[0];
     js.async = 1;
     js.src = f;
     fjs.parentNode.insertBefore(js, fjs);
-  })(window, document, 'script', 'blawby', 'https://widget.blawby.com/embed.js');
-  
-  blawby('init', {
-    practiceId: 'YOUR_PRACTICE_ID',
-    position: 'bottom-right',
-    theme: 'light'
+  })(
+    window,
+    document,
+    "script",
+    "blawby",
+    "https://widget.blawby.com/embed.js",
+  );
+
+  blawby("init", {
+    practiceId: "YOUR_PRACTICE_ID",
+    position: "bottom-right",
+    theme: "light",
   });
 </script>
 ```
@@ -94,21 +105,22 @@ Add this code before your closing `</body>` tag:
 Replace `YOUR_PRACTICE_ID` with your actual practice ID from the Blawby dashboard.
 
 ### Advanced Customization
+
 ```html
 <script>
-  blawby('init', {
-    practiceId: 'YOUR_PRACTICE_ID',
-    position: 'bottom-right',
-    theme: 'light',
+  blawby("init", {
+    practiceId: "YOUR_PRACTICE_ID",
+    position: "bottom-right",
+    theme: "light",
     customColors: {
-      primary: '#1e40af',    // Your brand blue
-      secondary: '#3b82f6',  // Lighter blue
-      accent: '#f59e0b'      // Accent color
+      primary: "#1e40af", // Your brand blue
+      secondary: "#3b82f6", // Lighter blue
+      accent: "#f59e0b", // Accent color
     },
-    welcomeMessage: 'Hello! How can I help you with your legal needs today?',
+    welcomeMessage: "Hello! How can I help you with your legal needs today?",
     showBranding: false,
     autoOpen: false,
-    mobileOptimized: true
+    mobileOptimized: true,
   });
 </script>
 ```
@@ -116,19 +128,21 @@ Replace `YOUR_PRACTICE_ID` with your actual practice ID from the Blawby dashboar
 ## Option 3: React Applications
 
 ### Installation
+
 ```bash
 npm install @blawby/widget
 ```
 
 ### Basic Usage
+
 ```jsx
-import { BlawbyWidget } from '@blawby/widget';
+import { BlawbyWidget } from "@blawby/widget";
 
 function App() {
   return (
     <div>
       {/* Your existing app content */}
-      <BlawbyWidget 
+      <BlawbyWidget
         practiceId="YOUR_PRACTICE_ID"
         position="bottom-right"
         theme="light"
@@ -139,25 +153,26 @@ function App() {
 ```
 
 ### Advanced Configuration
+
 ```jsx
-import { BlawbyWidget } from '@blawby/widget';
+import { BlawbyWidget } from "@blawby/widget";
 
 function App() {
   const widgetConfig = {
-    practiceId: 'YOUR_PRACTICE_ID',
-    position: 'bottom-right',
-    theme: 'light',
+    practiceId: "YOUR_PRACTICE_ID",
+    position: "bottom-right",
+    theme: "light",
     customColors: {
-      primary: '#1e40af',
-      secondary: '#3b82f6'
+      primary: "#1e40af",
+      secondary: "#3b82f6",
     },
-    welcomeMessage: 'Welcome to our law firm! How can we help you today?',
+    welcomeMessage: "Welcome to our law firm! How can we help you today?",
     onConversationStart: (conversationId) => {
-      console.log('New conversation started:', conversationId);
+      console.log("New conversation started:", conversationId);
     },
     onMessageReceived: (message) => {
-      console.log('New message:', message);
-    }
+      console.log("New message:", message);
+    },
   };
 
   return (
@@ -171,17 +186,20 @@ function App() {
 ## Option 4: Other Website Builders
 
 ### Squarespace
+
 1. Go to **Settings → Advanced → Code Injection**
 2. Add the widget code to the **Footer** section
 3. Save and publish your site
 
 ### Wix
+
 1. Go to **Settings → Tracking & Analytics**
 2. Click **New Tool → Custom**
 3. Paste the widget code in the **Body** section
 4. Save and publish your site
 
 ### Shopify
+
 1. Go to **Online Store → Themes**
 2. Click **Actions → Edit Code**
 3. Open `theme.liquid`
@@ -189,6 +207,7 @@ function App() {
 5. Save the file
 
 ### Webflow
+
 1. Go to **Project Settings → Custom Code**
 2. Add the widget code to the **Footer Code** section
 3. Save and publish your site
@@ -196,55 +215,61 @@ function App() {
 ## Widget Configuration Options
 
 ### Position Settings
+
 - `bottom-right` (default) - Most common, least intrusive
 - `bottom-left` - Alternative for left-aligned designs
 - `top-right` - For header placement
 - `top-left` - For top-left corner placement
 
 ### Theme Options
+
 - `light` - Clean, professional appearance
 - `dark` - Modern, sleek design
 - `auto` - Automatically matches user's system preference
 
 ### Custom Styling
+
 ```javascript
-blawby('init', {
-  practiceId: 'YOUR_PRACTICE_ID',
+blawby("init", {
+  practiceId: "YOUR_PRACTICE_ID",
   customColors: {
-    primary: '#1e40af',      // Main brand color
-    secondary: '#3b82f6',    // Secondary color
-    accent: '#f59e0b',       // Accent/highlight color
-    background: '#ffffff',   // Chat background
-    text: '#1f2937'          // Text color
+    primary: "#1e40af", // Main brand color
+    secondary: "#3b82f6", // Secondary color
+    accent: "#f59e0b", // Accent/highlight color
+    background: "#ffffff", // Chat background
+    text: "#1f2937", // Text color
   },
-  customFont: 'Inter',       // Custom font family
-  borderRadius: '8px',       // Border radius
-  shadow: '0 4px 6px rgba(0, 0, 0, 0.1)' // Box shadow
+  customFont: "Inter", // Custom font family
+  borderRadius: "8px", // Border radius
+  shadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Box shadow
 });
 ```
 
 ### Behavior Settings
+
 ```javascript
-blawby('init', {
-  practiceId: 'YOUR_PRACTICE_ID',
-  autoOpen: false,           // Don't automatically open
-  delayOpen: 5000,          // Open after 5 seconds
-  showBranding: true,        // Show "Powered by Blawby"
-  mobileOptimized: true,     // Optimize for mobile devices
-  soundEnabled: false,       // Disable notification sounds
-  persistentChat: true       // Remember conversation history
+blawby("init", {
+  practiceId: "YOUR_PRACTICE_ID",
+  autoOpen: false, // Don't automatically open
+  delayOpen: 5000, // Open after 5 seconds
+  showBranding: true, // Show "Powered by Blawby"
+  mobileOptimized: true, // Optimize for mobile devices
+  soundEnabled: false, // Disable notification sounds
+  persistentChat: true, // Remember conversation history
 });
 ```
 
 ## Testing Your Installation
 
 ### Basic Test
+
 1. Open your website in a browser
 2. Look for the chat widget in your chosen position
 3. Click the widget to open it
 4. Send a test message
 
 ### Advanced Testing
+
 1. **Cross-browser testing**: Chrome, Firefox, Safari, Edge
 2. **Mobile testing**: iPhone, Android, tablets
 3. **Responsive design**: Different screen sizes
@@ -253,21 +278,25 @@ blawby('init', {
 ### Troubleshooting Common Issues
 
 **Widget Not Appearing**
+
 - Check your Practice ID is correct
 - Verify the script loads without errors (check browser console)
 - Ensure your website allows third-party scripts
 
 **Widget Positioned Incorrectly**
+
 - Try a different position setting
 - Check for CSS conflicts on your website
 - Test on different screen sizes
 
 **Messages Not Sending**
+
 - Verify your practice is active and in good standing
 - Check your internet connection
 - Ensure the widget is properly authenticated
 
 **Styling Issues**
+
 - Disable custom CSS temporarily
 - Try default theme settings
 - Check for conflicting stylesheets
@@ -277,34 +306,36 @@ blawby('init', {
 The widget automatically optimizes for mobile devices, but you can customize the experience:
 
 ```javascript
-blawby('init', {
-  practiceId: 'YOUR_PRACTICE_ID',
+blawby("init", {
+  practiceId: "YOUR_PRACTICE_ID",
   mobileOptimized: true,
   mobileSettings: {
-    position: 'bottom-center',  // Better for mobile
-    fullScreenOnOpen: true,     // Open in full screen on mobile
-    swipeToClose: true,         // Allow swipe gestures
-    virtualKeyboardOptimized: true
-  }
+    position: "bottom-center", // Better for mobile
+    fullScreenOnOpen: true, // Open in full screen on mobile
+    swipeToClose: true, // Allow swipe gestures
+    virtualKeyboardOptimized: true,
+  },
 });
 ```
 
 ## Privacy and Compliance
 
 ### GDPR Compliance
+
 ```javascript
-blawby('init', {
-  practiceId: 'YOUR_PRACTICE_ID',
+blawby("init", {
+  practiceId: "YOUR_PRACTICE_ID",
   privacySettings: {
-    requireConsent: true,       // Require user consent
-    cookiePolicy: 'strict',     // Strict cookie policy
-    dataRetention: '30-days',   // Retain data for 30 days
-    anonymizeIp: true          // Anonymize IP addresses
-  }
+    requireConsent: true, // Require user consent
+    cookiePolicy: "strict", // Strict cookie policy
+    dataRetention: "30-days", // Retain data for 30 days
+    anonymizeIp: true, // Anonymize IP addresses
+  },
 });
 ```
 
 ### Accessibility Features
+
 - Screen reader support
 - Keyboard navigation
 - High contrast mode support
@@ -313,28 +344,31 @@ blawby('init', {
 ## Analytics and Tracking
 
 ### Built-in Analytics
+
 The widget automatically tracks:
+
 - Conversation start rate
 - Message volume
 - Lead conversion rate
 - User engagement metrics
 
 ### Custom Event Tracking
+
 ```javascript
-blawby('init', {
-  practiceId: 'YOUR_PRACTICE_ID',
+blawby("init", {
+  practiceId: "YOUR_PRACTICE_ID",
   tracking: {
-    googleAnalytics: true,      // Send events to GA
-    customEvents: true,         // Enable custom events
-    trackPageViews: true       // Track page views
+    googleAnalytics: true, // Send events to GA
+    customEvents: true, // Enable custom events
+    trackPageViews: true, // Track page views
   },
   onConversationStart: (data) => {
     // Send to your analytics
-    gtag('event', 'conversation_start', {
+    gtag("event", "conversation_start", {
       practice_id: data.practiceId,
-      source: data.source
+      source: data.source,
     });
-  }
+  },
 });
 ```
 
@@ -352,8 +386,8 @@ Once your widget is installed and working:
 
 If you run into installation issues:
 
-- **Installation Guide**: [blawby.com/docs/installation](https://blawby.com/docs/installation)
-- **Troubleshooting**: [blawby.com/help/troubleshooting](https://blawby.com/help/troubleshooting)
+- **Installation Guide**: Use this page as the installation guide for adding the chat widget.
+- **Troubleshooting**: [Blawby Help](/help)
 - **Support Chat**: Available in your dashboard
 - **Email**: support@blawby.com
 
@@ -363,4 +397,4 @@ If you run into installation issues:
 
 Your chat widget is now installed and ready to capture leads. The next step is setting up payment processing to accept client payments automatically.
 
-[Continue to Accept First Payment](/docs/quick-start/accept-first-payment)
+[Continue to Accept First Payment](/quick-start/accept-first-payment)

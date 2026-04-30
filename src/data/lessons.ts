@@ -51,20 +51,23 @@ export async function getLesson(
 const moduleRegistry = [
   {
     id: "getting-started",
+    category: "guides",
     title: "Getting Started",
     description: "Learn how to get started with Blawby's legal payment solutions.",
     lessonIds: ["get-started"],
   },
   {
     id: "payments",
+    category: "payments",
     title: "Legal Payments Solutions",
     description: "Compliant credit card payments and invoicing solutions for legal practices.",
-    lessonIds: ["payments", "invoicing", "clients", "payouts"],
+    lessonIds: ["accepting-payments", "invoicing", "clients", "payouts"],
   },
   {
     id: "ai-intake",
+    category: "ai-intake",
     title: "AI Legal Intake",
     description: "Intelligent client intake powered by AI to capture leads and streamline your practice.",
-    lessonIds: ["ai-powered-legal-intake-chatbot"],
+    lessonIds: ["ai-powered-legal-intake-chatbot", "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"],
   },
 ];

@@ -84,11 +84,22 @@
 ### API Documentation Format
 ```typescript
 // WebSocket connection example (browser)
-const wsUrl = `wss://api.blawby.com/conversations/${conversationId}/ws?token=${encodeURIComponent(token)}&practiceId=${encodeURIComponent(practiceId)}`;
+// DO NOT include authentication tokens in the URL.
+// Instead, exchange your session token for a short-lived, single-use WebSocket token.
+const wsToken = await obtainWebsocketToken(conversationId);
+const wsUrl = `wss://api.blawby.com/conversations/${conversationId}/ws?wsToken=${encodeURIComponent(wsToken)}&practiceId=${encodeURIComponent(practiceId)}`;
 const ws = new WebSocket(wsUrl);
 
+/**
+ * SECURITY NOTE: The token-exchange flow (obtaining a 'wsToken') ensures that 
+ * long-lived credentials are never exposed in logs or browser history via URL parameters.
+ * The 'wsToken' should have a short expiry (e.g., 60s), be single-use, 
+ * and ideally be bound to the requesting IP.
+ */
+
 // For Node.js server-side usage with ws library:
-// const ws = new WebSocket(wsUrl, [], {
+// Prefer using headers for sensitive values to avoid URL leakage.
+// const ws = new WebSocket(`wss://api.blawby.com/conversations/${conversationId}/ws`, [], {
 //   headers: {
 //     'Authorization': `Bearer ${token}`,
 //     'Practice-Id': practiceId

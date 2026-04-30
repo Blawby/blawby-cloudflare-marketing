@@ -49,7 +49,8 @@ function getLessonReadingDuration(slug: string): number {
 }
 
 function getLessonHref(lesson: { slug: string; category?: string }) {
-  return `/${lesson.category || "lessons"}/${lesson.slug}`;
+  const category = lesson.category ?? "guides";
+  return `/${category}/${lesson.slug}`;
 }
 
 export default async function Page() {
@@ -140,14 +141,12 @@ export default async function Page() {
               </div>
               <div className="mt-10 flex flex-wrap gap-x-6 gap-y-4">
                 {modules[0]?.lessons[0] && (
-                  <Button
-                    href={getLessonHref(modules[0].lessons[0])}
-                  >
+                  <Button href={getLessonHref(modules[0].lessons[0])}>
                     Get started
                   </Button>
                 )}
                 <Button
-                  href="/lessons/payments"
+                  href="/payments/accepting-payments"
                   className="inline-flex items-center gap-x-2"
                 >
                   <PlayIcon className="h-4 w-4 fill-gray-900" />
@@ -374,7 +373,9 @@ export default async function Page() {
                           <li key={lesson.slug}>
                             <ContentLink
                               title={lesson.title || "Untitled Lesson"}
-                              description={lesson.description || "No description available"}
+                              description={
+                                lesson.description || "No description available"
+                              }
                               href={getLessonHref(lesson)}
                               type={lesson.video ? "video" : "article"}
                               duration={

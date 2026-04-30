@@ -1,0 +1,38 @@
+name: Weekly external link check
+
+on:
+  schedule:
+    - cron: "23 10 * * 1"
+  workflow_dispatch:
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.1
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.3
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Next.js site
+        env:
+          NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}
+        run: pnpm run build
+
+      - name: Lychee online link check
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --base "https://blawby.com" --root-dir "${{ github.workspace }}/out" "./out/**/*.html"
+          fail: true
+          failIfEmpty: true

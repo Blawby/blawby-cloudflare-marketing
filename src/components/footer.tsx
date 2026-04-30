@@ -16,7 +16,7 @@ export function Footer() {
         </div>
         <nav className="flex flex-wrap items-center justify-start gap-x-6 gap-y-2 sm:justify-center">
           <Link
-            href="/lessons/get-started"
+            href="/guides/get-started"
             className="hover:text-gray-950 dark:hover:text-white"
           >
             Docs

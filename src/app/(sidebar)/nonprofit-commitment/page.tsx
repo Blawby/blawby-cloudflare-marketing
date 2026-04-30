@@ -5,22 +5,20 @@ import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
 import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-import { parseFrontmatter, mergeMetadata } from "@/utils/frontmatter";
+import { mergeMetadata, parseFrontmatter } from "@/utils/frontmatter";
+import fs from "fs";
 import path from "path";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const fm = await parseFrontmatter(
+  const raw = fs.readFileSync(
     path.join(process.cwd(), "src/data/pages/nonprofit-commitment.mdx"),
+    "utf-8",
   );
+  const fm = parseFrontmatter(raw);
 
   return mergeMetadata({
     fm,
     path: "/nonprofit-commitment",
-    fallback: {
-      title: "Nonprofit Commitment",
-      description:
-        "Dedicated to reducing digital barriers for nonprofit legal aid organizations through open-source development and affordable tools.",
-    },
   });
 }
 

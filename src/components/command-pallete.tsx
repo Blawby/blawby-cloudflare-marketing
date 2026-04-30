@@ -158,13 +158,13 @@ export default function CommandPalette() {
       const matches =
         vectorResults.matches?.matches || vectorResults.matches || [];
       // Transform AI Search results to match our SearchResult interface
-       const transformedResults: SearchResult[] = matches
+      const transformedResults: SearchResult[] = matches
         .map((result: any) => {
           const url = result.url || result.metadata?.url;
           if (!url || typeof url !== "string") return null;
 
           return {
-            id: result.id,
+            id: result.id || url,
             title:
               result.title ||
               result.metadata?.title ||
@@ -188,6 +188,19 @@ export default function CommandPalette() {
           };
         })
         .filter((r: SearchResult | null): r is SearchResult => !!r);
+
+      // Dev-only duplicate key check
+      if (process.env.NODE_ENV !== "production") {
+        const ids = new Set();
+        for (const res of transformedResults) {
+          if (ids.has(res.id)) {
+            console.warn(
+              `[Command Palette] Duplicate search result ID detected: ${res.id}`,
+            );
+          }
+          ids.add(res.id);
+        }
+      }
 
       setResults(transformedResults);
     } catch (err) {
@@ -215,10 +228,29 @@ export default function CommandPalette() {
       console.warn("[Command Palette] Attempted to navigate to an empty URL");
       return;
     }
-    if (url.startsWith("/lessons/")) {
-      url = "/" + url.replace(/^\/lessons\//, "");
+
+    try {
+      const parsed = new URL(url, window.location.origin);
+
+      // Security: reject unsafe protocols and off-origin redirects
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+        console.warn(
+          `[Command Palette] Blocked navigation to unsafe protocol: ${parsed.protocol}`,
+        );
+        return;
+      }
+
+      if (parsed.origin !== window.location.origin) {
+        console.warn(
+          `[Command Palette] Blocked cross-origin navigation to: ${parsed.origin}`,
+        );
+        return;
+      }
+
+      window.location.href = parsed.href;
+    } catch (err) {
+      console.error("[Command Palette] Invalid URL for navigation:", url, err);
     }
-    window.location.href = url;
   };
 
   return (

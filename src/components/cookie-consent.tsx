@@ -6,7 +6,7 @@ import "vanilla-cookieconsent/dist/cookieconsent.css";
 
 export default function CookieConsentComponent() {
   useEffect(() => {
-    CookieConsent.run({
+    (CookieConsent.run as any)({
       // Root element
       root: "body",
 
@@ -82,7 +82,21 @@ export default function CookieConsentComponent() {
           },
         },
       },
-    });
+      callbacks: {
+        onAccept: ({ cookie }: any) => {
+          if (cookie.categories.includes("analytics")) {
+            (window as any).initAnalytics?.();
+          }
+        },
+        onChange: ({ cookie }: any) => {
+          if (cookie.categories.includes("analytics")) {
+            (window as any).initAnalytics?.();
+          } else {
+            (window as any).disableAnalytics?.();
+          }
+        },
+      },
+    } as any);
 
     return () => {
       // Cleanup if needed
