@@ -148,12 +148,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const urlMap = new Map<string, MetadataRoute.Sitemap[0]>();
 
   // Add home page
-  let latestTime = new Date().toISOString();
+  let latestTime = "";
   for (const file of contentFiles) {
     if (file.mtime && file.mtime > latestTime) {
       latestTime = file.mtime;
     }
   }
+  if (!latestTime) latestTime = new Date().toISOString();
   urlMap.set(siteUrl, {
     url: siteUrl,
     lastModified: latestTime,
@@ -212,12 +213,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Add interviews index page
   const interviewFiles = contentFiles.filter((f) => f.type === "interview");
-  let latestInterviewTime = new Date().toISOString();
+  let latestInterviewTime = "";
   for (const file of interviewFiles) {
     if (file.mtime && file.mtime > latestInterviewTime) {
       latestInterviewTime = file.mtime;
     }
   }
+  if (!latestInterviewTime) latestInterviewTime = new Date().toISOString();
   if (interviewFiles.length > 0) {
     const interviewsUrl = `${siteUrl}/interviews`;
     const existing = urlMap.get(interviewsUrl);

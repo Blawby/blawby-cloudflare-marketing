@@ -7,28 +7,15 @@ import {
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import { siteConfig } from "@/config/site";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl, getWebPageSchema } from "@/utils/seo";
+import { absoluteUrl, getPageMetadata, getWebPageSchema } from "@/utils/seo";
 import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return {
+  return getPageMetadata({
     title: "Help & Support",
     description: siteConfig.description,
-    openGraph: {
-      title: "Help & Support",
-      description: siteConfig.description,
-      type: "website",
-      images: [],
-    },
-    twitter: {
-      card: "summary",
-      title: "Help & Support",
-      description: siteConfig.description,
-    },
-    alternates: {
-      canonical: absoluteUrl("/help"),
-    },
-  };
+    path: "/help",
+  });
 }
 
 const helpStructuredData = getWebPageSchema({

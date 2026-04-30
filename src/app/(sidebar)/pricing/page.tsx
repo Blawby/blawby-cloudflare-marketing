@@ -2,15 +2,15 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import PricingContent from "@/data/pages/pricing.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl } from "@/utils/seo";
+import { absoluteUrl, getPageMetadata } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getPageMetadata({
   title: "Pricing",
   description:
     "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
-  alternates: { canonical: absoluteUrl("/pricing") },
-};
+  path: "/pricing",
+});
 
 export default function PrivacyPage() {
   const breadcrumbItems = [

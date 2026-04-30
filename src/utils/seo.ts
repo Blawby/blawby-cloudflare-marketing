@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import type { Metadata } from "next";
 
 export const defaultSeoImage = {
   url: siteConfig.defaultImage,
@@ -15,6 +16,52 @@ export function absoluteUrl(path = "") {
   return new URL(path.startsWith("/") ? path : `/${path}`, siteConfig.url)
     .toString()
     .replace(/\/$/, "");
+}
+
+export function getPageMetadata({
+  title,
+  description,
+  path,
+  image = siteConfig.defaultImage,
+  imageAlt = defaultSeoImage.alt,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  imageAlt?: string;
+}): Metadata {
+  const url = absoluteUrl(path);
+  const imageUrl = absoluteUrl(image);
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: siteConfig.name,
+      type: "website",
+      locale: "en_US",
+      images: [
+        {
+          url: imageUrl,
+          width: defaultSeoImage.width,
+          height: defaultSeoImage.height,
+          alt: imageAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: siteConfig.twitterHandle,
+      images: [imageUrl],
+    },
+  };
 }
 
 export function getOrganizationSchema() {

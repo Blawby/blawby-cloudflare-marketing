@@ -7,13 +7,15 @@ import {
 import { CenteredPageLayout } from "@/components/centered-layout";
 import { VideoCard } from "@/components/video-card";
 import { getInterviews } from "@/data/interviews";
+import { getPageMetadata } from "@/utils/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getPageMetadata({
   title: "Interviews",
   description: "Explore interviews with industry experts and thought leaders.",
-};
+  path: "/interviews",
+});
 
 export default async function InterviewsPage() {
   if (process.env.SHOW_INTERVIEWS !== "true") {

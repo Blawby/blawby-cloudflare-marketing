@@ -55,6 +55,10 @@ function getLessonReadingDuration(slug: string): number {
   }
 }
 
+function getLessonHref(lesson: { id: string; category?: string }) {
+  return `/${lesson.category || "lessons"}/${lesson.id}`;
+}
+
 export default async function Page() {
   let modules = await getModules();
   let lessons = modules.flatMap(({ lessons }) => lessons);
@@ -94,9 +98,7 @@ export default async function Page() {
               lessons: lessons.map((lesson) => ({
                 name: lesson.title,
                 description: lesson.description,
-                url: absoluteUrl(
-                  `/${lesson.category || "lessons"}/${lesson.id}`,
-                ),
+                url: absoluteUrl(getLessonHref(lesson)),
               })),
             }),
           ),
@@ -153,7 +155,7 @@ export default async function Page() {
               </div>
               <div className="mt-10">
                 <Button
-                  href={`/${modules[0].lessons[0].id}`}
+                  href={getLessonHref(modules[0].lessons[0])}
                   className="inline-flex items-center gap-x-2"
                 >
                   <PlayIcon className="h-4 w-4 fill-gray-900" />
@@ -381,7 +383,7 @@ export default async function Page() {
                             <ContentLink
                               title={lesson.title}
                               description={lesson.description}
-                              href={`/${lesson.id}`}
+                              href={getLessonHref(lesson)}
                               type={lesson.video ? "video" : "article"}
                               duration={
                                 lesson.video?.duration ??
