@@ -1,5 +1,7 @@
 import CookieConsentComponent from "@/components/cookie-consent";
 import { Footer } from "@/components/footer";
+import { siteConfig } from "@/config/site";
+import { defaultSeoImage, getWebsiteSchema } from "@/utils/seo";
 import { clsx } from "clsx";
 import { GeistMono } from "geist/font/mono";
 import { Metadata } from "next";
@@ -16,13 +18,12 @@ const InterVariable = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://blawby.com"),
+  metadataBase: new URL(siteConfig.url),
   title: {
     template: "%s | Blawby",
     default: "Blawby - Compliant Credit Card Payments for Legal Practices",
   },
-  description:
-    "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
+  description: siteConfig.description,
   keywords: [
     "legal payment processing",
     "credit card payments for lawyers",
@@ -40,38 +41,27 @@ export const metadata: Metadata = {
     "legal technology",
     "payment security for law firms",
   ],
-  authors: [{ name: "Paul Chris Luke" }],
-  creator: "Paul Chris Luke",
-  publisher: "Blawby",
+  authors: [{ name: siteConfig.creator }],
+  creator: siteConfig.creator,
+  publisher: siteConfig.publisher,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://blawby.com",
-    siteName: "Blawby",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
     title: "Blawby - Compliant Credit Card Payments for Legal Practices",
-    description:
-      "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
-    images: [
-      {
-        url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-        width: 1200,
-        height: 630,
-        alt: "Blawby - Compliant Credit Card Payments for Legal Practices",
-      },
-    ],
+    description: siteConfig.description,
+    images: [defaultSeoImage],
   },
   twitter: {
     card: "summary_large_image",
     title: "Blawby - Compliant Credit Card Payments for Legal Practices",
-    description:
-      "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
-    creator: "@blawby",
-    images: [
-      "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-    ],
+    description: siteConfig.description,
+    creator: siteConfig.twitterHandle,
+    images: [siteConfig.defaultImage],
   },
   alternates: {
-    canonical: "https://blawby.com",
+    canonical: siteConfig.url,
   },
   robots: {
     index: true,
@@ -84,33 +74,20 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code",
-  },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? {
+        verification: {
+          google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+        },
+      }
+    : {}),
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-icon.png",
   },
   manifest: "/site.webmanifest",
 };
 
-// Add JSON-LD structured data
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Blawby",
-  description:
-    "Blawby is the all-in-one, ABA and IOLTA-compliant credit card payment solution for law firms and legal professionals. Accept payments securely, streamline billing, and ensure full trust account compliance with industry-leading security and ease of use.",
-  url: "https://blawby.com",
-  publisher: {
-    "@type": "Organization",
-    name: "Blawby",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public",
-    },
-  },
-};
+const jsonLd = getWebsiteSchema();
 
 export default function RootLayout({
   children,

@@ -24,13 +24,6 @@ const pages: Page[] = [
     href: "/nonprofit-commitment",
   },
   {
-    id: "pitch-deck",
-    title: "Blawby Investor Pitch",
-    description:
-      "Unified Platform for Legal Payments & AI‑Driven Client Intake",
-    href: "/pitch-deck",
-  },
-  {
     id: "help",
     title: "Help & Support",
     description: "Get help and support for Blawby.",

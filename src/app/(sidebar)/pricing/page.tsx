@@ -2,19 +2,20 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import PricingContent from "@/data/pages/pricing.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { absoluteUrl, getPageMetadata } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getPageMetadata({
   title: "Pricing",
   description:
     "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
-  alternates: { canonical: "https://blawby.com/pricing" },
-};
+  path: "/pricing",
+});
 
 export default function PrivacyPage() {
   const breadcrumbItems = [
-    { name: "Home", url: "https://blawby.com" },
-    { name: "Pricing", url: "https://blawby.com/pricing" },
+    { name: "Home", url: absoluteUrl() },
+    { name: "Pricing", url: absoluteUrl("/pricing") },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 

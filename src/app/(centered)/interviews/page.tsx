@@ -7,13 +7,15 @@ import {
 import { CenteredPageLayout } from "@/components/centered-layout";
 import { VideoCard } from "@/components/video-card";
 import { getInterviews } from "@/data/interviews";
+import { getPageMetadata } from "@/utils/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getPageMetadata({
   title: "Interviews",
   description: "Explore interviews with industry experts and thought leaders.",
-};
+  path: "/interviews",
+});
 
 export default async function InterviewsPage() {
   if (process.env.SHOW_INTERVIEWS !== "true") {
@@ -34,7 +36,7 @@ export default async function InterviewsPage() {
       <h1 className="mt-10 text-3xl/10 font-normal tracking-tight text-gray-950 sm:mt-14 dark:text-white">
         Interviews
       </h1>
-      <p className="text-base mt-6 max-w-xl text-base/7">
+      <p className="mt-6 max-w-xl text-base/7">
         Explore interviews with industry experts and thought leaders.
       </p>
       <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 pb-32 sm:grid-cols-2 xl:grid-cols-3">

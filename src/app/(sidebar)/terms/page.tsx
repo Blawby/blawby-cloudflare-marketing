@@ -2,19 +2,20 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import TermsContent from "@/data/legal/terms.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { absoluteUrl, getPageMetadata } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getPageMetadata({
   title: "Terms of Service",
   description:
     "Read the Blawby Terms of Service to understand your rights and responsibilities.",
-  alternates: { canonical: "https://blawby.com/terms" },
-};
+  path: "/terms",
+});
 
 export default function TermsPage() {
   const breadcrumbItems = [
-    { name: "Home", url: "https://blawby.com" },
-    { name: "Terms of Service", url: "https://blawby.com/terms" },
+    { name: "Home", url: absoluteUrl() },
+    { name: "Terms of Service", url: absoluteUrl("/terms") },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 

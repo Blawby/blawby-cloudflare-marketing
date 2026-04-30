@@ -99,6 +99,7 @@ Do not put API keys, auth tokens, or passwords in `wrangler.toml`. Use:
 - `.dev.vars` for local Worker runtime secrets used by `wrangler dev`, such as `RESEND_API_KEY`.
 - `pnpm wrangler secret put RESEND_API_KEY` for the deployed Worker.
 - Cloudflare Pages project variables/secrets for Pages build/runtime values.
+- GitHub Actions repository variables for values consumed by the GitHub build, such as `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
 
 Copy `.env.example` and `.dev.vars.example` locally, then fill in real values. These local files are ignored by git.
 
@@ -131,45 +132,47 @@ wrangler pages deploy out
 
 The project includes comprehensive SEO support. Key files:
 
+- `src/config/site.ts` - Shared site name, URL, default description, social handle, and default image
+- `src/utils/seo.ts` - Shared URL, image, organization, website, video, web page, and application schema helpers
 - `src/app/layout.tsx` - Root metadata configuration
+- `src/app/sitemap.ts` - Native Next.js sitemap generation
+- `src/app/robots.ts` - Native Next.js robots.txt generation
 - `src/app/(centered)/interviews/[slug]/page.tsx` - Video content metadata
 - `src/app/(sidebar)/[category]/[slug]/page.tsx` - Educational content metadata
 
 To complete SEO setup:
 
-1. Update `metadataBase` in `src/app/layout.tsx` with your domain
-2. Add Open Graph images:
-   - `/public/og-image.jpg` (1200x630)
-   - `/public/twitter-image.jpg` (1200x600)
-3. Add Google Search Console verification code
+1. Update `url` in `src/config/site.ts` if the production domain changes
+2. Update `defaultImage` in `src/config/site.ts` when the production Open Graph image changes
+3. Add `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` when Google Search Console verification is available. This workflow builds the site in GitHub Actions, so set it as a GitHub Actions repository/environment variable. Use a Cloudflare Pages build variable only if Cloudflare Pages builds the Next.js site directly.
 4. Update `site.webmanifest` for PWA support
-5. Add proper favicon and apple-touch-icon files
+5. Add proper favicon and apple-touch-icon files if the metadata starts referencing them
 
-## Vector Search Indexing
+## AI Search Indexing
 
-The site includes a comprehensive vector search system that indexes all content types:
+The site uses Cloudflare AI Search for semantic search and support chat. MDX files remain the source of truth in this repo, then CI uploads them to an R2 bucket for AI Search to index.
 
 ### Content Indexing
 
-- **Script**: `scripts/chunk-mdx-lessons.ts`
-- **Output**: `lesson-chunks.json` and `vector-manifest.json`
-- **Coverage**: Lessons, articles, and pages (excludes privacy/terms)
-- **URL Structure**: Matches the actual site routing structure
+- **Script**: `scripts/upload-content-to-r2.mjs`
+- **Source**: `src/data/**/*.mdx`
+- **Destination**: R2 bucket configured by the `R2_CONTENT_BUCKET` environment variable
+- **Object keys**: Match public routes where possible, for example `lessons/payments.mdx`, `pricing.mdx`, and `compliance/iolta-compliance.mdx`
 
 ### Search Worker
 
 - **Location**: `src/workers/search.ts`
 - **Features**:
-  - Vector similarity search
-  - Hybrid ranking with keyword matching
+  - Cloudflare AI Search retrieval from R2-indexed content
+  - LLM intent classification
   - Special pricing query detection
   - Chat interface with LLM responses
 
 ### Indexing Process
 
 ```bash
-# Generate content chunks for vector search
-npx tsx scripts/chunk-mdx-lessons.ts
+# Upload MDX content to the AI Search R2 data source
+R2_CONTENT_BUCKET=your-content-bucket pnpm run r2:upload-content
 
 # Deploy search worker
 npx wrangler deploy src/workers/search.ts
@@ -187,14 +190,18 @@ To support SEO and rich results, the codebase includes several utilities for gen
 - **Usage:**
   - Import and use in any page where breadcrumbs are rendered.
   - Example:
+
     ```ts
     import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+    import { absoluteUrl } from "@/utils/seo";
+
     const breadcrumbItems = [
-      { name: "Home", url: "https://blawby.com" },
-      { name: "Overview", url: "https://blawby.com/" },
+      { name: "Home", url: absoluteUrl() },
+      { name: "Overview", url: absoluteUrl() },
     ];
     const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
     ```
+
   - Inject as a `<script type="application/ld+json">` in your page component.
 
 ### 2. HowTo Schema Utilities
@@ -237,17 +244,16 @@ To support SEO and rich results, the codebase includes several utilities for gen
 
 ## Sitemap Generation
 
-This project uses [next-sitemap](https://github.com/iamvishnusankar/next-sitemap) to automatically generate `sitemap.xml` and `robots.txt` after each build.
+This project uses the native Next.js App Router metadata routes for sitemap and robots output.
 
-- The config file is `next-sitemap.config.js` and uses ES module syntax (`export default`).
-- The sitemap is generated automatically in the deployment workflow.
-- To generate the sitemap locally, run:
+- `src/app/sitemap.ts` generates `sitemap.xml` from static pages and content files.
+- `src/app/robots.ts` generates `robots.txt` and points crawlers to the sitemap.
+- There is no `next-sitemap` dependency or config file.
+- To verify locally, run a build and inspect the generated output:
 
 ```bash
-npx next-sitemap
+pnpm build
 ```
-
-This will use the default config file and output the sitemap and robots.txt in the appropriate directory.
 
 ## Customizing
 
@@ -273,12 +279,12 @@ You can start editing this template by modifying the files in the `/src` folder.
 2. Add page entry to `src/data/pages.ts`
 3. Update sidebar automatically
 
-#### Regenerating Search Index
+#### Updating AI Search Content
 
-After adding new content, regenerate the vector search index:
+After adding new content, upload the MDX source files to the R2 bucket connected to AI Search:
 
 ```bash
-npx tsx scripts/chunk-mdx-lessons.ts
+R2_CONTENT_BUCKET=your-content-bucket pnpm run r2:upload-content
 ```
 
 ## Images
@@ -314,65 +320,6 @@ To learn more about the technologies used in this site template, see the followi
 - [MDX](https://mdxjs.com/) - the official MDX documentation
 - [Cloudflare Pages](https://developers.cloudflare.com/pages/) - Cloudflare Pages documentation
 
-## ⚡️ Cloudflare Bleeding Edge Integration Notes
-
-This project uses the latest Cloudflare Workers AI and Vectorize features.
-
-**Current best practice:**
-
-- Use the Vectorize v2 REST API from Workers (not the binding) for all vector search operations.
-
-## 🔄 Automated Cloudflare Vectorize Indexing & Pruning
-
-- All MDX content is indexed and pruned automatically via a TypeScript script and GitHub Actions workflow.
-- The script reads all MDX, chunks by heading, embeds with Workers AI, and upserts to Vectorize via REST API.
-- Pruning is manifest-based: `scripts/vector-manifest.json` tracks all upserted vector IDs. On each run, any vectors not present in the current content are deleted.
-- The workflow runs on push to `master` and nightly. If you see '0 workflow runs', check that your workflow triggers on the correct branch (e.g., `master` not `main`).
-- Set `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repo secrets.
-- See `cloudflare.md` for full details, troubleshooting, and the Vectorize binding bug/workaround.
-
-## Chunking MDX Lessons for Vector Search
-
-To generate vector-ready chunks from your lessons for semantic search:
-
-```bash
-npm run chunk:lessons
-```
-
-This will output `lesson-chunks.json` in the project root.
-
-To upsert the chunks to your Vectorize index, run:
-
-```bash
-curl -X POST https://compass-ts.paulchrisluke.workers.dev/upsert-mdx \
-  -H "Content-Type: application/json" \
-  --data-binary @lesson-chunks.json
-```
-
-This will embed and upsert all lesson chunks to your Cloudflare Vectorize index via your Worker.
-
-## 🔍 Hybrid Semantic + Keyword Search (Cloudflare Vectorize)
-
-This project uses a hybrid search approach for best-in-class relevance:
-
-- **Semantic search:** All content is embedded and indexed in Cloudflare Vectorize using Workers AI.
-- **Metadata upsert:** Each vector is upserted with rich metadata (e.g., `title`, `section`, `url`, etc.).
-- **Hybrid re-ranking:**
-  - At query time, the Worker embeds the query and runs a vector search (topK=10).
-  - Results are post-processed in the Worker: if any query word matches the `title` or `section` in metadata, that result's score is boosted.
-  - Results are sorted by the new score, so exact or partial keyword matches (like "Pricing") appear at the top, even if the semantic score is similar.
-- **No extra infra:** This is fully Cloudflare-supported, scalable, and requires no separate keyword index or third-party service.
-
-**Why this approach?**
-
-- Combines the recall of semantic search with the precision of keyword search.
-- Ensures exact matches (e.g., a page literally titled "Pricing") always rank highest for relevant queries.
-- Easy to tune and maintain.
-
-See `src/workers/search.ts` for the implementation details.
-
-Test: Triggering deploy workflow for GitHub Actions.
-
 ## Support Case & Feedback Storage (Cloudflare D1)
 
 This project uses [Cloudflare D1](https://developers.cloudflare.com/d1/) as a production-grade relational database for support case and feedback storage. The API Worker exposes endpoints for support case creation and feedback collection, both backed by D1:
@@ -397,27 +344,26 @@ This project uses [Cloudflare D1](https://developers.cloudflare.com/d1/) as a pr
 npx wrangler d1 execute support --file=./scripts/d1-support-schema.sql --remote
 ```
 
-## Automated Vector Index Maintenance (Cloudflare Vectorize)
+## Automated AI Search Content Upload
 
 After any lesson or page change, the following steps are run automatically in CI/CD (see .github/workflows/deploy.yml):
 
-1. **Chunk MDX lessons/pages:** Generates `lesson-chunks.json` and `vector-manifest.json`.
-2. **Prune stale vectors:** Removes any vectors from the index that are not present in the current manifest (using only supported Cloudflare API endpoints).
-3. **Upsert new/changed chunks:** Adds or updates all current chunks in the index.
+1. Build the static Next.js site.
+2. Upload `src/data/**/*.mdx` to the configured R2 bucket.
+3. Let Cloudflare AI Search index that R2 data source automatically.
 
-This ensures your search index is always in sync with your content. Manual steps are only needed for local development or hotfixes.
+Set the GitHub Actions repository variable `R2_CONTENT_BUCKET` to the R2 bucket connected to your AI Search instance.
 
-## Local Development: VECTORIZE & Workers AI
+## Local Development: AI Search & Workers AI
 
-Blawby uses Cloudflare VECTORIZE and Workers AI for search and chat endpoints. To test these endpoints locally, you must use Cloudflare's new remote bindings feature:
+Blawby uses Cloudflare AI Search and Workers AI for search and chat endpoints. Configure:
 
-- Start local dev with:
+- `AI_SEARCH_NAME` in `wrangler.toml` or `.dev.vars`
+- `R2_CONTENT_BUCKET` when uploading local MDX content to R2
 
-  ```sh
-  wrangler dev --experimental-vectorize-bind-to-prod
-  ```
+```bash
+R2_CONTENT_BUCKET=your-content-bucket pnpm run r2:upload-content
+pnpm exec wrangler dev
+```
 
-- This binds your local VECTORIZE to your production index, allowing /chat and /query endpoints to work in local dev.
-- See the official Cloudflare changelog for details: [Remote Bindings Beta (2025-06-18)](https://developers.cloudflare.com/changelog/2025-06-18-remote-bindings-beta/)
-
-**Warning:** This may incur usage charges and will modify your production VECTORIZE index even in local dev.
+AI Search indexes the R2 bucket asynchronously, so fresh uploads may not be searchable immediately.

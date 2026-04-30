@@ -7,6 +7,7 @@ import {
 import { Button } from "@/components/button";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { absoluteUrl } from "@/utils/seo";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,8 +22,8 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   const breadcrumbItems = [
-    { name: "Home", url: "https://blawby.com" },
-    { name: "404 - Page Not Found", url: "https://blawby.com/404" },
+    { name: "Home", url: absoluteUrl() },
+    { name: "404 - Page Not Found", url: absoluteUrl("/404") },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
@@ -32,7 +33,7 @@ export default function NotFound() {
     "@type": "WebPage",
     name: "404 – Page Not Found",
     description: "Sorry, we couldn't find the page you're looking for.",
-    url: "https://blawby.com/404",
+    url: absoluteUrl("/404"),
     breadcrumb: breadcrumbSchema,
   };
 

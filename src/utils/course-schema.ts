@@ -1,9 +1,11 @@
+import { siteConfig } from "@/config/site";
+
 // Generate Course schema.org JSON-LD for a single lesson
 export function getCourseSchema({
   name,
   description,
   url,
-  provider = { name: "Blawby", url: "https://blawby.com" },
+  provider = { name: siteConfig.name, url: siteConfig.url },
 }: {
   name: string;
   description: string;
@@ -47,7 +49,7 @@ export function getCoursePathwaySchema({
   name,
   description,
   lessons,
-  provider = { name: "Blawby", url: "https://blawby.com" },
+  provider = { name: siteConfig.name, url: siteConfig.url },
 }: {
   name: string;
   description: string;

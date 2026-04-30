@@ -2,19 +2,20 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import PrivacyContent from "@/data/legal/privacy.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { absoluteUrl, getPageMetadata } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = getPageMetadata({
   title: "Privacy Policy",
   description:
     "Read the Blawby Privacy Policy to learn how we handle your data.",
-  alternates: { canonical: "https://blawby.com/privacy" },
-};
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   const breadcrumbItems = [
-    { name: "Home", url: "https://blawby.com" },
-    { name: "Privacy Policy", url: "https://blawby.com/privacy" },
+    { name: "Home", url: absoluteUrl() },
+    { name: "Privacy Policy", url: absoluteUrl("/privacy") },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 

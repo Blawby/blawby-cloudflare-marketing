@@ -1,13 +1,14 @@
-import { MetadataRoute } from 'next'
+import { siteConfig } from "@/config/site";
+import { MetadataRoute } from "next";
 
-export const dynamic = 'force-static'
+export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
+      userAgent: "*",
+      allow: "/",
     },
-    sitemap: 'https://blawby.com/sitemap.xml',
-  }
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+  };
 }

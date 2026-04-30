@@ -1,110 +1,642 @@
-import { Ai } from "@cloudflare/ai";
+// ---------------------------------------------------------------------------
+// HTML escaping utility
+// ---------------------------------------------------------------------------
 
-export interface Env {
-  VECTORIZE: any;
-  AI: Ai;
-  SUPPORT_DB: any;
-  RESEND_API_KEY: string;
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
+/**
+ * Blawby Search & Support Worker
+ *
+ * Modernized April 2026:
+ * - AI Search (formerly AutoRAG) replaces the old manual embedding pipeline
+ *   for /query and /chat endpoints
+ * - @cf/meta/llama-3.3-70b-instruct-fp8-fast replaces Llama 2
+ * - Messages API format for LLM calls (better instruction following)
+ * - LLM-based intent classification replaces brittle regex patterns
+ * - Origin-scoped CORS on mutation endpoints
+ * - Cleaner route table with typed handlers
+ */
 
-// --- Config: Intent Patterns ---
-const INTENT_PATTERNS = [
-  {
-    name: "nonprofit",
-    pattern:
-      /\b(nonprofit|non-profit|501c3|501\(c\)\(3\)|charity|charitable|legal aid|underserved|discount.*nonprofit|nonprofit.*discount)\b/,
-    exclude: null,
-  },
-  {
-    name: "pricing",
-    pattern:
-      /\b(price|pricing|cost|fee|fees|charge|charges|how much|rate|rates|platform fee|transaction fee|monthly fee|card fee|bank fee|ach fee|chargeback)\b/,
-    exclude: /integrate|setup|configure/,
-  },
-  {
-    name: "support",
-    pattern:
-      /\b(speak to human|talk to human|human support|real person|speak to someone|talk to someone|human agent|live agent|customer service|support team|not working|broken|issue|problem|error|frustrated|angry|upset|help me|stuck|can't|won't|doesn't work|need help|need support|i need help|get help)\b|\bspeak\b.*\bhuman\b|\btalk\b.*\bhuman\b/,
-    exclude:
-      /does.*support|what.*support|feature.*support|recurring.*support|blawby.*support/,
-  },
-  {
-    name: "abusive",
-    pattern:
-      /\b(fuck|shit|bitch|asshole|cunt|bastard|dick|suck|faggot|retard|idiot|moron|stupid)\b/,
-  },
-];
+// ---------------------------------------------------------------------------
+// Environment
+// ---------------------------------------------------------------------------
 
-// --- CORS Helper ---
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
+type AiMessage = {
+  role: "system" | "user" | "assistant";
+  content: string;
 };
 
-// --- Request Validation Helper ---
-async function parseJsonBody(request: Request) {
+type AiBinding = {
+  run(
+    model: string,
+    inputs: {
+      messages?: AiMessage[];
+      text?: string;
+      max_tokens?: number;
+      temperature?: number;
+    },
+  ): Promise<unknown>;
+  autorag(name: string): {
+    search(input: {
+      query: string;
+      rewrite_query?: boolean;
+      max_num_results?: number;
+      ranking_options?: { score_threshold?: number };
+      reranking?: { enabled?: boolean; model?: string };
+    }): Promise<unknown>;
+  };
+};
+
+type D1PreparedStatement = {
+  bind(...values: unknown[]): D1PreparedStatement;
+  run(): Promise<unknown>;
+  first<T = unknown>(): Promise<T | null>;
+};
+
+type D1DatabaseBinding = {
+  prepare(query: string): D1PreparedStatement;
+};
+
+export interface Env {
+  AI: AiBinding;
+  SUPPORT_DB: D1DatabaseBinding;
+  RESEND_API_KEY: string;
+  /** Name of your AI Search instance, set in wrangler.toml as a var */
+  AI_SEARCH_NAME: string;
+  /** Support email address for help form submissions */
+  SUPPORT_EMAIL: string;
+}
+
+// ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
+const ALLOWED_ORIGINS = ["https://blawby.com", "https://www.blawby.com"];
+
+const GENERATION_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
+
+const SYSTEM_PROMPT = `You are a helpful, friendly support assistant for Blawby — a legal practice management platform.
+
+Rules you must follow:
+- Answer naturally and conversationally, as a human support agent would.
+- Use Markdown for formatting (bold, lists, links). Never use raw HTML.
+- Only use facts from the provided context. Do not rely on prior knowledge.
+- Do not mention "context", "documentation", "according to", or any AI processing terms.
+- Always use blawby.com (not chat.blawby.com) for any URLs.
+- Be precise about pricing and discounts — only state what is explicitly in the context.
+- If the context includes a relevant URL, include at least one link in your answer.
+- If you cannot answer from the context, say so naturally and offer to open a support case.
+- Do not generate code or technical advice unless it is explicitly in the context.`;
+
+// ---------------------------------------------------------------------------
+// CORS helpers
+// ---------------------------------------------------------------------------
+
+function getCorsHeaders(request: Request, mutation = false): HeadersInit {
+  const origin = request.headers.get("Origin") ?? "";
+  // For read-only search endpoints, allow any origin.
+  // For mutation endpoints, restrict to known origins.
+  const allowedOrigin =
+    !mutation || ALLOWED_ORIGINS.includes(origin) ? origin || "*" : "";
+
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    Vary: "Origin",
+  };
+}
+
+function json(
+  data: unknown,
+  status = 200,
+  headers: HeadersInit = {},
+): Response {
+  return Response.json(data, { status, headers });
+}
+
+function corsJson(
+  data: unknown,
+  request: Request,
+  status = 200,
+  mutation = false,
+): Response {
+  return json(data, status, getCorsHeaders(request, mutation));
+}
+
+// ---------------------------------------------------------------------------
+// Request helpers
+// ---------------------------------------------------------------------------
+
+async function parseBody<T = Record<string, unknown>>(
+  request: Request,
+): Promise<T> {
   try {
-    return await request.json();
+    return (await request.json()) as T;
+  } catch (e) {
+    throw new Error(`Invalid JSON: ${e instanceof Error ? e.message : e}`);
+  }
+}
+
+function requireFields(
+  body: Record<string, unknown>,
+  fields: string[],
+): string | null {
+  for (const f of fields) {
+    if (!body[f]) return f;
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// Intent classification (LLM-based, replaces regex)
+// ---------------------------------------------------------------------------
+
+type Intent = "nonprofit" | "pricing" | "support" | "abusive" | "general";
+
+const INTENT_SYSTEM = `Classify the following support query into exactly one of these categories:
+nonprofit, pricing, support, abusive, general
+
+Respond with only the category name — no punctuation, no explanation.`;
+
+async function classifyIntent(query: string, env: Env): Promise<Intent> {
+  try {
+    const result = (await env.AI.run(GENERATION_MODEL, {
+      messages: [
+        { role: "system", content: INTENT_SYSTEM },
+        { role: "user", content: query },
+      ],
+      max_tokens: 10,
+      temperature: 0,
+    })) as { response?: string };
+
+    const label = result.response?.trim().toLowerCase() ?? "general";
+    const valid: Intent[] = [
+      "nonprofit",
+      "pricing",
+      "support",
+      "abusive",
+      "general",
+    ];
+    return valid.includes(label as Intent) ? (label as Intent) : "general";
   } catch {
-    throw new Error("Invalid JSON");
+    return "general";
   }
 }
 
-// --- AIService ---
-class AIService {
-  constructor(
-    private ai: Ai,
-    private env: Env,
-  ) {}
+// ---------------------------------------------------------------------------
+// Intent response builders
+// ---------------------------------------------------------------------------
 
-  async getEmbedding(text: string) {
-    const embedding = await this.ai.run("@cf/baai/bge-small-en-v1.5", { text });
-    return embedding.data[0];
-  }
+function buildIntentResponse(
+  intent: Intent,
+  matches: AiSearchResult[],
+): string | null {
+  switch (intent) {
+    case "nonprofit":
+      return (
+        `Blawby offers qualified nonprofits **50% off on user fees**. ` +
+        `You can apply by submitting a form at [blawby.com/nonprofit-commitment](https://blawby.com/nonprofit-commitment).`
+      );
 
-  async queryVectorDB(queryVector: number[], topK: number = 10) {
-    const vectorizeResult = await this.env.VECTORIZE.query(queryVector, {
-      topK,
-      returnValues: true,
-      returnMetadata: "all",
-    });
-    return vectorizeResult.matches || vectorizeResult;
-  }
+    case "pricing": {
+      const contextText = matches
+        .flatMap((m) => m.content.map((c) => c.text))
+        .join("\n");
+      return buildPricingResponse(contextText);
+    }
 
-  private enhanceMatches(matches: any[], query: string) {
-    const docTypeBoost: Record<string, number> = {
-      lesson: 2,
-      article: 1.5,
-      page: 1.2,
-    };
-    return matches
-      .map((m) => ({
-        ...m,
-        score:
-          (m.score || 1) * (docTypeBoost[m.metadata?.docType as string] || 1),
-      }))
-      .sort((a, b) => b.score - a.score);
-  }
+    case "support":
+      return (
+        `If you need help, click the **Create Support Case** button below and our team will get back to you as soon as possible.\n\n` +
+        `For real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`
+      );
 
-  async getEnhancedMatches(query: string, topK: number = 10) {
-    const queryVector = await this.getEmbedding(query);
-    const matches = await this.queryVectorDB(queryVector, topK);
-    return this.enhanceMatches(matches, query);
-  }
+    case "abusive":
+      return `I'm here to help — let's keep things respectful. How can I assist you today?`;
 
-  async runLLM(prompt: string) {
-    return this.ai.run("@cf/meta/llama-2-7b-chat-int8", {
-      prompt,
-      max_tokens: 500,
-      temperature: 0.3,
-    });
+    default:
+      return null;
   }
 }
 
-// --- EmailService ---
+function buildPricingResponse(contextText: string): string {
+  const lines: string[] = [];
+
+  const patterns: Array<[RegExp, (m: RegExpMatchArray) => string]> = [
+    [
+      /\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user|\$([0-9]+(?:\.[0-9]{2})?)\s*per\s*month\s*per\s*user/i,
+      (m) => `- **Monthly user license:** $${m[1] ?? m[2]} per user per month`,
+    ],
+    [
+      /([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*(?:card|transaction)/i,
+      (m) => `- **Card payments:** ${m[1]}% + ${m[2]} per transaction`,
+    ],
+    [
+      /([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+)\s*cap\)/i,
+      (m) => `- **ACH/bank payments:** ${m[1]}% (max $${m[2]})`,
+    ],
+    [
+      /([0-9]+(?:\.[0-9]+)?)%\s*(?:additional\s*)?platform fee/i,
+      (m) => `- **Platform fee:** ${m[1]}% (billed monthly)`,
+    ],
+    [
+      /([0-9]+(?:\.[0-9]+)?)%\s*per\s*paid\s*invoice/i,
+      (m) => `- **Invoice fee:** ${m[1]}% per paid invoice`,
+    ],
+    [
+      /\$([0-9]+)\s*(?:fee\s*for\s*disputed\s*payments|.*chargeback)/i,
+      (m) => `- **Chargeback fee:** $${m[1]} per chargeback`,
+    ],
+  ];
+
+  for (const [regex, formatter] of patterns) {
+    const match = contextText.match(regex);
+    if (match) lines.push(formatter(match));
+  }
+
+  if (/no setup fees?/i.test(contextText)) lines.push("- No setup fees");
+  if (/no hidden fees?/i.test(contextText)) lines.push("- No hidden fees");
+
+  const body =
+    lines.length > 0
+      ? lines.join("\n")
+      : "_Some fees could not be found in the current context._";
+
+  return (
+    `**Blawby Pricing Overview**\n\n${body}\n\n` +
+    `For full details and the latest updates, [see our pricing page](https://blawby.com/pricing).`
+  );
+}
+
+// ---------------------------------------------------------------------------
+// AI Search result type (simplified)
+// ---------------------------------------------------------------------------
+
+interface AiSearchContent {
+  id: string;
+  type: string;
+  text: string;
+}
+
+interface AiSearchResult {
+  file_id: string;
+  filename: string;
+  score: number;
+  attributes?: Record<string, unknown>;
+  content: AiSearchContent[];
+}
+
+interface AiSearchResponse {
+  search_query?: string;
+  response?: string;
+  data: AiSearchResult[];
+}
+
+function stripExtension(filename: string): string {
+  return filename.replace(/\.[^.]+$/, "");
+}
+
+function filenameToTitle(filename: string): string {
+  return (
+    stripExtension(filename)
+      .split("/")
+      .pop()
+      ?.replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase()) ?? filename
+  );
+}
+
+function filenameToUrl(filename: string): string {
+  let key = stripExtension(filename).replace(/\\/g, "/").replace(/^\/+/, "");
+
+  if (key.startsWith("src/data/articles/")) {
+    key = key.replace(/^src\/data\/articles\//, "");
+  } else if (key.startsWith("src/data/lessons/")) {
+    key = key.replace(/^src\/data\//, "");
+  } else if (key.startsWith("src/data/pages/")) {
+    key = key.replace(/^src\/data\/pages\//, "");
+  } else if (key.startsWith("src/data/legal/")) {
+    key = key.replace(/^src\/data\/legal\//, "");
+  }
+
+  if (key.startsWith("pages/")) {
+    key = key.replace(/^pages\//, "");
+  } else if (key.startsWith("legal/")) {
+    key = key.replace(/^legal\//, "");
+  } else if (key.startsWith("articles/")) {
+    key = key.replace(/^articles\//, "");
+  }
+
+  return `/${key}`;
+}
+
+// ---------------------------------------------------------------------------
+// Route handlers
+// ---------------------------------------------------------------------------
+
+/**
+ * /query — returns raw AI Search results (used by command palette)
+ * Replaces: manual embedding and hand-managed retrieval
+ */
+async function handleQuery(request: Request, env: Env): Promise<Response> {
+  const body = await parseBody<{ query?: string }>(request);
+  const query = body.query?.trim();
+
+  if (!query) {
+    return corsJson({ error: "Missing or empty query" }, request, 400);
+  }
+
+  const result = (await env.AI.autorag(env.AI_SEARCH_NAME).search({
+    query,
+    rewrite_query: true,
+    max_num_results: 10,
+    ranking_options: { score_threshold: 0.3 },
+    reranking: { enabled: true, model: "@cf/baai/bge-reranker-base" },
+  })) as AiSearchResponse;
+
+  // Shape the response to match what the command palette expects
+  const matches = (result.data ?? []).map((item) => ({
+    id: item.file_id,
+    title: filenameToTitle(item.filename),
+    description: item.content[0]?.text ?? "",
+    type: "lesson" as const,
+    url: filenameToUrl(item.filename),
+    score: item.score,
+    section: item.attributes?.folder as string | undefined,
+  }));
+
+  return corsJson({ matches: { matches } }, request);
+}
+
+/**
+ * /chat — AI-powered support chat with intent classification
+ * Replaces: regex intent + Llama 2 single-prompt approach
+ */
+async function handleChat(request: Request, env: Env): Promise<Response> {
+  const body = await parseBody<{ query?: string }>(request);
+  const query = body.query?.trim();
+
+  if (!query) {
+    return corsJson({ error: "Missing or empty query" }, request, 400);
+  }
+
+  // Run intent classification and search in parallel
+  const [intent, searchResult] = await Promise.all([
+    classifyIntent(query, env),
+    env.AI.autorag(env.AI_SEARCH_NAME).search({
+      query,
+      rewrite_query: true,
+      max_num_results: 10,
+      ranking_options: { score_threshold: 0.3 },
+      reranking: { enabled: true, model: "@cf/baai/bge-reranker-base" },
+    }) as Promise<AiSearchResponse>,
+  ]);
+
+  const matches = searchResult.data ?? [];
+
+  // For known intents, return a hand-crafted response
+  const intentMessage = buildIntentResponse(intent, matches);
+  if (intentMessage) {
+    return corsJson(
+      { message: intentMessage, messageFormat: "markdown", matches },
+      request,
+    );
+  }
+
+  // General: build context and let the LLM answer
+  const context = matches
+    .map((item, i) => {
+      const url = filenameToUrl(item.filename);
+      const text = item.content.map((c) => c.text).join(" ");
+      return `${i + 1}. **${item.filename}**\n${text}\n\nDocumentation: https://blawby.com${url}`;
+    })
+    .join("\n\n");
+
+  const llmResult = (await env.AI.run(GENERATION_MODEL, {
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      {
+        role: "user",
+        content: `Question: ${query}\n\nContext:\n${context}`,
+      },
+    ],
+    max_tokens: 600,
+    temperature: 0.3,
+  })) as { response?: string };
+
+  const message =
+    llmResult.response?.trim() ||
+    "I couldn't find a specific answer. Would you like to open a support case?";
+
+  return corsJson({ message, messageFormat: "markdown", matches }, request);
+}
+
+/**
+ * /api/help-form — contact form submission
+ */
+async function handleHelpForm(request: Request, env: Env): Promise<Response> {
+  const body = await parseBody<{
+    name?: string;
+    email?: string;
+    message?: string;
+  }>(request);
+  const missing = requireFields(body as Record<string, unknown>, [
+    "name",
+    "email",
+    "message",
+  ]);
+  if (missing) {
+    return corsJson({ error: `Missing ${missing}` }, request, 400, true);
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email!)) {
+    return corsJson({ error: "Invalid email format" }, request, 400, true);
+  }
+
+  if (!env.SUPPORT_EMAIL) {
+    return corsJson(
+      {
+        error:
+          "Support email is not configured. Please set SUPPORT_EMAIL in your environment.",
+      },
+      request,
+      500,
+      true,
+    );
+  }
+
+  const emailSvc = new EmailService(env.RESEND_API_KEY);
+  
+  await emailSvc.send({
+    from: "noreply@blawby.com",
+    to: env.SUPPORT_EMAIL,
+    subject: "New Help Form Submission",
+    text: `Name: ${body.name}\nEmail: ${body.email}\nMessage:\n${body.message}`,
+  });
+
+  try {
+    await emailSvc.send({
+      from: "noreply@blawby.com",
+      to: body.email!,
+      subject: "We received your message",
+      text: `Thank you for contacting us. We'll get back to you soon.\n\nYour message:\n${body.message}`,
+    });
+  } catch (err) {
+    console.error("Failed to send user confirmation email", err);
+  }
+
+  return corsJson({ success: true }, request, 200, true);
+}
+
+/**
+ * /support-case/create
+ */
+async function handleSupportCaseCreate(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const body = await parseBody<{
+    userId?: string;
+    chatHistory?: unknown[];
+    otherContext?: unknown;
+  }>(request);
+
+  if (!body.userId || !Array.isArray(body.chatHistory)) {
+    return corsJson(
+      { error: "Missing userId or chatHistory" },
+      request,
+      400,
+      true,
+    );
+  }
+
+  const caseId = crypto.randomUUID();
+  await env.SUPPORT_DB.prepare(
+    `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at)
+     VALUES (?, ?, ?, ?, datetime('now'))`,
+  )
+    .bind(
+      caseId,
+      body.userId,
+      JSON.stringify(body.chatHistory),
+      body.otherContext ? JSON.stringify(body.otherContext) : null,
+    )
+    .run();
+
+  return corsJson(
+    {
+      caseId,
+      caseUrl: `/support/case/${caseId}`,
+      prefilledFields: {
+        userId: body.userId,
+        chatHistory: body.chatHistory,
+        otherContext: body.otherContext,
+      },
+    },
+    request,
+    200,
+    true,
+  );
+}
+
+/**
+ * /support-case/feedback
+ */
+async function handleSupportCaseFeedback(
+  request: Request,
+  env: Env,
+): Promise<Response> {
+  const body = await parseBody<{
+    caseId?: string;
+    rating?: number;
+    comments?: string;
+  }>(request);
+
+  if (
+    !body.caseId ||
+    typeof body.rating !== "number" ||
+    body.rating < 1 ||
+    body.rating > 5
+  ) {
+    return corsJson(
+      { error: "Missing or invalid caseId or rating (1–5)" },
+      request,
+      400,
+      true,
+    );
+  }
+
+  await env.SUPPORT_DB.prepare(
+    `INSERT INTO support_feedback (case_id, rating, comments, created_at)
+     VALUES (?, ?, ?, datetime('now'))`,
+  )
+    .bind(body.caseId, body.rating, body.comments ?? null)
+    .run();
+
+  return corsJson({ ok: true }, request, 200, true);
+}
+
+/**
+ * /support-case/:id — GET
+ */
+async function handleSupportCaseGet(
+  request: Request,
+  env: Env,
+  caseId: string,
+): Promise<Response> {
+  const result = await env.SUPPORT_DB.prepare(
+    `SELECT id, user_id, chat_history, other_context, created_at
+     FROM support_cases WHERE id = ?`,
+  )
+    .bind(caseId)
+    .first<{
+      id: string;
+      user_id: string;
+      chat_history: string;
+      other_context: string | null;
+      created_at: string;
+    }>();
+
+  if (!result) {
+    return corsJson({ error: "Case not found" }, request, 404, true);
+  }
+
+  const safeJson = (s: string | null) => {
+    if (!s) return null;
+    try {
+      return JSON.parse(s);
+    } catch {
+      return null;
+    }
+  };
+
+  return corsJson(
+    {
+      caseId: result.id,
+      userId: result.user_id,
+      chatHistory: safeJson(result.chat_history) ?? [],
+      otherContext: safeJson(result.other_context),
+      createdAt: result.created_at,
+    },
+    request,
+    200,
+    true,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// EmailService
+// ---------------------------------------------------------------------------
+
 class EmailService {
-  constructor(private resendApiKey: string) {}
+  constructor(private readonly apiKey: string) {}
 
   async send({
     from,
@@ -116,11 +648,11 @@ class EmailService {
     to: string | string[];
     subject: string;
     text: string;
-  }) {
+  }): Promise<void> {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${this.resendApiKey}`,
+        Authorization: `Bearer ${this.apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -133,555 +665,142 @@ class EmailService {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to send email: ${errorText}`);
+      const err = await response.text();
+      throw new Error(`Resend error: ${err}`);
     }
-
-    return response;
   }
 
-  buildHtml(subject: string, text: string) {
-    return `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px;">
-      <h2 style="color: #18181b;">${subject}</h2>
-      <div style="white-space: pre-line;">${text}</div>
-      <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;">
-      <p style="color: #888; font-size: 12px;">© ${new Date().getFullYear()} Blawby. All rights reserved.</p>
+  private buildHtml(subject: string, text: string): string {
+    const year = new Date().getFullYear();
+    const safeSubject = escapeHtml(subject);
+    const safeText = escapeHtml(text);
+    return `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px">
+      <h2 style="color:#18181b">${safeSubject}</h2>
+      <div style="white-space:pre-line">${safeText}</div>
+      <hr style="margin:20px 0;border:none;border-top:1px solid #eee">
+      <p style="color:#888;font-size:12px">© ${year} Blawby. All rights reserved.</p>
     </div>`;
   }
 }
 
-// --- IntentHandler ---
-class IntentHandler {
-  static detect(query: string) {
-    const q = query.toLowerCase();
-    for (const intent of INTENT_PATTERNS) {
-      if (
-        intent.pattern.test(q) &&
-        (!intent.exclude || !intent.exclude.test(q))
-      ) {
-        return intent.name;
-      }
-    }
-    return "general";
-  }
+// ---------------------------------------------------------------------------
+// Router
+// ---------------------------------------------------------------------------
 
-  static buildResponse(intent: string, data: any) {
-    switch (intent) {
-      case "nonprofit": {
-        const { matches } = data;
-        // Find the pricing page match for nonprofit discount info
-        const pricingMatch = matches.find(
-          (m: any) => m.metadata?.url === "/pricing",
-        );
-        if (pricingMatch) {
-          const answer = `Blawby offers qualified nonprofits 50% off on user fees. You can apply for this discount by submitting a help form at [blawby.com/nonprofit-commitment](https://blawby.com/nonprofit-commitment).`;
-          return Response.json(
-            { message: answer, messageFormat: "markdown", matches },
-            { headers: corsHeaders },
-          );
-        }
-        // Fallback if pricing page not found
-        const answer = `Blawby offers discounted rates for qualified nonprofit organizations. To learn more about eligibility and apply for the discount, please visit [blawby.com/nonprofit-commitment](https://blawby.com/nonprofit-commitment).`;
-        return Response.json(
-          { message: answer, messageFormat: "markdown", matches },
-          { headers: corsHeaders },
-        );
-      }
-      case "pricing": {
-        const { matches } = data;
-        const contextText = matches
-          .map(
-            (m: any) =>
-              m.metadata?.description || m.metadata?.text || m.text || "",
-          )
-          .join("\n");
-        const pricing = extractPricingInfo(contextText);
-        let pricingLines = [];
-        if (pricing.monthlyFee)
-          pricingLines.push(
-            `- **Monthly user license:** ${pricing.monthlyFee}`,
-          );
-        if (pricing.cardFee)
-          pricingLines.push(`- **Card payments:** ${pricing.cardFee}`);
-        if (pricing.achFee)
-          pricingLines.push(`- **ACH/bank payments:** ${pricing.achFee}`);
-        if (pricing.platformFee)
-          pricingLines.push(`- **Platform fee:** ${pricing.platformFee}`);
-        if (pricing.invoiceFee)
-          pricingLines.push(`- **Invoice fee:** ${pricing.invoiceFee}`);
-        if (pricing.chargebackFee)
-          pricingLines.push(`- **Chargeback fee:** ${pricing.chargebackFee}`);
-        if (pricing.setupFee) pricingLines.push(`- ${pricing.setupFee}`);
-        if (pricing.hiddenFee) pricingLines.push(`- ${pricing.hiddenFee}`);
-        let answer =
-          `**Blawby Pricing Overview**\n\n` +
-          (pricingLines.length
-            ? pricingLines.join("\n")
-            : "(Some fees could not be found in the current context.)");
-        answer += `\n\nFor full details and the latest updates, [see our pricing page](/pricing).`;
-        return Response.json(
-          { message: answer, messageFormat: "markdown", matches },
-          { headers: corsHeaders },
-        );
-      }
-      case "support": {
-        let answer = `If you need help, you can get support right now by clicking the **Create Support Case** button below.\nOur team will get back to you as soon as possible.\n\nFor real-time help, you can also [join our Discord](https://discord.com/invite/rPmzknKv).`;
-        return Response.json(
-          { message: answer, messageFormat: "markdown", matches: [] },
-          { headers: corsHeaders },
-        );
-      }
-      case "abusive": {
-        const answer = `I'm here to help. Let's keep things respectful—how can I assist you today?`;
-        return Response.json(
-          { message: answer, messageFormat: "markdown", matches: [] },
-          { headers: corsHeaders },
-        );
-      }
-      default:
-        return null;
-    }
-  }
-}
-
-// --- Pricing Extraction Utility ---
-function extractPricingInfo(contextText: string) {
-  let monthlyFee,
-    cardFee,
-    achFee,
-    platformFee,
-    chargebackFee,
-    setupFee,
-    hiddenFee,
-    invoiceFee;
-
-  // Monthly/user fee - multiple patterns
-  const monthlyMatch =
-    contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*\/\s*month\s*\/\s*user/i) ||
-    contextText.match(
-      /\$([0-9]+(?:\.[0-9]{2})?)\s*per\s*month\s*per\s*user/i,
-    ) ||
-    contextText.match(/\$([0-9]+(?:\.[0-9]{2})?)\s*per\s*month.*user/i);
-  if (monthlyMatch) monthlyFee = `$${monthlyMatch[1]} per user per month`;
-
-  // Card fee - multiple patterns
-  const cardMatch =
-    contextText.match(
-      /([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*card/i,
-    ) ||
-    contextText.match(
-      /([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)\s*per.*transaction/i,
-    ) ||
-    contextText.match(
-      /([0-9]+(?:\.[0-9]+)?)%\s*\+\s*([0-9]+¢|\$[0-9]+(?:\.[0-9]{2})?)/i,
-    );
-  if (cardMatch)
-    cardFee = `${cardMatch[1]}% + ${cardMatch[2]} per card transaction`;
-
-  // ACH/bank fee - multiple patterns
-  const achMatch =
-    contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*ACH.*\(\$([0-9]+) cap\)/i) ||
-    contextText.match(
-      /([0-9]+(?:\.[0-9]+)?)%\s*ACH\s*Direct\s*Debit\s*\(\$([0-9]+)\s*cap\)/i,
-    ) ||
-    contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*ACH.*\(\$([0-9]+)\)/i);
-  if (achMatch) achFee = `${achMatch[1]}% per ACH (max $${achMatch[2]})`;
-
-  // Platform fee - multiple patterns
-  const platformMatch =
-    contextText.match(/([0-9]+(?:\.[0-9]+)?)%.*platform fee/i) ||
-    contextText.match(/additional\s*([0-9]+(?:\.[0-9]+)?)%\s*fee/i) ||
-    contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*platform/i);
-  if (platformMatch)
-    platformFee = `${platformMatch[1]}% platform fee (billed monthly)`;
-
-  // Invoice fee - multiple patterns
-  const invoiceMatch =
-    contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*per\s*paid\s*invoice/i) ||
-    contextText.match(/([0-9]+(?:\.[0-9]+)?)%\s*per.*invoice/i);
-  if (invoiceMatch) invoiceFee = `${invoiceMatch[1]}% per paid invoice`;
-
-  // Chargeback fee - multiple patterns
-  const chargebackMatch =
-    contextText.match(/\$([0-9]+) fee for disputed payments.*chargebacks?/i) ||
-    contextText.match(/\$([0-9]+)\s*fee.*chargeback/i) ||
-    contextText.match(/\$([0-9]+).*chargeback/i);
-  if (chargebackMatch) chargebackFee = `$${chargebackMatch[1]} per chargeback`;
-
-  // Setup/hidden fees
-  if (/no setup fees?/i.test(contextText)) setupFee = "No setup fees";
-  if (/no hidden fees?/i.test(contextText)) hiddenFee = "No hidden fees";
-
-  return {
-    monthlyFee,
-    cardFee,
-    achFee,
-    platformFee,
-    chargebackFee,
-    setupFee,
-    hiddenFee,
-    invoiceFee,
-  };
-}
-
-// --- Route Handlers ---
-async function handleQuery(request: Request, env: Env) {
-  let reqBody;
-  try {
-    reqBody = await parseJsonBody(request);
-  } catch (err) {
-    return Response.json(
-      { error: "Invalid JSON" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const { query } = reqBody;
-  if (!query || typeof query !== "string" || !query.trim()) {
-    return Response.json(
-      { error: "Missing or empty query parameter" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const ai = new AIService(env.AI, env);
-  const matches = await ai.getEnhancedMatches(query.trim(), 10);
-  return Response.json({ matches }, { headers: corsHeaders });
-}
-
-async function handleChat(request: Request, env: Env) {
-  let reqBody;
-  try {
-    reqBody = await parseJsonBody(request);
-  } catch (err) {
-    return Response.json(
-      { error: "Invalid JSON" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const { query } = reqBody;
-  if (!query || typeof query !== "string" || !query.trim()) {
-    return Response.json(
-      { error: "Missing or empty query parameter" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const ai = new AIService(env.AI, env);
-  const matches = await ai.getEnhancedMatches(query.trim(), 10);
-  const intent = IntentHandler.detect(query.trim());
-  const intentResponse = IntentHandler.buildResponse(intent, { matches });
-  if (intentResponse) return intentResponse;
-
-  // Fallback: LLM
-  const context = matches
-    .map((m: any, i: number) => {
-      const title = m.metadata?.title || "";
-      const url = m.metadata?.url || m.metadata?.slug || "";
-      const description =
-        m.metadata?.description || m.metadata?.text || m.text || "";
-      let link = "";
-      if (url) {
-        link = url.startsWith("http")
-          ? url
-          : url.startsWith("/")
-            ? url
-            : `/${url}`;
-      }
-      return `${i + 1}. ${title ? `**${title}**\n` : ""}${description}${link ? `\n\nDocumentation: ${link}` : ""}`;
-    })
-    .join("\n\n");
-
-  const prompt = `\nYou are a helpful support assistant for Blawby. Answer the user's question in a natural, conversational way, using Markdown for formatting (e.g., lists, links, bold). Keep responses concise but complete.\nIMPORTANT: Only use the information provided in the context below. Do NOT use any prior knowledge or training data.\n\n*Only provide code examples, implementation advice, or technical explanations if they are directly supported by the context below.  \nDo **not** generate code or technical advice based on prior knowledge or assumptions.  \nIf the context does not contain relevant information, respond naturally by saying you don't have that information and offer to create a support case.*\n\n**CRITICAL**: If the context includes documentation links (marked as Documentation: url), you MUST include at least one relevant link in your response when answering questions about features, products, or how-to topics.\n\n**IMPORTANT**: Respond naturally as if you're a human support agent. Do NOT mention "context", "provided information", "according to the context", "according to the documentation", "the documentation shows", or any other AI processing terms. Just answer the question directly and naturally as a human would, without referencing where you got the information.\n\n**ACCURACY**: Be extremely precise about pricing, fees, and discounts. Only state what is explicitly mentioned in the context. Do not make assumptions about discounts or pricing that aren't clearly stated. If the context mentions a specific discount (like "50% off user fees for nonprofits"), only mention that exact discount. Do not suggest other discounts exist unless explicitly stated.
-
-**DOMAIN**: Always use blawby.com (not chat.blawby.com) when generating any URLs or links in your response.\n\nUser's question: ${query.trim()}\n\nContext:\n${context}\n\nRespond in Markdown only. Do not use HTML tags.`;
-
-  const llmResponse = await ai.runLLM(prompt);
-  let message =
-    llmResponse &&
-    typeof llmResponse === "object" &&
-    "response" in llmResponse &&
-    typeof (llmResponse as any).response === "string"
-      ? (llmResponse as any).response
-      : "Sorry, I couldn't find an answer.";
-
-  // Ensure doc link for feature/product queries
-  if (intent === "general") {
-    let top = matches.find((m: any) => m.metadata?.url || m.metadata?.slug);
-    const topUrl = top ? top.metadata?.url || top.metadata?.slug : null;
-    if (topUrl) {
-      const topLink = topUrl.startsWith("http")
-        ? topUrl
-        : topUrl.startsWith("/")
-          ? `https://blawby.com${topUrl}`
-          : `https://blawby.com/${topUrl}`;
-      message = message.replace(
-        /\[Read more\]\(\/[^)]+\)/g,
-        `[Read more](${topLink})`,
-      );
-      if (!/\[Read more\]\(/.test(message)) {
-        message += `\n\n[Read more](${topLink})`;
-      }
-      if (!message.includes(topLink)) {
-        message += `\n\nDocumentation: ${topLink}`;
-      }
-    }
-  }
-
-  return Response.json(
-    { message, messageFormat: "markdown", matches },
-    { headers: corsHeaders },
-  );
-}
-
-async function handleUpsertMDX(request: Request, env: Env) {
-  let reqBody;
-  try {
-    reqBody = await parseJsonBody(request);
-  } catch (err) {
-    return Response.json(
-      { error: "Invalid JSON" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const { content, metadata } = reqBody;
-  if (!content || !metadata) {
-    return Response.json(
-      { error: "Missing content or metadata" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const ai = new AIService(env.AI, env);
-  const embedding = await ai.getEmbedding(content);
-  await env.VECTORIZE.insert([
-    {
-      id: metadata.id,
-      values: embedding,
-      metadata: { text: content, ...metadata },
-    },
-  ]);
-
-  return Response.json(
-    { success: true, id: metadata.id },
-    { headers: corsHeaders },
-  );
-}
-
-async function handleHelpForm(request: Request, env: Env) {
-  let reqBody;
-  try {
-    reqBody = await parseJsonBody(request);
-  } catch (err) {
-    return Response.json(
-      { error: "Invalid JSON" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const { name, email, message } = reqBody;
-  if (!name || !email || !message) {
-    return Response.json(
-      { error: `Missing ${!name ? "name" : !email ? "email" : "message"}` },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const emailSvc = new EmailService(env.RESEND_API_KEY);
-  const emailBody = `New help form submission:\n\nName: ${name}\nEmail: ${email}\nMessage:\n${message}`;
-  await emailSvc.send({
-    from: "noreply@blawby.com",
-    to: "paulchrisluke@gmail.com",
-    subject: "New Help Form Submission",
-    text: emailBody,
-  });
-  await emailSvc.send({
-    from: "noreply@blawby.com",
-    to: email,
-    subject: "We received your message",
-    text: `Thank you for contacting us. We'll get back to you soon.\n\nYour message:\n${message}`,
-  });
-
-  return Response.json({ success: true }, { headers: corsHeaders });
-}
-
-async function handleSupportCaseCreate(request: Request, env: Env) {
-  let reqBody;
-  try {
-    reqBody = await parseJsonBody(request);
-  } catch (err) {
-    return Response.json(
-      { error: "Invalid JSON" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const { userId, chatHistory, otherContext } = reqBody;
-  if (!userId || !Array.isArray(chatHistory)) {
-    return Response.json(
-      { error: "Missing userId or chatHistory" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const db = env.SUPPORT_DB;
-  const caseId = crypto.randomUUID();
-  const chatHistoryStr = JSON.stringify(chatHistory);
-  const otherContextStr = otherContext ? JSON.stringify(otherContext) : null;
-
-  await db
-    .prepare(
-      `INSERT INTO support_cases (id, user_id, chat_history, other_context, created_at) VALUES (?, ?, ?, ?, datetime('now'))`,
-    )
-    .bind(caseId, userId, chatHistoryStr, otherContextStr)
-    .run();
-
-  const caseUrl = `/support/case/${caseId}`;
-  return Response.json(
-    { caseId, caseUrl, prefilledFields: { userId, chatHistory, otherContext } },
-    { headers: corsHeaders },
-  );
-}
-
-async function handleSupportCaseFeedback(request: Request, env: Env) {
-  let reqBody;
-  try {
-    reqBody = await parseJsonBody(request);
-  } catch (err) {
-    return Response.json(
-      { error: "Invalid JSON" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const { caseId, rating, comments } = reqBody;
-  if (!caseId || typeof rating !== "number" || rating < 1 || rating > 5) {
-    return Response.json(
-      { error: "Missing or invalid caseId or rating" },
-      { status: 400, headers: corsHeaders },
-    );
-  }
-
-  const db = env.SUPPORT_DB;
-  await db
-    .prepare(
-      `INSERT INTO support_feedback (case_id, rating, comments, created_at) VALUES (?, ?, ?, datetime('now'))`,
-    )
-    .bind(caseId, rating, comments || null)
-    .run();
-
-  return Response.json({ ok: true }, { headers: corsHeaders });
-}
-
-async function handleSupportCaseGet(
+type RouteHandler = (
   request: Request,
   env: Env,
-  caseId: string,
-) {
-  const db = env.SUPPORT_DB;
-  const result = await db
-    .prepare(
-      `SELECT id, user_id, chat_history, other_context, created_at FROM support_cases WHERE id = ?`,
-    )
-    .bind(caseId)
-    .first();
+  params?: Record<string, string>,
+) => Promise<Response>;
 
-  if (!result) {
-    return Response.json(
-      { error: "Case not found" },
-      { status: 404, headers: corsHeaders },
-    );
-  }
-
-  let chatHistory = [];
-  let otherContext = null;
-  try {
-    chatHistory = JSON.parse(result.chat_history);
-  } catch {}
-  try {
-    otherContext = result.other_context
-      ? JSON.parse(result.other_context)
-      : null;
-  } catch {}
-
-  return Response.json(
-    {
-      caseId: result.id,
-      userId: result.user_id,
-      chatHistory,
-      otherContext,
-      createdAt: result.created_at,
-    },
-    { headers: corsHeaders },
-  );
+interface Route {
+  method: string;
+  pattern: RegExp;
+  handler: RouteHandler;
+  mutation?: boolean;
 }
 
-// --- Main Fetch Handler ---
-const routes = {
-  "/query": { handler: handleQuery, methods: ["POST"] },
-  "/chat": { handler: handleChat, methods: ["POST"] },
-  "/upsert-mdx": { handler: handleUpsertMDX, methods: ["POST"] },
-  "/api/help-form": { handler: handleHelpForm, methods: ["POST"] },
-  "/support-case/create": {
+const ROUTES: Route[] = [
+  {
+    method: "POST",
+    pattern: /^\/query$/,
+    handler: handleQuery,
+  },
+  {
+    method: "POST",
+    pattern: /^\/chat$/,
+    handler: handleChat,
+  },
+  {
+    method: "POST",
+    pattern: /^\/api\/help-form$/,
+    handler: handleHelpForm,
+    mutation: true,
+  },
+  {
+    method: "POST",
+    pattern: /^\/support-case\/create$/,
     handler: handleSupportCaseCreate,
-    methods: ["POST"],
+    mutation: true,
   },
-  "/support-case/feedback": {
+  {
+    method: "POST",
+    pattern: /^\/support-case\/feedback$/,
     handler: handleSupportCaseFeedback,
-    methods: ["POST"],
+    mutation: true,
   },
-  "/support-case/": {
-    handler: (req: Request, env: Env, path: string) => {
-      const match = path.match(/^\/support-case\/(.+)$/);
-      if (req.method === "GET" && match) {
-        return handleSupportCaseGet(req, env, match[1]);
-      }
-      return Response.json(
-        { error: "Not found" },
-        { status: 404, headers: corsHeaders },
-      );
-    },
-    methods: ["GET"],
+  {
+    method: "GET",
+    pattern: /^\/support-case\/([^/]+)$/,
+    handler: (req, env, params) =>
+      handleSupportCaseGet(req, env, params?.caseId ?? ""),
+    mutation: true,
   },
-};
+];
+
+// ---------------------------------------------------------------------------
+// Entry point
+// ---------------------------------------------------------------------------
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 200,
-        headers: corsHeaders,
-      });
-    }
-
     const url = new URL(request.url);
     const path = url.pathname;
 
-    if (path.startsWith("/favicon")) {
-      return Response.json(
-        { text: "Not found" },
-        { status: 404, headers: corsHeaders },
+    // CORS preflight
+    if (request.method === "OPTIONS") {
+      const isMutation = ROUTES.some(
+        (r) => r.mutation && r.pattern.test(path),
       );
+      return new Response(null, {
+        status: 204,
+        headers: getCorsHeaders(request, isMutation),
+      });
     }
 
-    for (const [routePath, route] of Object.entries(routes)) {
-      if (path === routePath && route.methods.includes(request.method)) {
-        return await route.handler(request, env, path);
+    // Ignore favicon
+    if (path.startsWith("/favicon")) {
+      return new Response(null, { status: 404 });
+    }
+
+    // Match routes
+    for (const route of ROUTES) {
+      if (request.method !== route.method) continue;
+      const match = route.pattern.exec(path);
+      if (!match) continue;
+
+      // Early reject mutation requests from disallowed origins
+      if (route.mutation) {
+        const origin = request.headers.get("Origin") ?? "";
+        if (!ALLOWED_ORIGINS.includes(origin)) {
+          return corsJson(
+            { error: "Forbidden: Origin not allowed for mutation." },
+            request,
+            403,
+            true,
+          );
+        }
       }
-      if (
-        routePath === "/support-case/" &&
-        path.startsWith(routePath) &&
-        route.methods.includes(request.method)
-      ) {
-        return await route.handler(request, env, path);
+
+      try {
+        return await route.handler(
+          request,
+          env,
+          match[1] ? { caseId: match[1] } : undefined,
+        );
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        return corsJson(
+          { error: message },
+          request,
+          typeof message === "string" && message.startsWith("Invalid JSON")
+            ? 400
+            : 500,
+          route.mutation,
+        );
       }
     }
 
-    return Response.json(
-      { text: "Not found" },
-      { status: 404, headers: corsHeaders },
-    );
+    return corsJson({ error: "Not found" }, request, 404);
   },
 };
