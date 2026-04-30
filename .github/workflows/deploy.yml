@@ -37,8 +37,11 @@ jobs:
           R2_CONTENT_BUCKET: ${{ vars.R2_CONTENT_BUCKET }}
         run: pnpm run r2:upload-content
 
+      - name: List Cloudflare Pages Projects
+        run: pnpm exec wrangler pages project list
+
       - name: Deploy to Cloudflare Pages
-        run: pnpm exec wrangler pages deploy out --project-name=${{ secrets.CF_PAGES_PROJECT_NAME || 'blawby-cloudflare-marketing' }}
+        run: pnpm exec wrangler pages deploy out --project-name=${{ vars.CF_PAGES_PROJECT_NAME }}
 
       - name: Deploy Worker
         run: pnpm exec wrangler deploy
