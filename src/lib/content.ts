@@ -22,7 +22,7 @@ export async function getAllContent(): Promise<ContentItem[]> {
   const isDev = process.env.NODE_ENV === "development";
   if (_cache && !isDev) return _cache;
 
-  const baseDirs = ["lessons", "solutions", "docs"];
+  const baseDirs = ["lessons", "solutions", "docs", "articles"];
   const items: ContentItem[] = [];
   const seenHrefs = new Set<string>();
 

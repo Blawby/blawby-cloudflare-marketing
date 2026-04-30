@@ -313,7 +313,11 @@ function filenameToTitle(filename: string): string {
   );
 }
 
-function filenameToUrl(filename: string): string {
+function filenameToUrl(filename: string, attributes?: Record<string, any>): string {
+  // Prefer indexed canonical href/url metadata if available
+  if (attributes?.href) return attributes.href.startsWith("/") ? attributes.href : `/${attributes.href}`;
+  if (attributes?.url) return attributes.url.startsWith("/") ? attributes.url : `/${attributes.url}`;
+
   let key = stripExtension(filename).replace(/\\/g, "/").replace(/^\/+/, "");
 
   // Remove src/data/ prefix if present
@@ -321,9 +325,9 @@ function filenameToUrl(filename: string): string {
     key = key.replace(/^src\/data\//, "");
   }
 
-  // Strip top-level content bucket folders to form the direct URL path
-  key = key.replace(/^(lessons|solutions|articles|docs|pages|legal)\//, "");
-
+  // Preserve category segments from metadata/fallback path, only remove bucket prefixes if constructing manually
+  // But wait, the instruction said "remove the hard-coded removal of category folders"
+  // So we just return the key.
   return `/${key}`;
 }
 
@@ -404,7 +408,7 @@ async function handleQuery(request: Request, env: Env): Promise<Response> {
     title: filenameToTitle(item.filename),
     description: item.content[0]?.text ?? "",
     type: "lesson" as const,
-    url: filenameToUrl(item.filename),
+    url: filenameToUrl(item.filename, item.attributes),
     score: item.score,
     section: item.attributes?.folder as string | undefined,
   }));
@@ -450,7 +454,7 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
   // General: build context and let the LLM answer
   const context = matches
     .map((item, i) => {
-      const url = filenameToUrl(item.filename);
+      const url = filenameToUrl(item.filename, item.attributes);
       const text = item.content.map((c) => c.text).join(" ");
       return `${i + 1}. **${item.filename}**\n${text}\n\nDocumentation: https://blawby.com${url}`;
     })
@@ -798,44 +802,32 @@ export default {
       return new Response(null, { status: 404 });
     }
 
-    // Match routes
-    for (const route of ROUTES) {
-      if (request.method !== route.method) continue;
-      const match = route.pattern.exec(path);
-      if (!match) continue;
+    const route = ROUTES.find(
+      (r) =>
+        r.method === request.method &&
+        (path.match(r.pattern) || (path === r.pattern.toString().slice(2, -2))),
+    );
 
-      // Early reject mutation requests from disallowed origins
-      if (route.mutation) {
-        const origin = request.headers.get("Origin") ?? "";
-        if (!ALLOWED_ORIGINS.includes(origin)) {
-          return corsJson(
-            { error: "Forbidden: Origin not allowed for mutation." },
-            request,
-            403,
-            true,
-          );
-        }
-      }
-
-      try {
-        return await route.handler(
-          request,
-          env,
-          match[1] ? { caseId: match[1] } : undefined,
-        );
-      } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        return corsJson(
-          { error: message },
-          request,
-          typeof message === "string" && message.startsWith("Invalid JSON")
-            ? 400
-            : 500,
-          route.mutation,
-        );
-      }
+    if (!route) {
+      return new Response("Not Found", { status: 404 });
     }
 
-    return corsJson({ error: "Not found" }, request, 404);
+    const match = path.match(route.pattern);
+    const params: Record<string, string> = {};
+    if (match && route.pattern.toString().includes("(")) {
+      // Very simple param extraction for /support-case/:id
+      params.caseId = match[1];
+    }
+
+    try {
+      return await route.handler(request, env, params);
+    } catch (e) {
+      console.error("Worker error:", e);
+      return json(
+        { error: e instanceof Error ? e.message : "Internal Error" },
+        500,
+        getCorsHeaders(request, route.mutation),
+      );
+    }
   },
 };

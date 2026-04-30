@@ -66,12 +66,13 @@ jobs:
       - name: List Cloudflare Pages Projects
         run: pnpm exec wrangler pages project list
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages (Preview)
         id: deploy-pages
         run: |
           set -o pipefail
           pnpm exec wrangler pages deploy out \
-            --project-name=${{ vars.CF_PAGES_PROJECT_NAME }} 2>&1 | tee deploy-output.txt
+            --project-name=${{ vars.CF_PAGES_PROJECT_NAME }} \
+            --branch=preview-${{ github.run_id }} 2>&1 | tee deploy-output.txt
           pages_url=$(grep -Eo 'https://[^[:space:]]+\.pages\.dev' deploy-output.txt | tail -n 1)
           if [ -z "$pages_url" ]; then
             echo "Could not find Cloudflare Pages URL in deploy output"
@@ -89,6 +90,13 @@ jobs:
             ${{ steps.deploy-pages.outputs.url }}/guides/get-started
           configPath: ./.lighthouserc.json
           uploadArtifacts: true
+
+      - name: Promote to Production
+        run: |
+          pnpm exec wrangler pages promote \
+            --project-name=${{ vars.CF_PAGES_PROJECT_NAME }} \
+            --branch=preview-${{ github.run_id }} \
+            --to=master
 
       - name: Deploy Worker
         run: pnpm exec wrangler deploy

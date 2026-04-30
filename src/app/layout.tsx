@@ -1,5 +1,6 @@
 import CookieConsentComponent from "@/components/cookie-consent";
 import { Footer } from "@/components/footer";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { WebVitals } from "@/components/web-vitals";
 import { siteConfig } from "@/config/site";
 import { defaultSeoImage, getWebsiteSchema } from "@/utils/seo";
@@ -7,7 +8,6 @@ import { clsx } from "clsx";
 import { GeistMono } from "geist/font/mono";
 import { Metadata } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 import type React from "react";
 import "./globals.css";
 
@@ -117,35 +117,7 @@ export default function RootLayout({
         <div className="isolate">{children}</div>
         <Footer />
         <CookieConsentComponent />
-        {/* Google Analytics gtag.js */}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-          />
-        )}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <Script
-            id="google-analytics"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                // Define initAnalytics but don't call config yet
-                window.initAnalytics = function() {
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-                };
-                window.disableAnalytics = function() {
-                  gtag('consent', 'update', {
-                    'analytics_storage': 'denied'
-                  });
-                };
-              `,
-            }}
-          />
-        )}
+        <GoogleAnalytics />
       </body>
     </html>
   );

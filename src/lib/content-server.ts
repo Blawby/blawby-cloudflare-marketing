@@ -28,7 +28,10 @@ export async function getContentComponent(
   const MDX_ROOT = path.join(process.cwd(), "src/data");
   const resolvedPath = path.resolve(MDX_ROOT, origin, folder, `${slug}.mdx`);
 
-  if (!resolvedPath.startsWith(MDX_ROOT)) {
+  // Secure path check: ensure resolvedPath is strictly within MDX_ROOT
+  // Using path.relative and checking for '..' is more robust than startsWith
+  const relativePath = path.relative(MDX_ROOT, resolvedPath);
+  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
     console.error(
       `[Content Server] Path traversal attempt blocked: ${resolvedPath}`,
     );
@@ -52,7 +55,13 @@ export async function getContentComponent(
     }
 
     if (origin === "solutions") {
-      return (await import(`@/data/solutions/${folder === "solutions" ? "" : folder}/${slug}.mdx`)).default;
+      const solutionPath = folder === "solutions" || folder === "." ? `${slug}.mdx` : `${folder}/${slug}.mdx`;
+      return (await import(`@/data/solutions/${solutionPath}`)).default;
+    }
+
+    if (origin === "articles") {
+      const articlePath = folder === "articles" || folder === "." ? `${slug}.mdx` : `${folder}/${slug}.mdx`;
+      return (await import(`@/data/articles/${articlePath}`)).default;
     }
 
     console.error(`[Content Server] Unknown origin: ${origin}`);

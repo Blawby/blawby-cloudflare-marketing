@@ -38,6 +38,7 @@ export const NAV_SECTIONS = [
   // Solutions
   { id: "ai-chat",             label: "AI Chat",             href: "/ai-chat/ai-chat-client-acquisition" },
   { id: "business-strategy",   label: "Business Strategy",   href: "/business-strategy/future-proof-revenue" },
+  { id: "compliance",          label: "Compliance",          href: "/compliance/iolta-compliance" },
 ] as const;
 
 // Dev-only duplicate ID check
@@ -122,10 +123,8 @@ function PrimaryNav({ className }: { className?: string }) {
       aria-label="Primary navigation"
       className={clsx("flex items-stretch gap-x-0.5", className)}
     >
-      {/* Products — top-level index page */}
-      <NavTab href="/products" isActive={isProductActive}>
-        Products
-      </NavTab>
+      {/* Products Dropdown */}
+      <ProductsDropdown isActive={isProductActive} />
 
       {/* Docs */}
       <NavTab href="/docs" isActive={isDocsActive}>
@@ -244,6 +243,7 @@ function MobileNavigation({
   const activeSection = useActiveSection();
   const isProductActive = PRODUCT_SECTION_IDS.has(activeSection as any) || activeSection === "products";
   const isDocsActive    = DOCS_SECTION_IDS.has(activeSection as any) || activeSection === "docs";
+  const isSolutionsActive = SOLUTIONS_SECTION_IDS.has(activeSection as any) || activeSection === "solutions" || activeSection === "articles";
 
   return (
     <Dialog open={open} onClose={onClose} className="lg:hidden">
@@ -251,7 +251,7 @@ function MobileNavigation({
       <div className="fixed inset-0 flex justify-end pl-11">
         <DialogPanel className="w-full max-w-xs bg-white px-4 py-5 ring ring-gray-950/10 sm:px-6 dark:bg-gray-950 dark:ring-white/10">
           <div className="flex justify-end">
-            <CloseButton as={IconButton} onClick={onClose}>
+            <CloseButton as={IconButton} onClick={onClose} aria-label="Close menu">
               <CloseIcon className="stroke-gray-950 dark:stroke-white" />
             </CloseButton>
           </div>
@@ -291,7 +291,7 @@ function MobileNavigation({
               href="/solutions"
               className={clsx(
                 "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                activeSection === "solutions" || activeSection === "articles"
+                isSolutionsActive
                   ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
                   : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
               )}
@@ -358,7 +358,11 @@ function SiteNavigation() {
           Register
         </Button>
       </div>
-      <IconButton className="lg:hidden" onClick={() => setMobileMenuOpen(true)}>
+      <IconButton 
+        className="lg:hidden" 
+        onClick={() => setMobileMenuOpen(true)}
+        aria-label="Open main menu"
+      >
         <MenuIcon className="fill-gray-950 dark:fill-white" />
       </IconButton>
       <MobileNavigation

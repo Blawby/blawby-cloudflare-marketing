@@ -17,20 +17,40 @@ function getFileMtime(filePath: string): string | null {
   }
 }
 
+function parseToIso(dateStr: string | null | undefined): string {
+  if (!dateStr) return new Date().toISOString();
+  const timestamp = Date.parse(dateStr);
+  if (isNaN(timestamp)) return new Date().toISOString();
+  return new Date(timestamp).toISOString();
+}
+
+function getTimestamp(dateStr: string | null | undefined): number {
+  if (!dateStr) return 0;
+  const timestamp = Date.parse(dateStr);
+  return isNaN(timestamp) ? 0 : timestamp;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = siteConfig.url;
   const urlMap = new Map<string, MetadataRoute.Sitemap[0]>();
   const content = await getAllContent();
 
   // 1. Add home page (latest mod time of any content)
-  const latestContentMod = content.reduce((latest, item) => {
-    const mod = item.updatedAt || item.createdAt || "";
-    return mod > latest ? mod : latest;
-  }, "");
+  const latestTimestamp = content.reduce((latest, item) => {
+    const itemMod = Math.max(
+      getTimestamp(item.updatedAt),
+      getTimestamp(item.createdAt)
+    );
+    return itemMod > latest ? itemMod : latest;
+  }, 0);
+
+  const latestContentMod = latestTimestamp > 0 
+    ? new Date(latestTimestamp).toISOString() 
+    : new Date().toISOString();
 
   urlMap.set(siteUrl, {
     url: siteUrl,
-    lastModified: latestContentMod || new Date().toISOString(),
+    lastModified: latestContentMod,
     changeFrequency: "daily",
     priority: 1.0,
   });
@@ -63,10 +83,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 3. Add dynamic content (lessons/articles)
   for (const item of content) {
     const url = `${siteUrl}${item.href}`;
+    const itemTimestamp = Math.max(
+      getTimestamp(item.updatedAt),
+      getTimestamp(item.createdAt)
+    );
+    
     urlMap.set(url, {
       url,
-      lastModified:
-        item.updatedAt || item.createdAt || new Date().toISOString(),
+      lastModified: itemTimestamp > 0 
+        ? new Date(itemTimestamp).toISOString() 
+        : new Date().toISOString(),
       changeFrequency: "daily",
       priority: 0.7,
     });

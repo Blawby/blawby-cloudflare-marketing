@@ -1,11 +1,11 @@
 ---
-title: "API Reference"
+title: "Blawby API Reference | Technical Documentation"
 metaTitle: "API Reference — Blawby"
-desc: "Developer API reference for Blawby endpoints, authentication, webhooks, and SDK integration."
+desc: "Explore the Blawby API reference for technical specs on payments and intake. Secure integration for legal tech."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
-category: "reference"
+category: "guides"
 contentType: "reference"
 order: 10
 createdAt: "02/15/2024"
@@ -28,11 +28,11 @@ keywords:
 summary: "Complete reference documentation for Blawby API endpoints, authentication, webhooks, and SDK usage. Technical specifications for developers."
 schemaType: "TechArticle"
 faq:
-  - Question: "What authentication methods does Blawby support?"
+  - question: "What authentication methods does Blawby support?"
     answer: "Blawby supports API key authentication, OAuth 2.0, and session-based authentication for different integration scenarios."
-  - Question: "How do I handle API rate limits?"
+  - question: "How do I handle API rate limits?"
     answer: "Implement exponential backoff with jitter, monitor response headers for rate limit indicators, and provide user-friendly error messages."
-  - Question: "What are the best practices for webhook security?"
+  - question: "What are the best practices for webhook security?"
     answer: "Always verify webhook signatures using HMAC-SHA256, store secrets securely, use HTTPS endpoints, and implement idempotency keys for reliable event processing."
 noindex: false
 ---
@@ -311,7 +311,7 @@ import { BlawbyClient } from "@blawby/sdk";
 const client = new BlawbyClient({
   apiKey: process.env.BLAWBY_API_KEY,
   practiceId: process.env.PRACTICE_ID,
-  baseUrl: "https://api.blawby.com",
+  baseUrl: "https://api.api.blawby.com",
 });
 ```
 
@@ -405,8 +405,8 @@ class BlawbyClient:
 
 This reference documentation provides comprehensive technical specifications for secure and efficient Blawby API integration.
 
-For SDK code samples and integration walkthroughs, see the [SDK Examples](/docs/sdk-examples) page.
+For SDK code samples and integration walkthroughs, see our developer resources.
 
 ---
 
-Ready to integrate Blawby into your practice? [Contact our developer support team](/contact) or explore our [SDK examples](/docs/sdk-examples) to get started.
+Ready to integrate Blawby into your practice? [Contact our developer support team](/contact) to get started.
