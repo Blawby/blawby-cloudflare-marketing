@@ -143,12 +143,19 @@ for (const file of files) {
     }
   }
 
-  const canonicalMatch = html.match(
-    /<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']*)["'][^>]*>/i,
-  );
-  if (canonicalMatch) {
-    const canonical = canonicalMatch[1];
+  let canonical = null;
+  const linkTags = html.matchAll(/<link\s+([^>]*?)>/gi);
+  for (const [_, attributes] of linkTags) {
+    if (/\brel=["']canonical["']/i.test(attributes)) {
+      const hrefMatch = attributes.match(/\bhref=["']([^"']*)["']/i);
+      if (hrefMatch) {
+        canonical = hrefMatch[1];
+        break;
+      }
+    }
+  }
 
+  if (canonical) {
     try {
       const urlObj = new URL(canonical);
       if (urlObj.protocol !== "https:" || urlObj.hostname !== "blawby.com") {

@@ -22,7 +22,6 @@
  */
 
 import { spawn } from "node:child_process";
-import { readFileSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -133,7 +132,7 @@ function fmToR2Meta(fm) {
   if (allKeywords.length) m["keywords"] = allKeywords.join(", ").slice(0, 512);
 
   if (fm.faq && Array.isArray(fm.faq)) {
-    let faqToStore: any[] = [];
+    let faqToStore = [];
     for (const item of fm.faq) {
       const nextSlice = [...faqToStore, item];
       if (JSON.stringify(nextSlice).length <= 1024) {
@@ -207,14 +206,15 @@ async function uploadFile(file) {
   // Parse frontmatter for structured metadata
   let metaFlags = [];
   try {
-    const source = readFileSync(file, "utf-8");
+    const source = await fs.readFile(file, "utf-8");
     const fm = parseFrontmatter(source);
     const meta = fmToR2Meta(fm);
     for (const [k, v] of Object.entries(meta)) {
       // Wrangler custom metadata: --header "x-amz-meta-<key>: <value>"
       metaFlags.push("--header", `x-amz-meta-${k}: ${v}`);
     }
-  } catch {
+  } catch (err) {
+    console.warn(`Warning: Failed to parse frontmatter for ${file} - ${err.message}`);
     // If parsing fails, upload without metadata
   }
 

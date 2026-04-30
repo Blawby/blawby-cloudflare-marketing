@@ -25,7 +25,8 @@ import fs from "fs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import path from "path";
-function escapeJsonLd(data: any) {
+function escapeJsonLd(data: unknown) {
+  if (data === null || data === undefined) return "";
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }
 
@@ -33,7 +34,7 @@ export async function generateStaticParams() {
   const content = await getAllContent();
 
   return content.map((item) => ({
-    category: item.category,
+    category: item.category.toLowerCase(),
     slug: item.slug,
   }));
 }
@@ -107,16 +108,17 @@ export default async function Page({
   const lessonData = isLesson ? await getLesson(slug) : null;
   const structuredData = generateContentStructuredData(content);
 
+  // Backlink: lessons → /products, docs → /docs, articles → /solutions
+  const parentLink =
+    content.origin === "lessons"
+      ? { label: "Products", href: "/products" }
+      : content.origin === "docs"
+      ? { label: "Docs", href: "/docs" }
+      : { label: "Solutions", href: "/solutions" };
+
   const breadcrumbItems = [
     { name: "Home", url: absoluteUrl() },
-    ...(isLesson && lessonData?.module
-      ? [
-          {
-            name: lessonData.module.title,
-            url: absoluteUrl(`/#${lessonData.module.id}`),
-          },
-        ]
-      : []),
+    { name: parentLink.label, url: absoluteUrl(parentLink.href) },
     { name: content.title || "", url: absoluteUrl(content.href) },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
@@ -135,11 +137,12 @@ export default async function Page({
   }
 
   try {
+    const safeFolder = content.folder ?? "";
     const filePath = path.join(
       process.cwd(),
       "src/data",
       content.origin,
-      content.folder === content.origin ? "" : content.folder,
+      content.folder === content.origin ? "" : safeFolder,
       `${slug}.mdx`,
     );
     const mdxContent = fs.readFileSync(filePath, "utf-8");
@@ -178,17 +181,8 @@ export default async function Page({
       breadcrumbs={
         <Breadcrumbs>
           <BreadcrumbHome />
-          {isLesson && lessonData?.module && (
-            <>
-              <BreadcrumbSeparator className="max-md:hidden" />
-              <Breadcrumb
-                href={`/#${lessonData.module.id}`}
-                className="max-md:hidden"
-              >
-                {lessonData.module.title}
-              </Breadcrumb>
-            </>
-          )}
+          <BreadcrumbSeparator />
+          <Breadcrumb href={parentLink.href}>{parentLink.label}</Breadcrumb>
           <BreadcrumbSeparator />
           <Breadcrumb>{content.title}</Breadcrumb>
         </Breadcrumbs>

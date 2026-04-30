@@ -47,7 +47,14 @@ jobs:
       - name: Lychee link check
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --base "${{ github.workspace }}/out" --root-dir "${{ github.workspace }}/out" "./out/**/*.html"
+          args: >
+            --offline
+            --base "${{ github.workspace }}/out"
+            --root-dir "${{ github.workspace }}/out"
+            --exclude "favicon\.ico"
+            --exclude "\.ico\?"
+            --exclude "site\.webmanifest"
+            "./out/**/*.html"
           fail: true
           failIfEmpty: true
 

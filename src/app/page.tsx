@@ -63,7 +63,6 @@ export default async function Page() {
 
   const breadcrumbItems = [
     { name: "Home", url: absoluteUrl() },
-    { name: "Overview", url: absoluteUrl() },
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 

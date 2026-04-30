@@ -4,6 +4,13 @@ import { useEffect } from "react";
 import * as CookieConsent from "vanilla-cookieconsent";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 
+declare global {
+  interface Window {
+    initAnalytics?: () => void;
+    disableAnalytics?: () => void;
+  }
+}
+
 export default function CookieConsentComponent() {
   useEffect(() => {
     (CookieConsent.run as any)({
@@ -83,16 +90,16 @@ export default function CookieConsentComponent() {
         },
       },
       callbacks: {
-        onAccept: ({ cookie }: any) => {
+        onFirstConsent: ({ cookie }: any) => {
           if (cookie.categories.includes("analytics")) {
-            (window as any).initAnalytics?.();
+            window.initAnalytics?.();
           }
         },
-        onChange: ({ cookie }: any) => {
+        onConsent: ({ cookie }: any) => {
           if (cookie.categories.includes("analytics")) {
-            (window as any).initAnalytics?.();
+            window.initAnalytics?.();
           } else {
-            (window as any).disableAnalytics?.();
+            window.disableAnalytics?.();
           }
         },
       },

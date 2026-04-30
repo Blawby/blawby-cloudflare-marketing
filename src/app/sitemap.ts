@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 1. Add home page (latest mod time of any content)
   const latestContentMod = content.reduce((latest, item) => {
-    const mod = item.updatedAt || "";
+    const mod = item.updatedAt || item.createdAt || "";
     return mod > latest ? mod : latest;
   }, "");
 
@@ -39,6 +39,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = [
     { path: "/pricing", file: "src/data/pages/pricing.mdx", priority: 0.8 },
     { path: "/help", file: "src/data/pages/help.mdx", priority: 0.8 },
+    { path: "/products", file: "src/app/(sidebar)/products/page.tsx", priority: 0.9 },
+    { path: "/solutions", file: "src/app/(sidebar)/solutions/page.tsx", priority: 0.8 },
+    { path: "/docs", file: "src/app/(sidebar)/docs/page.tsx", priority: 0.8 },
     {
       path: "/nonprofit-commitment",
       file: "src/data/pages/nonprofit-commitment.mdx",

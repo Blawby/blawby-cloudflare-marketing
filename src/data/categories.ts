@@ -48,10 +48,10 @@ export const userJourneyCategories: Category[] = [
     slug: "quick-start",
   },
   {
-    id: "core-features",
-    name: "Core Features",
-    description: "Essential features for day-to-day operations",
-    slug: "core-features",
+    id: "features",
+    name: "Features",
+    description: "A deeper dive into the platform.",
+    slug: "features",
   },
   {
     id: "advanced-features",

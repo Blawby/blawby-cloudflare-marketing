@@ -1,5 +1,6 @@
 import CookieConsentComponent from "@/components/cookie-consent";
 import { Footer } from "@/components/footer";
+import { WebVitals } from "@/components/web-vitals";
 import { siteConfig } from "@/config/site";
 import { defaultSeoImage, getWebsiteSchema } from "@/utils/seo";
 import { clsx } from "clsx";
@@ -112,6 +113,7 @@ export default function RootLayout({
         {/* Manifest is handled by metadata.manifest, no need for manual <link> */}
       </head>
       <body className="dark:bg-gray-950">
+        <WebVitals />
         <div className="isolate">{children}</div>
         <Footer />
         <CookieConsentComponent />
@@ -134,6 +136,11 @@ export default function RootLayout({
                 // Define initAnalytics but don't call config yet
                 window.initAnalytics = function() {
                   gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                };
+                window.disableAnalytics = function() {
+                  gtag('consent', 'update', {
+                    'analytics_storage': 'denied'
+                  });
                 };
               `,
             }}

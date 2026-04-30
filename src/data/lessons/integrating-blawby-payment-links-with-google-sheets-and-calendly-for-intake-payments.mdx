@@ -1,232 +1,162 @@
 ---
 title: "Integrating Blawby Payment Links with Google Sheets and Calendly for Intake Payments"
-metaTitle: "Blawby Integrations | Sheets & Calendly"
-desc: "Learn how to integrate Blawby payment links with Google Sheets and Calendly. Automate your law firm's intake payments, scheduling, and lead tracking with ease."
+metaTitle: "Integrate Blawby Payment Links with Google Sheets and Calendly | Blawby"
+desc: "Set up a practical Blawby workflow using Google Sheets and Calendly to confirm consultation payments and reduce no-shows."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
-author: "Team Blawby"
+author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
 category: "ai-intake"
 contentType: "lesson"
 order: 70
-createdAt: "2024-01-01"
-updatedAt: "2026-04-30"
+createdAt: "01/01/2024"
+updatedAt: "04/30/2026"
 tags:
-  - integrations
-  - google-sheets
-  - calendly
-  - automation
+  - Integrations
+  - Google-Sheets
+  - Calendly
+  - Automation
 keywords:
-  - integrations
-  - google sheets
-  - calendly
-  - payment links
-  - automation
-  - law firm automation
-  - client scheduling
+  - Blawby google sheets calendly
+  - Consultation payment workflow
+  - Law firm intake payments
+  - Calendly payment confirmation
+  - Legal client scheduling workflow
 targetAudience: "tech-savvy-attorneys"
 searchIntent: "informational"
-primaryKeyword: "blawby integrations"
+primaryKeyword: "blawby google sheets calendly"
 secondaryKeywords:
   ["google sheets integration", "calendly integration", "payment automation"]
-summary: "Learn how to integrate Blawby payment links with Google Sheets and Calendly for automated intake payments."
+summary: "Use a simple Blawby + Calendly + Google Sheets workflow to track consultation payment status and improve intake follow-up."
 schemaType: "Article"
+faq:
+  - question: "Can I use different consultation fees?"
+    answer: "Yes. You can keep one base payment link and adjust the amount parameter for different consultation types."
+  - question: "What if a client books but says they already paid?"
+    answer: "Check your Blawby payment records first, then update the matching row in your sheet. Keep one source of truth for status."
+  - question: "What if we want stricter no-show protection?"
+    answer: "Use a shorter payment deadline and make your cancellation terms explicit in Calendly confirmation and reminders."
 noindex: false
 ---
 
 # How I Simplified Consultation Payments for My Law Practice
 
-When I first started my law practice, I was spending way too much time chasing down consultation payments. Clients would call, we'd schedule a meeting, and then I'd have to follow up multiple times to get paid. It was frustrating for everyone involved. My paralegal was spending hours each week on payment follow-ups, and I was losing valuable time that could be spent on client work.
+If your intake process includes consultation scheduling, the most common failure point is payment collection. Clients book time, but payment happens later (or not at all), and staff spend hours on reminders and calendar cleanup.
 
-That's when I discovered Blawby's payment links. Now, when potential clients reach out, they can pay for their consultation instantly with a simple link. It's been a game-changer for my practice, and my team couldn't be happier with the streamlined process.
+This guide shows one reliable workflow using Blawby + Calendly + Google Sheets so your team can track bookings and payment status in one place. For more on intake automation, see [AI-Powered Legal Intake Chatbot](/ai-intake/ai-powered-legal-intake-chatbot).
 
-## The Problem I Was Facing
+## Why This Workflow Works
 
-I was stuck in a cycle of:
+This setup helps your firm:
 
-- Spending hours following up for payments
-- Juggling multiple systems to track who paid
-- Losing focus on my actual legal work
-- Wasting time on administrative tasks that could be automated
-- My team spending too much time on payment collection
-- Clients getting confused about how to pay
+- Reduce no-shows by making payment expectations clear
+- Cut manual follow-up on unpaid consultations
+- Keep one shared view of booking and payment status
+- Give attorneys cleaner, paid-ready calendars
 
-I knew there had to be a better way to handle consultation payments. After all, I started my practice to help clients, not to chase payments.
+## What You Need
 
-## My Solution: Simple Payment Links
+- A Blawby payment link for consultation fees
+- A Calendly booking page
+- A Google Sheet your team can access
+- One team owner (usually office manager or paralegal)
 
-Here's how I set up my consultation payment system:
+## Step 1: Create Your Consultation Payment Link
 
-1. **Created a Payment Link** (2 minutes)
-   - Went to my Blawby dashboard
-   - Navigated to Settings
-   - Created a payment link called "consultation"
-   - Set my standard consultation fee of $75
-   - Added my firm's branding to the payment page
-   - Verified the payment setup met all professional requirements
+In Blawby:
 
-2. **Made It Dynamic** (1 minute)
-   - Added the amount parameter to my URL
-   - Example: `https://blawby.com/myfirm-payments?amount=7500` for $75
-   - This lets me adjust amounts as needed
-   - Created different links for different types of consultations
+1. Go to **Settings** and open your payment link section.
+2. Create a link for consultations (example: `consultation`).
+3. Set your standard consultation amount.
+4. Save and copy the payment URL.
 
-## My Complete Automation Setup
+If you need different consultation fees, use the `amount` parameter in the URL:
 
-I've set up a seamless system using Zapier to handle everything automatically. Here's how it works:
+`https://blawby.com/myfirm-payments?amount=7500` for $75.00
 
-1. **Calendly to Notion Flow**
-   - When someone books a consultation:
-     - Zapier creates a new client in my Notion database
-     - Sets their status as "Pending Payment"
-     - Records their consultation date and time
-     - Stores their contact information
-     - Adds a note about the payment link
+Why this matters: one clear payment link removes confusion and gives your team a repeatable intake process.
 
-2. **Payment Tracking Flow**
-   - When I receive a Blawby payment notification email:
-     - Zapier reads the email
-     - Extracts the payment amount and client name
-     - Finds the matching client in Notion
-     - Updates their status to "Paid"
-     - Records the payment date and amount
-     - Adds a confirmation note
+## Step 2: Set Up a Simple Tracking Sheet
 
-3. **Booking Confirmation Flow**
-   - For clients who haven't paid within 24 hours:
-     - Zapier checks their status in Notion
-     - If still "Pending Payment":
-       - Cancels their Calendly booking
-       - Sends them a polite cancellation email
-       - Updates their status to "Cancelled"
-       - Adds a note about the cancellation
+Create a Google Sheet with these columns:
 
-This automation has been a game-changer for my practice. I don't have to worry about:
+- Client name
+- Email
+- Phone
+- Calendly event date/time
+- Payment status (`Pending`, `Paid`, `Cancelled`)
+- Payment date
+- Notes
 
-- Manually tracking payments
-- Following up with clients
-- Cancelling unpaid bookings
-- Updating client records
+Why this matters: this gives attorneys and staff one shared operational view without searching across inboxes.
 
-## How I Integrated It with My Workflow
+## Step 3: Add Payment Instructions to Calendly Confirmation
 
-I've made the payment link work seamlessly with my existing tools:
+In your Calendly confirmation message and reminder emails:
 
-- **Scheduling:** I added the payment link to my booking confirmation emails. When a client books a consultation, they receive an email that includes:
-  - Their appointment details
-  - A clear note that payment is required to confirm the consultation
-  - The payment link with the exact amount
-  - Instructions on how to complete the payment
-  - A professional, branded presentation
-  - All necessary payment disclosures
-    This ensures clients know exactly what they need to do to secure their appointment.
+1. State clearly that payment is required to confirm the consultation.
+2. Include your Blawby payment link.
+3. Add a short deadline (for example: "Please complete payment within 24 hours").
+4. Explain what happens if payment is not completed by the deadline.
 
-- **Client Management:** My paralegal can easily track payments alongside client information, making it simple to follow up if needed. We've set up a system where:
-  - All payments are automatically recorded
-  - Payment status is clearly visible
-  - Follow-up reminders are automated
-  - Client history is maintained
+Suggested copy:
 
-- **Website:** Added a prominent "Schedule Consultation" button that my team can easily update. The button:
-  - Matches our firm's branding
-  - Is mobile-friendly
-  - Provides clear next steps
-  - Creates a professional first impression
+“To confirm your consultation, please complete payment here: [Payment Link]. If payment is not received within 24 hours, we may release your time slot.”
 
-## The Results I've Seen
+Why this matters: clear expectations reduce back-and-forth and prevent surprises.
 
-Since implementing this system, I've noticed:
+## Step 4: Define Your Team Follow-Up Rule
 
-- 90% reduction in payment follow-up time
-- More professional client experience
-- Better cash flow management
-- Fewer administrative headaches
-- My team spends less time on payment collection
-- New clients appreciate the modern payment process
-- Increased client satisfaction
-- Better organization of payment records
-- Reduced stress for my team
-- More time for actual legal work
-- Peace of mind knowing all payments are properly handled
+Use one simple internal rule:
 
-## My Best Practices
+- **Pending** after booking
+- **Paid** once payment is confirmed
+- **Cancelled** if payment deadline passes
 
-1. **Keep It Simple**
-   - Use consistent payment amounts
-   - Make the purpose clear
-   - Test links regularly
-   - Train your team on the process
-   - Keep instructions straightforward
-   - Maintain clear communication
+Recommended process:
 
-2. **Make It Professional**
-   - Ensure branding is consistent
-   - Use clear payment descriptions
-   - Provide immediate confirmation
-   - Maintain a professional tone in all communications
-   - Include secure payment indicators
-   - Keep the process transparent
+1. New booking is added to Google Sheets as `Pending`.
+2. Team checks payment notifications from Blawby.
+3. Matching sheet row is updated to `Paid` with payment date.
+4. If no payment by deadline, team sends one reminder, then marks `Cancelled` and releases the slot.
 
-3. **Stay Organized**
-   - Track payments in one place
-   - Set up automatic notifications
-   - Keep clear records
-   - Make it easy for your team to find information
-   - Regular system checks
-   - Clear documentation
+Why this matters: consistent rules reduce subjective decisions and keep scheduling fair.
 
-## Questions I Get Asked
+## Step 5: Run a Weekly Intake Review
 
-### Can you change the payment amount?
+Once per week, review:
 
-Yes! I can adjust the amount by modifying the URL parameter. For example, to change from $75 to $100:
-`https://blawby.com/myfirm-payments?amount=10000`
+- Number of consultation bookings
+- Number paid within deadline
+- Number cancelled for non-payment
+- Common client questions about payment
 
-This flexibility is perfect for:
+Adjust your confirmation language if clients repeatedly ask the same payment questions.
 
-- Different types of consultations
-- Special circumstances
-- Package deals
-- Promotional rates
+Why this matters: small copy and process changes can improve conversion without adding tools.
 
-### How do clients know what they're paying for?
+## Common Mistakes to Avoid
 
-My payment page automatically includes:
+- Hiding payment requirements in long confirmation text
+- Using multiple payment links without naming conventions
+- Tracking payment status only in email and not in a shared sheet
+- Letting each team member use a different follow-up rule
 
-- My firm's branding
-- Clear payment description
-- Professional presentation
-- Secure payment indicators
-- Detailed instructions
-- Contact information
+## Frequently Asked Questions
 
-### What about no-shows?
+### Can I use different consultation fees?
 
-Since I collect payment upfront, I don't have to worry about:
+Yes. You can keep one base payment link and adjust the `amount` parameter for different consultation types.
 
-- Chasing payments after no-shows
-- Lost revenue from missed appointments
-- Administrative follow-up
-- My team spending time on payment collection
-- Client confusion about payment status
-- Last-minute cancellations
+### What if a client books but says they already paid?
 
-## What I Wish I Knew When I Started
+Check your Blawby payment records first, then update the matching row in your sheet. Keep one source of truth for status.
 
-If I could go back and give myself advice, I would say:
+### What if we want stricter no-show protection?
 
-- Set up the payment link before you need it
-- Make the consultation amount clear in all communications
-- Don't be afraid to create different payment links for different services
-- Keep your payment page branding consistent with your firm's image
-- Test your payment link regularly
-- Train your team on the new process early
-- Set up clear procedures for payment tracking
-- Document everything for future reference
-- Get feedback from your team
-- Monitor the system's effectiveness
+Use a shorter payment deadline and make your cancellation terms explicit in Calendly confirmation and reminders.
 
-## Ready to Try It Yourself?
+## Next Step
 
-Setting up consultation payments with Blawby was one of the best decisions I made for my practice. It's saved me countless hours and made the client experience much smoother. My team is more efficient, my clients are happier, and I can focus on what I do best - practicing law.
+Once this workflow is running, document your trust-handling process so your team knows exactly how to move earned funds correctly.
 
-[Get started with Blawby](https://app.blawby.com/register) and see how simple payment collection can be. Trust me, your future self will thank you!
+[Read the Trust-to-Operating Transfer Workflow](/features/trust-to-operating-transfer-workflow)

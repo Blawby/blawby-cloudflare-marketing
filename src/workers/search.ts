@@ -316,35 +316,13 @@ function filenameToTitle(filename: string): string {
 function filenameToUrl(filename: string): string {
   let key = stripExtension(filename).replace(/\\/g, "/").replace(/^\/+/, "");
 
-  if (key.startsWith("src/data/articles/")) {
-    key = key.replace(/^src\/data\/articles\//, "");
-  } else if (key.startsWith("src/data/lessons/")) {
-    const slug = key.split("/").pop() || "";
-    // Manual mapping for lessons to their new SEO categories
-    const lessonMapping: Record<string, string> = {
-      "get-started": "guides/get-started",
-      "accepting-payments": "payments/accepting-payments",
-      "payments": "payments/accepting-payments", // legacy compat
-      "invoicing": "payments/invoicing",
-      "clients": "payments/clients",
-      "payouts": "payments/payouts",
-      "ai-powered-legal-intake-chatbot": "ai-intake/ai-powered-legal-intake-chatbot",
-      "integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments": "ai-intake/integrating-blawby-payment-links-with-google-sheets-and-calendly-for-intake-payments"
-    };
-    key = lessonMapping[slug] || key.replace(/^src\/data\/lessons\//, "");
-  } else if (key.startsWith("src/data/pages/")) {
-    key = key.replace(/^src\/data\/pages\//, "");
-  } else if (key.startsWith("src/data/legal/")) {
-    key = key.replace(/^src\/data\/legal\//, "");
+  // Remove src/data/ prefix if present
+  if (key.startsWith("src/data/")) {
+    key = key.replace(/^src\/data\//, "");
   }
 
-  if (key.startsWith("pages/")) {
-    key = key.replace(/^pages\//, "");
-  } else if (key.startsWith("legal/")) {
-    key = key.replace(/^legal\//, "");
-  } else if (key.startsWith("articles/")) {
-    key = key.replace(/^articles\//, "");
-  }
+  // Strip top-level content bucket folders to form the direct URL path
+  key = key.replace(/^(lessons|solutions|articles|docs|pages|legal)\//, "");
 
   return `/${key}`;
 }
@@ -379,24 +357,6 @@ function getTitleMatchBoost(
   );
 
   if (hasTitleTermMatch) return 1;
-
-  const pricingIntentTerms = new Set([
-    "price",
-    "pricing",
-    "cost",
-    "costs",
-    "fee",
-    "fees",
-    "rate",
-    "rates",
-    "discount",
-    "discounts",
-  ]);
-  const isPricingIntent = queryTerms.some((term) =>
-    pricingIntentTerms.has(term),
-  );
-
-  if (isPricingIntent && match.url === "/pricing") return 2;
 
   return 0;
 }
@@ -449,10 +409,7 @@ async function handleQuery(request: Request, env: Env): Promise<Response> {
     section: item.attributes?.folder as string | undefined,
   }));
 
-  return corsJson(
-    { matches: { matches: rerankSearchMatches(query, matches) } },
-    request,
-  );
+  return corsJson({ matches: rerankSearchMatches(query, matches) }, request);
 }
 
 /**

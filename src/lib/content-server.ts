@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import path from "path";
 
 /**
  * Unified server-side helper to fetch the actual React component for an MDX file.
@@ -9,21 +10,36 @@ export async function getContentComponent(
   folder: string,
   slug: string,
 ) {
-  // Path traversal protection: allow alphanumeric, hyphens, underscores, and dots
-  const validPath = /^[a-zA-Z0-9_.-]+$/;
-  if (
-    !validPath.test(slug) ||
-    !validPath.test(origin) ||
-    !validPath.test(folder)
-  ) {
+  // Path traversal protection: allow alphanumeric, hyphens, and underscores
+  const validToken = /^[a-zA-Z0-9_-]+$/;
+  if (!validToken.test(origin) || !validToken.test(slug)) {
     console.error(
-      `[Content Server] Rejected potentially malicious path: ${origin}/${folder}/${slug}`,
+      `[Content Server] Rejected potentially malicious tokens: origin=${origin}, slug=${slug}`,
+    );
+    return notFound();
+  }
+
+  // Nested folders allow slashes but not traversal
+  if (folder !== "." && !/^[a-zA-Z0-9_\-\/]+$/.test(folder)) {
+    console.error(`[Content Server] Rejected invalid folder: ${folder}`);
+    return notFound();
+  }
+
+  const MDX_ROOT = path.join(process.cwd(), "src/data");
+  const resolvedPath = path.resolve(MDX_ROOT, origin, folder, `${slug}.mdx`);
+
+  if (!resolvedPath.startsWith(MDX_ROOT)) {
+    console.error(
+      `[Content Server] Path traversal attempt blocked: ${resolvedPath}`,
     );
     return notFound();
   }
 
   try {
     if (origin === "lessons") {
+      if (folder !== ".") {
+        console.warn(`[Content Server] Folder "${folder}" ignored for lessons`);
+      }
       return (await import(`@/data/lessons/${slug}.mdx`)).default;
     }
 
@@ -35,7 +51,12 @@ export async function getContentComponent(
       return (await import(`@/data/docs/${folder}/${slug}.mdx`)).default;
     }
 
-    return (await import(`@/data/articles/${folder}/${slug}.mdx`)).default;
+    if (origin === "solutions") {
+      return (await import(`@/data/solutions/${folder === "solutions" ? "" : folder}/${slug}.mdx`)).default;
+    }
+
+    console.error(`[Content Server] Unknown origin: ${origin}`);
+    return notFound();
   } catch (e) {
     console.error(
       `[Content Server] Failed to import MDX: ${origin}/${folder}/${slug}`,

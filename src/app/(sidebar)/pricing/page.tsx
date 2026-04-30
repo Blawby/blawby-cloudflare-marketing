@@ -1,4 +1,10 @@
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
+import {
+  Breadcrumb,
+  BreadcrumbHome,
+  Breadcrumbs,
+  BreadcrumbSeparator,
+} from "@/components/breadcrumbs";
 import TableOfContents from "@/components/table-of-contents";
 import PricingContent from "@/data/pages/pricing.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
@@ -30,7 +36,15 @@ export default function PricingPage() {
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
   return (
-    <SidebarLayoutContent breadcrumbs={null}>
+    <SidebarLayoutContent
+      breadcrumbs={
+        <Breadcrumbs>
+          <BreadcrumbHome />
+          <BreadcrumbSeparator />
+          <Breadcrumb>Pricing</Breadcrumb>
+        </Breadcrumbs>
+      }
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

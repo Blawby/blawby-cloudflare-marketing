@@ -1,76 +1,101 @@
 ---
 title: "Install the Chat Widget"
-metaTitle: "Install Chat Widget | Web & CMS Guide"
-desc: "Complete guide to install the Blawby AI chat widget on any website. Support for WordPress, React, HTML, and all major platforms. No coding skills required."
+desc: "Install your Blawby chat widget with a no-code path first, then optional website builder and developer setup."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
-author: "Team Blawby"
+author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
 category: "quick-start"
 contentType: "guide"
 order: 20
-createdAt: "2024-02-10"
-updatedAt: "2024-02-10"
+createdAt: "02/10/2024"
+updatedAt: "04/30/2026"
 tags:
-  - installation
-  - widget
-  - setup
+  - Installation
+  - Widget
+  - Setup
 keywords:
-  - chat widget installation
-  - blawby widget
-  - wordpress chat widget
-  - react chat component
-  - website chat setup
+  - Install blawby chat widget
+  - Blawby chat url
+  - Add chat widget to website
+  - Wordpress chat widget setup
+  - Wix squarespace chat widget
 difficulty: "beginner"
 prerequisites: ["create-practice-account"]
 timeToComplete: "10 minutes"
-nextSteps: ["accept-first-payment"]
+nextSteps: ["set-up-client-intake"]
 schemaType: "HowTo"
 faq:
-  - question: "Which platforms support the Blawby chat widget?"
-    answer: "Blawby supports all major platforms including WordPress, React, HTML/CSS sites, Squarespace, Wix, Shopify, and Webflow."
-  - question: "Do I need coding skills to install the widget?"
-    answer: "No coding skills required. We offer one-click WordPress plugin installation and simple copy-paste setup for other platforms."
+  - Question: "Which platforms support the Blawby chat widget?"
+    answer: "You can use the chat URL directly, add it to common website builders, or use the embed script for developer-managed sites."
+  - Question: "Do I need coding skills to install the widget?"
+    answer: "No for the easy path. If you want script-level customization, ask your web developer to use the developer section."
+  - Question: "Can I launch before my website is updated?"
+    answer: "Yes. You can share your chat URL directly in email while your site update is in progress."
 noindex: false
 ---
 
 # Install the Chat Widget
 
-Add the Blawby AI chat widget to your website in minutes. This guide covers all major platforms and installation methods.
+Adding the Blawby chat widget to your website helps your firm capture leads 24/7, qualify prospects automatically, and reduce intake friction. With the widget, potential clients can start intake instantly—no phone tag or email delays—so you never miss a lead, even after hours.
 
-## What You'll Need
+Install your chat widget so potential clients can complete intake directly from your website. For more on intake workflows, see [Intake Workflows Guide](/docs/intake-workflows).
 
-- Your Blawby practice ID (from your dashboard)
-- Access to your website's code or CMS
-- Basic understanding of HTML (no coding experience required)
+## Section 1: The easy way (no technical skills needed)
 
-## Option 1: WordPress (Recommended)
+If you are a lawyer or paralegal and do not manage website code, start here.
 
-### Plugin Installation
+### Find your chat URL in Blawby
 
-1. Log into your WordPress admin dashboard
-2. Go to **Plugins → Add New**
-3. Search for "Blawby Chat Widget"
-4. Click **Install Now**, then **Activate**
+1. Sign in to your Blawby dashboard.
+2. Open your widget/chat setup area.
+3. Copy your chat URL.
 
-### Configuration
+### Use your chat URL immediately
 
-1. Go to **Settings → Blawby Chat**
-2. Enter your Practice ID (found in your Blawby dashboard)
-3. Choose your widget position and appearance
-4. Click **Save Changes**
+You can launch intake today without touching website code:
 
-### Customization Options
+- Paste the chat URL in intake emails
+- Add it to your email signature
+- Share it with potential clients directly
 
-- **Position**: Bottom-right, bottom-left, top-right, top-left
-- **Theme**: Light, dark, or auto (matches user preference)
-- **Colors**: Match your brand colors
-- **Welcome Message**: Custom greeting for visitors
+### Ask your web designer to add it to your website
 
-## Option 2: HTML/CSS Websites
+If someone else manages your site, forward them this page and point them to [Section 3: Developer installation](#section-3-developer-installation).
 
-### Basic Installation
+## Section 2: Add it to your website yourself
 
-Add this code before your closing `</body>` tag:
+If your website uses a builder, you can usually add the widget without coding.
+
+### Squarespace
+
+1. Open the page where you want intake chat available.
+2. Add an **Embed** block.
+3. Paste the widget code from your Blawby setup.
+4. Save and publish.
+
+### Wix
+
+1. Open your site editor.
+2. Add an **Embed** element.
+3. Paste the widget code from Blawby.
+4. Save and publish.
+
+### WordPress
+
+1. Open the page editor.
+2. Add a **Custom HTML** block.
+3. Paste the widget code from Blawby.
+4. Update/publish the page.
+
+### Quick test after publishing
+
+1. Open your website in a private browser window.
+2. Confirm the chat appears.
+3. Send a test message.
+
+## Section 3: Developer installation
+
+Use this section if your web developer wants script-level installation.
 
 ```html
 <script>
@@ -102,299 +127,10 @@ Add this code before your closing `</body>` tag:
 </script>
 ```
 
-Replace `YOUR_PRACTICE_ID` with your actual practice ID from the Blawby dashboard.
+Replace `YOUR_PRACTICE_ID` with your practice ID from Blawby.
 
-### Advanced Customization
+## Next Step
 
-```html
-<script>
-  blawby("init", {
-    practiceId: "YOUR_PRACTICE_ID",
-    position: "bottom-right",
-    theme: "light",
-    customColors: {
-      primary: "#1e40af", // Your brand blue
-      secondary: "#3b82f6", // Lighter blue
-      accent: "#f59e0b", // Accent color
-    },
-    welcomeMessage: "Hello! How can I help you with your legal needs today?",
-    showBranding: false,
-    autoOpen: false,
-    mobileOptimized: true,
-  });
-</script>
-```
+Once your widget is live, set and test your intake workflow before sending traffic.
 
-## Option 3: React Applications
-
-### Installation
-
-```bash
-npm install @blawby/widget
-```
-
-### Basic Usage
-
-```jsx
-import { BlawbyWidget } from "@blawby/widget";
-
-function App() {
-  return (
-    <div>
-      {/* Your existing app content */}
-      <BlawbyWidget
-        practiceId="YOUR_PRACTICE_ID"
-        position="bottom-right"
-        theme="light"
-      />
-    </div>
-  );
-}
-```
-
-### Advanced Configuration
-
-```jsx
-import { BlawbyWidget } from "@blawby/widget";
-
-function App() {
-  const widgetConfig = {
-    practiceId: "YOUR_PRACTICE_ID",
-    position: "bottom-right",
-    theme: "light",
-    customColors: {
-      primary: "#1e40af",
-      secondary: "#3b82f6",
-    },
-    welcomeMessage: "Welcome to our law firm! How can we help you today?",
-    onConversationStart: (conversationId) => {
-      console.log("New conversation started:", conversationId);
-    },
-    onMessageReceived: (message) => {
-      console.log("New message:", message);
-    },
-  };
-
-  return (
-    <div>
-      <BlawbyWidget {...widgetConfig} />
-    </div>
-  );
-}
-```
-
-## Option 4: Other Website Builders
-
-### Squarespace
-
-1. Go to **Settings → Advanced → Code Injection**
-2. Add the widget code to the **Footer** section
-3. Save and publish your site
-
-### Wix
-
-1. Go to **Settings → Tracking & Analytics**
-2. Click **New Tool → Custom**
-3. Paste the widget code in the **Body** section
-4. Save and publish your site
-
-### Shopify
-
-1. Go to **Online Store → Themes**
-2. Click **Actions → Edit Code**
-3. Open `theme.liquid`
-4. Add the widget code before `</body>`
-5. Save the file
-
-### Webflow
-
-1. Go to **Project Settings → Custom Code**
-2. Add the widget code to the **Footer Code** section
-3. Save and publish your site
-
-## Widget Configuration Options
-
-### Position Settings
-
-- `bottom-right` (default) - Most common, least intrusive
-- `bottom-left` - Alternative for left-aligned designs
-- `top-right` - For header placement
-- `top-left` - For top-left corner placement
-
-### Theme Options
-
-- `light` - Clean, professional appearance
-- `dark` - Modern, sleek design
-- `auto` - Automatically matches user's system preference
-
-### Custom Styling
-
-```javascript
-blawby("init", {
-  practiceId: "YOUR_PRACTICE_ID",
-  customColors: {
-    primary: "#1e40af", // Main brand color
-    secondary: "#3b82f6", // Secondary color
-    accent: "#f59e0b", // Accent/highlight color
-    background: "#ffffff", // Chat background
-    text: "#1f2937", // Text color
-  },
-  customFont: "Inter", // Custom font family
-  borderRadius: "8px", // Border radius
-  shadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Box shadow
-});
-```
-
-### Behavior Settings
-
-```javascript
-blawby("init", {
-  practiceId: "YOUR_PRACTICE_ID",
-  autoOpen: false, // Don't automatically open
-  delayOpen: 5000, // Open after 5 seconds
-  showBranding: true, // Show "Powered by Blawby"
-  mobileOptimized: true, // Optimize for mobile devices
-  soundEnabled: false, // Disable notification sounds
-  persistentChat: true, // Remember conversation history
-});
-```
-
-## Testing Your Installation
-
-### Basic Test
-
-1. Open your website in a browser
-2. Look for the chat widget in your chosen position
-3. Click the widget to open it
-4. Send a test message
-
-### Advanced Testing
-
-1. **Cross-browser testing**: Chrome, Firefox, Safari, Edge
-2. **Mobile testing**: iPhone, Android, tablets
-3. **Responsive design**: Different screen sizes
-4. **Functionality**: Message sending, file uploads, etc.
-
-### Troubleshooting Common Issues
-
-**Widget Not Appearing**
-
-- Check your Practice ID is correct
-- Verify the script loads without errors (check browser console)
-- Ensure your website allows third-party scripts
-
-**Widget Positioned Incorrectly**
-
-- Try a different position setting
-- Check for CSS conflicts on your website
-- Test on different screen sizes
-
-**Messages Not Sending**
-
-- Verify your practice is active and in good standing
-- Check your internet connection
-- Ensure the widget is properly authenticated
-
-**Styling Issues**
-
-- Disable custom CSS temporarily
-- Try default theme settings
-- Check for conflicting stylesheets
-
-## Mobile Optimization
-
-The widget automatically optimizes for mobile devices, but you can customize the experience:
-
-```javascript
-blawby("init", {
-  practiceId: "YOUR_PRACTICE_ID",
-  mobileOptimized: true,
-  mobileSettings: {
-    position: "bottom-center", // Better for mobile
-    fullScreenOnOpen: true, // Open in full screen on mobile
-    swipeToClose: true, // Allow swipe gestures
-    virtualKeyboardOptimized: true,
-  },
-});
-```
-
-## Privacy and Compliance
-
-### GDPR Compliance
-
-```javascript
-blawby("init", {
-  practiceId: "YOUR_PRACTICE_ID",
-  privacySettings: {
-    requireConsent: true, // Require user consent
-    cookiePolicy: "strict", // Strict cookie policy
-    dataRetention: "30-days", // Retain data for 30 days
-    anonymizeIp: true, // Anonymize IP addresses
-  },
-});
-```
-
-### Accessibility Features
-
-- Screen reader support
-- Keyboard navigation
-- High contrast mode support
-- Font size scaling
-
-## Analytics and Tracking
-
-### Built-in Analytics
-
-The widget automatically tracks:
-
-- Conversation start rate
-- Message volume
-- Lead conversion rate
-- User engagement metrics
-
-### Custom Event Tracking
-
-```javascript
-blawby("init", {
-  practiceId: "YOUR_PRACTICE_ID",
-  tracking: {
-    googleAnalytics: true, // Send events to GA
-    customEvents: true, // Enable custom events
-    trackPageViews: true, // Track page views
-  },
-  onConversationStart: (data) => {
-    // Send to your analytics
-    gtag("event", "conversation_start", {
-      practice_id: data.practiceId,
-      source: data.source,
-    });
-  },
-});
-```
-
-## Next Steps
-
-Once your widget is installed and working:
-
-1. **Test thoroughly** across different devices and browsers
-2. **Customize the appearance** to match your brand
-3. **Configure notifications** for new messages
-4. **Monitor performance** through your dashboard
-5. **Set up client intake** workflows
-
-## Need Help?
-
-If you run into installation issues:
-
-- **Installation Guide**: Use this page as the installation guide for adding the chat widget.
-- **Troubleshooting**: [Blawby Help](/help)
-- **Support Chat**: Available in your dashboard
-- **Email**: support@blawby.com
-
----
-
-## Ready to Accept Payments?
-
-Your chat widget is now installed and ready to capture leads. The next step is setting up payment processing to accept client payments automatically.
-
-[Continue to Accept First Payment](/quick-start/accept-first-payment)
+[Set Up Client Intake](/features/set-up-client-intake)

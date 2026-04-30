@@ -1,7 +1,7 @@
 "use client";
 
 import { IconButton } from "@/components/icon-button";
-import { NAV_SECTIONS } from "@/components/navbar";
+import { NAV_SECTIONS, PRODUCT_SECTION_IDS } from "@/components/navbar";
 import type { Module } from "@/data/lessons";
 import { SidebarIcon } from "@/icons/sidebar-icon";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
@@ -27,14 +27,17 @@ export const SidebarContext = createContext<{
 
 // ─── Sidebar sections derivation ──────────────────────────────────────────────
 
+import type { ContentItem } from "@/lib/content";
+
 type SidebarSection = {
   sectionTitle: string;
   items: { href: string; label: string }[];
+  id?: string;
 };
 
 function useSidebarSections(
   modules: Module[],
-  articles: any[],
+  allContent: ContentItem[],
 ): SidebarSection[] {
   const pathname = usePathname();
 
@@ -42,28 +45,88 @@ function useSidebarSections(
   if (pathname === "/") return [];
 
   const segment = pathname.split("/")[1] ?? "";
-  const lessonCategories = ["guides", "payments", "ai-intake"];
-  if (lessonCategories.includes(segment)) {
+  if (PRODUCT_SECTION_IDS.has(segment.toLowerCase() as any) || segment === "products") {
     return modules.map((mod) => ({
       sectionTitle: mod.title,
       items: mod.lessons.map((lesson) => ({
-        href: `/${lesson.category}/${lesson.slug}`,
+        href: `/${lesson.category.toLowerCase()}/${lesson.slug}`,
         label: lesson.title || "",
       })),
     }));
   }
 
-  const section = NAV_SECTIONS.find((s) => s.id === segment);
+  if (segment === "solutions") {
+    const sectionArticles = allContent.filter((a) => a.origin === "solutions");
+    const categories = Array.from(new Set(sectionArticles.map((a) => a.category)));
+    return categories.map((cat) => ({
+      sectionTitle: cat.replace(/-/g, " "),
+      items: sectionArticles
+        .filter((a) => a.category.toLowerCase() === cat.toLowerCase())
+        .map((a) => ({
+          href: `/${a.category.toLowerCase()}/${a.slug}`,
+          label: a.title || "",
+        })),
+    }));
+  }
+
+  if (segment === "docs") {
+    const sectionDocs = allContent.filter((a) => a.origin === "docs");
+    const categories = ["quick-start", "features", "reference"];
+    return categories.map((cat) => {
+      const categoryArticles = sectionDocs.filter(
+        (a) => a.category.toLowerCase() === cat.toLowerCase()
+      );
+      return {
+        sectionTitle: cat.replace(/-/g, " "),
+        items: categoryArticles.map((a) => ({
+          href: `/${a.category.toLowerCase()}/${a.slug}`,
+          label: a.title || "",
+        })),
+      };
+    }).filter(s => s.items.length > 0);
+  }
+
+  if (segment === "pricing") {
+    return [
+      {
+        sectionTitle: "Pricing",
+        items: [{ href: "/pricing", label: "Overview" }],
+      },
+    ];
+  }
+
+  if (segment === "privacy" || segment === "terms") {
+    return [
+      {
+        sectionTitle: "Legal",
+        items: [
+          { href: "/privacy", label: "Privacy Policy" },
+          { href: "/terms", label: "Terms of Service" },
+        ],
+      },
+    ];
+  }
+
+  const section = NAV_SECTIONS.find((s) => s.id === segment.toLowerCase());
   if (!section) return [];
 
-  const categoryArticles = articles.filter((a) => a.category === segment);
+  const activeArticle = allContent.find(
+    (a) => a.slug === pathname.split("/").pop()
+  );
+  const activeOrigin = activeArticle?.origin;
+
+  const categoryArticles = allContent.filter(
+    (a) =>
+      a.category.toLowerCase() === segment.toLowerCase() &&
+      a.origin === activeOrigin
+  );
   if (!categoryArticles.length) return [];
 
   return [
     {
       sectionTitle: section.label,
       items: categoryArticles.map((a) => ({
-        href: `/${a.category}/${a.slug}`,
+        href: `/${a.category.toLowerCase()}/${a.slug}`,
         label: a.title || "",
       })),
     },
@@ -88,7 +151,7 @@ function SidebarNav({
   return (
     <div className={clsx(className, "space-y-8")}>
       {sections.map((section) => (
-        <div key={section.sectionTitle}>
+        <div key={section.sectionTitle} className="mb-10 last:mb-0">
           <h2 className="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
             {section.sectionTitle}
           </h2>
@@ -145,16 +208,16 @@ function MobileSidebar({
 
 export function SidebarLayout({
   modules,
-  articles = [],
+  allContent = [],
   children,
 }: {
   modules: Module[];
-  articles?: any[];
+  allContent?: ContentItem[];
   children: React.ReactNode;
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileDialogOpen, setIsMobileDialogOpen] = useState(false);
-  const sections = useSidebarSections(modules, articles);
+  const sections = useSidebarSections(modules, allContent);
   const hasSidebar = sections.length > 0;
 
   return (

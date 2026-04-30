@@ -22,53 +22,25 @@ import type React from "react";
 import { useState } from "react";
 import { Button } from "./button";
 
-// Top-level nav sections — add new categories here.
-// The sidebar auto-populates from articles.ts based on the active category.
+// ─── Navigation registry ──────────────────────────────────────────────────────
+// Single source of truth for all routable sections.
+// The sidebar auto-populates from content based on the active segment.
+
 export const NAV_SECTIONS = [
-  { id: "guides", label: "Get started", href: "/guides/get-started" },
-  { id: "payments", label: "Payments", href: "/payments/accepting-payments" },
-  {
-    id: "ai-intake",
-    label: "AI Intake",
-    href: "/ai-intake/ai-powered-legal-intake-chatbot",
-  },
-  {
-    id: "quick-start",
-    label: "Quick Start",
-    href: "/quick-start/create-practice-account",
-  },
-  {
-    id: "core-features",
-    label: "Core Features",
-    href: "/core-features/set-up-client-intake",
-  },
-  {
-    id: "compliance",
-    label: "Compliance",
-    href: "/compliance/iolta-compliance",
-  },
-  {
-    id: "ai-chat",
-    label: "AI Chat",
-    href: "/ai-chat/ai-chat-client-acquisition",
-  },
-  {
-    id: "business-strategy",
-    label: "Business Strategy",
-    href: "/business-strategy/future-proof-revenue",
-  },
-  { id: "reference", label: "Reference", href: "/reference/api-reference" },
+  // Products (lesson-based)
+  { id: "guides",     label: "Get Started",  href: "/guides/get-started" },
+  { id: "payments",   label: "Payments",     href: "/payments/accepting-payments" },
+  { id: "ai-intake",  label: "AI Intake",    href: "/ai-intake/ai-powered-legal-intake-chatbot" },
+  // Docs
+  { id: "quick-start",     label: "Quick Start",     href: "/quick-start/create-practice-account" },
+  { id: "features",        label: "Features",        href: "/features/set-up-client-intake" },
+  { id: "reference",       label: "Reference",       href: "/reference/api-reference" },
+  // Solutions
+  { id: "ai-chat",             label: "AI Chat",             href: "/ai-chat/ai-chat-client-acquisition" },
+  { id: "business-strategy",   label: "Business Strategy",   href: "/business-strategy/future-proof-revenue" },
 ] as const;
 
-const PRIMARY_NAV_SECTION_IDS = new Set([
-  "guides",
-  "payments",
-  "ai-intake",
-  "compliance",
-  "ai-chat",
-]);
-
-// Dev-only duplicate ID check for NAV_SECTIONS
+// Dev-only duplicate ID check
 if (process.env.NODE_ENV !== "production") {
   const ids = new Set();
   for (const section of NAV_SECTIONS) {
@@ -79,34 +51,53 @@ if (process.env.NODE_ENV !== "production") {
   }
 }
 
-const SIDEBAR_SEGMENTS: string[] = NAV_SECTIONS.map((s) => s.id);
+export const PRODUCT_SECTION_IDS = new Set(["guides", "payments", "ai-intake"]);
+export const DOCS_SECTION_IDS    = new Set(["quick-start", "features", "reference"]);
+export const SOLUTIONS_SECTION_IDS = new Set(["ai-chat", "business-strategy", "compliance"]);
 
 export function useActiveSection() {
   const pathname = usePathname();
-  const segment = pathname.split("/")[1] ?? "";
-  return segment;
+  return pathname.split("/")[1] ?? "";
 }
 
-// ─── Single-row navbar (Stripe-style) ─────────────────────────────────────────
+// ─── Products dropdown items ───────────────────────────────────────────────────
+
+const PRODUCT_LINKS = [
+  {
+    href: "/guides/get-started",
+    label: "Get Started",
+    desc: "Set up your Blawby account and configure your practice.",
+  },
+  {
+    href: "/payments/accepting-payments",
+    label: "Payments",
+    desc: "IOLTA-compliant payment links, invoicing, and payouts.",
+  },
+  {
+    href: "/ai-intake/ai-powered-legal-intake-chatbot",
+    label: "AI Intake",
+    desc: "24/7 client intake automation powered by AI.",
+  },
+];
+
+// ─── Single-row navbar ────────────────────────────────────────────────────────
 
 export function Navbar() {
   return (
     <div
       className={clsx(
-        "sticky top-0 z-20",
-        // No max-width, just full width and padding
+        "sticky top-0 z-20 w-full",
         "bg-white/95 backdrop-blur-sm dark:bg-gray-950/95",
         "border-b border-gray-950/10 dark:border-white/10",
         "flex h-14 items-center gap-x-0 px-4 sm:px-6",
-        "w-full",
       )}
     >
       <Link href="/" className="flex shrink-0 items-center pr-6">
         <Logo className="h-7 dark:text-white" />
       </Link>
 
-      {/* Category tabs — hidden on mobile */}
-      <CategoryTabs className="hidden h-full lg:flex" />
+      {/* Center nav — hidden on mobile */}
+      <PrimaryNav className="hidden h-full lg:flex" />
 
       <div className="flex-1" />
 
@@ -116,77 +107,128 @@ export function Navbar() {
   );
 }
 
-function CategoryTabs({ className }: { className?: string }) {
+// ─── Center nav tabs ──────────────────────────────────────────────────────────
+
+function PrimaryNav({ className }: { className?: string }) {
   const activeSection = useActiveSection();
-  const primarySections = NAV_SECTIONS.filter((section) =>
-    PRIMARY_NAV_SECTION_IDS.has(section.id),
-  );
-  const secondarySections = NAV_SECTIONS.filter(
-    (section) => !PRIMARY_NAV_SECTION_IDS.has(section.id),
-  );
-  const isSecondaryActive = secondarySections.some(
-    (section) => activeSection === section.id,
-  );
+
+  const isProductActive = PRODUCT_SECTION_IDS.has(activeSection as any) || activeSection === "products";
+  const isDocsActive    = DOCS_SECTION_IDS.has(activeSection as any) || activeSection === "docs";
+  const isSolutionsActive = activeSection === "solutions" || SOLUTIONS_SECTION_IDS.has(activeSection as any);
+  const isPricingActive   = activeSection === "pricing";
 
   return (
     <nav
-      aria-label="Documentation sections"
+      aria-label="Primary navigation"
       className={clsx("flex items-stretch gap-x-0.5", className)}
     >
-      {primarySections.map((section) => {
-        const isActive = activeSection === section.id;
-        return (
-          <Link
-            key={section.id}
-            href={section.href}
-            className={clsx(
-              "flex items-center border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
-              isActive
-                ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
-                : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
-            )}
-            aria-current={isActive ? "page" : undefined}
-          >
-            {section.label}
-          </Link>
-        );
-      })}
-      <Menu as="div" className="relative flex">
-        <MenuButton
-          className={clsx(
-            "flex items-center border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
-            isSecondaryActive
-              ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
-              : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
-          )}
-        >
-          More
-        </MenuButton>
-        <MenuItems
-          anchor="bottom start"
-          className="z-30 mt-2 min-w-52 rounded-lg bg-white p-1 shadow-lg ring-1 ring-gray-950/10 focus:outline-none dark:bg-gray-900 dark:ring-white/10"
-        >
-          {secondarySections.map((section) => {
-            const isActive = activeSection === section.id;
-            return (
-              <MenuItem key={section.id}>
-                <Link
-                  href={section.href}
-                  className={clsx(
-                    "block rounded-md px-3 py-2 text-sm font-medium",
-                    isActive
-                      ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
-                      : "text-gray-700 data-focus:bg-gray-950/5 data-focus:text-gray-950 dark:text-gray-300 dark:data-focus:bg-white/10 dark:data-focus:text-white",
-                  )}
-                >
-                  {section.label}
-                </Link>
-              </MenuItem>
-            );
-          })}
-        </MenuItems>
-      </Menu>
+      {/* Products — top-level index page */}
+      <NavTab href="/products" isActive={isProductActive}>
+        Products
+      </NavTab>
+
+      {/* Docs */}
+      <NavTab href="/docs" isActive={isDocsActive}>
+        Docs
+      </NavTab>
+
+      {/* Solutions */}
+      <NavTab href="/solutions" isActive={isSolutionsActive}>
+        Solutions
+      </NavTab>
+
+      {/* Pricing */}
+      <NavTab href="/pricing" isActive={isPricingActive}>
+        Pricing
+      </NavTab>
     </nav>
+  );
+}
+
+function NavTab({
+  href,
+  isActive,
+  children,
+}: {
+  href: string;
+  isActive: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className={clsx(
+        "flex items-center border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
+        isActive
+          ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
+          : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
+      )}
+      aria-current={isActive ? "page" : undefined}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function ProductsDropdown({ isActive }: { isActive: boolean }) {
+  return (
+    <Menu as="div" className="relative flex items-stretch">
+      <MenuButton
+        className={clsx(
+          "flex items-center gap-x-1 border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
+          isActive
+            ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
+            : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
+        )}
+        aria-label="Products menu"
+      >
+        Products
+        <svg
+          className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-60"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-hidden="true"
+        >
+          <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </MenuButton>
+
+      <MenuItems
+        transition
+        className={clsx(
+          "absolute left-0 top-full z-30 mt-1 w-72 origin-top-left",
+          "rounded-xl bg-white shadow-lg ring-1 ring-gray-950/10",
+          "dark:bg-gray-900 dark:ring-white/10",
+          "p-2 focus:outline-none",
+          "transition data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75",
+        )}
+      >
+        {PRODUCT_LINKS.map((link) => (
+          <MenuItem key={link.href}>
+            {({ focus }) => (
+              <Link
+                href={link.href}
+                className={clsx(
+                  "flex flex-col gap-0.5 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                  focus
+                    ? "bg-gray-50 dark:bg-white/5"
+                    : "text-gray-700 dark:text-gray-300",
+                )}
+              >
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  {link.label}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {link.desc}
+                </span>
+              </Link>
+            )}
+          </MenuItem>
+        ))}
+      </MenuItems>
+    </Menu>
   );
 }
 
@@ -200,6 +242,8 @@ function MobileNavigation({
   onClose: () => void;
 }) {
   const activeSection = useActiveSection();
+  const isProductActive = PRODUCT_SECTION_IDS.has(activeSection as any) || activeSection === "products";
+  const isDocsActive    = DOCS_SECTION_IDS.has(activeSection as any) || activeSection === "docs";
 
   return (
     <Dialog open={open} onClose={onClose} className="lg:hidden">
@@ -213,27 +257,59 @@ function MobileNavigation({
           </div>
 
           <div className="mt-4 flex flex-col gap-y-1">
-            <p className="px-3 py-1 text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
-              Documentation
+            <CloseButton
+              as={Link}
+              href="/products"
+              className={clsx(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                isProductActive
+                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
+                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+              )}
+            >
+              Products
+            </CloseButton>
+
+            {/* Docs */}
+            <p className="mt-4 px-3 py-1 text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+              Resources
             </p>
-            {NAV_SECTIONS.map((section) => {
-              const isActive = activeSection === section.id;
-              return (
-                <CloseButton
-                  as={Link}
-                  key={section.id}
-                  href={section.href}
-                  className={clsx(
-                    "rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
-                      : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
-                  )}
-                >
-                  {section.label}
-                </CloseButton>
-              );
-            })}
+            <CloseButton
+              as={Link}
+              href="/docs"
+              className={clsx(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                isDocsActive
+                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
+                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+              )}
+            >
+              Docs
+            </CloseButton>
+            <CloseButton
+              as={Link}
+              href="/solutions"
+              className={clsx(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                activeSection === "solutions" || activeSection === "articles"
+                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
+                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+              )}
+            >
+              Solutions
+            </CloseButton>
+            <CloseButton
+              as={Link}
+              href="/pricing"
+              className={clsx(
+                "rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                activeSection === "pricing"
+                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
+                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+              )}
+            >
+              Pricing
+            </CloseButton>
           </div>
 
           <div className="mt-6 flex flex-col gap-y-1 border-t border-gray-950/10 pt-6 dark:border-white/10">
@@ -260,11 +336,13 @@ function MobileNavigation({
   );
 }
 
+// ─── Right-side: Search, Login, Register ──────────────────────────────────────
+
 function SiteNavigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="flex items-center gap-x-4 xl:gap-x-6">
+    <nav aria-label="Site navigation" className="flex items-center gap-x-4 xl:gap-x-6">
       <CommandPalette />
       <div className="hidden items-center gap-x-3 text-sm font-medium lg:flex xl:gap-x-4">
         <Link

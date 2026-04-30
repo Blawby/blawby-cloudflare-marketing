@@ -23,8 +23,7 @@ export type Frontmatter = {
   } | null;
 
   // SEO & Social
-  /** SEO Title — overrides the page title in <title> tag */
-  metaTitle?: string;
+  // metaTitle removed: SEO title now always derived from title
   /** Primary meta description — overrides summary and description */
   desc?: string;
   /** OpenGraph/Twitter image URL */
@@ -89,14 +88,18 @@ export function normalizeDate(raw?: string): string | undefined {
   if (!raw) return undefined;
   const s = String(raw).trim();
   if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s;
-  const [m, d, y] = s.split("/");
-  if (m && d && y) return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+  const parts = s.split("/");
+  if (parts.length === 3) {
+    const [m, d, y] = parts;
+    if (m && d && y) return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+  }
   return s;
 }
 
 export function normalizeKeywords(raw?: string | string[]): string[] {
   if (!raw) return [];
-  if (Array.isArray(raw)) return raw.map((v) => String(v).trim());
+  if (Array.isArray(raw))
+    return raw.map((v) => String(v).trim()).filter(Boolean);
   return String(raw)
     .split(",")
     .map((v) => v.trim())
@@ -110,7 +113,7 @@ export function mergeMetadata({
   fm: Frontmatter;
   path: string;
 }) {
-  const title = fm.metaTitle || fm.title;
+  const title = fm.title;
   const description = fm.desc || fm.description;
 
   if (!title) {
@@ -140,6 +143,12 @@ export function mergeMetadata({
       url: canonical,
       images: fm.image ? [{ url: fm.image, alt: fm.alt || title }] : undefined,
       type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: fm.image ? [fm.image] : undefined,
     },
     alternates: {
       canonical,

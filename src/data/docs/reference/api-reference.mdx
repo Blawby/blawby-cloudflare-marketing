@@ -1,38 +1,38 @@
 ---
 title: "API Reference"
-metaTitle: "Blawby API Reference | Complete API Documentation"
-desc: "Complete API reference for the Blawby platform. Explore endpoints, authentication methods, webhooks, and SDKs to integrate legal payment processing."
+metaTitle: "API Reference — Blawby"
+desc: "Developer API reference for Blawby endpoints, authentication, webhooks, and SDK integration."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
-author: "Team Blawby"
+author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
 category: "reference"
 contentType: "reference"
 order: 10
-createdAt: "2024-02-15"
-updatedAt: "2024-02-15"
+createdAt: "02/15/2024"
+updatedAt: "02/15/2024"
 tags:
-  - api
-  - webhooks
-  - authentication
-  - endpoints
-  - sdk
-  - integration
+  - Api
+  - Webhooks
+  - Authentication
+  - Endpoints
+  - Sdk
+  - Integration
 keywords:
-  - blawby api
-  - api documentation
-  - webhooks
-  - authentication
-  - endpoints reference
-  - integration guide
-  - technical specs
+  - Blawby api
+  - Blawby api documentation
+  - Webhooks
+  - Authentication
+  - Endpoints reference
+  - Developer integration guide
+  - Sdk reference
 summary: "Complete reference documentation for Blawby API endpoints, authentication, webhooks, and SDK usage. Technical specifications for developers."
 schemaType: "TechArticle"
 faq:
-  - question: "What authentication methods does Blawby support?"
+  - Question: "What authentication methods does Blawby support?"
     answer: "Blawby supports API key authentication, OAuth 2.0, and session-based authentication for different integration scenarios."
-  - question: "How do I handle API rate limits?"
+  - Question: "How do I handle API rate limits?"
     answer: "Implement exponential backoff with jitter, monitor response headers for rate limit indicators, and provide user-friendly error messages."
-  - question: "What are the best practices for webhook security?"
+  - Question: "What are the best practices for webhook security?"
     answer: "Always verify webhook signatures using HMAC-SHA256, store secrets securely, use HTTPS endpoints, and implement idempotency keys for reliable event processing."
 noindex: false
 ---
@@ -40,6 +40,10 @@ noindex: false
 # Blawby API Reference
 
 Complete technical documentation for integrating with the Blawby platform. This reference covers all available endpoints, authentication methods, webhook events, and best practices for secure API development.
+
+> This page is for developers integrating with Blawby's API.
+> If you're a lawyer or legal staff, you don't need this -
+> [start here instead](/guides/get-started).
 
 ## Authentication
 
@@ -67,7 +71,7 @@ POST /api/v1/authenticate
 ```json
 {
   "token": "jwt_token_here",
-  "expiresIn": 3600
+  "expiresIn": 3600,
   "practiceId": "your-practice-id",
   "permissions": ["read", "write", "admin"]
 }
@@ -97,7 +101,7 @@ POST /api/v1/auth/session
 ```json
 {
   "sessionId": "session_abc123",
-  "expiresIn": 1800
+  "expiresIn": 1800,
   "user": {
     "id": "user_456",
     "email": "user@example.com",
@@ -142,7 +146,7 @@ POST /api/v1/clients
 {
   "name": "Jane Smith",
   "email": "jane@example.com",
-  "phone": "+1-555-0124"
+  "phone": "+1-555-0124",
   "status": "active"
 }
 ```
@@ -192,7 +196,7 @@ POST /api/v1/invoices
   "clientId": "client_456",
   "amount": 25000,
   "currency": "USD",
-  "dueDate": "2024-02-15"
+  "dueDate": "2024-02-15",
   "description": "Legal consultation services"
 }
 ```
@@ -260,8 +264,7 @@ POST /api/v1/webhooks
 
 #### Request Headers
 
-```
-json
+```json
 {
   "Content-Type": "application/json",
   "x-blawby-signature": "computed_hmac_signature"
@@ -401,3 +404,9 @@ class BlawbyClient:
 - Validate all error scenarios and edge cases
 
 This reference documentation provides comprehensive technical specifications for secure and efficient Blawby API integration.
+
+For SDK code samples and integration walkthroughs, see the [SDK Examples](/docs/sdk-examples) page.
+
+---
+
+Ready to integrate Blawby into your practice? [Contact our developer support team](/contact) or explore our [SDK examples](/docs/sdk-examples) to get started.

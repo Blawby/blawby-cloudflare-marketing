@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/navbar";
 import { SidebarLayout } from "@/components/sidebar-layout";
-import { getArticles } from "@/data/articles";
+import { getAllContent } from "@/lib/content";
 import { getModules } from "@/data/lessons";
 
 export default async function CourseLayout({
@@ -9,12 +9,12 @@ export default async function CourseLayout({
   children: React.ReactNode;
 }) {
   const modules = await getModules();
-  const articles = await getArticles();
+  const allContent = await getAllContent();
 
   return (
     <div className="min-h-screen">
       <Navbar />
-      <SidebarLayout modules={modules} articles={articles}>
+      <SidebarLayout modules={modules} allContent={allContent}>
         {children}
       </SidebarLayout>
     </div>

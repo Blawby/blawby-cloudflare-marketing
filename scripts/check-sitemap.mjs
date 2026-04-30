@@ -46,9 +46,9 @@ if (!fs.existsSync(SITEMAP_PATH)) {
       continue;
     }
 
-    const pagePath = parsedUrl.pathname === "/" ? "/index" : parsedUrl.pathname;
-    const htmlPath = path.join(OUT_DIR, `${pagePath}.html`);
-    const indexPath = path.join(OUT_DIR, pagePath, "index.html");
+    const normalizedPage = parsedUrl.pathname.replace(/(^\/|\/$)/g, "") || "index";
+    const htmlPath = path.join(OUT_DIR, `${normalizedPage}.html`);
+    const indexPath = path.join(OUT_DIR, normalizedPage, "index.html");
 
     if (!fs.existsSync(htmlPath) && !fs.existsSync(indexPath)) {
       errors.push(`${url} - sitemap URL has no exported HTML page`);

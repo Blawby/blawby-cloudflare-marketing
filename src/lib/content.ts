@@ -22,8 +22,9 @@ export async function getAllContent(): Promise<ContentItem[]> {
   const isDev = process.env.NODE_ENV === "development";
   if (_cache && !isDev) return _cache;
 
-  const baseDirs = ["lessons", "articles", "docs"];
+  const baseDirs = ["lessons", "solutions", "docs"];
   const items: ContentItem[] = [];
+  const seenHrefs = new Set<string>();
 
   for (const baseDir of baseDirs) {
     const fullBaseDir = path.join(DATA_DIR, baseDir);
@@ -51,13 +52,19 @@ export async function getAllContent(): Promise<ContentItem[]> {
       const relativePath = path.relative(fullBaseDir, file);
       const folder = path.dirname(relativePath);
 
+      const href = `/${fm.category.toLowerCase()}/${slug}`;
+      if (seenHrefs.has(href)) {
+        throw new Error(`Duplicate routing detected: ${href} (found in ${file})`);
+      }
+      seenHrefs.add(href);
+
       items.push({
         ...fm,
         slug,
         origin: baseDir,
         folder: folder === "." ? baseDir : folder,
         category: fm.category,
-        href: `/${fm.category}/${slug}`,
+        href,
         author: fm.author || "Team Blawby",
       });
     }
@@ -87,8 +94,11 @@ export async function getContent(
 
   if (category) {
     return (
-      all.find((item) => item.slug === slug && item.category === category) ||
-      null
+      all.find(
+        (item) =>
+          item.slug === slug &&
+          item.category.toLowerCase() === category.toLowerCase(),
+      ) || null
     );
   }
 
@@ -100,7 +110,9 @@ export async function getContentByCategory(
   category: string,
 ): Promise<ContentItem[]> {
   const all = await getAllContent();
-  return all.filter((item) => item.category === category);
+  return all.filter(
+    (item) => item.category.toLowerCase() === category.toLowerCase(),
+  );
 }
 
 function getFilesRecursively(dir: string): string[] {

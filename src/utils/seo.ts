@@ -73,6 +73,11 @@ export function getOrganizationSchema() {
       "@type": "ImageObject",
       url: siteConfig.defaultImage,
     },
+    sameAs: [
+      siteConfig.links.twitter,
+      siteConfig.links.linkedin,
+      siteConfig.links.github,
+    ].filter(Boolean),
   };
 }
 

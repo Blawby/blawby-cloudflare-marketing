@@ -47,7 +47,8 @@
     "shiki": "^3.4.0",
     "tailwindcss": "^4.1.13",
     "use-debounce": "^10.0.4",
-    "vanilla-cookieconsent": "^3.1.0"
+    "vanilla-cookieconsent": "^3.1.0",
+    "web-vitals": "^5.2.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250529.0",
