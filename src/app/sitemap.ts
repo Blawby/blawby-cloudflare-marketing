@@ -1,13 +1,11 @@
 import { siteConfig } from "@/config/site";
-import { getArticles } from "@/data/articles";
-import { getModules } from "@/data/lessons";
+import { getAllContent } from "@/lib/content";
 import fs from "fs";
 import { MetadataRoute } from "next";
 import path from "path";
 
 export const dynamic = "force-static";
 
-// Helper function to get file modification time
 function getFileMtime(filePath: string): string | null {
   try {
     const stats = fs.statSync(filePath);
@@ -17,221 +15,82 @@ function getFileMtime(filePath: string): string | null {
   }
 }
 
-// Helper function to get all content files and their timestamps
-function getAllContentFiles() {
-  const registeredLessons = new Set(
-    getModules().flatMap((module) => module.lessons.map((lesson) => lesson.id)),
-  );
-  const registeredArticles = new Map(
-    getArticles().map((article) => [article.id, article.category]),
-  );
-  const contentFiles: Array<{
-    type: string;
-    slug: string;
-    category: string;
-    mtime: string;
-    filePath: string;
-  }> = [];
-
-  // Get lessons
-  try {
-    const lessonsDir = path.join(process.cwd(), "src/data/lessons");
-    const lessonFiles = fs
-      .readdirSync(lessonsDir)
-      .filter((f) => f.endsWith(".mdx"));
-    for (const file of lessonFiles) {
-      const slug = file.replace(".mdx", "");
-      if (!registeredLessons.has(slug)) continue;
-
-      const filePath = path.join(lessonsDir, file);
-      const mtime = getFileMtime(filePath);
-      if (mtime) {
-        contentFiles.push({
-          type: "lesson",
-          slug,
-          category: "lessons",
-          mtime,
-          filePath,
-        });
-      }
-    }
-  } catch (error) {
-    console.warn("Error reading lessons directory:", error);
-  }
-
-  // Get articles
-  try {
-    const articlesDir = path.join(process.cwd(), "src/data/articles");
-    const categories = fs
-      .readdirSync(articlesDir, { withFileTypes: true })
-      .filter((dirent) => dirent.isDirectory())
-      .map((dirent) => dirent.name);
-
-    for (const category of categories) {
-      const categoryDir = path.join(articlesDir, category);
-      const articleFiles = fs
-        .readdirSync(categoryDir)
-        .filter((f) => f.endsWith(".mdx"));
-      for (const file of articleFiles) {
-        const slug = file.replace(".mdx", "");
-        if (registeredArticles.get(slug) !== category) continue;
-
-        const filePath = path.join(categoryDir, file);
-        const mtime = getFileMtime(filePath);
-        if (mtime) {
-          contentFiles.push({
-            type: "article",
-            slug,
-            category,
-            mtime,
-            filePath,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    console.warn("Error reading articles directory:", error);
-  }
-
-  // Get interviews
-  try {
-    const interviewsDir = path.join(process.cwd(), "src/data/interviews");
-    const interviewFiles = fs
-      .readdirSync(interviewsDir)
-      .filter((f) => f.endsWith(".vtt"));
-    for (const file of interviewFiles) {
-      const filePath = path.join(interviewsDir, file);
-      const mtime = getFileMtime(filePath);
-      if (mtime) {
-        contentFiles.push({
-          type: "interview",
-          slug: file.replace(".vtt", ""),
-          category: "interviews",
-          mtime,
-          filePath,
-        });
-      }
-    }
-  } catch (error) {
-    console.warn("Error reading interviews directory:", error);
-  }
-
-  // Get legal pages
-  try {
-    const legalDir = path.join(process.cwd(), "src/data/legal");
-    const legalFiles = fs
-      .readdirSync(legalDir)
-      .filter((f) => f.endsWith(".mdx"));
-    for (const file of legalFiles) {
-      const filePath = path.join(legalDir, file);
-      const mtime = getFileMtime(filePath);
-      if (mtime) {
-        contentFiles.push({
-          type: "legal",
-          slug: file.replace(".mdx", ""),
-          category: "legal",
-          mtime,
-          filePath,
-        });
-      }
-    }
-  } catch (error) {
-    console.warn("Error reading legal directory:", error);
-  }
-
-  return contentFiles;
-}
-
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = siteConfig.url;
-  const contentFiles = getAllContentFiles();
   const urlMap = new Map<string, MetadataRoute.Sitemap[0]>();
+  const content = await getAllContent();
 
-  // Add home page
-  let latestTime = "";
-  for (const file of contentFiles) {
-    if (file.mtime && file.mtime > latestTime) {
-      latestTime = file.mtime;
-    }
-  }
-  if (!latestTime) latestTime = new Date().toISOString();
+  // 1. Add home page (latest mod time of any content)
+  const latestContentMod = content.reduce((latest, item) => {
+    const mod = item.updatedAt || "";
+    return mod > latest ? mod : latest;
+  }, "");
+
   urlMap.set(siteUrl, {
     url: siteUrl,
-    lastModified: latestTime,
+    lastModified: latestContentMod || new Date().toISOString(),
     changeFrequency: "daily",
-    priority: 0.7,
+    priority: 1.0,
   });
 
-  // Add static pages
-  const staticPages = ["/pricing", "/help", "/nonprofit-commitment"];
-  for (const page of staticPages) {
-    const pageName = page.slice(1);
-    const filePath = path.join(
-      process.cwd(),
-      "src/app/(sidebar)",
-      pageName,
-      "page.tsx",
-    );
-    const mtime = getFileMtime(filePath);
-    if (!mtime) continue;
+  // 2. Add static pages with real modification times
+  const staticPages = [
+    { path: "/pricing", file: "src/data/pages/pricing.mdx", priority: 0.8 },
+    { path: "/help", file: "src/data/pages/help.mdx", priority: 0.8 },
+    { path: "/nonprofit-commitment", file: "src/data/pages/nonprofit-commitment.mdx", priority: 0.8 },
+  ];
 
-    const url = `${siteUrl}${page}`;
+  for (const { path: p, file: f, priority } of staticPages) {
+    const url = `${siteUrl}${p}`;
+    const mtime = getFileMtime(path.join(process.cwd(), f));
     urlMap.set(url, {
       url,
-      lastModified: mtime,
+      lastModified: mtime || new Date().toISOString(),
+      changeFrequency: "weekly",
+      priority,
+    });
+  }
+
+  // 3. Add dynamic content (lessons/articles)
+  for (const item of content) {
+    const url = `${siteUrl}${item.href}`;
+    urlMap.set(url, {
+      url,
+      lastModified: item.updatedAt || item.createdAt || new Date().toISOString(),
       changeFrequency: "daily",
       priority: 0.7,
     });
   }
 
-  // Add content pages
-  for (const file of contentFiles) {
-    let url: string;
-    if (file.type === "lesson") {
-      url = `${siteUrl}/lessons/${file.slug}`;
-    } else if (file.type === "article") {
-      url = `${siteUrl}/${file.category}/${file.slug}`;
-    } else if (file.type === "interview") {
-      url = `${siteUrl}/interviews/${file.slug}`;
-    } else if (file.type === "legal") {
-      url = `${siteUrl}/${file.slug}`;
-    } else {
-      continue;
-    }
-
-    // Only add if not already present or if this timestamp is newer
-    const existing = urlMap.get(url);
-    if (!existing || file.mtime > (existing.lastModified || "")) {
-      urlMap.set(url, {
-        url,
-        lastModified: file.mtime,
-        changeFrequency: "daily",
-        priority: 0.7,
-      });
-    }
+  // 4. Add Legal pages (Terms, Privacy)
+  const legalPages = ["/privacy", "/terms"];
+  for (const page of legalPages) {
+    const url = `${siteUrl}${page}`;
+    urlMap.set(url, {
+      url,
+      lastModified: new Date().toISOString(),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    });
   }
 
-  // Add interviews index page
-  const interviewFiles = contentFiles.filter((f) => f.type === "interview");
-  let latestInterviewTime = "";
-  for (const file of interviewFiles) {
-    if (file.mtime && file.mtime > latestInterviewTime) {
-      latestInterviewTime = file.mtime;
+  // 5. Add Interviews (they are still JSON/VTT based)
+  try {
+    const interviewsDir = path.join(process.cwd(), "src/data/interviews");
+    if (fs.existsSync(interviewsDir)) {
+      const interviewFiles = fs.readdirSync(interviewsDir).filter(f => f.endsWith(".vtt"));
+      for (const file of interviewFiles) {
+        const slug = file.replace(".vtt", "");
+        const url = `${siteUrl}/interviews/${slug}`;
+        urlMap.set(url, {
+          url,
+          lastModified: getFileMtime(path.join(interviewsDir, file)) || new Date().toISOString(),
+          changeFrequency: "weekly",
+          priority: 0.6,
+        });
+      }
     }
-  }
-  if (!latestInterviewTime) latestInterviewTime = new Date().toISOString();
-  if (interviewFiles.length > 0) {
-    const interviewsUrl = `${siteUrl}/interviews`;
-    const existing = urlMap.get(interviewsUrl);
-    if (!existing || latestInterviewTime > (existing.lastModified || "")) {
-      urlMap.set(interviewsUrl, {
-        url: interviewsUrl,
-        lastModified: latestInterviewTime,
-        changeFrequency: "daily",
-        priority: 0.7,
-      });
-    }
-  }
+  } catch {}
 
   return Array.from(urlMap.values());
 }

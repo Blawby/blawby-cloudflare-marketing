@@ -2,15 +2,27 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import NonprofitCommitmentContent from "@/data/pages/nonprofit-commitment.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl, getPageMetadata } from "@/utils/seo";
+import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = getPageMetadata({
-  title: "Nonprofit Commitment",
-  description:
-    "Dedicated to reducing digital barriers for nonprofit legal aid organizations through open-source development and affordable tools.",
-  path: "/nonprofit-commitment",
-});
+import { parseFrontmatter, mergeMetadata } from "@/utils/frontmatter";
+import path from "path";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const fm = await parseFrontmatter(
+    path.join(process.cwd(), "src/data/pages/nonprofit-commitment.mdx"),
+  );
+
+  return mergeMetadata({
+    fm,
+    path: "/nonprofit-commitment",
+    fallback: {
+      title: "Nonprofit Commitment",
+      description:
+        "Dedicated to reducing digital barriers for nonprofit legal aid organizations through open-source development and affordable tools.",
+    },
+  });
+}
 
 export default function NonprofitCommitmentPage() {
   const breadcrumbItems = [

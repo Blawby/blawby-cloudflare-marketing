@@ -1,6 +1,5 @@
 "use client";
 
-import { getModules } from "@/data/lessons";
 import { ArticleIcon } from "@/icons/article-icon";
 import { SearchIcon } from "@/icons/search-icon";
 import {
@@ -113,7 +112,6 @@ export default function CommandPalette() {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedResultId, setSelectedResultId] = useState<string | null>(null);
-  const modules = getModules();
 
   // Handle keyboard shortcut (Cmd+K / Ctrl+K)
   useEffect(() => {
@@ -163,17 +161,26 @@ export default function CommandPalette() {
       const transformedResults: SearchResult[] = matches.map((result: any) => {
         return {
           id: result.id,
-          title: result.metadata?.title || result.metadata?.name || "Untitled",
+          title:
+            result.title ||
+            result.metadata?.title ||
+            result.metadata?.name ||
+            "Untitled",
           description:
+            result.description ||
             result.metadata?.content ||
             result.metadata?.description ||
             result.metadata?.text ||
             result.metadata?.body,
-          type: result.metadata?.type || "lesson",
-          url: result.metadata?.url,
+          type: result.type || result.metadata?.type || "lesson",
+          url: result.url || result.metadata?.url,
           score: result.score,
-          module: result.metadata?.section || result.metadata?.module,
-          section: result.metadata?.section,
+          module:
+            result.module ||
+            result.section ||
+            result.metadata?.section ||
+            result.metadata?.module,
+          section: result.section || result.metadata?.section,
         };
       });
 

@@ -11,76 +11,102 @@ export type Tag = {
   slug: string;
 };
 
-export const categories: Category[] = [
+// SEO-focused article categories for blog traffic capture
+export const articleCategories: Category[] = [
   {
     id: "compliance",
     name: "Compliance",
-    description: "Legal compliance guides and best practices",
+    description: "IOLTA compliance, trust accounts, and legal trust account management",
     slug: "compliance",
+  },
+  {
+    id: "ai-chat",
+    name: "AI Chat & Client Acquisition",
+    description: "AI-powered conversations, client intake automation, and lead generation",
+    slug: "ai-chat",
   },
   {
     id: "business-strategy",
     name: "Business Strategy",
-    description: "Strategic guidance for law firm growth and operations",
+    description: "Law firm operations, revenue optimization, and growth strategies",
     slug: "business-strategy",
   },
   {
-    id: "payment-processing",
-    name: "Payment Processing",
-    description: "Payment processing guides and tutorials",
-    slug: "payment-processing",
-  },
-  {
-    id: "client-management",
-    name: "Client Management",
-    description: "Client relationship and management best practices",
-    slug: "client-management",
-  },
-  {
-    id: "automation",
-    name: "Automation",
-    description: "Workflow automation and efficiency tips",
-    slug: "automation",
+    id: "legal-tech",
+    name: "Legal Technology",
+    description: "Modern legal tech trends, automation, and digital transformation",
+    slug: "legal-tech",
   },
 ];
 
-export const tags: Tag[] = [
+// User journey documentation categories for active users
+export const userJourneyCategories: Category[] = [
+  {
+    id: "quick-start",
+    name: "Quick Start",
+    description: "Get started with Blawby in minutes",
+    slug: "quick-start",
+  },
+  {
+    id: "core-features",
+    name: "Core Features",
+    description: "Essential features for day-to-day operations",
+    slug: "core-features",
+  },
+  {
+    id: "advanced-features",
+    name: "Advanced Features",
+    description: "Powerful features for growing practices",
+    slug: "advanced-features",
+  },
+  {
+    id: "reference",
+    name: "Reference",
+    description: "API documentation, webhooks, and technical reference",
+    slug: "reference",
+  },
+];
+
+export const categories = [...articleCategories, ...userJourneyCategories];
+
+// SEO-focused tags for article content
+export const articleTags: Tag[] = [
   { id: "iolta", name: "IOLTA", slug: "iolta" },
   { id: "trust-accounts", name: "Trust Accounts", slug: "trust-accounts" },
-  {
-    id: "legal-compliance",
-    name: "Legal Compliance",
-    slug: "legal-compliance",
-  },
-  {
-    id: "payment-processing",
-    name: "Payment Processing",
-    slug: "payment-processing",
-  },
-  {
-    id: "revenue-optimization",
-    name: "Revenue Optimization",
-    slug: "revenue-optimization",
-  },
+  { id: "legal-compliance", name: "Legal Compliance", slug: "legal-compliance" },
+  { id: "payment-processing", name: "Payment Processing", slug: "payment-processing" },
+  { id: "revenue-optimization", name: "Revenue Optimization", slug: "revenue-optimization" },
   { id: "flat-fees", name: "Flat Fees", slug: "flat-fees" },
   { id: "payment-plans", name: "Payment Plans", slug: "payment-plans" },
-  {
-    id: "automated-billing",
-    name: "Automated Billing",
-    slug: "automated-billing",
-  },
+  { id: "automated-billing", name: "Automated Billing", slug: "automated-billing" },
   { id: "cash-flow", name: "Cash Flow", slug: "cash-flow" },
-  {
-    id: "client-management",
-    name: "Client Management",
-    slug: "client-management",
-  },
-  { id: "invoicing", name: "Invoicing", slug: "invoicing" },
-  { id: "payouts", name: "Payouts", slug: "payouts" },
-  { id: "credit-cards", name: "Credit Cards", slug: "credit-cards" },
-  { id: "ach", name: "ACH", slug: "ach" },
-  { id: "bank-transfers", name: "Bank Transfers", slug: "bank-transfers" },
+  { id: "ai-chat", name: "AI Chat", slug: "ai-chat" },
+  { id: "automation", name: "Automation", slug: "automation" },
+  { id: "client-intake", name: "Client Intake", slug: "client-intake" },
+  { id: "lead-generation", name: "Lead Generation", slug: "lead-generation" },
+  { id: "client-acquisition", name: "Client Acquisition", slug: "client-acquisition" },
+  { id: "practice-management", name: "Practice Management", slug: "practice-management" },
+  { id: "legal-tech", name: "Legal Tech", slug: "legal-tech" },
+  { id: "law-firm-operations", name: "Law Firm Operations", slug: "law-firm-operations" },
+  { id: "solo-practice", name: "Solo Practice", slug: "solo-practice" },
 ];
+
+// User journey documentation tags
+export const userJourneyTags: Tag[] = [
+  { id: "setup", name: "Setup", slug: "setup" },
+  { id: "installation", name: "Installation", slug: "installation" },
+  { id: "configuration", name: "Configuration", slug: "configuration" },
+  { id: "widget", name: "Widget", slug: "widget" },
+  { id: "payments", name: "Payments", slug: "payments" },
+  { id: "conversations", name: "Conversations", slug: "conversations" },
+  { id: "client-management", name: "Client Management", slug: "client-management" },
+  { id: "api", name: "API", slug: "api" },
+  { id: "webhooks", name: "Webhooks", slug: "webhooks" },
+  { id: "integration", name: "Integration", slug: "integration" },
+  { id: "troubleshooting", name: "Troubleshooting", slug: "troubleshooting" },
+];
+
+export const tags = [...articleTags, ...userJourneyTags];
 
 export function getCategoryById(id: string): Category | undefined {
   return categories.find((cat) => cat.id === id);

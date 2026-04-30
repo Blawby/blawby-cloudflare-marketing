@@ -7,6 +7,10 @@
 - MDX support for content
 - Responsive design
 - Dark mode support
+- AI chat widget integration capabilities
+- Real-time messaging and conversation management
+- Client intake automation workflows
+- Technical documentation and API reference sections
 
 ## React Component Rules
 - **Key Management:** Always use unique, stable identifiers (like UUIDs or database IDs) for `key` props when mapping over arrays. Never use array index as a key.
@@ -22,10 +26,13 @@
    - Twitter Cards
    - JSON-LD structured data
 
-2. **Content Management:**
-   - All course content must be in `/src/data/lessons.ts` and `/src/data/lessons` folder
-   - All interview content must be in `/src/data/interviews.ts` and `/src/data/interviews` folder
-   - Follow existing MDX patterns for consistency
+2. **Content Management (Filesystem-First):**
+   - **Source of Truth**: The filesystem is the single source of truth. Metadata is derived from MDX frontmatter. Do NOT add entries to `articles.ts` or `lessons.ts` manually for registration.
+   - **SEO Articles**: Blog-style content in `/src/data/articles/{category}/` for traffic capture.
+   - **Lessons**: Product education in `/src/data/lessons/`.
+   - **Categories**: Managed in `src/data/categories.ts`.
+   - **Module Grouping**: Lesson sidebar grouping is managed in `src/data/lessons.ts` via `moduleRegistry`.
+   - **Templates**: Use `src/data/_template.mdx` for the required frontmatter schema.
 
 3. **Image Requirements:**
    - Use Next.js `<Image>` component for all images
@@ -44,12 +51,31 @@
    - Use Wrangler for Cloudflare Pages deployment
 
 ## Content Guidelines
-- Keep content focused on legal payment processing
-- Maintain professional tone
+
+### SEO Articles (Blog Content)
+- Focus on long-tail keywords and search intent
+- Address pain points and educational needs
+- Include internal linking and SEO optimization
+- Use engaging, benefit-driven headlines
+- Target practice owners and decision-makers
+- Balance payment processing with AI chat/automation topics
+
+### User Journey Documentation
+- Focus on step-by-step implementation
+- Use clear, actionable instructions
+- Include code examples and screenshots
+- Target active users implementing features
+- Prioritize clarity and completeness
+- Separate into logical user journey stages
+
+### General Guidelines
+- Maintain professional tone across all content types
 - Ensure all claims are accurate and verifiable
 - Include clear calls-to-action
 - Maintain consistent branding
 - Focus on benefits and solutions
+- Highlight automation and efficiency gains alongside payment features
+- Address both technical and non-technical audiences appropriately
 
 ## Technical Requirements
 - Keep files under 500 lines of code

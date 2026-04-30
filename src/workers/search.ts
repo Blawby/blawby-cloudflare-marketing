@@ -337,6 +337,71 @@ function filenameToUrl(filename: string): string {
   return `/${key}`;
 }
 
+function normalizeSearchText(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function getTitleMatchBoost(
+  query: string,
+  match: { title: string; url: string },
+) {
+  const normalizedQuery = normalizeSearchText(query);
+  const normalizedTitle = normalizeSearchText(match.title);
+  const queryTerms = normalizedQuery.split(/\s+/).filter(Boolean);
+  const titleTerms = normalizedTitle.split(/\s+/).filter(Boolean);
+
+  if (!normalizedQuery || titleTerms.length === 0) return 0;
+  if (normalizedTitle === normalizedQuery) return 3;
+  if (normalizedTitle.includes(normalizedQuery)) return 2;
+
+  const hasTitleTermMatch = queryTerms.some((queryTerm) =>
+    titleTerms.some(
+      (titleTerm) =>
+        titleTerm === queryTerm ||
+        titleTerm.startsWith(queryTerm) ||
+        queryTerm.startsWith(titleTerm),
+    ),
+  );
+
+  if (hasTitleTermMatch) return 1;
+
+  const pricingIntentTerms = new Set([
+    "price",
+    "pricing",
+    "cost",
+    "costs",
+    "fee",
+    "fees",
+    "rate",
+    "rates",
+    "discount",
+    "discounts",
+  ]);
+  const isPricingIntent = queryTerms.some((term) =>
+    pricingIntentTerms.has(term),
+  );
+
+  if (isPricingIntent && match.url === "/pricing") return 2;
+
+  return 0;
+}
+
+function rerankSearchMatches<
+  T extends { title: string; url: string; score: number },
+>(query: string, matches: T[]): T[] {
+  return [...matches].sort((a, b) => {
+    const boostDifference =
+      getTitleMatchBoost(query, b) - getTitleMatchBoost(query, a);
+
+    if (boostDifference !== 0) return boostDifference;
+
+    return b.score - a.score;
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Route handlers
 // ---------------------------------------------------------------------------
@@ -372,7 +437,10 @@ async function handleQuery(request: Request, env: Env): Promise<Response> {
     section: item.attributes?.folder as string | undefined,
   }));
 
-  return corsJson({ matches: { matches } }, request);
+  return corsJson(
+    { matches: { matches: rerankSearchMatches(query, matches) } },
+    request,
+  );
 }
 
 /**
@@ -473,7 +541,7 @@ async function handleHelpForm(request: Request, env: Env): Promise<Response> {
   }
 
   const emailSvc = new EmailService(env.RESEND_API_KEY);
-  
+
   await emailSvc.send({
     from: "noreply@blawby.com",
     to: env.SUPPORT_EMAIL,
@@ -749,9 +817,7 @@ export default {
 
     // CORS preflight
     if (request.method === "OPTIONS") {
-      const isMutation = ROUTES.some(
-        (r) => r.mutation && r.pattern.test(path),
-      );
+      const isMutation = ROUTES.some((r) => r.mutation && r.pattern.test(path));
       return new Response(null, {
         status: 204,
         headers: getCorsHeaders(request, isMutation),

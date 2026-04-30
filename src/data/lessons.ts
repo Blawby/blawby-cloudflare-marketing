@@ -1,148 +1,70 @@
+import { getAllContent, getContent, getContentByCategory, type ContentItem } from "@/lib/content";
+
 export type Module = {
   id: string;
   title: string;
   description: string;
-  lessons: Lesson[];
+  lessons: ContentItem[];
 };
 
-export type Lesson = {
-  id: string;
-  title: string;
-  description: string;
-  contentType: "lesson" | "article" | "guide";
-  video: {
-    thumbnail: string;
-    duration: number;
-    url: string;
-  } | null;
-  // Article-specific metadata
-  category?: string;
-  tags?: string[];
-  datePublished?: string;
-  dateModified?: string;
-  author?: string;
-};
+/**
+ * Returns the module structure for the sidebar.
+ * Lessons are dynamically mapped to their respective modules based on id.
+ */
+export async function getModules(): Promise<Module[]> {
+  const all = await getAllContent();
+  const allLessons = all.filter(item => item.origin === "lessons");
 
-export function getModules(): Module[] {
-  return lessons;
+  return moduleRegistry.map((mod) => ({
+    ...mod,
+    lessons: mod.lessonIds
+      .map((id) => allLessons.find((l) => l.slug === id))
+      .filter((l): l is ContentItem => !!l)
+      .map(l => ({ ...l, id: l.slug })), // Add id for backward compat
+  }));
 }
 
 export async function getLesson(
   slug: string,
-): Promise<(Lesson & { module: Module; next: Lesson | null }) | null> {
-  let module = lessons.find(({ lessons }) =>
-    lessons.some(({ id }) => id === slug),
+): Promise<(ContentItem & { id: string; module: any; next: any | null }) | null> {
+  const modules = await getModules();
+  let module = modules.find(({ lessons }) =>
+    lessons.some((l) => l.slug === slug),
   );
 
-  if (!module) {
-    return null;
-  }
+  if (!module) return null;
 
-  let index = module.lessons.findIndex(({ id }) => id === slug);
+  let index = module.lessons.findIndex((l) => l.slug === slug);
+
+  const item = module.lessons[index];
 
   return {
-    ...module.lessons[index],
+    ...item,
+    id: item.slug,
     module,
     next: index < module.lessons.length - 1 ? module.lessons[index + 1] : null,
   };
 }
 
-export async function getLessonContent(slug: string) {
-  if (slug === "privacy" || slug === "terms") {
-    return (await import(`@/data/legal/${slug}.mdx`)).default;
-  }
 
-  // First try to find the lesson to determine its content type
-  const lesson = await getLesson(slug);
-  if (!lesson) {
-    throw new Error(`Lesson not found: ${slug}`);
-  }
-
-  // Import from appropriate directory based on content type
-  if (lesson.contentType === "guide" || lesson.contentType === "article") {
-    return (await import(`@/data/articles/${slug}.mdx`)).default;
-  } else {
-    return (await import(`@/data/lessons/${slug}.mdx`)).default;
-  }
-}
-
-const lessons = [
+// The moduleRegistry now only defines grouping and ordering of modules
+const moduleRegistry = [
   {
     id: "getting-started",
     title: "Getting Started",
-    description:
-      "Learn how to get started with Blawby's legal payment solutions.",
-    lessons: [
-      {
-        id: "get-started",
-        title: "Quick Start Guide",
-        description:
-          "Get up and running with Blawby's payment processing platform.",
-        contentType: "lesson" as const,
-        category: "lessons",
-        video: null,
-      },
-    ],
+    description: "Learn how to get started with Blawby's legal payment solutions.",
+    lessonIds: ["get-started"],
   },
   {
     id: "payments",
     title: "Legal Payments Solutions",
-    description:
-      "Compliant credit card payments and invoicing solutions for legal practices.",
-    lessons: [
-      {
-        id: "payments",
-        title: "Payments",
-        description:
-          "Accept credit card, debit card, and ACH/Bank Transfer payments with ease. Ensure compliance with ABA and IOLTA guidelines.",
-        contentType: "lesson" as const,
-        category: "lessons",
-        video: null,
-      },
-      {
-        id: "invoicing",
-        title: "Invoicing",
-        description:
-          "Streamline your billing process with automated invoicing and payment collection.",
-        contentType: "lesson" as const,
-        category: "lessons",
-        video: null,
-      },
-      {
-        id: "clients",
-        title: "Clients",
-        description:
-          "Efficiently manage your client information, communications, and payment history.",
-        contentType: "lesson" as const,
-        category: "lessons",
-        video: null,
-      },
-      {
-        id: "payouts",
-        title: "Payouts",
-        description:
-          "Manage your firm's cash flow with secure and efficient payout processing.",
-        contentType: "lesson" as const,
-        category: "lessons",
-        video: null,
-      },
-    ],
+    description: "Compliant credit card payments and invoicing solutions for legal practices.",
+    lessonIds: ["payments", "invoicing", "clients", "payouts"],
   },
   {
     id: "ai-intake",
     title: "AI Legal Intake",
-    description:
-      "Intelligent client intake powered by AI to capture leads and streamline your practice.",
-    lessons: [
-      {
-        id: "ai-powered-legal-intake-chatbot",
-        title: "AI Legal Intake",
-        description:
-          "Set up and use Blawby's AI-powered legal intake chatbot to automatically collect client information and process consultation fees.",
-        contentType: "lesson" as const,
-        category: "lessons",
-        video: null,
-      },
-    ],
+    description: "Intelligent client intake powered by AI to capture leads and streamline your practice.",
+    lessonIds: ["ai-powered-legal-intake-chatbot"],
   },
 ];

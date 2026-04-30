@@ -2,15 +2,27 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import PricingContent from "@/data/pages/pricing.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl, getPageMetadata } from "@/utils/seo";
+import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = getPageMetadata({
-  title: "Pricing",
-  description:
-    "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
-  path: "/pricing",
-});
+import { parseFrontmatter, mergeMetadata } from "@/utils/frontmatter";
+import path from "path";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const fm = await parseFrontmatter(
+    path.join(process.cwd(), "src/data/pages/pricing.mdx"),
+  );
+
+  return mergeMetadata({
+    fm,
+    path: "/pricing",
+    fallback: {
+      title: "Pricing",
+      description:
+        "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
+    },
+  });
+}
 
 export default function PrivacyPage() {
   const breadcrumbItems = [

@@ -1,16 +1,9 @@
-import {
-  Breadcrumb,
-  BreadcrumbHome,
-  Breadcrumbs,
-  BreadcrumbSeparator,
-} from "@/components/breadcrumbs";
 import { Button } from "@/components/button";
 import { ContentLink } from "@/components/content-link";
 import { CTASection } from "@/components/cta-section";
-import { Logo } from "@/components/logo";
+import { Navbar } from "@/components/navbar";
 import { PageSection } from "@/components/page-section";
 import { Pricing } from "@/components/pricing";
-import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import { getModules, type Module } from "@/data/lessons";
 import { BookIcon } from "@/icons/book-icon";
 import { ClockIcon } from "@/icons/clock-icon";
@@ -55,8 +48,8 @@ function getLessonReadingDuration(slug: string): number {
   }
 }
 
-function getLessonHref(lesson: { id: string; category?: string }) {
-  return `/${lesson.category || "lessons"}/${lesson.id}`;
+function getLessonHref(lesson: { slug: string; category?: string }) {
+  return `/${lesson.category || "lessons"}/${lesson.slug}`;
 }
 
 export default async function Page() {
@@ -64,7 +57,7 @@ export default async function Page() {
   let lessons = modules.flatMap(({ lessons }) => lessons);
   let duration = lessons.reduce((sum, lesson) => {
     if (lesson.video?.duration) return sum + lesson.video.duration;
-    return sum + getLessonReadingDuration(lesson.id);
+    return sum + getLessonReadingDuration(lesson.slug);
   }, 0);
 
   const breadcrumbItems = [
@@ -74,15 +67,8 @@ export default async function Page() {
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
   return (
-    <SidebarLayoutContent
-      breadcrumbs={
-        <Breadcrumbs>
-          <BreadcrumbHome />
-          <BreadcrumbSeparator />
-          <Breadcrumb>Overview</Breadcrumb>
-        </Breadcrumbs>
-      }
-    >
+    <>
+      <Navbar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -96,8 +82,8 @@ export default async function Page() {
               description:
                 "A comprehensive set of lessons for legal professionals to master compliant payments.",
               lessons: lessons.map((lesson) => ({
-                name: lesson.title,
-                description: lesson.description,
+                name: lesson.title || "",
+                description: lesson.description || "",
                 url: absoluteUrl(getLessonHref(lesson)),
               })),
             }),
@@ -110,7 +96,7 @@ export default async function Page() {
           __html: JSON.stringify(getSoftwareApplicationSchema()),
         }}
       />
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-7xl pt-14">
         <div className="absolute -inset-x-2 top-0 -z-10 h-80 overflow-hidden rounded-t-2xl mask-b-from-60% sm:h-88 md:h-112 lg:-inset-x-4 lg:h-128">
           <Image
             alt=""
@@ -125,9 +111,6 @@ export default async function Page() {
         <div className="mx-auto max-w-6xl">
           <div className="relative">
             <div className="px-4 pt-48 pb-12 lg:py-24">
-              <div className="flex items-center gap-3">
-                <Logo className="h-8 dark:text-white" />
-              </div>
               <h1 className="sr-only">Course overview</h1>
               <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-950 dark:text-gray-300">
                 {siteConfig.description}
@@ -153,9 +136,16 @@ export default async function Page() {
                   {formatDuration(duration)}
                 </div>
               </div>
-              <div className="mt-10">
+              <div className="mt-10 flex flex-wrap gap-x-6 gap-y-4">
+                {modules[0]?.lessons[0] && (
+                  <Button
+                    href={getLessonHref(modules[0].lessons[0])}
+                  >
+                    Get started
+                  </Button>
+                )}
                 <Button
-                  href={getLessonHref(modules[0].lessons[0])}
+                  href="/lessons/payments"
                   className="inline-flex items-center gap-x-2"
                 >
                   <PlayIcon className="h-4 w-4 fill-gray-900" />
@@ -379,15 +369,15 @@ export default async function Page() {
 
                       <ol className="mt-6 space-y-4">
                         {module.lessons.map((lesson) => (
-                          <li key={lesson.id}>
+                          <li key={lesson.slug}>
                             <ContentLink
-                              title={lesson.title}
-                              description={lesson.description}
+                              title={lesson.title || ""}
+                              description={lesson.description || ""}
                               href={getLessonHref(lesson)}
                               type={lesson.video ? "video" : "article"}
                               duration={
-                                lesson.video?.duration ??
-                                getLessonReadingDuration(lesson.id)
+                                lesson.video?.duration ||
+                                getLessonReadingDuration(lesson.slug)
                               }
                             />
                           </li>
@@ -407,6 +397,6 @@ export default async function Page() {
         buttonText="Register for Blawby"
         buttonHref="https://app.blawby.com/register"
       />
-    </SidebarLayoutContent>
+    </>
   );
 }

@@ -43,6 +43,29 @@ Support lawyers who manage others — whether staff, junior attorneys, or vendor
 
 ---
 
+## 🏷️ Content Bucket: AI Chat & Conversation Management
+
+### 🎯 Objective:
+Educate legal professionals on how AI-powered conversations and automated intake workflows can transform client acquisition and communication. Focus on practical implementation, efficiency gains, and maintaining professional standards while leveraging automation.
+
+### 🎯 Primary Personas:
+- Tech-savvy attorneys looking to modernize client communication
+- Practice managers seeking to reduce administrative overhead
+- Solos and small firms wanting to compete with larger practices
+- Legal staff responsible for client intake and communication
+
+### ✅ Seeded Post Ideas
+1. **AI Chat That Actually Understands Legal Clients: No More Generic Bots**
+2. **From Anonymous Visitor to Paying Client: The Modern Intake Flow**
+3. **24/7 Client Communication Without Burning Out Your Staff**
+4. **How AI Chat Pre-Qualifies Leads So You Only Talk to Serious Prospects**
+5. **Automated Intake Forms That Feel Like a Conversation, Not an Interrogation**
+6. **Real-Time Messaging That Keeps Clients Engaged and Informed**
+7. **Converting Website Visitors into Clients While You Sleep**
+8. **AI Chat Integration: Keep Your Professional Image While Gaining Efficiency**
+
+---
+
 ## 🏷️ Content Bucket: Product Education & Feature Highlights
 
 ### 🎯 Objective:
@@ -68,24 +91,45 @@ Educate lawyers, legal staff, and office managers on how specific product featur
 
 ## 📅 Content Cadence Rule Set (Updated for Weekly Publishing)
 
-Establish a consistent and SEO-optimized publishing frequency across all content buckets while addressing product education, persona balance, and rotation needs.
+Establish a consistent publishing strategy that balances SEO-focused articles with user journey documentation while addressing product education, persona balance, and rotation needs.
 
-### 🗓️ Weekly Publishing Goal
-Publish **1 blog post per week** (minimum 4 posts per month). Content must rotate through buckets strategically but prioritize ongoing business pain points and high-conversion topics.
+### 🗓️ Publishing Goals
+**SEO Articles**: Publish **1 blog post per week** (minimum 4 posts per month) for traffic capture and lead generation.
 
-### 🔁 Priority Buckets (1–2x per month each)
+**User Journey Documentation**: Create and update documentation based on feature releases and user needs. No fixed schedule - update as needed.
+
+Content must rotate through buckets strategically but prioritize ongoing business pain points and high-conversion topics.
+
+### 🔁 SEO Article Priority Buckets (1–2x per month each)
 | Bucket | Post Type | Notes |
 |--------|-----------|-------|
-| Law Firm Operations | Fixing friction, process improvements | Often SEO-driven, addresses core business concerns |
-| Product Education | Feature-backed problem solving | Supports product onboarding, trust, and conversion |
-| Getting Paid | Billing, late payments, follow-up automation | Core messaging strength of the product |
+| AI Chat & Client Acquisition | Conversational intake, lead generation | High-growth area, addresses modern practice needs |
+| Payment Processing | Billing, compliance, trust accounts | Core messaging strength of the product |
+| Practice Management | Operations, efficiency, growth | Often SEO-driven, addresses core business concerns |
+| Legal Technology | Tech trends, automation, digital transformation | Thought leadership, industry positioning |
 
-### 🔁 Rotational Buckets (1x every 6–8 weeks)
+### 📚 User Journey Documentation (As-needed basis)
+| Category | Type | Focus |
+|----------|------|-------|
+| Quick Start | Implementation guides | Get users running in minutes |
+| Core Features | Feature documentation | Essential daily operations |
+| Advanced Features | Power user guides | Growing practices |
+| Reference | Technical docs | Developers and integrations |
+
+### 🔁 SEO Article Rotational Buckets (1x every 6–8 weeks)
 | Bucket | Post Type | Notes |
 |--------|-----------|-------|
 | Delegation & Staff Empowerment | Internal clarity, less micro-managing | Appeals to growing teams and efficiency-seeking firms |
 | Legal Tech for Professionals | System upgrades, toolstack sanity | Reframe legal tech as a non-negotiable tool, not a luxury |
 | Starting a New Law Firm | Foundational guidance for first-year solos | Ideal for early-stage or expansion-curious readers |
+
+### 🔄 User Journey Documentation Updates (As-needed)
+| Trigger | Type | Priority |
+|---------|------|----------|
+| New Feature Release | Implementation guide | High |
+| User Feedback Gaps | Troubleshooting guide | High |
+| Platform Updates | Migration guides | Medium |
+| Best Practices | Optimization tips | Low |
 
 ---
 
@@ -159,6 +203,7 @@ This ruleset ensures content remains balanced across all major target personas b
 |---------|-------------|
 | **New Solo Lawyer** | Just starting, doing everything alone, wants growth without chaos |
 | **Tech-Outdated Veteran** | Very experienced, behind on tech, needs simple + safe upgrades |
+| **Tech-Savvy Attorney** | Experienced with technology, seeks automation and efficiency gains, interested in AI and modern tools |
 | **Legal Admin / Paralegal** | Works at a firm, improving efficiency, may advocate for new software |
 | **Firm Owner / Managing Partner** | Business-minded, scaling operations, wants time savings + oversight |
 

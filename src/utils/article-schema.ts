@@ -1,6 +1,6 @@
 import { siteConfig } from "@/config/site";
 
-type SchemaAuthor = { name: string; url: string } | string;
+type SchemaAuthor = { name: string; url: string; image?: string } | string;
 
 function normalizeAuthor(author: SchemaAuthor) {
   if (typeof author === "string") {
@@ -8,6 +8,16 @@ function normalizeAuthor(author: SchemaAuthor) {
   }
 
   return author;
+}
+
+function getAuthorSchema(author: SchemaAuthor) {
+  const norm = normalizeAuthor(author);
+  return {
+    "@type": "Person",
+    name: norm.name,
+    url: norm.url,
+    ...(norm.image ? { image: norm.image } : {}),
+  };
 }
 
 function formatDate(dateStr: string) {

@@ -2,15 +2,27 @@ import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import TableOfContents from "@/components/table-of-contents";
 import TermsContent from "@/data/legal/terms.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl, getPageMetadata } from "@/utils/seo";
+import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = getPageMetadata({
-  title: "Terms of Service",
-  description:
-    "Read the Blawby Terms of Service to understand your rights and responsibilities.",
-  path: "/terms",
-});
+import { parseFrontmatter, mergeMetadata } from "@/utils/frontmatter";
+import path from "path";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const fm = await parseFrontmatter(
+    path.join(process.cwd(), "src/data/legal/terms.mdx"),
+  );
+
+  return mergeMetadata({
+    fm,
+    path: "/terms",
+    fallback: {
+      title: "Terms of Service",
+      description:
+        "Read the Blawby Terms of Service to understand your rights and responsibilities.",
+    },
+  });
+}
 
 export default function TermsPage() {
   const breadcrumbItems = [
