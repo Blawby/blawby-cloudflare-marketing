@@ -16,6 +16,7 @@
     "check:links": "node scripts/check-internal-links.mjs",
     "check:seo": "node scripts/check-seo.mjs",
     "check:sitemap": "node scripts/check-sitemap.mjs",
+    "check:all": "pnpm run check:legacy-paths && pnpm run build && pnpm run check:seo && pnpm run check:sitemap && pnpm run check:links",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "r2:upload-content": "node scripts/upload-content-to-r2.mjs",

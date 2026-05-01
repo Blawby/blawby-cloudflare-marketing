@@ -54,6 +54,7 @@ jobs:
             --exclude "favicon\.ico"
             --exclude "\.ico\?"
             --exclude "site\.webmanifest"
+            --include-fragments false
             "./out/**/*.html"
           fail: true
           failIfEmpty: true
