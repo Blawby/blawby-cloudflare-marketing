@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import type React from "react";
 
 export function Logo(props: React.ComponentProps<"svg">) {
@@ -11,7 +12,10 @@ export function Logo(props: React.ComponentProps<"svg">) {
         x="0px"
         y="0px"
         viewBox="0 0 1672 1672"
-        className="h-[32px] w-[32px] text-gray-950 dark:text-white"
+        className={clsx(
+          "h-[32px] w-[32px] text-gray-950 dark:text-white",
+          props.className,
+        )}
       >
         <path
           fill="currentColor"

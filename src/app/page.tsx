@@ -22,6 +22,9 @@ import path from "path";
 export const metadata: Metadata = {
   title: "Blawby - Compliant Credit Card Payments for Legal Practices",
   description: siteConfig.description,
+  alternates: {
+    canonical: siteConfig.url,
+  },
 };
 
 function formatDuration(seconds: number): string {

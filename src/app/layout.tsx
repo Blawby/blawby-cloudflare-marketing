@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     images: [siteConfig.defaultImage],
   },
   alternates: {
-    canonical: siteConfig.url,
+    // Canonical is handled on a per-page basis
   },
   robots: {
     index: true,

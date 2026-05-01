@@ -76,7 +76,7 @@ export function Navbar() {
         "flex h-14 items-center gap-x-0 px-4 sm:px-6",
       )}
     >
-      <Link href="/" className="flex shrink-0 items-center pr-6">
+      <Link href="/" aria-label="Blawby home" className="flex shrink-0 items-center pr-6">
         <Logo className="h-7 dark:text-white" />
       </Link>
 
