@@ -52,7 +52,6 @@ for (const file of collectHtmlFiles(OUT_DIR).sort()) {
 
   for (const link of links) {
     if (
-      link.startsWith("#") ||
       link.startsWith("mailto:") ||
       link.startsWith("tel:") ||
       link.startsWith("data:") ||
@@ -62,7 +61,6 @@ for (const file of collectHtmlFiles(OUT_DIR).sort()) {
     }
 
     let parsedUrl;
-
     try {
       parsedUrl = new URL(link, SITE_ORIGIN);
     } catch {
@@ -94,8 +92,42 @@ for (const file of collectHtmlFiles(OUT_DIR).sort()) {
       continue;
     }
 
-    if (!exportedFileExists(parsedUrl.pathname)) {
+    const pathname = parsedUrl.pathname;
+    const hash = parsedUrl.hash.slice(1); // remove #
+
+    // Determine the target file path
+    let targetFile = null;
+    if (pathname === "" || pathname === "/") {
+      // Same file anchor or link to root
+      if (link.startsWith("#")) {
+        targetFile = file;
+      } else {
+        targetFile = path.join(OUT_DIR, "index.html");
+      }
+    } else {
+      const htmlPath = path.join(OUT_DIR, `${normalizeHtmlPath(pathname)}.html`);
+      const indexPath = path.join(OUT_DIR, normalizeHtmlPath(pathname), "index.html");
+      
+      if (fs.existsSync(htmlPath)) {
+        targetFile = htmlPath;
+      } else if (fs.existsSync(indexPath)) {
+        targetFile = indexPath;
+      }
+    }
+
+    if (!targetFile) {
       errors.push(`${file} - broken internal link: ${link}`);
+      continue;
+    }
+
+    // If there's a hash, check if it exists in the target file
+    if (hash) {
+      const targetHtml = fs.readFileSync(targetFile, "utf8");
+      // Match id="hash" or name="hash"
+      const idPattern = new RegExp(`(?:id|name)=["']${hash}["']`, "i");
+      if (!idPattern.test(targetHtml)) {
+        errors.push(`${file} - broken anchor link: ${link} (id="${hash}" not found in ${targetFile})`);
+      }
     }
   }
 }
