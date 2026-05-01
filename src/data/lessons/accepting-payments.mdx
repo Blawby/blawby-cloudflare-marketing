@@ -1,3 +1,41 @@
+---
+title: "Accepting Payments: Master Compliant Legal Billing"
+metaTitle: "Accepting Payments for Law Firms | Blawby"
+desc: "Accept client payments in Blawby with card and ACH options, clear billing flow, and trust-aware payment handling."
+image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
+author: "Paul Chris Luke"
+authorImage: "/images/logo.png"
+category: "payments"
+contentType: "lesson"
+order: 20
+createdAt: "01/01/2024"
+updatedAt: "01/01/2024"
+tags:
+  - Payments
+  - Billing
+  - Payment-Processing
+keywords:
+  - Accept client payments
+  - Law firm payment processing
+  - Legal billing payments
+  - Card and ach for law firms
+  - IOLTA compliant payments
+targetAudience: "practice-owners"
+searchIntent: "informational"
+primaryKeyword: "law firm payments"
+secondaryKeywords: ["payment processing", "client billing", "iolta compliance"]
+summary: "Use Blawby payment links and billing workflows to get paid faster while keeping trust handling clean."
+schemaType: "Article"
+faq:
+  - question: "What payment methods can I accept with Blawby?"
+    answer: "You can accept credit/debit cards and ACH bank transfers."
+  - question: "Are payments IOLTA compliant?"
+    answer: "Blawby provides tools designed to assist with IOLTA compliance, such as routing funds to trust accounts and keeping fees separate. Compliance depends on your specific configuration and local regulations."
+  - question: "How quickly are payments deposited?"
+    answer: "Card payouts typically take 2 business days and ACH payouts take 5 business days. First payouts for new accounts may take 7–14 days."
+noindex: false
+---
+
 # Payments with Blawby
 
 ## Why Modern Payment Processing Matters for Law Firms
@@ -9,13 +47,13 @@ Managing payments shouldn't be a source of stress for your team or your clients.
 Blawby's payment system allows you to:
 
 - Accept credit card and ACH payments securely
-- Comply with ABA and IOLTA guidelines by default
-- Quickly generate payments without having to log into the platform, no coding necessary.
+- Support ABA and IOLTA guidelines through configurable routing
+- Quickly generate payment requests without complex setup
 
 Payments are managed through Blawby and can be fully reconciled in your accounting software, giving you control and flexibility over your financial records.
 
-[Learn more about invoicing best practices](/invoicing)  
-[See how to manage payouts](/payouts)
+[Learn more about invoicing best practices](/payments/invoicing)  
+[See how to manage payouts](/payments/payouts)
 
 ---
 
@@ -24,11 +62,11 @@ Payments are managed through Blawby and can be fully reconciled in your accounti
 Use the following steps to create and share a payment link with a client.
 
 1. **Log in to your Blawby dashboard.** (1 minute) Visit [Blawby](https://app.blawby.com) and log in with your account credentials.
-2. **Go to the Payments section.** (1 minute) From the sidebar, select "Settings," click on your firm name, and then scroll down to "Payment link" to view your payment link.
+2. **Go to payment link settings.** (1 minute) From the sidebar, select **Settings**, click your firm name, and open **Payment link**.
 3. **Create a payment link.** (2 minutes) Enter your custom link name (e.g., "consultation" or "donation") and press save.
-4. **Customize the amount (optional).** (1 minute) To change the amount directly in the URL, modify the amount parameter in cents. Example: https://blawby.com/myfirm-payments?amount=7500 (for $75.00).
+4. **Customize the amount (optional).** (1 minute) To change the amount directly in the URL, modify the amount parameter in cents. Example: `https://blawby.com/myfirm-payments?amount=7500` (for $75.00).
 5. **Send the link to your client.** (1 minute) Copy the payment link and send it via email, SMS, or any client communication channel.
-6. **Track payment status.** (1 minute) Monitor your email for payment notifications.
+6. **Track payment status.** (1 minute) Monitor your dashboard and payment notifications.
 
 ---
 
@@ -42,7 +80,7 @@ For example, when a client calls to ask how to pay their retainer, you can send 
 
 ## Using Dynamic Payment Links
 
-Blawby's dynamic payment links are designed to save you time by allowing you to adjust the payment amount directly in the URL, without needing to log into the CMS. This feature enables any automation system or CMS to manipulate the URL parameter to dynamically prepare always-ready, no-code payment link pages.
+Dynamic payment links let your team change the amount directly in the URL, so you can request different amounts without creating new links each time.
 
 ### Adjusting the Payment Amount
 
@@ -50,21 +88,23 @@ To change the payment amount, simply modify the `amount` parameter in the URL. T
 
 `https://blawby.com/myfirm-payments?amount=7500`
 
-This flexibility means you can generate payment links on-the-fly, tailored to each client's needs, without the hassle of creating a new link each time. This not only streamlines your payment process but also enhances your firm's efficiency by reducing administrative tasks.
+This keeps payment requests simple and consistent across email, text, and intake workflows.
 
 ---
 
-## Built-In Compliance, Less Admin
+## Compliance and Admin Support
+
+{/* TODO: Legal/Product to verify exact compliance capabilities and fund-routing automation. */}
 
 Blawby is designed to support compliance and reduce friction for law offices of any size:
 
-- **Automatic separation of earned and unearned funds:** Payments are routed to the correct accounts, so you don't have to worry about manual sorting or accidental commingling.
-- **No fees deducted from trust:** Processing and platform fees are always billed to your operating account, never from client funds.
-- **Clear, searchable audit trails:** Every transaction is logged and easy to review, making audits and reconciliations faster and less stressful.
+- **Assistance with separation of earned and unearned funds:** Tools to help route payments to designated accounts and keep fees separate.
+- **No fees deducted from trust:** Processing and platform fees are billed to your operating account, assisting with trust fund integrity.
+- **Clear, searchable audit trails:** Every transaction is logged and easy to review, making reconciliations faster.
 
-[Read about IOLTA compliance](/iolta-compliance)
+[Read about IOLTA compliance](/compliance/iolta-compliance)
 
-> **Note:** Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts.
+**Note:** Always consult with your accountant to ensure proper handling of client funds, especially regarding trust accounts.
 
 ---
 
@@ -78,7 +118,7 @@ You can:
 
 - Pre-fill specific payment amounts for faster transactions
 - Share the same link across channels with client-specific amounts
-- Embed links into emails, CMS pages, or SMS workflows
+- Embed links into emails, website pages, or SMS workflows
 
 **Example:**
 
@@ -92,7 +132,7 @@ Each payment page includes your firm's logo, name, email address, and phone numb
 
 ### Real-Time Notifications & Tracking
 
-Get notified instantly when a payment is completed. Track status via the dashboard or webhook events to update your systems in real-time.
+Get notified when a payment is completed and track status in your dashboard.
 
 ---
 
@@ -100,7 +140,7 @@ Get notified instantly when a payment is completed. Track status via the dashboa
 
 ### Is Blawby compliant with ABA and IOLTA trust accounting rules?
 
-Yes. Blawby is designed to ensure full compliance with both ABA and IOLTA trust accounting requirements. Payments are automatically split and routed to the correct accounts.
+Blawby is designed with tools to assist firms in maintaining ABA and IOLTA compliance. Actual compliance depends on how your firm configures its accounts and follows local trust accounting rules.
 
 ### Can clients pay with ACH and credit cards?
 
@@ -112,7 +152,7 @@ No. Processing and platform fees are charged only to your operating account—ne
 
 ### How fast do payments process?
 
-Most payments are processed within 1–2 business days.
+Most card payments are processed within 2 business days, and ACH payments within 5 business days.
 
 ### Can I customize the payment page?
 
@@ -122,6 +162,10 @@ Yes. Each payment page displays your firm's branding, including logo, name, and 
 
 - If your payment link isn't working, ensure your payout account and payment method are set up in your account settings.
 - For urgent payments, use the pre-filled amount feature to make it easy for clients to pay the exact amount you request.
+
+## Outcome You Should Expect
+
+After completing this setup, your team should be able to request payment in under a minute, clients should be able to pay without extra instructions, and all payment activity should be visible in one place.
 
 ---
 

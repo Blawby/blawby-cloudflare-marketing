@@ -225,7 +225,7 @@ export const PaymentMethods = () => {
           key={method.title}
           className="flex flex-shrink-0 flex-col items-center"
         >
-          <div aria-label={method.title}>{method.component}</div>
+          <div role="img" aria-label={method.title}>{method.component}</div>
         </div>
       ))}
     </div>

@@ -12,36 +12,74 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 20.11.1
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 9.12.3
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Check for legacy paths in source
+        run: pnpm run check:legacy-paths
+
       - name: Build Next.js site
         env:
           NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}
         run: pnpm run build
+
+      - name: Check exported SEO metadata
+        run: pnpm run check:seo
+
+      - name: Check sitemap
+        run: pnpm run check:sitemap
+
+      - name: Check internal links
+        run: pnpm run check:links
+
+      - name: Lychee link check
+        uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411
+        with:
+          args: >
+            --offline
+            --base "${{ github.workspace }}/out"
+            --root-dir "${{ github.workspace }}/out"
+            --exclude "favicon\.ico"
+            --exclude "\.ico\?"
+            --exclude "site\.webmanifest"
+            --exclude "#"
+            "./out/**/*.html"
+          fail: true
+          failIfEmpty: true
 
       - name: Upload MDX content to R2 for AI Search
         env:
           R2_CONTENT_BUCKET: ${{ vars.R2_CONTENT_BUCKET }}
         run: pnpm run r2:upload-content
 
-      - name: List Cloudflare Pages Projects
-        run: pnpm exec wrangler pages project list
-
       - name: Deploy to Cloudflare Pages
-        run: pnpm exec wrangler pages deploy out --project-name=${{ vars.CF_PAGES_PROJECT_NAME }}
+        run: |
+          pnpm exec wrangler pages deploy out \
+            --project-name=${{ vars.CF_PAGES_PROJECT_NAME }} \
+            --branch=master
 
       - name: Deploy Worker
         run: pnpm exec wrangler deploy
+
+      - name: Lighthouse CI (production)
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://blawby.com/
+            https://blawby.com/pricing
+            https://blawby.com/help
+            https://blawby.com/guides/get-started
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true

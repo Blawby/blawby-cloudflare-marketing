@@ -35,7 +35,7 @@ let highlighter: Highlighter | null = null;
 async function getHighlighter() {
   if (!highlighter) {
     highlighter = await createHighlighter({
-      langs: ["javascript", "css", "html", "typescript"],
+      langs: ["javascript", "css", "html", "typescript", "markdown", "bash", "json", "yaml", "mdx", "jsx", "tsx"],
       themes: [theme],
     });
   }
@@ -62,7 +62,7 @@ async function CodeBlock({ code, lang }: { code: string; lang: string }) {
     ],
   });
 
-  return <div dangerouslySetInnerHTML={{ __html: out }} />;
+  return <div className="min-w-0 max-w-full w-full my-6 [&>pre]:overflow-x-auto [&>pre]:p-4 [&>pre]:rounded-lg" dangerouslySetInnerHTML={{ __html: out }} />;
 }
 
 const IMAGE_DIMENSION_REGEX = /^[^|]+\|\d+x\d+$/;

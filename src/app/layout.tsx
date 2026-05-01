@@ -1,5 +1,7 @@
 import CookieConsentComponent from "@/components/cookie-consent";
 import { Footer } from "@/components/footer";
+import { GoogleAnalytics } from "@/components/google-analytics";
+import { WebVitals } from "@/components/web-vitals";
 import { siteConfig } from "@/config/site";
 import { defaultSeoImage, getWebsiteSchema } from "@/utils/seo";
 import { clsx } from "clsx";
@@ -61,7 +63,7 @@ export const metadata: Metadata = {
     images: [siteConfig.defaultImage],
   },
   alternates: {
-    canonical: siteConfig.url,
+    // Canonical is handled on a per-page basis
   },
   robots: {
     index: true,
@@ -108,27 +110,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <link rel="manifest" href="/site.webmanifest" />
-        {/* Google Analytics gtag.js */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-LXBVNX707M"
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-LXBVNX707M');
-            `,
-          }}
-        />
+        {/* Manifest is handled by metadata.manifest, no need for manual <link> */}
       </head>
-      <body>
+      <body className="dark:bg-gray-950">
+        <WebVitals />
         <div className="isolate">{children}</div>
         <Footer />
         <CookieConsentComponent />
+        <GoogleAnalytics />
       </body>
     </html>
   );

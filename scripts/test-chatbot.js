@@ -82,11 +82,11 @@ const CHAT_TESTS = [
       "plan",
       "installment",
       "link",
-      "/lessons/payments",
+      "/payments/accepting-payments",
     ],
     expectedBehavior:
       "Should provide a context-rich answer with a documentation link",
-    mustContainLink: "/lessons/payments",
+    mustContainLink: "/payments/accepting-payments",
   },
 ];
 

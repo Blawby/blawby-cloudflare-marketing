@@ -6,6 +6,10 @@
  * Uploads all MDX content files from src/data to an R2 bucket so that
  * Cloudflare AI Search can index them automatically.
  *
+ * Frontmatter fields (title, description, keywords, summary, author, category)
+ * are embedded as R2 custom metadata headers so AI Search has structured
+ * signals for ranking — not just raw text chunks.
+ *
  * Usage:
  *   node scripts/upload-content-to-r2.mjs <bucket-name>
  *   R2_CONTENT_BUCKET=my-bucket node scripts/upload-content-to-r2.mjs
@@ -70,6 +74,82 @@ async function walk(dir) {
 }
 
 // ---------------------------------------------------------------------------
+// Frontmatter parser
+// Inlined here so the script has zero extra dependencies.
+import yaml from "js-yaml";
+
+const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---/;
+
+function parseFrontmatter(source) {
+  const match = source.match(FRONTMATTER_RE);
+  if (!match) return {};
+  try {
+    return yaml.load(match[1]) || {};
+  } catch (e) {
+    console.error("YAML parse error:", e);
+    return {};
+  }
+}
+
+function normalizeKeywords(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw.map((v) => String(v).trim());
+  return String(raw).split(",").map((v) => v.trim()).filter(Boolean);
+}
+
+function normalizeDate(raw) {
+  if (!raw) return undefined;
+  const s = String(raw).trim();
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s;
+  const [m, d, y] = s.split("/");
+  if (m && d && y) return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+  return s;
+}
+
+function fmToR2Meta(fm) {
+  const m = {};
+  if (fm.title)         m["title"]          = String(fm.title).slice(0, 256);
+  const description = fm.desc || fm.description;
+  if (description)      m["description"]    = String(description).slice(0, 512);
+  if (fm.author)        m["author"]         = String(fm.author).slice(0, 128);
+  if (fm.category)      m["category"]       = String(fm.category).slice(0, 64);
+  
+  const pubDate = normalizeDate(fm.createdAt || fm.datePublished);
+  const modDate = normalizeDate(fm.updatedAt || fm.dateModified || fm.createdAt);
+  
+  if (pubDate) m["date-published"]  = pubDate;
+  if (modDate) m["date-modified"]   = modDate;
+  
+  if (fm.summary)       m["summary"]        = String(fm.summary).slice(0, 1024);
+  if (fm.difficulty)    m["difficulty"]     = String(fm.difficulty).slice(0, 32);
+  if (fm.noindex)       m["noindex"]        = "true";
+  if (fm.order !== undefined) m["order"]    = String(fm.order);
+  if (fm.contentType)   m["content-type"]   = String(fm.contentType);
+  
+  const kw = normalizeKeywords(fm.keywords);
+  const tags = normalizeKeywords(fm.tags);
+  const allKeywords = Array.from(new Set([...kw, ...tags]));
+  if (allKeywords.length) m["keywords"] = allKeywords.join(", ").slice(0, 512);
+
+  if (fm.faq && Array.isArray(fm.faq)) {
+    let faqToStore = [];
+    for (const item of fm.faq) {
+      const nextSlice = [...faqToStore, item];
+      if (JSON.stringify(nextSlice).length <= 1024) {
+        faqToStore = nextSlice;
+      } else {
+        break;
+      }
+    }
+    if (faqToStore.length > 0) {
+      m["faq"] = JSON.stringify(faqToStore);
+    }
+  }
+
+  return m;
+}
+
+// ---------------------------------------------------------------------------
 // R2 key derivation
 //
 // Preserves the folder prefix so files from different sections never collide.
@@ -123,8 +203,26 @@ async function uploadFile(file) {
   const objectPath = `${BUCKET}/${key}`;
   const relPath = path.relative(process.cwd(), file);
 
+  // Parse frontmatter for structured metadata
+  let metaFlags = [];
+  try {
+    const source = await fs.readFile(file, "utf-8");
+    const fm = parseFrontmatter(source);
+    const meta = fmToR2Meta(fm);
+    for (const [k, v] of Object.entries(meta)) {
+      // Wrangler custom metadata: --header "x-amz-meta-<key>: <value>"
+      metaFlags.push("--header", `x-amz-meta-${k}: ${v}`);
+    }
+  } catch (err) {
+    console.warn(`Warning: Failed to parse frontmatter for ${file} - ${err.message}`);
+    // If parsing fails, upload without metadata
+  }
+
   if (DRY_RUN) {
-    console.log(`  [dry-run] ${relPath} → ${objectPath}`);
+    const metaPreview = metaFlags.length
+      ? ` [meta: ${metaFlags.filter((_, i) => i % 2 === 1).join(", ")}]`
+      : "";
+    console.log(`  [dry-run] ${relPath} → ${objectPath}${metaPreview}`);
     return { file, key, ok: true };
   }
 
@@ -138,6 +236,7 @@ async function uploadFile(file) {
       file,
       "--content-type",
       "text/plain; charset=utf-8",
+      ...metaFlags,
     ]);
     console.log(`  ✓  ${relPath} → ${objectPath}`);
     return { file, key, ok: true };

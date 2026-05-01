@@ -1,18 +1,34 @@
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
+import {
+  Breadcrumb,
+  BreadcrumbHome,
+  Breadcrumbs,
+  BreadcrumbSeparator,
+} from "@/components/breadcrumbs";
 import TableOfContents from "@/components/table-of-contents";
 import PricingContent from "@/data/pages/pricing.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl, getPageMetadata } from "@/utils/seo";
+import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = getPageMetadata({
-  title: "Pricing",
-  description:
-    "Access a complete payments platform with simple, pay-as-you-go pricing. No setup fees, or hidden fees.",
-  path: "/pricing",
-});
+import { mergeMetadata, parseFrontmatter } from "@/utils/frontmatter";
+import fs from "fs";
+import path from "path";
 
-export default function PrivacyPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const raw = fs.readFileSync(
+    path.join(process.cwd(), "src/data/pages/pricing.mdx"),
+    "utf-8",
+  );
+  const fm = parseFrontmatter(raw);
+
+  return mergeMetadata({
+    fm,
+    path: "/pricing",
+  });
+}
+
+export default function PricingPage() {
   const breadcrumbItems = [
     { name: "Home", url: absoluteUrl() },
     { name: "Pricing", url: absoluteUrl("/pricing") },
@@ -20,7 +36,15 @@ export default function PrivacyPage() {
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
   return (
-    <SidebarLayoutContent breadcrumbs={null}>
+    <SidebarLayoutContent
+      breadcrumbs={
+        <Breadcrumbs>
+          <BreadcrumbHome />
+          <BreadcrumbSeparator />
+          <Breadcrumb>Pricing</Breadcrumb>
+        </Breadcrumbs>
+      }
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

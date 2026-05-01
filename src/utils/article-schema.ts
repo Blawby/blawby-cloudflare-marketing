@@ -1,6 +1,6 @@
 import { siteConfig } from "@/config/site";
 
-type SchemaAuthor = { name: string; url: string } | string;
+type SchemaAuthor = { name: string; url: string; image?: string } | string;
 
 function normalizeAuthor(author: SchemaAuthor) {
   if (typeof author === "string") {
@@ -8,6 +8,16 @@ function normalizeAuthor(author: SchemaAuthor) {
   }
 
   return author;
+}
+
+function getAuthorSchema(author: SchemaAuthor) {
+  const norm = normalizeAuthor(author);
+  return {
+    "@type": "Person",
+    name: norm.name,
+    url: norm.url,
+    ...(norm.image ? { image: norm.image } : {}),
+  };
 }
 
 function formatDate(dateStr: string) {
@@ -38,8 +48,6 @@ export function getArticleSchema({
   category?: string;
   tags?: string[];
 }) {
-  const normalizedAuthor = normalizeAuthor(author);
-
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -47,11 +55,7 @@ export function getArticleSchema({
     name,
     description,
     url,
-    author: {
-      "@type": "Organization",
-      name: normalizedAuthor.name,
-      url: normalizedAuthor.url,
-    },
+    author: getAuthorSchema(author),
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
@@ -107,8 +111,6 @@ export function getBlogPostingSchema({
   category?: string;
   tags?: string[];
 }) {
-  const normalizedAuthor = normalizeAuthor(author);
-
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -116,11 +118,7 @@ export function getBlogPostingSchema({
     name,
     description,
     url,
-    author: {
-      "@type": "Organization",
-      name: normalizedAuthor.name,
-      url: normalizedAuthor.url,
-    },
+    author: getAuthorSchema(author),
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,

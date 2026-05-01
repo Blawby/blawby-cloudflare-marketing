@@ -9,29 +9,31 @@ export function Footer() {
     <footer className="border-t border-gray-950/10 bg-white py-8 text-base text-gray-950 dark:border-white/10 dark:bg-gray-950 dark:text-white">
       <div className="mx-auto flex flex-col items-start gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 xl:ml-[var(--container-2xs)] xl:max-w-none xl:px-12">
         <div className="flex items-center gap-3">
-          <Logo height={28} width={110} />
+          <Link href="/" aria-label="Blawby home">
+            <Logo height={28} width={110} />
+          </Link>
           <span className="hidden text-base text-gray-700 sm:inline dark:text-gray-400">
             &copy; {new Date().getFullYear()} Blawby
           </span>
         </div>
         <nav className="flex flex-wrap items-center justify-start gap-x-6 gap-y-2 sm:justify-center">
           <Link
-            href="/lessons/get-started"
+            href="/solutions"
+            className="hover:text-gray-950 dark:hover:text-white"
+          >
+            Solutions
+          </Link>
+          <Link
+            href="/docs"
             className="hover:text-gray-950 dark:hover:text-white"
           >
             Docs
           </Link>
           <Link
-            href="https://app.blawby.com/login"
+            href="/pricing"
             className="hover:text-gray-950 dark:hover:text-white"
           >
-            Login
-          </Link>
-          <Link
-            href="https://app.blawby.com/register"
-            className="hover:text-gray-950 dark:hover:text-white"
-          >
-            Register
+            Pricing
           </Link>
           <Link
             href="/help"

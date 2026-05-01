@@ -1,16 +1,30 @@
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
+import {
+  Breadcrumb,
+  BreadcrumbHome,
+  Breadcrumbs,
+  BreadcrumbSeparator,
+} from "@/components/breadcrumbs";
 import TableOfContents from "@/components/table-of-contents";
 import PrivacyContent from "@/data/legal/privacy.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl, getPageMetadata } from "@/utils/seo";
+import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = getPageMetadata({
-  title: "Privacy Policy",
-  description:
-    "Read the Blawby Privacy Policy to learn how we handle your data.",
-  path: "/privacy",
-});
+import { mergeMetadata, parseFrontmatter } from "@/utils/frontmatter";
+import fs from "fs";
+import path from "path";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const filePath = path.join(process.cwd(), "src/data/legal/privacy.mdx");
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const fm = parseFrontmatter(raw);
+
+  return mergeMetadata({
+    fm,
+    path: "/privacy",
+  });
+}
 
 export default function PrivacyPage() {
   const breadcrumbItems = [
@@ -20,7 +34,15 @@ export default function PrivacyPage() {
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
   return (
-    <SidebarLayoutContent breadcrumbs={null}>
+    <SidebarLayoutContent
+      breadcrumbs={
+        <Breadcrumbs>
+          <BreadcrumbHome />
+          <BreadcrumbSeparator />
+          <Breadcrumb>Privacy Policy</Breadcrumb>
+        </Breadcrumbs>
+      }
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

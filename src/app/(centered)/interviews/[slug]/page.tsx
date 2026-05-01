@@ -17,6 +17,8 @@ import { absoluteUrl, getVideoSchema } from "@/utils/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+const interviewsEnabled = process.env.SHOW_INTERVIEWS === "true";
+
 function formatDuration(seconds: number): string {
   let h = Math.floor(seconds / 3600);
   let m = Math.floor((seconds % 3600) / 60);
@@ -36,6 +38,15 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  if (!interviewsEnabled) {
+    return {
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
   let interview = await getInterview((await params).slug);
   if (!interview) return {};
 
@@ -96,7 +107,7 @@ export default async function Page({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  if (process.env.SHOW_INTERVIEWS !== "true") {
+  if (!interviewsEnabled) {
     notFound();
   }
   let interview = await getInterview((await params).slug);

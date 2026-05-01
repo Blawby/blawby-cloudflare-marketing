@@ -1,0 +1,411 @@
+---
+title: "Blawby API Reference | Technical Documentation"
+metaTitle: "API Reference — Blawby"
+desc: "Explore the Blawby API reference for technical specs on payments and intake. Secure integration for legal tech."
+image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
+author: "Paul Chris Luke"
+authorImage: "/images/logo.png"
+category: "reference"
+contentType: "reference"
+order: 10
+createdAt: "02/15/2024"
+updatedAt: "02/15/2024"
+tags:
+  - Api
+  - Webhooks
+  - Authentication
+  - Endpoints
+  - Sdk
+  - Integration
+keywords:
+  - Blawby api
+  - Blawby api documentation
+  - Webhooks
+  - Authentication
+  - Endpoints reference
+  - Developer integration guide
+  - Sdk reference
+summary: "Complete reference documentation for Blawby API endpoints, authentication, webhooks, and SDK usage. Technical specifications for developers."
+schemaType: "TechArticle"
+faq:
+  - question: "What authentication methods does Blawby support?"
+    answer: "Blawby supports API key authentication, OAuth 2.0, and session-based authentication for different integration scenarios."
+  - question: "How do I handle API rate limits?"
+    answer: "Implement exponential backoff with jitter, monitor response headers for rate limit indicators, and provide user-friendly error messages."
+  - question: "What are the best practices for webhook security?"
+    answer: "Always verify webhook signatures using HMAC-SHA256, store secrets securely, use HTTPS endpoints, and implement idempotency keys for reliable event processing."
+noindex: false
+---
+
+# Blawby API Reference
+
+Complete technical documentation for integrating with the Blawby platform. This reference covers all available endpoints, authentication methods, webhook events, and best practices for secure API development.
+
+> This page is for developers integrating with Blawby's API.
+> If you're a lawyer or legal staff, you don't need this -
+> [start here instead](/guides/get-started).
+
+## Authentication
+
+### API Key Authentication
+
+The most straightforward method for server-to-server communication.
+
+#### Endpoint
+
+```
+POST /api/v1/authenticate
+```
+
+#### Request Body
+
+```json
+{
+  "apiKey": "your-api-key",
+  "practiceId": "your-practice-id"
+}
+```
+
+#### Response
+
+```json
+{
+  "token": "jwt_token_here",
+  "expiresIn": 3600,
+  "practiceId": "your-practice-id",
+  "permissions": ["read", "write", "admin"]
+}
+```
+
+### Session-Based Authentication
+
+For client applications that maintain user sessions.
+
+#### Endpoint
+
+```
+POST /api/v1/auth/session
+```
+
+#### Request Body
+
+```json
+{
+  "token": "jwt_token_here",
+  "practiceId": "your-practice-id"
+}
+```
+
+#### Response
+
+```json
+{
+  "sessionId": "session_abc123",
+  "expiresIn": 1800,
+  "user": {
+    "id": "user_456",
+    "email": "user@example.com",
+    "name": "John Doe"
+  }
+}
+```
+
+## Core API Endpoints
+
+### Client Management
+
+#### Get Client
+
+```
+GET /api/v1/clients/{id}
+```
+
+#### Response
+
+```json
+{
+  "id": "client_456",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+1-555-0123",
+  "status": "active",
+  "createdAt": "2024-01-15T00:00:00Z",
+  "updatedAt": "2024-01-20T10:30:00Z"
+}
+```
+
+#### Create Client
+
+```
+POST /api/v1/clients
+```
+
+#### Request Body
+
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "phone": "+1-555-0124",
+  "status": "active"
+}
+```
+
+#### Response
+
+```json
+{
+  "id": "client_457",
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "phone": "+1-555-0124",
+  "status": "active",
+  "createdAt": "2024-01-15T14:20:00Z",
+  "updatedAt": "2024-01-15T14:20:00Z"
+}
+```
+
+#### Update Client
+
+```
+PUT /api/v1/clients/{id}
+```
+
+#### Request Body
+
+```json
+{
+  "name": "John Doe Updated",
+  "email": "john.updated@example.com",
+  "status": "active"
+}
+```
+
+### Payments
+
+#### Create Invoice
+
+```
+POST /api/v1/invoices
+```
+
+#### Request Body
+
+```json
+{
+  "clientId": "client_456",
+  "amount": 25000,
+  "currency": "USD",
+  "dueDate": "2024-02-15",
+  "description": "Legal consultation services"
+}
+```
+
+#### Response
+
+```json
+{
+  "id": "inv_123",
+  "status": "draft",
+  "createdAt": "2024-01-10T15:30:00Z"
+}
+```
+
+#### Process Payment
+
+```
+POST /api/v1/payments
+```
+
+#### Request Body
+
+```json
+{
+  "invoiceId": "inv_123",
+  "amount": 25000,
+  "paymentMethod": "card",
+  "currency": "USD"
+}
+```
+
+#### Response
+
+```json
+{
+  "id": "pay_456",
+  "status": "succeeded",
+  "createdAt": "2024-01-10T16:45:00Z"
+}
+```
+
+### Webhooks
+
+### Supported Events
+
+#### Payment Events
+
+- `payment.succeeded` - Payment completed successfully
+- `payment.failed` - Payment failed
+- `payment.requires_action` - Payment requires additional action
+
+#### Invoice Events
+
+- `invoice.sent` - Invoice sent to client
+- `invoice.paid` - Invoice marked as paid
+- `invoice.overdue` - Invoice is overdue
+
+#### Webhook Configuration
+
+#### Endpoint
+
+```
+POST /api/v1/webhooks
+```
+
+#### Request Headers
+
+```json
+{
+  "Content-Type": "application/json",
+  "x-blawby-signature": "computed_hmac_signature"
+}
+```
+
+#### Request Body
+
+```json
+{
+  "url": "https://your-domain.com/webhooks",
+  "events": ["payment.succeeded", "invoice.sent"],
+  "secret": "your_webhook_secret"
+}
+```
+
+#### Verification Process
+
+1. Extract signature from `x-blawby-signature` header
+2. Extract timestamp from `x-blawby-timestamp` header
+3. Extract event payload from request body
+4. Compute expected HMAC using your webhook secret
+5. Compare computed signature with received signature
+
+```javascript
+function verifyWebhookSignature(payload, signature, secret) {
+  const crypto = require("crypto");
+  const expectedSignature = crypto
+    .createHmac("sha256", secret)
+    .update(JSON.stringify(payload), "utf8")
+    .digest("hex");
+
+  return signature === expectedSignature;
+}
+```
+
+## SDK Integration
+
+### JavaScript/TypeScript
+
+```javascript
+import { BlawbyClient } from "@blawby/sdk";
+
+const client = new BlawbyClient({
+  apiKey: process.env.BLAWBY_API_KEY,
+  practiceId: process.env.PRACTICE_ID,
+  baseUrl: "https://api.blawby.com",
+});
+```
+
+### Python
+
+```text
+import requests
+import hmac
+import hashlib
+import json
+
+class BlawbyClient:
+    def __init__(self, api_key, practice_id, base_url):
+        self.api_key = api_key
+        self.practice_id = practice_id
+        self.base_url = base_url
+        self.session = requests.Session()
+
+    def authenticate(self):
+        response = self.session.post(f"{self.base_url}/api/v1/authenticate", json={
+            "apiKey": self.api_key,
+            "practiceId": self.practice_id
+        })
+        return response.json()
+
+    def create_invoice(self, client_id, amount, description):
+        return self.session.post(f"{self.base_url}/api/v1/invoices", json={
+            "clientId": client_id,
+            "amount": amount,
+            "currency": "USD",
+            "description": description
+        })
+```
+
+## Rate Limits
+
+- **Authentication**: 100 requests per minute
+- **API Calls**: 1000 requests per minute per practice
+- **Webhooks**: 10 events per minute per webhook
+
+## Error Handling
+
+### Standard Response Format
+
+```json
+{
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Rate limit exceeded. Please try again later.",
+    "details": {
+      "retryAfter": 60,
+      "limit": 1000,
+      "current": 950
+    }
+  }
+}
+```
+
+### HTTP Status Codes
+
+- `200` - Success
+- `400` - Bad Request
+- `401` - Unauthorized
+- `429` - Rate Limited
+- `500` - Server Error
+
+## Best Practices
+
+### Security
+
+- Never expose API keys in client-side code
+- Use HTTPS for all API calls
+- Validate all input data
+- Implement proper webhook signature verification
+- Use environment variables for sensitive configuration
+
+### Performance
+
+- Implement request queuing for rate limit handling
+- Use connection pooling for high-volume applications
+- Cache frequently accessed data
+- Monitor API response times and optimize accordingly
+
+## Testing
+
+### Test Environment
+
+- Use `https://api-staging.blawby.com` for development
+- Test webhook delivery using tools like ngrok or webhook.site
+- Validate all error scenarios and edge cases
+
+This reference documentation provides comprehensive technical specifications for secure and efficient Blawby API integration.
+
+
+---
+
+Ready to integrate Blawby into your practice? [Contact our developer support team](https://app.blawby.com/contact) to get started.

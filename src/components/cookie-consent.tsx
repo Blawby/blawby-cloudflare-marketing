@@ -4,9 +4,16 @@ import { useEffect } from "react";
 import * as CookieConsent from "vanilla-cookieconsent";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 
+declare global {
+  interface Window {
+    initAnalytics?: () => void;
+    disableAnalytics?: () => void;
+  }
+}
+
 export default function CookieConsentComponent() {
   useEffect(() => {
-    CookieConsent.run({
+    (CookieConsent.run as any)({
       // Root element
       root: "body",
 
@@ -82,7 +89,21 @@ export default function CookieConsentComponent() {
           },
         },
       },
-    });
+      callbacks: {
+        onFirstConsent: ({ cookie }: any) => {
+          if (cookie.categories.includes("analytics")) {
+            window.initAnalytics?.();
+          }
+        },
+        onConsent: ({ cookie }: any) => {
+          if (cookie.categories.includes("analytics")) {
+            window.initAnalytics?.();
+          } else {
+            window.disableAnalytics?.();
+          }
+        },
+      },
+    } as any);
 
     return () => {
       // Cleanup if needed

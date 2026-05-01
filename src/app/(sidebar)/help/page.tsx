@@ -12,14 +12,14 @@ import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   return getPageMetadata({
-    title: "Help & Support",
+    title: "Blawby Help & Support | Legal Practice Assistance",
     description: siteConfig.description,
     path: "/help",
   });
 }
 
 const helpStructuredData = getWebPageSchema({
-  name: "Help & Support",
+  name: "Blawby Help & Support | Legal Practice Assistance",
   description: siteConfig.description,
   path: "/help",
 });

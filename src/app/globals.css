@@ -117,3 +117,12 @@
     }
   }
 }
+
+/* 
+ * GLOBAL LAYOUT FIX
+ * Prevents horizontal layout blowout on any flex column containing MDX content 
+ * so long code blocks trigger internal scrollbars rather than pushing the sidebar out.
+ */
+.flex-1:has(.prose) {
+  min-width: 0;
+}

@@ -1,0 +1,137 @@
+---
+title: "Install the Chat Widget"
+metaTitle: "Install the Chat Widget | Blawby Quick Start Guide"
+desc: "Install your Blawby chat widget with a no-code path first, then optional website builder and developer setup."
+image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
+author: "Paul Chris Luke"
+authorImage: "/images/logo.png"
+category: "ai-chat"
+contentType: "guide"
+order: 30
+createdAt: "02/10/2024"
+updatedAt: "04/30/2026"
+tags:
+  - Installation
+  - Widget
+  - Setup
+keywords:
+  - Install blawby chat widget
+  - Blawby chat url
+  - Add chat widget to website
+  - Wordpress chat widget setup
+  - Wix squarespace chat widget
+difficulty: "beginner"
+prerequisites: ["create-practice-account"]
+timeToComplete: "10 minutes"
+nextSteps: ["set-up-client-intake"]
+schemaType: "HowTo"
+faq:
+  - question: "Which platforms support the Blawby chat widget?"
+    answer: "You can use the chat URL directly, add it to common website builders, or use the embed script for developer-managed sites."
+  - question: "Do I need coding skills to install the widget?"
+    answer: "No for the easy path. If you want script-level customization, ask your web developer to use the developer section."
+  - question: "Can I launch before my website is updated?"
+    answer: "Yes. You can share your chat URL directly in email while your site update is in progress."
+noindex: false
+---
+
+# Install the Chat Widget
+
+Adding the Blawby chat widget to your website helps your firm capture leads 24/7, qualify prospects automatically, and reduce intake friction. With the widget, potential clients can start intake instantly—no phone tag or email delays—so you never miss a lead, even after hours.
+
+Install your chat widget so potential clients can complete intake directly from your website. For more on intake workflows, see [Intake Workflows Guide](/ai-chat/modern-intake-flow).
+
+## Section 1: The easy way (no technical skills needed)
+
+If you are a lawyer or paralegal and do not manage website code, start here.
+
+### Find your chat URL in Blawby
+
+1. Sign in to your Blawby dashboard.
+2. Open your widget/chat setup area.
+3. Copy your chat URL.
+
+### Use your chat URL immediately
+
+You can launch intake today without touching website code:
+
+- Paste the chat URL in intake emails
+- Add it to your email signature
+- Share it with potential clients directly
+
+### Ask your web designer to add it to your website
+
+If someone else manages your site, forward them this page and point them to [Developer installation](/ai-chat/install-chat-widget).
+
+## Section 2: Add it to your website yourself
+
+If your website uses a builder, you can usually add the widget without coding.
+
+### Squarespace
+
+1. Open the page where you want intake chat available.
+2. Add an **Embed** block.
+3. Paste the widget code from your Blawby setup.
+4. Save and publish.
+
+### Wix
+
+1. Open your site editor.
+2. Add an **Embed** element.
+3. Paste the widget code from Blawby.
+4. Save and publish.
+
+### WordPress
+
+1. Open the page editor.
+2. Add a **Custom HTML** block.
+3. Paste the widget code from Blawby.
+4. Update/publish the page.
+
+### Quick test after publishing
+
+1. Open your website in a private browser window.
+2. Confirm the chat appears.
+3. Send a test message.
+
+## Developer installation
+
+Use this section if your web developer wants script-level installation.
+
+```html
+<script>
+  (function (w, d, s, o, f, js, fjs) {
+    w["BlawbyWidget"] = o;
+    w[o] =
+      w[o] ||
+      function () {
+        (w[o].q = w[o].q || []).push(arguments);
+      };
+    js = d.createElement(s);
+    fjs = d.getElementsByTagName(s)[0];
+    js.async = 1;
+    js.src = f;
+    fjs.parentNode.insertBefore(js, fjs);
+  })(
+    window,
+    document,
+    "script",
+    "blawby",
+    "https://widget.blawby.com/embed.js",
+  );
+
+  blawby("init", {
+    practiceId: "YOUR_PRACTICE_ID",
+    position: "bottom-right",
+    theme: "light",
+  });
+</script>
+```
+
+Replace `YOUR_PRACTICE_ID` with your practice ID from Blawby.
+
+## Next Step
+
+Once your widget is live, set and test your intake workflow before sending traffic.
+
+[Set Up Client Intake](/features/set-up-client-intake)

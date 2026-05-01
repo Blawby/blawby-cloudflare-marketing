@@ -1,0 +1,16 @@
+
+# List of LLMs and AI services used by Blawby
+# See https://ai.google.dev/guides/llms_txt for format and details
+
+# Example entry:
+# provider: OpenAI
+# model: gpt-4, gpt-3.5-turbo
+# usage: AI chat, intake automation, content generation
+
+provider: OpenAI
+model: gpt-4, gpt-3.5-turbo
+usage: AI chat, intake automation, content generation
+
+provider: Anthropic
+model: claude-3-opus, claude-3-sonnet
+usage: AI chat, legal research, summarization

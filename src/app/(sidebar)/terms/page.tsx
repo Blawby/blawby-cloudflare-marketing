@@ -1,16 +1,30 @@
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
+import {
+  Breadcrumb,
+  BreadcrumbHome,
+  Breadcrumbs,
+  BreadcrumbSeparator,
+} from "@/components/breadcrumbs";
 import TableOfContents from "@/components/table-of-contents";
 import TermsContent from "@/data/legal/terms.mdx";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
-import { absoluteUrl, getPageMetadata } from "@/utils/seo";
+import { absoluteUrl } from "@/utils/seo";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = getPageMetadata({
-  title: "Terms of Service",
-  description:
-    "Read the Blawby Terms of Service to understand your rights and responsibilities.",
-  path: "/terms",
-});
+import { mergeMetadata, parseFrontmatter } from "@/utils/frontmatter";
+import fs from "fs";
+import path from "path";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const filePath = path.join(process.cwd(), "src/data/legal/terms.mdx");
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const fm = parseFrontmatter(raw);
+
+  return mergeMetadata({
+    fm,
+    path: "/terms",
+  });
+}
 
 export default function TermsPage() {
   const breadcrumbItems = [
@@ -20,7 +34,15 @@ export default function TermsPage() {
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
   return (
-    <SidebarLayoutContent breadcrumbs={null}>
+    <SidebarLayoutContent
+      breadcrumbs={
+        <Breadcrumbs>
+          <BreadcrumbHome />
+          <BreadcrumbSeparator />
+          <Breadcrumb>Terms of Service</Breadcrumb>
+        </Breadcrumbs>
+      }
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

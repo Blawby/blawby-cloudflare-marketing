@@ -11,14 +11,27 @@ import { getPageMetadata } from "@/utils/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export const metadata: Metadata = getPageMetadata({
-  title: "Interviews",
-  description: "Explore interviews with industry experts and thought leaders.",
-  path: "/interviews",
-});
+const interviewsEnabled = process.env.SHOW_INTERVIEWS === "true";
+
+export const metadata: Metadata = {
+  ...getPageMetadata({
+    title: "Interviews",
+    description:
+      "Explore interviews with industry experts and thought leaders.",
+    path: "/interviews",
+  }),
+  ...(interviewsEnabled
+    ? {}
+    : {
+        robots: {
+          index: false,
+          follow: false,
+        },
+      }),
+};
 
 export default async function InterviewsPage() {
-  if (process.env.SHOW_INTERVIEWS !== "true") {
+  if (!interviewsEnabled) {
     notFound();
   }
   let interviews = await getInterviews();

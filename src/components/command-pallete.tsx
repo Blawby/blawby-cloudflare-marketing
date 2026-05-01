@@ -1,6 +1,5 @@
 "use client";
 
-import { getModules } from "@/data/lessons";
 import { ArticleIcon } from "@/icons/article-icon";
 import { SearchIcon } from "@/icons/search-icon";
 import {
@@ -113,7 +112,6 @@ export default function CommandPalette() {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedResultId, setSelectedResultId] = useState<string | null>(null);
-  const modules = getModules();
 
   // Handle keyboard shortcut (Cmd+K / Ctrl+K)
   useEffect(() => {
@@ -160,22 +158,49 @@ export default function CommandPalette() {
       const matches =
         vectorResults.matches?.matches || vectorResults.matches || [];
       // Transform AI Search results to match our SearchResult interface
-      const transformedResults: SearchResult[] = matches.map((result: any) => {
-        return {
-          id: result.id,
-          title: result.metadata?.title || result.metadata?.name || "Untitled",
-          description:
-            result.metadata?.content ||
-            result.metadata?.description ||
-            result.metadata?.text ||
-            result.metadata?.body,
-          type: result.metadata?.type || "lesson",
-          url: result.metadata?.url,
-          score: result.score,
-          module: result.metadata?.section || result.metadata?.module,
-          section: result.metadata?.section,
-        };
-      });
+      const transformedResults: SearchResult[] = matches
+        .map((result: any) => {
+          const url = result.url || result.metadata?.url;
+          if (!url || typeof url !== "string") return null;
+
+          return {
+            id: result.id || url,
+            title:
+              result.title ||
+              result.metadata?.title ||
+              result.metadata?.name ||
+              "Untitled",
+            description:
+              result.description ||
+              result.metadata?.content ||
+              result.metadata?.description ||
+              result.metadata?.text ||
+              result.metadata?.body,
+            type: result.type || result.metadata?.type || "lesson",
+            url: url,
+            score: result.score,
+            module:
+              result.module ||
+              result.section ||
+              result.metadata?.section ||
+              result.metadata?.module,
+            section: result.section || result.metadata?.section,
+          };
+        })
+        .filter((r: SearchResult | null): r is SearchResult => !!r);
+
+      // Dev-only duplicate key check
+      if (process.env.NODE_ENV !== "production") {
+        const ids = new Set();
+        for (const res of transformedResults) {
+          if (ids.has(res.id)) {
+            console.warn(
+              `[Command Palette] Duplicate search result ID detected: ${res.id}`,
+            );
+          }
+          ids.add(res.id);
+        }
+      }
 
       setResults(transformedResults);
     } catch (err) {
@@ -199,16 +224,40 @@ export default function CommandPalette() {
 
   // Navigate to URL function
   const navigateToUrl = (url: string) => {
-    if (url && url.startsWith("/lessons/")) {
-      url = "/" + url.replace(/^\/lessons\//, "");
+    if (!url) {
+      console.warn("[Command Palette] Attempted to navigate to an empty URL");
+      return;
     }
-    window.location.href = url;
+
+    try {
+      const parsed = new URL(url, window.location.origin);
+
+      // Security: reject unsafe protocols and off-origin redirects
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+        console.warn(
+          `[Command Palette] Blocked navigation to unsafe protocol: ${parsed.protocol}`,
+        );
+        return;
+      }
+
+      if (parsed.origin !== window.location.origin) {
+        console.warn(
+          `[Command Palette] Blocked cross-origin navigation to: ${parsed.origin}`,
+        );
+        return;
+      }
+
+      window.location.href = parsed.href;
+    } catch (err) {
+      console.error("[Command Palette] Invalid URL for navigation:", url, err);
+    }
   };
 
   return (
     <>
       <button
         onClick={() => setOpen(true)}
+        aria-label="Search documentation"
         className="group flex items-center gap-2 rounded-full bg-white/75 px-3 py-1.5 text-sm text-gray-950 shadow-sm outline outline-gray-950/5 backdrop-blur-sm hover:bg-gray-950/5 dark:bg-gray-950/75 dark:text-white dark:outline-white/10 dark:hover:bg-white/5"
       >
         <SearchIcon className="stroke-gray-950 dark:stroke-white" />

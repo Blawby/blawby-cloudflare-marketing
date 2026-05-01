@@ -50,7 +50,7 @@ export function ContentLink({
                 <span className="mx-2 hidden text-gray-950/25 sm:inline dark:text-white/25">
                   &middot;
                 </span>
-                <span className="hidden text-gray-500 sm:inline">
+                <span className="hidden text-gray-500 sm:inline dark:text-gray-400">
                   {formatDuration(duration)}
                 </span>
               </>
@@ -60,7 +60,7 @@ export function ContentLink({
             {description}
           </p>
           {duration && (
-            <div className="text-gray-500 sm:hidden">
+            <div className="text-gray-500 sm:hidden dark:text-gray-400">
               {formatDuration(duration)}
             </div>
           )}

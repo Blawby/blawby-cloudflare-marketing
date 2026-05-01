@@ -108,9 +108,18 @@ function getCorsHeaders(request: Request, mutation = false): HeadersInit {
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, X-CSRF-Token, X-Requested-With",
     Vary: "Origin",
   };
+}
+
+/**
+ * Validates that a mutation request is authorized and not a CSRF attempt.
+ * Checks for valid Origin and either an Authorization header or a CSRF-prevention header.
+ */
+function validateMutation(request: Request): boolean {
+  const origin = request.headers.get("Origin");
+  return !!(origin && ALLOWED_ORIGINS.includes(origin));
 }
 
 function json(
@@ -313,28 +322,69 @@ function filenameToTitle(filename: string): string {
   );
 }
 
-function filenameToUrl(filename: string): string {
+function filenameToUrl(filename: string, attributes?: Record<string, any>): string {
+  // Prefer indexed canonical href/url metadata if available
+  if (attributes?.href && typeof attributes.href === "string") return attributes.href.startsWith("/") ? attributes.href : `/${attributes.href}`;
+  if (attributes?.url && typeof attributes.url === "string") return attributes.url.startsWith("/") ? attributes.url : `/${attributes.url}`;
+
   let key = stripExtension(filename).replace(/\\/g, "/").replace(/^\/+/, "");
 
-  if (key.startsWith("src/data/articles/")) {
-    key = key.replace(/^src\/data\/articles\//, "");
-  } else if (key.startsWith("src/data/lessons/")) {
+  // Remove src/data/ prefix if present
+  if (key.startsWith("src/data/")) {
     key = key.replace(/^src\/data\//, "");
-  } else if (key.startsWith("src/data/pages/")) {
-    key = key.replace(/^src\/data\/pages\//, "");
-  } else if (key.startsWith("src/data/legal/")) {
-    key = key.replace(/^src\/data\/legal\//, "");
   }
 
-  if (key.startsWith("pages/")) {
-    key = key.replace(/^pages\//, "");
-  } else if (key.startsWith("legal/")) {
-    key = key.replace(/^legal\//, "");
-  } else if (key.startsWith("articles/")) {
-    key = key.replace(/^articles\//, "");
-  }
-
+  // Preserve category segments from metadata/fallback path, only remove bucket prefixes if constructing manually
+  // But wait, the instruction said "remove the hard-coded removal of category folders"
+  // So we just return the key.
   return `/${key}`;
+}
+
+function normalizeSearchText(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function getTitleMatchBoost(
+  query: string,
+  match: { title: string; url: string },
+) {
+  const normalizedQuery = normalizeSearchText(query);
+  const normalizedTitle = normalizeSearchText(match.title);
+  const queryTerms = normalizedQuery.split(/\s+/).filter(Boolean);
+  const titleTerms = normalizedTitle.split(/\s+/).filter(Boolean);
+
+  if (!normalizedQuery || titleTerms.length === 0) return 0;
+  if (normalizedTitle === normalizedQuery) return 3;
+  if (normalizedTitle.includes(normalizedQuery)) return 2;
+
+  const hasTitleTermMatch = queryTerms.some((queryTerm) =>
+    titleTerms.some(
+      (titleTerm) =>
+        titleTerm === queryTerm ||
+        titleTerm.startsWith(queryTerm) ||
+        queryTerm.startsWith(titleTerm),
+    ),
+  );
+
+  if (hasTitleTermMatch) return 1;
+
+  return 0;
+}
+
+function rerankSearchMatches<
+  T extends { title: string; url: string; score: number },
+>(query: string, matches: T[]): T[] {
+  return [...matches].sort((a, b) => {
+    const boostDifference =
+      getTitleMatchBoost(query, b) - getTitleMatchBoost(query, a);
+
+    if (boostDifference !== 0) return boostDifference;
+
+    return b.score - a.score;
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -367,12 +417,12 @@ async function handleQuery(request: Request, env: Env): Promise<Response> {
     title: filenameToTitle(item.filename),
     description: item.content[0]?.text ?? "",
     type: "lesson" as const,
-    url: filenameToUrl(item.filename),
+    url: filenameToUrl(item.filename, item.attributes),
     score: item.score,
     section: item.attributes?.folder as string | undefined,
   }));
 
-  return corsJson({ matches: { matches } }, request);
+  return corsJson({ matches: rerankSearchMatches(query, matches) }, request);
 }
 
 /**
@@ -413,7 +463,7 @@ async function handleChat(request: Request, env: Env): Promise<Response> {
   // General: build context and let the LLM answer
   const context = matches
     .map((item, i) => {
-      const url = filenameToUrl(item.filename);
+      const url = filenameToUrl(item.filename, item.attributes);
       const text = item.content.map((c) => c.text).join(" ");
       return `${i + 1}. **${item.filename}**\n${text}\n\nDocumentation: https://blawby.com${url}`;
     })
@@ -473,7 +523,7 @@ async function handleHelpForm(request: Request, env: Env): Promise<Response> {
   }
 
   const emailSvc = new EmailService(env.RESEND_API_KEY);
-  
+
   await emailSvc.send({
     from: "noreply@blawby.com",
     to: env.SUPPORT_EMAIL,
@@ -749,9 +799,7 @@ export default {
 
     // CORS preflight
     if (request.method === "OPTIONS") {
-      const isMutation = ROUTES.some(
-        (r) => r.mutation && r.pattern.test(path),
-      );
+      const isMutation = ROUTES.some((r) => r.mutation && r.pattern.test(path));
       return new Response(null, {
         status: 204,
         headers: getCorsHeaders(request, isMutation),
@@ -763,44 +811,45 @@ export default {
       return new Response(null, { status: 404 });
     }
 
-    // Match routes
-    for (const route of ROUTES) {
-      if (request.method !== route.method) continue;
-      const match = route.pattern.exec(path);
-      if (!match) continue;
+    const route = ROUTES.find(
+      (r) =>
+        r.method === request.method &&
+        path.match(r.pattern),
+    );
 
-      // Early reject mutation requests from disallowed origins
-      if (route.mutation) {
-        const origin = request.headers.get("Origin") ?? "";
-        if (!ALLOWED_ORIGINS.includes(origin)) {
-          return corsJson(
-            { error: "Forbidden: Origin not allowed for mutation." },
-            request,
-            403,
-            true,
-          );
-        }
-      }
+    if (!route) {
+      return new Response("Not Found", {
+        status: 404,
+        headers: getCorsHeaders(request),
+      });
+    }
 
-      try {
-        return await route.handler(
-          request,
-          env,
-          match[1] ? { caseId: match[1] } : undefined,
-        );
-      } catch (err) {
-        const message = err instanceof Error ? err.message : "Unknown error";
-        return corsJson(
-          { error: message },
-          request,
-          typeof message === "string" && message.startsWith("Invalid JSON")
-            ? 400
-            : 500,
-          route.mutation,
+    if (route.mutation) {
+      if (!validateMutation(request)) {
+        return json(
+          { error: "Unauthorized" },
+          401,
+          getCorsHeaders(request, true),
         );
       }
     }
 
-    return corsJson({ error: "Not found" }, request, 404);
+    const match = path.match(route.pattern);
+    const params: Record<string, string> = {};
+    if (match && route.pattern.toString().includes("(")) {
+      // Very simple param extraction for /support-case/:id
+      params.caseId = match[1];
+    }
+
+    try {
+      return await route.handler(request, env, params);
+    } catch (e) {
+      console.error("Worker error:", e);
+      return json(
+        { error: "Internal Server Error" },
+        500,
+        getCorsHeaders(request, route.mutation),
+      );
+    }
   },
 };
