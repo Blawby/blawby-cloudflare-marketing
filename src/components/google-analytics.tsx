@@ -4,8 +4,12 @@ import Script from "next/script";
 import { useEffect, useState } from "react";
 
 export function GoogleAnalytics() {
-  const [consentGiven, setConsentGiven] = useState(false);
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const [consentGiven, setConsentGiven] = useState(false);
+
+  if (!gaId) {
+    return null;
+  }
 
   useEffect(() => {
     // Check if consent was already given (this depends on how vanilla-cookieconsent stores it)
@@ -15,8 +19,9 @@ export function GoogleAnalytics() {
         .find((row) => row.startsWith("cc_cookie="));
       if (consent) {
         try {
-          const cookieData = JSON.parse(decodeURIComponent(consent.split("=")[1]));
-          if (cookieData.categories.includes("analytics")) {
+          const cookieValue = consent.substring(consent.indexOf("=") + 1);
+          const cookieData = JSON.parse(decodeURIComponent(cookieValue));
+          if (cookieData.categories && Array.isArray(cookieData.categories) && cookieData.categories.includes("analytics")) {
             setConsentGiven(true);
             if (window.gtag) {
               window.gtag('consent', 'update', {
@@ -34,12 +39,12 @@ export function GoogleAnalytics() {
 
     window.initAnalytics = () => {
       setConsentGiven(true);
-      if (window.gtag) {
+      if (window.gtag && gaId) {
         window.gtag('consent', 'update', {
           'analytics_storage': 'granted'
         });
         // Also ensure config is run if it was delayed
-        window.gtag('config', gaId as string);
+        window.gtag('config', gaId);
       }
     };
 
@@ -52,10 +57,6 @@ export function GoogleAnalytics() {
       }
     };
   }, [gaId]);
-
-  if (!gaId) {
-    return null;
-  }
 
   return (
     <>

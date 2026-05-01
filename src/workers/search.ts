@@ -809,7 +809,21 @@ export default {
     );
 
     if (!route) {
-      return new Response("Not Found", { status: 404 });
+      return new Response("Not Found", {
+        status: 404,
+        headers: getCorsHeaders(request),
+      });
+    }
+
+    if (route.mutation) {
+      const origin = request.headers.get("Origin");
+      if (!origin || !ALLOWED_ORIGINS.includes(origin)) {
+        return json(
+          { error: "Forbidden" },
+          403,
+          getCorsHeaders(request, true),
+        );
+      }
     }
 
     const match = path.match(route.pattern);
@@ -824,7 +838,7 @@ export default {
     } catch (e) {
       console.error("Worker error:", e);
       return json(
-        { error: e instanceof Error ? e.message : "Internal Error" },
+        { error: "Internal Server Error" },
         500,
         getCorsHeaders(request, route.mutation),
       );
