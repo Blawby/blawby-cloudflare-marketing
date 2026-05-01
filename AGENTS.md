@@ -152,3 +152,7 @@ noindex: false
 - Add entries to `articles.ts` or `lessons.ts` manually
 - Mention or compare us to competitors like LawPay or Clio
 - Use custom React components in MDX (including CTA, Callout, FAQ) unless explicitly allowed
+
+## Lighthouse CI
+
+Lighthouse runs against Cloudflare Pages preview URLs which automatically inject `x-robots-tag: noindex`. The `is-crawlable` audit is disabled in `.lighthouserc.json` for this reason — it would always fail on preview deploys. Production deployments at blawby.com are indexable and not affected by this.

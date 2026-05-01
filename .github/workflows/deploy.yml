@@ -72,3 +72,14 @@ jobs:
 
       - name: Deploy Worker
         run: pnpm exec wrangler deploy
+
+      - name: Lighthouse CI (production)
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://blawby.com/
+            https://blawby.com/pricing
+            https://blawby.com/help
+            https://blawby.com/guides/get-started
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true

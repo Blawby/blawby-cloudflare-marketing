@@ -74,14 +74,6 @@ jobs:
           fi
           echo "url=$preview_url" >> "$GITHUB_OUTPUT"
 
-      - name: Lighthouse CI
-        if: steps.deploy-preview.outputs.url != ''
-        uses: treosh/lighthouse-ci-action@v12
-        with:
-          urls: |
-            ${{ steps.deploy-preview.outputs.url }}/
-            ${{ steps.deploy-preview.outputs.url }}/pricing
-            ${{ steps.deploy-preview.outputs.url }}/help
-            ${{ steps.deploy-preview.outputs.url }}/guides/get-started
-          configPath: ./.lighthouserc.json
-          uploadArtifacts: true
+      # Lighthouse CI removed from PR checks because Cloudflare Pages preview URLs 
+      # automatically inject x-robots-tag: noindex, which always fails the 
+      # is-crawlable audit. Lighthouse runs against production in deploy.yml instead.
