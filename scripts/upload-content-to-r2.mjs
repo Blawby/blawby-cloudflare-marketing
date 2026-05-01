@@ -208,7 +208,7 @@ async function uploadFile(file) {
     const response = await fetch(url, {
       method: "PUT",
       headers,
-      body: source,
+      body: new TextEncoder().encode(source),
     });
 
     if (!response.ok) {
