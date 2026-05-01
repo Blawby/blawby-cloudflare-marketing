@@ -21,7 +21,6 @@
  *   CONCURRENCY=10     — max parallel uploads (default: 10)
  */
 
-import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -47,6 +46,16 @@ if (!BUCKET) {
       "  R2_CONTENT_BUCKET=my-bucket node scripts/upload-content-to-r2.mjs",
   );
   process.exit(1);
+}
+
+if (!process.env.CLOUDFLARE_API_TOKEN || !process.env.CLOUDFLARE_ACCOUNT_ID) {
+  if (!DRY_RUN) {
+    console.error(
+      "Error: Missing Cloudflare credentials.\n" +
+        "CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID must be set in the environment.",
+    );
+    process.exit(1);
+  }
 }
 
 if (DRY_RUN) {
@@ -166,80 +175,48 @@ function toR2Key(filePath) {
 }
 
 // ---------------------------------------------------------------------------
-// Wrangler runner
-// ---------------------------------------------------------------------------
-
-function runWrangler(args) {
-  return new Promise((resolve, reject) => {
-    const child = spawn("pnpm", ["exec", "wrangler", ...args], {
-      stdio: "pipe", // capture output so parallel runs don't interleave
-      env: process.env,
-    });
-
-    const stderr = [];
-    child.stderr.on("data", (chunk) => stderr.push(chunk));
-
-    child.on("error", reject);
-    child.on("close", (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(
-          new Error(
-            `wrangler exited with code ${code}\n${Buffer.concat(stderr).toString().trim()}`,
-          ),
-        );
-      }
-    });
-  });
-}
-
-// ---------------------------------------------------------------------------
 // Upload with concurrency control
 // ---------------------------------------------------------------------------
 
 async function uploadFile(file) {
   const key = toR2Key(file);
-  const objectPath = `${BUCKET}/${key}`;
   const relPath = path.relative(process.cwd(), file);
-
-  // Parse frontmatter for structured metadata
-  let metaFlags = [];
-  try {
-    const source = await fs.readFile(file, "utf-8");
-    const fm = parseFrontmatter(source);
-    const meta = fmToR2Meta(fm);
-    for (const [k, v] of Object.entries(meta)) {
-      // Wrangler custom metadata: --header flag was removed in wrangler 4.x
-      // We will skip metadata for now to unblock deployment.
-      // metaFlags.push("--header", `x-amz-meta-${k}: ${v}`);
-    }
-  } catch (err) {
-    console.warn(`Warning: Failed to parse frontmatter for ${file} - ${err.message}`);
-    // If parsing fails, upload without metadata
-  }
+  
+  const source = await fs.readFile(file, "utf-8");
+  const fm = parseFrontmatter(source);
+  const meta = fmToR2Meta(fm);
 
   if (DRY_RUN) {
-    const metaPreview = metaFlags.length
-      ? ` [meta: ${metaFlags.filter((_, i) => i % 2 === 1).join(", ")}]`
-      : "";
-    console.log(`  [dry-run] ${relPath} → ${objectPath}${metaPreview}`);
+    const metaCount = Object.keys(meta).length;
+    console.log(`  [dry-run] ${relPath} → ${BUCKET}/${key} (${metaCount} metadata fields)`);
     return { file, key, ok: true };
   }
 
   try {
-    await runWrangler([
-      "r2",
-      "object",
-      "put",
-      objectPath,
-      "--file",
-      file,
-      "--content-type",
-      "text/plain; charset=utf-8",
-      ...metaFlags,
-    ]);
-    console.log(`  ✓  ${relPath} → ${objectPath}`);
+    const url = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/r2/buckets/${BUCKET}/objects/${encodeURIComponent(key)}`;
+    
+    const headers = {
+      "Authorization": `Bearer ${process.env.CLOUDFLARE_API_TOKEN}`,
+      "Content-Type": "text/plain; charset=utf-8",
+    };
+
+    // Add frontmatter as x-amz-meta-* headers
+    for (const [k, v] of Object.entries(meta)) {
+      headers[`x-amz-meta-${k}`] = v;
+    }
+
+    const response = await fetch(url, {
+      method: "PUT",
+      headers,
+      body: source,
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(`API error ${response.status}: ${err}`);
+    }
+
+    console.log(`  ✓  ${relPath} → ${BUCKET}/${key}`);
     return { file, key, ok: true };
   } catch (err) {
     console.error(`  ✗  ${relPath} — ${err.message}`);
