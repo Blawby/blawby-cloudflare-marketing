@@ -102,7 +102,10 @@ for (const file of collectHtmlFiles(OUT_DIR).sort()) {
       if (link.startsWith("#")) {
         targetFile = file;
       } else {
-        targetFile = path.join(OUT_DIR, "index.html");
+        const rootIndexPath = path.join(OUT_DIR, "index.html");
+        if (fs.existsSync(rootIndexPath)) {
+          targetFile = rootIndexPath;
+        }
       }
     } else {
       const htmlPath = path.join(OUT_DIR, `${normalizeHtmlPath(pathname)}.html`);
