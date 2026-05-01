@@ -115,30 +115,43 @@ function normalizeDate(raw) {
   return s;
 }
 
+function sanitizeHeaderValue(value) {
+  if (!value) return "";
+  return String(value)
+    .replace(/[\u2018\u2019]/g, "'") // curly single quotes
+    .replace(/[\u201C\u201D]/g, '"') // curly double quotes
+    .replace(/[\u2013\u2014]/g, "-") // en/em dashes
+    .replace(/[^\x00-\x7F]/g, "") // strip any remaining non-ASCII
+    .trim();
+}
+
 function fmToR2Meta(fm) {
   const m = {};
-  if (fm.title)         m["title"]          = String(fm.title).slice(0, 256);
+  if (fm.title) m["title"] = sanitizeHeaderValue(fm.title).slice(0, 256);
   const description = fm.desc || fm.description;
-  if (description)      m["description"]    = String(description).slice(0, 512);
-  if (fm.author)        m["author"]         = String(fm.author).slice(0, 128);
-  if (fm.category)      m["category"]       = String(fm.category).slice(0, 64);
-  
+  if (description)
+    m["description"] = sanitizeHeaderValue(description).slice(0, 512);
+  if (fm.author) m["author"] = sanitizeHeaderValue(fm.author).slice(0, 128);
+  if (fm.category) m["category"] = sanitizeHeaderValue(fm.category).slice(0, 64);
+
   const pubDate = normalizeDate(fm.createdAt || fm.datePublished);
   const modDate = normalizeDate(fm.updatedAt || fm.dateModified || fm.createdAt);
-  
-  if (pubDate) m["date-published"]  = pubDate;
-  if (modDate) m["date-modified"]   = modDate;
-  
-  if (fm.summary)       m["summary"]        = String(fm.summary).slice(0, 1024);
-  if (fm.difficulty)    m["difficulty"]     = String(fm.difficulty).slice(0, 32);
-  if (fm.noindex)       m["noindex"]        = "true";
-  if (fm.order !== undefined) m["order"]    = String(fm.order);
-  if (fm.contentType)   m["content-type"]   = String(fm.contentType);
-  
+
+  if (pubDate) m["date-published"] = pubDate;
+  if (modDate) m["date-modified"] = modDate;
+
+  if (fm.summary) m["summary"] = sanitizeHeaderValue(fm.summary).slice(0, 1024);
+  if (fm.difficulty)
+    m["difficulty"] = sanitizeHeaderValue(fm.difficulty).slice(0, 32);
+  if (fm.noindex) m["noindex"] = "true";
+  if (fm.order !== undefined) m["order"] = String(fm.order);
+  if (fm.contentType) m["content-type"] = String(fm.contentType);
+
   const kw = normalizeKeywords(fm.keywords);
   const tags = normalizeKeywords(fm.tags);
   const allKeywords = Array.from(new Set([...kw, ...tags]));
-  if (allKeywords.length) m["keywords"] = allKeywords.join(", ").slice(0, 512);
+  if (allKeywords.length)
+    m["keywords"] = sanitizeHeaderValue(allKeywords.join(", ")).slice(0, 512);
 
   if (fm.faq && Array.isArray(fm.faq)) {
     let faqToStore = [];
@@ -151,7 +164,7 @@ function fmToR2Meta(fm) {
       }
     }
     if (faqToStore.length > 0) {
-      m["faq"] = JSON.stringify(faqToStore);
+      m["faq"] = sanitizeHeaderValue(JSON.stringify(faqToStore));
     }
   }
 
