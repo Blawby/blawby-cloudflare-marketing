@@ -210,8 +210,9 @@ async function uploadFile(file) {
     const fm = parseFrontmatter(source);
     const meta = fmToR2Meta(fm);
     for (const [k, v] of Object.entries(meta)) {
-      // Wrangler custom metadata: --header "x-amz-meta-<key>: <value>"
-      metaFlags.push("--header", `x-amz-meta-${k}: ${v}`);
+      // Wrangler custom metadata: --header flag was removed in wrangler 4.x
+      // We will skip metadata for now to unblock deployment.
+      // metaFlags.push("--header", `x-amz-meta-${k}: ${v}`);
     }
   } catch (err) {
     console.warn(`Warning: Failed to parse frontmatter for ${file} - ${err.message}`);
