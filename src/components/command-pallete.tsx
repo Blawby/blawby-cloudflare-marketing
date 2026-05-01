@@ -257,6 +257,7 @@ export default function CommandPalette() {
     <>
       <button
         onClick={() => setOpen(true)}
+        aria-label="Search documentation"
         className="group flex items-center gap-2 rounded-full bg-white/75 px-3 py-1.5 text-sm text-gray-950 shadow-sm outline outline-gray-950/5 backdrop-blur-sm hover:bg-gray-950/5 dark:bg-gray-950/75 dark:text-white dark:outline-white/10 dark:hover:bg-white/5"
       >
         <SearchIcon className="stroke-gray-950 dark:stroke-white" />

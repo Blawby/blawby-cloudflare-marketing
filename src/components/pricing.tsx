@@ -86,7 +86,7 @@ export function Pricing({
             <p className="mt-6 text-xs leading-5 text-gray-700 dark:text-gray-300">
               +Applicable fees{" "}
               <span className="text-gray-950 dark:text-white">
-                <a href="/pricing">Learn More</a>
+                <a href="/pricing" className="underline">Learn more about our pricing</a>
               </span>
             </p>
           </div>
