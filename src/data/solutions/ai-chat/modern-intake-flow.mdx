@@ -172,41 +172,17 @@ The consultation is completely free, and there's no obligation to hire us. Would
 - Remove pressure (free consultation, no obligation)
 - Ask for minimal information needed
 
-## Technical Strategy
+## Why Session Handling and Lead Transition Matter
 
-For firm owners, the technical side of this is simple: Blawby handles the heavy lifting. You simply need to decide what information is most important to collect at each stage.
+For a law firm, the transition from an anonymous visitor to a known prospective client is a critical moment. Proper session handling ensures that if a potential client starts a conversation and then needs to pause or step away, their context isn't lost. This prevents the frustration of having to repeat their situation when they return, which improves the overall intake quality and keeps the momentum toward a consultation.
 
-### Anonymous Session Management
+### Preserving Client Context
 
-Blawby manages anonymous sessions automatically. We use industry-standard methods to ensure that if a visitor returns within 30 minutes, their conversation history is preserved, allowing for a seamless experience without requiring an immediate login.
+When a visitor engages with your AI chat, they are often sharing sensitive or complex details about their legal needs. By maintaining the continuity of the conversation, your firm demonstrates professional care from the very first interaction. This continuity helps build the trust necessary for them to eventually share their contact information and request a consultation.
 
-**Conceptual implementation (for developers):**
+### Streamlined Lead Transition
 
-```javascript
-// Example: Initialize anonymous mode
-// blawby handles sessionId and storage internally
-blawby("init", {
-  practiceId: "YOUR_PRACTICE_ID",
-  anonymousMode: true
-});
-```
-
-### Seamless Lead Capture
-
-When a visitor is ready to share their details, Blawby transitions the anonymous session into a formal lead record. This ensures that all the context gathered during the anonymous phase is preserved for your team.
-
-**Conceptual implementation (for developers):**
-
-```javascript
-// Example: Transition to authenticated lead
-blawby("authenticate", {
-  contactInfo: {
-    name: "John Doe",
-    email: "john@example.com"
-  },
-  preserveHistory: true
-});
-```
+The moment a visitor decides to share their name and contact details, they are signaling their readiness to move forward. A smooth transition from an anonymous chat to a qualified lead record means your staff receives the full history of the interaction. This allows your team to enter the first consultation with a deep understanding of the client's needs, making the initial meeting far more productive.
 
 ## Best Practices for Each Stage
 
@@ -260,14 +236,14 @@ blawby("authenticate", {
 - Consultation booking rate from qualified leads
 - Client acquisition rate from consultations
 
-### Conversion Benchmarks
+### Measuring Performance
 
-The following targets are based on typical industry performance for optimized intake flows:
+Track these indicators to understand how well your intake flow is performing:
 
-- **15-25%** of anonymous visitors start conversations
-- **40-60%** of conversations reach qualification stage
-- **25-35%** of qualified conversations share contact information
-- **60-80%** of shared-contact leads book consultations
+- **Conversation Engagement**: How many visitors feel comfortable starting a dialogue.
+- **Qualification Rate**: How many conversations provide enough detail to determine if the firm can help.
+- **Contact Capture**: How many qualified visitors choose to share their contact information.
+- **Consultation Bookings**: How many captured leads successfully move to a scheduled meeting.
 
 ### Common Challenges and Solutions
 
@@ -294,26 +270,13 @@ The following targets are based on typical industry performance for optimized in
 
 ## Advanced Features
 
-### Cross-Device Persistence
+### Consistent Experience Across Visits
 
-Blawby can maintain conversation context across devices using secure, anonymous identifiers. This ensures that a visitor who starts a conversation on mobile and finishes on desktop has a continuous experience.
+If a potential client starts an intake conversation on their phone but wants to finish it later on a desktop, maintaining that context ensures they don't have to start over. This consistency reinforces your firm's professional image and respects the client's time.
 
-**Conceptual example:**
+### Firm Workflow Integration
 
-```javascript
-// Example: Sync anonymous session across devices
-blawby("crossDevice", {
-  deviceId: "<DEVICE_ID>",
-  syncStrategy: "cloud"
-});
-```
-
-### Automation and Integration
-
-Once a lead is captured, Blawby can automatically push that data to your CRM or schedule a consultation via your preferred calendar tool.
-
-- [CRM Integration Guide](/features/set-up-client-intake)
-- [Calendar Setup](/features/set-up-client-intake)
+Captured lead data can be reviewed by your intake team and integrated into your firm's existing client management workflows, ensuring a smooth handoff from the automated chat to a human team member.
 
 ## Next Steps
 

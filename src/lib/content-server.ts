@@ -40,7 +40,7 @@ export async function getContentComponent(
 
   try {
     if (origin === "lessons") {
-      if (folder !== ".") {
+      if (folder !== "." && folder !== "lessons") {
         console.warn(`[Content Server] Folder "${folder}" ignored for lessons`);
       }
       return (await import(`@/data/lessons/${slug}.mdx`)).default;

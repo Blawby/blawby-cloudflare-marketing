@@ -7,11 +7,9 @@ export function GoogleAnalytics() {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const [consentGiven, setConsentGiven] = useState(false);
 
-  if (!gaId) {
-    return null;
-  }
-
   useEffect(() => {
+    if (!gaId) return;
+
     // Check if consent was already given (this depends on how vanilla-cookieconsent stores it)
     const checkConsent = () => {
       const consent = document.cookie
@@ -57,6 +55,10 @@ export function GoogleAnalytics() {
       }
     };
   }, [gaId]);
+
+  if (!gaId) {
+    return null;
+  }
 
   return (
     <>

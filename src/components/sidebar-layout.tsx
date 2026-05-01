@@ -113,11 +113,11 @@ function useSidebarSections(
   // Match active article by full route to avoid slug collisions
   // Fallback to category + slug match if origin disambiguation is needed
   const activeArticle = allContent.find(
+    (a) => `/${a.category.toLowerCase()}/${a.slug}` === pathname
+  ) || allContent.find(
     (a) => 
       a.slug === pathname.split("/").pop() && 
       a.category.toLowerCase() === segment.toLowerCase()
-  ) || allContent.find(
-    (a) => `/${a.category.toLowerCase()}/${a.slug}` === pathname
   );
   
   const activeOrigin = activeArticle?.origin;

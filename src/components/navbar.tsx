@@ -63,23 +63,6 @@ export function useActiveSection() {
 
 // ─── Products dropdown items ───────────────────────────────────────────────────
 
-const PRODUCT_LINKS = [
-  {
-    href: "/guides/get-started",
-    label: "Get Started",
-    desc: "Set up your Blawby account and configure your practice.",
-  },
-  {
-    href: "/payments/accepting-payments",
-    label: "Payments",
-    desc: "IOLTA-compliant payment links, invoicing, and payouts.",
-  },
-  {
-    href: "/ai-intake/ai-powered-legal-intake-chatbot",
-    label: "AI Intake",
-    desc: "24/7 client intake automation powered by AI.",
-  },
-];
 
 // ─── Single-row navbar ────────────────────────────────────────────────────────
 
@@ -123,8 +106,10 @@ function PrimaryNav({ className }: { className?: string }) {
       aria-label="Primary navigation"
       className={clsx("flex items-stretch gap-x-0.5", className)}
     >
-      {/* Products Dropdown */}
-      <ProductsDropdown isActive={isProductActive} />
+      {/* Products */}
+      <NavTab href="/products" isActive={isProductActive}>
+        Products
+      </NavTab>
 
       {/* Docs */}
       <NavTab href="/docs" isActive={isDocsActive}>
@@ -169,67 +154,6 @@ function NavTab({
   );
 }
 
-function ProductsDropdown({ isActive }: { isActive: boolean }) {
-  return (
-    <Menu as="div" className="relative flex items-stretch">
-      <MenuButton
-        className={clsx(
-          "flex items-center gap-x-1 border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
-          isActive
-            ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
-            : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
-        )}
-        aria-label="Products menu"
-      >
-        Products
-        <svg
-          className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-60"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
-        >
-          <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </MenuButton>
-
-      <MenuItems
-        transition
-        className={clsx(
-          "absolute left-0 top-full z-30 mt-1 w-72 origin-top-left",
-          "rounded-xl bg-white shadow-lg ring-1 ring-gray-950/10",
-          "dark:bg-gray-900 dark:ring-white/10",
-          "p-2 focus:outline-none",
-          "transition data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75",
-        )}
-      >
-        {PRODUCT_LINKS.map((link) => (
-          <MenuItem key={link.href}>
-            {({ focus }) => (
-              <Link
-                href={link.href}
-                className={clsx(
-                  "flex flex-col gap-0.5 rounded-lg px-3 py-2.5 text-sm transition-colors",
-                  focus
-                    ? "bg-gray-50 dark:bg-white/5"
-                    : "text-gray-700 dark:text-gray-300",
-                )}
-              >
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  {link.label}
-                </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
-                  {link.desc}
-                </span>
-              </Link>
-            )}
-          </MenuItem>
-        ))}
-      </MenuItems>
-    </Menu>
-  );
-}
 
 // ─── Mobile navigation drawer ─────────────────────────────────────────────────
 
