@@ -119,15 +119,7 @@ function getCorsHeaders(request: Request, mutation = false): HeadersInit {
  */
 function validateMutation(request: Request): boolean {
   const origin = request.headers.get("Origin");
-  if (!origin || !ALLOWED_ORIGINS.includes(origin)) return false;
-
-  // Check for Authorization header (JWT, etc.)
-  if (request.headers.get("Authorization")) return true;
-
-  // Check for CSRF prevention headers
-  if (request.headers.get("X-CSRF-Token") || request.headers.get("X-Requested-With")) return true;
-
-  return false;
+  return !!(origin && ALLOWED_ORIGINS.includes(origin));
 }
 
 function json(
