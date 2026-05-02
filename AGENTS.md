@@ -95,7 +95,7 @@ Optimizing workflows from time-tracking to getting paid.
 Every article must end with a CTA that feels like a natural resolution.
 
 - **Blog Posts:** Soft pitch tied to the pain discussed.
-  - _Example:_ "Let Blawby handle payments—so you can focus on building your practice. [Register for Blawby](https://app.blawby.com/register)"
+  - _Example:_ "Let Blawby handle payments—so you can focus on building your practice. [Register for Blawby](https://ai.blawby.com/register)"
 - **Guides/Lessons:** Clear next steps.
   - _Example:_ "Next step: [Send your first invoice](/features/send-invoice)"
 

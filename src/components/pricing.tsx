@@ -76,7 +76,7 @@ export function Pricing({
               </span>
             </p>
             <Button
-              href="https://app.blawby.com/register"
+              href="https://ai.blawby.com/register"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-10 w-full"
