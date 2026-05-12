@@ -36,22 +36,32 @@ export function FAQSection() {
       </h2>
       <div className="faq-list">
         {FAQS.map((f, i) => (
-          <button
+          <div
             key={f.q}
-            type="button"
             className={"faq-item " + (open === i ? "is-open" : "")}
-            onClick={() => setOpen(open === i ? -1 : i)}
-            aria-expanded={open === i}
           >
-            <div className="faq-q-row">
+            <button
+              type="button"
+              className="faq-q-row"
+              onClick={() => setOpen(open === i ? -1 : i)}
+              aria-expanded={open === i}
+              aria-controls={`faq-panel-${i}`}
+            >
               <span className="mono faq-num">Q.0{i + 1}</span>
               <span className="faq-q display">{f.q}</span>
-              <span className="faq-toggle mono">{open === i ? "—" : "+"}</span>
-            </div>
-            <div className="faq-a-wrap">
+              <span className="faq-toggle mono" aria-hidden="true">
+                {open === i ? "—" : "+"}
+              </span>
+            </button>
+            <div
+              className="faq-a-wrap"
+              id={`faq-panel-${i}`}
+              role="region"
+              aria-hidden={open !== i}
+            >
               <div className="faq-a">{f.a}</div>
             </div>
-          </button>
+          </div>
         ))}
       </div>
     </section>

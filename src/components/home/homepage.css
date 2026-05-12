@@ -327,7 +327,11 @@
   background: transparent; border: none; border-bottom: 1px solid var(--rule);
   padding: 24px 0; cursor: pointer; font: inherit; color: inherit;
 }
-.home .faq-q-row { display: grid; grid-template-columns: 80px 1fr 24px; gap: 24px; align-items: baseline; }
+.home .faq-q-row {
+  display: grid; grid-template-columns: 80px 1fr 24px; gap: 24px; align-items: baseline;
+  width: 100%; background: transparent; border: 0; padding: 0;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
 .home .faq-num { color: var(--accent); padding-top: 6px; }
 .home .faq-q { font-size: 22px; line-height: 1.25; }
 .home .faq-toggle { color: var(--dim); font-size: 16px; text-align: right; }

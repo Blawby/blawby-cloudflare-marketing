@@ -97,9 +97,12 @@ export default async function DocsPage() {
               description:
                 "A comprehensive set of lessons for legal professionals to master compliant payments.",
               lessons: lessons
-                .filter((lesson) => lesson.title)
+                .filter(
+                  (lesson): lesson is typeof lesson & { title: string } =>
+                    !!lesson.title,
+                )
                 .map((lesson) => ({
-                  name: lesson.title!,
+                  name: lesson.title,
                   description: lesson.description || "No description available",
                   url: absoluteUrl(getLessonHref(lesson)),
                 })),

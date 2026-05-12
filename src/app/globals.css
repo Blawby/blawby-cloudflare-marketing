@@ -53,13 +53,15 @@
   --color-accent-deep:  var(--accent-deep);
 
   /* Legacy accent scale — remap to new design tokens so existing callers
-     (Button, IconButton, syntax theme) keep working without rewrites. */
+     (Button, IconButton, syntax theme) keep working without rewrites.
+     500 is mixed between accent and accent-deep so default/hover steps
+     stay visually distinct in both light and dark mode. */
   --color-accent-50:  var(--accent-soft);
   --color-accent-100: var(--accent-soft);
   --color-accent-200: var(--accent-soft);
   --color-accent-300: var(--accent);
   --color-accent-400: var(--accent);
-  --color-accent-500: var(--accent);
+  --color-accent-500: color-mix(in oklch, var(--accent), var(--accent-deep));
   --color-accent-600: var(--accent-deep);
   --color-accent-700: var(--accent-deep);
   --color-accent-800: var(--accent-deep);

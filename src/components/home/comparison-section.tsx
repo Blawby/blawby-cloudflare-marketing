@@ -35,16 +35,28 @@ export function ComparisonSection() {
             <div className="compare-cell compare-cell-label">{label}</div>
             <div className="compare-cell compare-cell-us">
               {us ? (
-                <span className="check">●</span>
+                <span className="check" role="img" aria-label="Included">
+                  ●
+                </span>
               ) : (
-                <span className="cross">—</span>
+                <span className="cross" role="img" aria-label="Not included">
+                  —
+                </span>
               )}
             </div>
             <div className="compare-cell">
               {them ? (
-                <span className="check dim-check">●</span>
+                <span
+                  className="check dim-check"
+                  role="img"
+                  aria-label="Included"
+                >
+                  ●
+                </span>
               ) : (
-                <span className="cross">—</span>
+                <span className="cross" role="img" aria-label="Not included">
+                  —
+                </span>
               )}
             </div>
           </div>
