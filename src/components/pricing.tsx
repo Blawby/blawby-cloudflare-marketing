@@ -21,8 +21,8 @@ export function Pricing({
   const formattedPrice = `$${price}`;
 
   return (
-    <div className="relative mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:flex lg:max-w-none dark:ring-white/10">
-      <div className="p-8 sm:p-10 lg:flex-auto">
+    <div className="relative mx-auto mt-16 max-w-2xl rounded-3xl bg-paper-2 ring-1 ring-gray-200 sm:mt-20 xl:mx-0 xl:flex xl:max-w-none xl:p-2 dark:ring-white/20">
+      <div className="p-8 sm:p-10 xl:flex-auto">
         <h3 className="text-2xl font-bold tracking-tight text-gray-950 dark:text-white">
           Standard
         </h3>
@@ -61,8 +61,8 @@ export function Pricing({
           ))}
         </ul>
       </div>
-      <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
-        <div className="rounded-2xl py-10 text-center ring-1 ring-gray-200 ring-inset lg:flex lg:flex-col lg:justify-center lg:py-16 dark:ring-white/10">
+      <div className="-mt-2 p-2 xl:mt-0 xl:w-80 xl:flex-shrink-0">
+        <div className="rounded-2xl bg-paper py-8 text-center ring-1 ring-gray-200 ring-inset xl:flex xl:flex-col xl:justify-center xl:py-12 dark:ring-white/20">
           <div className="mx-auto max-w-xs px-8">
             <p className="text-base font-semibold text-gray-700 dark:text-gray-300">
               Pay monthly, love forever

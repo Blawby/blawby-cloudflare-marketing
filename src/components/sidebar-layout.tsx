@@ -445,7 +445,7 @@ function MobileSidebar({
   sections: SidebarSection[];
 }) {
   return (
-    <Dialog open={open} onClose={onClose} className="xl:hidden">
+    <Dialog open={open} onClose={onClose} className="lg:hidden">
       <DialogBackdrop className="fixed inset-0 bg-gray-950/25" />
       <DialogPanel className="fixed inset-y-0 left-0 w-72 overflow-y-auto bg-white px-4 py-6 pt-20 ring ring-gray-950/10 sm:px-6 dark:bg-black dark:ring-white/10">
         <SidebarNav sections={sections} onNavigate={onClose} />
@@ -489,7 +489,7 @@ export function SidebarLayout({
         {hasSidebar && (
           <aside
             className={clsx(
-              "sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[300px] shrink-0 overflow-y-auto xl:block",
+              "sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[300px] shrink-0 overflow-y-auto lg:block",
               "group-data-[sidebar-collapsed]:hidden",
             )}
           >
@@ -543,7 +543,7 @@ export function SidebarLayoutContent({
           {/* Mobile sidebar toggle */}
           <IconButton
             onClick={() => setIsMobileDialogOpen(!isMobileDialogOpen)}
-            className="xl:hidden"
+            className="lg:hidden"
             aria-label={
               isMobileDialogOpen ? "Close navigation" : "Open navigation"
             }
@@ -555,7 +555,7 @@ export function SidebarLayoutContent({
           {!isSidebarOpen && (
             <IconButton
               onClick={() => setIsSidebarOpen(true)}
-              className="max-xl:hidden"
+              className="max-lg:hidden"
               aria-label="Expand sidebar"
             >
               <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />

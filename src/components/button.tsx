@@ -1,25 +1,53 @@
 import { clsx } from "clsx";
+import Link from "next/link";
 import type React from "react";
 
 type ButtonProps = React.ComponentProps<"button"> &
   React.ComponentProps<"a"> & {
     href?: string;
+    variant?: "primary" | "ghost";
+    size?: "md" | "lg";
   };
 
 export function Button({
   className,
   href,
-  type = "button",
+  variant = "primary",
+  size = "md",
   ...props
 }: ButtonProps) {
+  const variants = {
+    primary: "bg-ink text-paper border-ink hover:bg-accent hover:border-accent",
+    ghost: "bg-transparent text-ink border-rule hover:border-ink",
+  };
+
+  const sizes = {
+    md: "px-6 py-3 text-sm",
+    lg: "px-8 py-4 text-[15px]",
+  };
+
   const classes = clsx(
-    "cursor-pointer rounded-full bg-[var(--color-accent-400)] px-3.5 py-2 text-sm/6 font-semibold text-gray-900 no-underline hover:bg-[var(--color-accent-500)] hover:no-underline focus:no-underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--color-accent-800)] dark:bg-[var(--color-accent-500)] dark:text-gray-900 dark:hover:bg-[var(--color-accent-600)]",
+    "btn inline-flex cursor-pointer items-center justify-center gap-2",
+    "rounded-[2px] border font-sans font-medium transition-all duration-200 no-underline",
+    "focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2",
+    variants[variant],
+    sizes[size],
     className,
   );
 
+  // Omit button-specific props when rendering
+  const { type: _type, ...restProps } = props as any;
+
   if (href) {
-    return <a href={href} className={classes} {...props} />;
+    if (href.startsWith("/")) {
+      return (
+        <Link href={href} className={classes} {...restProps}>
+          {props.children}
+        </Link>
+      );
+    }
+    return <a href={href} className={classes} {...restProps} />;
   }
 
-  return <button type={type} className={classes} {...props} />;
+  return <button type={(props as any).type || "button"} className={classes} {...restProps} />;
 }

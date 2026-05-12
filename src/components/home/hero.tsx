@@ -1,3 +1,4 @@
+import { Button } from "../button";
 import { WorkflowHero } from "./workflow-hero";
 
 export function Hero() {
@@ -23,15 +24,16 @@ export function Hero() {
               firms.
             </p>
             <div className="hero-ctas">
-              <a
+              <Button
                 href="https://ai.blawby.com/register"
-                className="btn btn-primary btn-lg"
+                size="lg"
+                variant="primary"
               >
                 Start now
-              </a>
-              <a href="#workflow" className="btn btn-ghost btn-lg">
+              </Button>
+              <Button href="#workflow" size="lg" variant="ghost">
                 See the loop →
-              </a>
+              </Button>
             </div>
           </div>
         </div>

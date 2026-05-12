@@ -1,3 +1,5 @@
+import { Button } from "../button";
+
 export function FinalCTA() {
   return (
     <section className="section-cta" id="start">
@@ -12,15 +14,17 @@ export function FinalCTA() {
           <em>Blawby.</em>
         </h2>
         <div className="cta-actions">
-          <a
+          <Button
             href="https://ai.blawby.com/register"
-            className="btn btn-primary btn-lg"
+            size="lg"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Start now
-          </a>
-          <a href="/docs" className="btn btn-ghost btn-lg">
+          </Button>
+          <Button href="/docs" variant="ghost" size="lg">
             View docs →
-          </a>
+          </Button>
         </div>
         <div className="cta-meta mono small-caps">
           <span>$40 per active user / month</span>

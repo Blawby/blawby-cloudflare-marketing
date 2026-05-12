@@ -49,13 +49,13 @@ export default function PricingPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div className="mx-auto flex max-w-2xl gap-x-10 py-10 sm:py-14 lg:max-w-5xl">
+      <div className="mx-auto flex max-w-2xl gap-x-10 py-10 sm:py-14 lg:max-w-5xl xl:max-w-7xl">
         <div className="w-full flex-1">
           <div id="content" className="prose">
             <PricingContent />
           </div>
         </div>
-        <div className="hidden w-66 lg:block">
+        <div className="hidden w-66 2xl:block">
           <TableOfContents contentId="content" />
         </div>
       </div>

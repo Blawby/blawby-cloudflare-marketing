@@ -1,3 +1,4 @@
+import { Button } from "../button";
 import { SectionLabel } from "./section-label";
 
 export function PricingSection() {
@@ -20,9 +21,7 @@ export function PricingSection() {
             Pay only for users who logged in this month. No seats sitting idle,
             no annual contract, no setup fee.
           </p>
-          <a href="https://ai.blawby.com/register" className="btn btn-primary">
-            Start now
-          </a>
+          <Button href="https://ai.blawby.com/register">Start now</Button>
         </div>
         <div className="pricing-side">
           <div className="pricing-row">
