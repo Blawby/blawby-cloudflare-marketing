@@ -13,7 +13,7 @@ export function Logo(props: React.ComponentProps<"svg">) {
         y="0px"
         viewBox="0 0 1672 1672"
         className={clsx(
-          "h-[32px] w-[32px] text-gray-950 dark:text-white",
+          "h-[32px] w-[32px] text-ink",
           props.className,
         )}
       >
@@ -745,7 +745,7 @@ M503.094177,1267.999512
 z"
         />
       </svg>
-      <span className="font-serif text-3xl font-bold text-gray-950 dark:text-white">
+      <span className="font-serif text-3xl font-bold text-ink">
         Blawby
       </span>
     </div>

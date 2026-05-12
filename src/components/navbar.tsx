@@ -71,13 +71,13 @@ export function Navbar() {
     <div
       className={clsx(
         "sticky top-0 z-20 w-full",
-        "bg-white dark:bg-black",
+        "bg-paper/95 backdrop-blur-sm",
         "px-4 sm:px-6",
       )}
     >
       <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-x-0">
         <Link href="/" aria-label="Blawby home" className="flex shrink-0 items-center pr-6">
-          <Logo className="h-7 dark:text-white" />
+          <Logo className="h-7" />
         </Link>
 
         {/* Center nav — hidden on mobile */}
@@ -145,8 +145,8 @@ function NavTab({
       className={clsx(
         "flex items-center border-b-2 px-2.5 text-sm font-medium whitespace-nowrap transition-colors xl:px-3",
         isActive
-          ? "border-gray-950 text-gray-950 dark:border-white dark:text-white"
-          : "border-transparent text-gray-500 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
+          ? "border-ink text-ink"
+          : "border-transparent text-dim hover:text-ink",
       )}
       aria-current={isActive ? "page" : undefined}
     >
@@ -172,12 +172,12 @@ function MobileNavigation({
 
   return (
     <Dialog open={open} onClose={onClose} className="lg:hidden">
-      <DialogBackdrop className="fixed inset-0 bg-gray-950/25" />
+      <DialogBackdrop className="fixed inset-0 bg-ink/25" />
       <div className="fixed inset-0 flex justify-end pl-11">
-        <DialogPanel className="w-full max-w-xs bg-white px-4 py-5 ring ring-gray-950/10 sm:px-6 dark:bg-black dark:ring-white/10">
+        <DialogPanel className="w-full max-w-xs bg-paper px-4 py-5 ring ring-rule sm:px-6">
           <div className="flex justify-end">
             <CloseButton as={IconButton} onClick={onClose} aria-label="Close menu">
-              <CloseIcon className="stroke-gray-950 dark:stroke-white" />
+              <CloseIcon className="stroke-ink" />
             </CloseButton>
           </div>
 
@@ -188,15 +188,15 @@ function MobileNavigation({
               className={clsx(
                 "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 isProductActive
-                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
-                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+                  ? "bg-ink/5 text-ink"
+                  : "text-ink-2 hover:bg-ink/5 hover:text-ink",
               )}
             >
               Products
             </CloseButton>
 
             {/* Docs */}
-            <p className="mt-4 px-3 py-1 text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+            <p className="mt-4 px-3 py-1 text-xs font-semibold tracking-wider text-dim uppercase">
               Resources
             </p>
             <CloseButton
@@ -205,8 +205,8 @@ function MobileNavigation({
               className={clsx(
                 "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 isDocsActive
-                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
-                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+                  ? "bg-ink/5 text-ink"
+                  : "text-ink-2 hover:bg-ink/5 hover:text-ink",
               )}
             >
               Docs
@@ -217,8 +217,8 @@ function MobileNavigation({
               className={clsx(
                 "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 isSolutionsActive
-                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
-                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+                  ? "bg-ink/5 text-ink"
+                  : "text-ink-2 hover:bg-ink/5 hover:text-ink",
               )}
             >
               Solutions
@@ -229,16 +229,16 @@ function MobileNavigation({
               className={clsx(
                 "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 activeSection === "pricing"
-                  ? "bg-gray-950/5 text-gray-950 dark:bg-white/10 dark:text-white"
-                  : "text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white",
+                  ? "bg-ink/5 text-ink"
+                  : "text-ink-2 hover:bg-ink/5 hover:text-ink",
               )}
             >
               Pricing
             </CloseButton>
           </div>
 
-          <div className="mt-6 flex flex-col gap-y-1 border-t border-gray-950/10 pt-6 dark:border-white/10">
-            <p className="px-3 py-1 text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
+          <div className="mt-6 flex flex-col gap-y-1 border-t border-rule pt-6">
+            <p className="px-3 py-1 text-xs font-semibold tracking-wider text-dim uppercase">
               Account
             </p>
             {[
@@ -249,7 +249,7 @@ function MobileNavigation({
                 as={Link}
                 key={href}
                 href={href}
-                className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-950/5 hover:text-gray-950 dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white"
+                className="rounded-md px-3 py-2 text-sm font-medium text-ink-2 hover:bg-ink/5 hover:text-ink"
               >
                 {title}
               </CloseButton>
@@ -272,7 +272,7 @@ function SiteNavigation() {
       <div className="hidden items-center gap-x-3 text-sm font-medium lg:flex xl:gap-x-4">
         <Link
           href="https://ai.blawby.com/login"
-          className="text-gray-600 hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
+          className="text-ink-2 hover:text-ink"
         >
           Login
         </Link>
@@ -283,12 +283,12 @@ function SiteNavigation() {
           Register
         </Button>
       </div>
-      <IconButton 
-        className="lg:hidden" 
+      <IconButton
+        className="lg:hidden"
         onClick={() => setMobileMenuOpen(true)}
         aria-label="Open main menu"
       >
-        <MenuIcon className="fill-gray-950 dark:fill-white" />
+        <MenuIcon className="fill-ink" />
       </IconButton>
       <MobileNavigation
         open={mobileMenuOpen}

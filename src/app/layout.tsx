@@ -7,16 +7,20 @@ import { defaultSeoImage, getWebsiteSchema } from "@/utils/seo";
 import { clsx } from "clsx";
 import { GeistMono } from "geist/font/mono";
 import { Metadata } from "next";
-import localFont from "next/font/local";
+import { Geist, Source_Serif_4 } from "next/font/google";
 import type React from "react";
 import "./globals.css";
 
-const InterVariable = localFont({
-  variable: "--font-inter",
-  src: [
-    { path: "./InterVariable.woff2", style: "normal" },
-    { path: "./InterVariable-Italic.woff2", style: "italic" },
-  ],
+const geist = Geist({
+  variable: "--font-geist",
+  subsets: ["latin"],
+});
+
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  axes: ["opsz"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -102,8 +106,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={clsx(
         GeistMono.variable,
-        InterVariable.variable,
-        "scroll-pt-16 bg-white font-sans antialiased dark:bg-black",
+        geist.variable,
+        sourceSerif.variable,
+        "scroll-pt-16 bg-paper text-ink font-sans antialiased",
       )}
     >
       <head>
@@ -113,7 +118,7 @@ export default function RootLayout({
         />
         {/* Manifest is handled by metadata.manifest, no need for manual <link> */}
       </head>
-      <body className="bg-white dark:bg-black">
+      <body className="bg-paper text-ink">
         <WebVitals />
         <div className="isolate">{children}</div>
         <Footer />

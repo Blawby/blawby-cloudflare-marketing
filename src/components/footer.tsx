@@ -6,58 +6,40 @@ import type React from "react";
 
 export function Footer() {
   return (
-    <footer className="bg-white py-8 text-base text-gray-950 dark:bg-black dark:text-white">
+    <footer className="border-t border-rule bg-paper py-8 text-base text-ink">
       <div className="mx-auto flex w-full max-w-[1400px] flex-col items-start gap-6 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div className="flex items-center gap-3">
           <Link href="/" aria-label="Blawby home">
             <Logo height={28} width={110} />
           </Link>
-          <span className="hidden text-base text-gray-700 sm:inline dark:text-gray-400">
+          <span className="hidden text-base text-dim sm:inline">
             &copy; {new Date().getFullYear()} Blawby
           </span>
         </div>
         <nav className="flex flex-wrap items-center justify-start gap-x-6 gap-y-2 sm:justify-center">
-          <Link
-            href="/solutions"
-            className="hover:text-gray-950 dark:hover:text-white"
-          >
+          <Link href="/solutions" className="text-dim hover:text-ink">
             Solutions
           </Link>
-          <Link
-            href="/docs"
-            className="hover:text-gray-950 dark:hover:text-white"
-          >
+          <Link href="/docs" className="text-dim hover:text-ink">
             Docs
           </Link>
-          <Link
-            href="/pricing"
-            className="hover:text-gray-950 dark:hover:text-white"
-          >
+          <Link href="/pricing" className="text-dim hover:text-ink">
             Pricing
           </Link>
-          <Link
-            href="/help"
-            className="hover:text-gray-950 dark:hover:text-white"
-          >
+          <Link href="/help" className="text-dim hover:text-ink">
             Help
           </Link>
-          <Link
-            href="/privacy"
-            className="hover:text-gray-950 dark:hover:text-white"
-          >
+          <Link href="/privacy" className="text-dim hover:text-ink">
             Privacy
           </Link>
-          <Link
-            href="/terms"
-            className="hover:text-gray-950 dark:hover:text-white"
-          >
+          <Link href="/terms" className="text-dim hover:text-ink">
             Terms
           </Link>
           <a
             href="https://discord.gg/rPmzknKv"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 hover:text-[#5865F2] dark:hover:text-[#5865F2]"
+            className="ml-2 text-dim hover:text-[#5865F2]"
             aria-label="Discord"
           >
             <DiscordIcon />
@@ -66,13 +48,13 @@ export function Footer() {
             href="https://github.com/Blawby"
             target="_blank"
             rel="noopener noreferrer"
-            className="ml-2 hover:text-gray-900 dark:hover:text-white"
+            className="ml-2 text-dim hover:text-accent"
             aria-label="GitHub"
           >
             <GitHubIcon />
           </a>
         </nav>
-        <span className="text-base text-gray-700 sm:hidden dark:text-gray-400">
+        <span className="text-base text-dim sm:hidden">
           &copy; {new Date().getFullYear()} Blawby
         </span>
       </div>
