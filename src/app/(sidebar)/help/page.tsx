@@ -4,6 +4,7 @@ import {
   Breadcrumbs,
   BreadcrumbSeparator,
 } from "@/components/breadcrumbs";
+import { ContactForm } from "@/components/contact-form";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
 import { siteConfig } from "@/config/site";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
@@ -49,46 +50,51 @@ export default function HelpPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div className="relative mx-auto max-w-7xl">
-        <div className="absolute -inset-x-2 top-0 -z-10 h-80 overflow-hidden rounded-t-2xl mask-b-from-60% sm:h-88 md:h-112 lg:-inset-x-4 lg:h-128">
-          <img
-            alt=""
-            src="https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/26a43a4d-6e82-4078-ea9c-2c11b3d77600/public"
-            className="absolute inset-0 h-full w-full mask-l-from-60% object-cover object-center opacity-40"
-          />
-          <div className="absolute inset-0 rounded-t-2xl outline-1 -outline-offset-1 outline-gray-950/10 dark:outline-white/10" />
-        </div>
-        <div className="mx-auto max-w-6xl">
-          <div className="relative">
-            <div className="px-4 pt-48 pb-12 lg:py-24">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-950 dark:text-white">
-                Help & Support
-              </h1>
-              <p className="mt-7 max-w-lg text-base/7 text-pretty text-gray-950 dark:text-gray-300">
-                {siteConfig.description}
-              </p>
-            </div>
-            <div className="py-12">
-              <iframe
-                src="https://chat.blawby.com/?position=inline"
-                title="Blawby Support Chat"
-                style={{
-                  border: "none",
-                  width: "100%",
-                  height: "600px",
-                  background: "transparent",
-                }}
-                className="w-full rounded-2xl bg-transparent shadow-lg"
-                allow="clipboard-write; microphone; camera"
-              />
-              <div className="flex justify-center">
-                <p className="mt-4 max-w-lg text-center text-xs text-pretty text-gray-700 dark:text-gray-300">
-                  Blawby AI can make mistakes. Check important info.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:py-14">
+        <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          Help &amp; Support
+        </h1>
+        <p className="mt-6 text-lg leading-8 text-ink-2">
+          Have a question about pricing, IOLTA compliance, or getting set up?
+          Send us a note and we'll reply by email.
+        </p>
+
+        <h2 className="mt-12 text-xl font-semibold text-ink">
+          Other ways to reach us
+        </h2>
+        <ul className="mt-4 space-y-2 text-base text-ink-2">
+          <li>
+            Read the{" "}
+            <a className="text-accent underline hover:no-underline" href="/docs">
+              documentation
+            </a>{" "}
+            for step-by-step setup guides.
+          </li>
+          <li>
+            Review{" "}
+            <a
+              className="text-accent underline hover:no-underline"
+              href="/pricing"
+            >
+              pricing
+            </a>{" "}
+            and nonprofit discount details.
+          </li>
+          <li>
+            Join us on{" "}
+            <a
+              className="text-accent underline hover:no-underline"
+              href="https://discord.gg/rPmzknKv"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Discord
+            </a>{" "}
+            for community support.
+          </li>
+        </ul>
+
+        <ContactForm />
       </div>
     </SidebarLayoutContent>
   );

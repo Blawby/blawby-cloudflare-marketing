@@ -1,14 +1,5 @@
+import { COMPARISON_ROWS } from "@/data/home/comparison";
 import { SectionLabel } from "./section-label";
-
-const ROWS: Array<[string, boolean, boolean]> = [
-  ["IOLTA-aware ledger", true, false],
-  ["Trust → operating transfers", true, false],
-  ["Engagement letter + signature in one link", true, false],
-  ["Intake widget with conditional fees", true, false],
-  ["Card + ACH processing", true, true],
-  ["Generic e-commerce checkout flow", false, true],
-  ["Built for solo & small-firm attorneys", true, false],
-];
 
 export function ComparisonSection() {
   return (
@@ -30,7 +21,7 @@ export function ComparisonSection() {
             <span className="mono small-caps">Stripe-style checkout</span>
           </div>
         </div>
-        {ROWS.map(([label, us, them]) => (
+        {COMPARISON_ROWS.map(({ label, us, them }) => (
           <div key={label} className="compare-row">
             <div className="compare-cell compare-cell-label">{label}</div>
             <div className="compare-cell compare-cell-us">

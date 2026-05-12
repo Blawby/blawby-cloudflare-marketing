@@ -3,11 +3,17 @@ main = "src/workers/search.ts"
 compatibility_date = "2026-04-29"
 compatibility_flags = ["nodejs_compat"]
 
+# Required secrets (set via `pnpm exec wrangler secret put <NAME> --config wrangler.worker.toml`):
+#   RESEND_API_KEY   — Resend transactional email key, powers /api/help-form
+#
+# Required vars below (non-secret config).
+
 [ai]
 binding = "AI"
 
 [vars]
 AI_SEARCH_NAME = "blawby-autorag-instance"
+SUPPORT_EMAIL = "support@blawby.com"
 
 [[d1_databases]]
 binding = "SUPPORT_DB"

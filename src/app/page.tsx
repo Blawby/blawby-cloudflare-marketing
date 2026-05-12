@@ -11,7 +11,9 @@ import { ProblemSection } from "@/components/home/problem-section";
 import { WorkflowDetail } from "@/components/home/workflow-detail";
 import { Navbar } from "@/components/navbar";
 import { siteConfig } from "@/config/site";
+import { HOME_FAQS } from "@/data/home/faq";
 import { getBreadcrumbSchema } from "@/utils/breadcrumb-schema";
+import { getFAQSchema } from "@/utils/faq-schema";
 import { absoluteUrl, getSoftwareApplicationSchema } from "@/utils/seo";
 import type { Metadata } from "next";
 
@@ -27,6 +29,11 @@ export default function Page() {
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: absoluteUrl() },
   ]);
+  const faqSchema = getFAQSchema({
+    faqs: HOME_FAQS.map((f) => ({ question: f.question, answer: f.answer })),
+    name: "Blawby — Frequently Asked Questions",
+    description: "Common questions about Blawby for legal practices.",
+  });
 
   return (
     <>
@@ -40,6 +47,10 @@ export default function Page() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(getSoftwareApplicationSchema()),
         }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <main className="home">
         <Hero />

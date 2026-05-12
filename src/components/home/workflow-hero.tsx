@@ -1,14 +1,7 @@
 "use client";
 
+import { WORKFLOW_STEPS } from "@/data/home/workflow-steps";
 import { useEffect, useState } from "react";
-
-const STEPS = [
-  { num: "01", label: "Intake", desc: "Widget on your site captures a qualified lead." },
-  { num: "02", label: "Triage", desc: "Review, accept, or decline with AI assist." },
-  { num: "03", label: "Engage", desc: "Send scope, fees, and signature in one link." },
-  { num: "04", label: "Matter", desc: "Track work, time, files, and client activity." },
-  { num: "05", label: "Collect", desc: "Invoice, accept card or ACH, route to trust." },
-];
 
 export function WorkflowHero() {
   const [revealed, setRevealed] = useState(-1);
@@ -16,12 +9,18 @@ export function WorkflowHero() {
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
-    STEPS.forEach((_, i) => {
+    WORKFLOW_STEPS.forEach((_, i) => {
       timers.push(setTimeout(() => setRevealed(i), 350 + i * 220));
     });
     timers.push(setTimeout(() => setLineProgress(1), 400));
     return () => timers.forEach(clearTimeout);
   }, []);
+
+  const handleStepClick = (anchorId: string) => {
+    const el = document.getElementById(anchorId);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <div className="workflow-hero">
@@ -61,7 +60,7 @@ export function WorkflowHero() {
           />
         </svg>
         <div className="workflow-steps">
-          {STEPS.map((s, i) => (
+          {WORKFLOW_STEPS.map((s, i) => (
             <div
               key={s.num}
               className={"wf-step " + (revealed >= i ? "is-in" : "")}
@@ -69,11 +68,16 @@ export function WorkflowHero() {
               <div className="wf-node">
                 <span className="wf-dot" />
               </div>
-              <div className="wf-card">
+              <button
+                type="button"
+                className="wf-card"
+                onClick={() => handleStepClick(s.anchorId)}
+                aria-label={`Jump to ${s.kicker} step detail`}
+              >
                 <div className="wf-num mono">{s.num}</div>
-                <div className="wf-label">{s.label}</div>
-                <div className="wf-desc">{s.desc}</div>
-              </div>
+                <div className="wf-label">{s.kicker}</div>
+                <div className="wf-desc">{s.cardDesc}</div>
+              </button>
             </div>
           ))}
         </div>

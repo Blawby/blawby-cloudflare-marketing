@@ -1,5 +1,6 @@
 import { Callout } from "@/components/callout";
 import { DocPlaceholder } from "@/components/doc-placeholder";
+import { Pricing } from "@/components/pricing";
 import { transformerColorizedBrackets } from "@shikijs/colorized-brackets";
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
@@ -185,6 +186,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     Callout,
     DocPlaceholder,
+    Pricing,
     ...components,
   };
 }

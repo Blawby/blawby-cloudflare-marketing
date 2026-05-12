@@ -78,6 +78,15 @@ export interface Env {
 // ---------------------------------------------------------------------------
 
 const ALLOWED_ORIGINS = ["https://blawby.com", "https://www.blawby.com"];
+const ALLOWED_ORIGIN_PATTERNS: RegExp[] = [
+  /^http:\/\/localhost(:\d+)?$/,
+  /^https:\/\/[^./]+\.pages\.dev$/,
+];
+
+function isAllowedOrigin(origin: string): boolean {
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  return ALLOWED_ORIGIN_PATTERNS.some((p) => p.test(origin));
+}
 
 const GENERATION_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
@@ -101,9 +110,9 @@ Rules you must follow:
 function getCorsHeaders(request: Request, mutation = false): HeadersInit {
   const origin = request.headers.get("Origin") ?? "";
   // For read-only search endpoints, allow any origin.
-  // For mutation endpoints, restrict to known origins.
+  // For mutation endpoints, restrict to known origins (incl. localhost dev + *.pages.dev previews).
   const allowedOrigin =
-    !mutation || ALLOWED_ORIGINS.includes(origin) ? origin || "*" : "";
+    !mutation || isAllowedOrigin(origin) ? origin || "*" : "";
 
   return {
     "Access-Control-Allow-Origin": allowedOrigin,
@@ -115,11 +124,11 @@ function getCorsHeaders(request: Request, mutation = false): HeadersInit {
 
 /**
  * Validates that a mutation request is authorized and not a CSRF attempt.
- * Checks for valid Origin and either an Authorization header or a CSRF-prevention header.
+ * Checks for valid Origin against the production allowlist + dev/preview patterns.
  */
 function validateMutation(request: Request): boolean {
   const origin = request.headers.get("Origin");
-  return !!(origin && ALLOWED_ORIGINS.includes(origin));
+  return !!(origin && isAllowedOrigin(origin));
 }
 
 function json(
