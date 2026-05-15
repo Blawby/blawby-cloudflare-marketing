@@ -1,5 +1,6 @@
 "use client";
 
+import { clsx } from "clsx";
 import { useState } from "react";
 import Image from "next/image";
 import { MediaModal } from "./media-modal";
@@ -8,29 +9,38 @@ export function MediaCard({
   caption,
   src,
   ratio = "16 / 9",
+  interactive = !!src,
 }: {
   caption: string;
   src?: string;
   ratio?: string;
+  interactive?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const interactiveProps = interactive ? {
+    tabIndex: 0,
+    role: "button",
+    "aria-label": `Expand image: ${caption}`,
+    onClick: () => src && setIsOpen(true),
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (!src) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setIsOpen(true);
+      }
+    },
+  } : {};
 
   return (
     <>
       <div 
-        className="ph group cursor-zoom-in transition-all hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" 
+        className={clsx(
+          "ph group transition-all",
+          interactive ? "cursor-zoom-in hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" : "cursor-default"
+        )}
         style={{ aspectRatio: ratio }}
-        onClick={() => src && setIsOpen(true)}
-        onKeyDown={(e) => {
-          if (!src) return;
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            setIsOpen(true);
-          }
-        }}
-        tabIndex={0}
-        role="button"
-        aria-label={`Expand image: ${caption}`}
+        {...interactiveProps}
       >
         {!src && <div className="ph-stripes" />}
         

@@ -70,6 +70,7 @@ export function DocPlaceholder({
         src={undefined} // Force placeholder state
         caption={caption || `Placeholder: ${src}`}
         ratio={styles.aspect}
+        interactive={false}
       />
       
       {/* Overlay placeholder info */}

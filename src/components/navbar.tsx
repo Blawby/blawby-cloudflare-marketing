@@ -249,6 +249,8 @@ function MobileNavigation({
                 as={Link}
                 key={href}
                 href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-md px-3 py-2 text-sm font-medium text-ink-2 hover:bg-ink/5 hover:text-ink"
               >
                 {title}
@@ -272,12 +274,16 @@ function SiteNavigation() {
       <div className="hidden items-center gap-x-3 text-sm font-medium lg:flex xl:gap-x-4">
         <Link
           href="https://ai.blawby.com/auth"
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-ink-2 hover:text-ink"
         >
           Login
         </Link>
         <Button
           href="https://ai.blawby.com/auth"
+          target="_blank"
+          rel="noopener noreferrer"
           className="w-auto px-3 py-1.5 text-sm font-semibold"
         >
           Register
