@@ -47,7 +47,7 @@ export function Breadcrumb({
     <span
       className={clsx(
         className,
-        "min-w-0 truncate text-gray-950 last:text-gray-600 dark:last:text-gray-400",
+        "min-w-0 truncate text-gray-950 dark:text-white last:text-gray-600 dark:last:text-gray-400",
       )}
     >
       {children}
