@@ -15,7 +15,7 @@ export function FinalCTA() {
         </h2>
         <div className="cta-actions">
           <Button
-            href="https://ai.blawby.com/register"
+            href="https://ai.blawby.com/auth"
             size="lg"
             target="_blank"
             rel="noopener noreferrer"

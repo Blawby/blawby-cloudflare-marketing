@@ -242,8 +242,8 @@ function MobileNavigation({
               Account
             </p>
             {[
-              ["Login", "https://ai.blawby.com/login"],
-              ["Register", "https://ai.blawby.com/register"],
+              ["Login", "https://ai.blawby.com/auth"],
+              ["Register", "https://ai.blawby.com/auth"],
             ].map(([title, href]) => (
               <CloseButton
                 as={Link}
@@ -271,13 +271,13 @@ function SiteNavigation() {
       <CommandPalette />
       <div className="hidden items-center gap-x-3 text-sm font-medium lg:flex xl:gap-x-4">
         <Link
-          href="https://ai.blawby.com/login"
+          href="https://ai.blawby.com/auth"
           className="text-ink-2 hover:text-ink"
         >
           Login
         </Link>
         <Button
-          href="https://ai.blawby.com/register"
+          href="https://ai.blawby.com/auth"
           className="w-auto px-3 py-1.5 text-sm font-semibold"
         >
           Register
