@@ -7,7 +7,7 @@ export function ComplianceSection() {
         <div className="compliance-left">
           <SectionLabel num="04">Trust &amp; IOLTA</SectionLabel>
           <h2 className="display h2">
-            Trust math that bar counsel can <em>read in a glance.</em>
+            Trust accounting that’s <em>audit-ready in a glance.</em>
           </h2>
           <p className="lede">
             Every dollar lands in the right account from the first swipe.

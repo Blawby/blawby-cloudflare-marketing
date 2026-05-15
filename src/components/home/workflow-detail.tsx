@@ -1,5 +1,5 @@
 import { WORKFLOW_STEPS } from "@/data/home/workflow-steps";
-import { Placeholder } from "./placeholder";
+import { MediaCard } from "./media-card";
 import { SectionLabel } from "./section-label";
 
 export function WorkflowDetail() {
@@ -36,7 +36,11 @@ export function WorkflowDetail() {
                 </ul>
               </div>
               <div className="wf-row-shot">
-                <Placeholder caption={r.shotCaption} ratio="4 / 3" />
+                <MediaCard
+                  caption={r.shotCaption}
+                  src={r.image}
+                  ratio="4 / 3"
+                />
               </div>
             </div>
           </div>

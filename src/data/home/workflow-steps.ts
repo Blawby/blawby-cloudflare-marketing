@@ -7,6 +7,7 @@ export type WorkflowStep = {
   detailBody: string;
   bullets: string[];
   shotCaption: string;
+  image?: string;
 };
 
 export const WORKFLOW_STEPS: WorkflowStep[] = [
@@ -24,6 +25,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
       "Auto-route by practice area",
     ],
     shotCaption: "Intake widget — composer view",
+    image: "/media/docs/intake/four-stage-flow.png",
   },
   {
     num: "02",
@@ -39,6 +41,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
       "One-click matter creation",
     ],
     shotCaption: "Triage queue — submission detail",
+    image: "/media/docs/intake/queue.png",
   },
   {
     num: "03",
@@ -50,17 +53,18 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
       "Generate an engagement letter from a template, include the fee terms, and send a single signing link. The retainer is collected the moment they sign.",
     bullets: [
       "Reusable engagement templates",
-      "Risk & acknowledgment clauses",
+      "Customizable scope & fee terms",
       "Retainer collected on signature",
     ],
     shotCaption: "Engagement letter — signer view",
+    image: "/media/docs/engagements/walkthrough.png",
   },
   {
     num: "04",
     anchorId: "step-matter",
     kicker: "Matter",
     cardDesc: "Track work, time, files, and client activity.",
-    detailTitle: "Every matter has a single page of record.",
+    detailTitle: "Stop constantly switching tabs.",
     detailBody:
       "Tabs for activity, files, time, billing, and the client portal. Whatever happens on the matter happens here — no second tab, no second tool.",
     bullets: [
@@ -69,6 +73,7 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
       "Activity log of everything",
     ],
     shotCaption: "Matter detail — tabbed view",
+    image: "/media/docs/matters/walkthrough.png",
   },
   {
     num: "05",
@@ -84,5 +89,6 @@ export const WORKFLOW_STEPS: WorkflowStep[] = [
       "Documented trust transfers",
     ],
     shotCaption: "Invoice & trust transfer",
+    image: "/media/docs/billing/generate-invoice.png",
   },
 ];

@@ -16,8 +16,7 @@ export function ProblemSection() {
       <SectionLabel num="01">The problem</SectionLabel>
       <div className="problem-grid">
         <h2 className="display h2">
-          A solo practice runs on <em>seven tabs</em>, three vendors, and a
-          prayer that the trust math works out.
+          Stop worrying about <em>Trust accounting</em> and juggling seven different tabs.
         </h2>
         <div className="problem-side">
           <p className="lede">

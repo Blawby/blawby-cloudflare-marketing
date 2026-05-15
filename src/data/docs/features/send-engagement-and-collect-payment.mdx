@@ -26,7 +26,7 @@ keywords:
 summary: "Send the structured engagement, get acceptance, and collect the retainer or initial fee in one flow."
 faq:
   - question: "What's in a Blawby engagement letter?"
-    answer: "Four sections: representation (scope, jurisdictions, parties), fees (billing type, rates, retainer amount), risk review (conflict and jurisdiction status), and acknowledgments (legal language). Pre-filled from intake and matter context, edited by you, signed by the client."
+    answer: "Four sections: representation (scope, jurisdictions, parties), fees (billing type, rates, retainer amount), conflict & jurisdiction status, and firm terms (legal language). Pre-filled from intake and matter context, edited by you, signed by the client."
   - question: "Can the client pay the retainer right after signing?"
     answer: "Yes. After the client signs, they're redirected to a Stripe-hosted payment for any retainer or initial fee defined on the engagement."
   - question: "Where do those funds land?"
@@ -47,19 +47,19 @@ When you click **Create engagement** from a matter, Blawby pre-fills the four se
 
 - **Representation** — scope summary, included/excluded services, parties, jurisdiction notes.
 - **Fees** — billing type (flat / hourly / retainer / contingency), rates, retainer amount, payment frequency, fee notes.
-- **Risk review** — conflict status, jurisdiction status, risk notes, open questions.
-- **Acknowledgments** — your firm's standard legal language (configured once in practice settings).
+- **Conflict & Jurisdiction** — conflict status, jurisdiction status, notes, open questions.
+- **Firm Terms** — your firm's standard legal language (configured once in practice settings).
 
 Pay particular attention to:
 
 - The scope's **excluded services** — most scope-creep disputes start with something the engagement didn't explicitly call out as excluded.
 - The **fees section** — the billing type set here flows automatically to the matter once the engagement is accepted.
-- **Risk review** — if conflict or jurisdiction status is unclear, hold the engagement in Draft until it is.
+- **Status checks** — if conflict or jurisdiction status is unclear, hold the engagement in Draft until it is.
 
 <DocPlaceholder
   kind="screenshot"
   src="/media/docs/engagements/draft-editor.png"
-  description="Engagement draft editor with the four sections expanded — representation, fees, risk review, acknowledgments."
+  description="Engagement draft editor with the four sections expanded — representation, fees, conflict review, and firm terms."
 />
 
 ## Send
@@ -77,7 +77,7 @@ What happens:
 The client opens the engagement on `ClientEngagementReviewPage`:
 
 1. They read the **client summary** at the top — matter, location, goals, parties.
-2. They scroll through representation, fees, risk acknowledgments, and the legal language.
+2. They scroll through representation, fees, and your firm's standard terms.
 3. If they have questions, they reply in the chat thread (their messages route back to the matter).
 4. They sign with a typed signature; the signature, IP address, and timestamp are recorded.
 5. **On acceptance**, they're redirected to pay any retainer or initial fee defined in the Fees section.

@@ -174,7 +174,7 @@
 }
 
 /* ---------- PROBLEM ---------- */
-.home .section-problem { padding: 120px 0 100px; border-bottom: 1px solid var(--rule); }
+.home .section-problem { padding-top: 120px; padding-bottom: 100px; border-bottom: 1px solid var(--rule); }
 .home .problem-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 64px; align-items: start; }
 @media (max-width: 880px) { .home .problem-grid { grid-template-columns: 1fr; gap: 24px; } }
 .home .problem-side .lede + .lede { margin-top: 16px; }
@@ -214,7 +214,7 @@
 .home .bullet-mark { color: var(--accent); font-size: 18px; }
 
 /* ---------- FEATURE CARDS ---------- */
-.home .section-features { padding: 120px 0 100px; border-bottom: 1px solid var(--rule); }
+.home .section-features { padding-top: 120px; padding-bottom: 100px; border-bottom: 1px solid var(--rule); }
 .home .feature-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
   background: var(--rule); border: 1px solid var(--rule); margin-top: 48px;
@@ -263,7 +263,7 @@
 .home .cc-stamp { margin-top: 14px; color: var(--dim); }
 
 /* ---------- COMPARE ---------- */
-.home .section-compare { padding: 120px 0 100px; border-bottom: 1px solid var(--rule); }
+.home .section-compare { padding-top: 120px; padding-bottom: 100px; border-bottom: 1px solid var(--rule); }
 .home .compare-table { margin-top: 48px; border-top: 1px solid var(--rule); }
 .home .compare-head, .home .compare-row {
   display: grid; grid-template-columns: 2fr 1fr 1fr;
@@ -282,7 +282,7 @@
 .home .cross { color: var(--rule); }
 
 /* ---------- PRICING ---------- */
-.home .section-pricing { padding: 120px 0 100px; border-bottom: 1px solid var(--rule); }
+.home .section-pricing { padding-top: 120px; padding-bottom: 100px; border-bottom: 1px solid var(--rule); }
 .home .pricing-card {
   margin-top: 48px; display: grid; grid-template-columns: 1.4fr 1fr;
   border: 1px solid var(--rule); background: var(--paper);
@@ -303,7 +303,7 @@
 .home .pricing-row .display { font-size: 22px; }
 
 /* ---------- DOCS ---------- */
-.home .section-docs { padding: 120px 0 100px; border-bottom: 1px solid var(--rule); }
+.home .section-docs { padding-top: 120px; padding-bottom: 100px; border-bottom: 1px solid var(--rule); }
 .home .docs-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
 .home .docs-head .h2 { margin-bottom: 0; }
 .home .docs-grid {
@@ -323,7 +323,7 @@
 .home .docs-card-lines { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
 
 /* ---------- FAQ ---------- */
-.home .section-faq { padding: 120px 0 100px; border-bottom: 1px solid var(--rule); }
+.home .section-faq { padding-top: 120px; padding-bottom: 100px; border-bottom: 1px solid var(--rule); }
 .home .faq-list { margin-top: 48px; border-top: 1px solid var(--rule); }
 .home .faq-item {
   display: block; width: 100%; text-align: left;
@@ -353,7 +353,7 @@
 
 /* ---------- CTA ---------- */
 .home .section-cta {
-  padding: 140px 0; text-align: center;
+  padding-top: 140px; padding-bottom: 140px; text-align: center;
   background: var(--paper-2);
   border-bottom: 1px solid var(--rule);
 }
