@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { MediaModal } from "../media-modal";
+import { MediaModal } from "./media-modal";
 
 export function MediaCard({
   caption,

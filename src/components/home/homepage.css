@@ -20,8 +20,6 @@
 .home .container { max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
 
 .home .display { font-family: var(--font-source-serif), Georgia, serif; font-weight: 400; letter-spacing: -0.012em; line-height: 1.05; text-wrap: balance; }
-.home .mono { font-family: var(--font-geist-mono), ui-monospace, "SF Mono", monospace; font-weight: 400; font-size: 11px; letter-spacing: 0.04em; color: var(--dim); }
-.home .small-caps { text-transform: uppercase; }
 .home .dim { color: var(--dim); }
 .home .lede { font-size: 18px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; max-width: 56ch; }
 
@@ -149,29 +147,6 @@
   margin: 0 0 16px;
 }
 
-/* ---------- PLACEHOLDER ---------- */
-.home .ph {
-  position: relative; width: 100%;
-  border: 1px solid var(--rule);
-  overflow: hidden;
-  background: var(--paper-2);
-}
-.home .ph-stripes {
-  position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(
-    135deg,
-    transparent 0 14px,
-    color-mix(in oklab, var(--rule) 70%, transparent) 14px 15px
-  );
-  opacity: 0.7;
-}
-.home .ph-caption {
-  position: absolute; inset: auto 0 0 0;
-  padding: 10px 14px;
-  background: var(--paper);
-  border-top: 1px solid var(--rule);
-  color: var(--dim);
-}
 
 /* ---------- PROBLEM ---------- */
 .home .section-problem { padding-top: 120px; padding-bottom: 100px; border-bottom: 1px solid var(--rule); }

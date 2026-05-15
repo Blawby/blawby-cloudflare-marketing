@@ -1,4 +1,5 @@
 import { Callout } from "@/components/callout";
+import { MediaCard } from "@/components/media-card";
 import { DocPlaceholder } from "@/components/doc-placeholder";
 import { Pricing } from "@/components/pricing";
 import { transformerColorizedBrackets } from "@shikijs/colorized-brackets";
@@ -97,36 +98,45 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       let id = generateId(getTextContent(children));
       return <h4 id={id}>{children}</h4>;
     },
-    img: ({ alt, ...props }) => {
+    img: ({ alt = "", ...props }) => {
       let schemePlaceholder = encodeURIComponent("{scheme}");
       let width, height;
       if (IMAGE_DIMENSION_REGEX.test(alt)) {
         [width, height] = alt.split("|")[1].split("x").map(Number);
         alt = alt.split("|")[0];
       }
-      if (props.src.includes(schemePlaceholder)) {
+
+      const ratio = width && height ? `${width} / ${height}` : undefined;
+
+      if (props.src?.includes(schemePlaceholder)) {
         return (
-          <>
-            <Image
-              {...props}
-              alt={alt}
-              width={width}
-              height={height}
-              src={props.src.replace(schemePlaceholder, "light")}
-              className="dark:hidden"
-            />
-            <Image
-              {...props}
-              alt={alt}
-              width={width}
-              height={height}
-              src={props.src.replace(schemePlaceholder, "dark")}
-              className="not-dark:hidden"
-            />
-          </>
+          <div className="my-10">
+            <div className="dark:hidden">
+              <MediaCard
+                src={props.src.replace(schemePlaceholder, "light")}
+                caption={alt}
+                ratio={ratio}
+              />
+            </div>
+            <div className="hidden dark:block">
+              <MediaCard
+                src={props.src.replace(schemePlaceholder, "dark")}
+                caption={alt}
+                ratio={ratio}
+              />
+            </div>
+          </div>
         );
       } else {
-        return <Image {...props} alt={alt} width={width} height={height} />;
+        return (
+          <div className="my-10">
+            <MediaCard
+              src={props.src}
+              caption={alt}
+              ratio={ratio}
+            />
+          </div>
+        );
       }
     },
     async pre(props) {
