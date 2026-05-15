@@ -56,7 +56,7 @@ export function MediaCard({
         
         <div className="ph-caption mono small-caps flex items-center justify-between transition-colors group-hover:bg-paper-2">
           <span>{caption}</span>
-          {src && (
+          {interactive && src && (
             <span className="flex items-center gap-1.5 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">
               <span>Click to expand</span>
               <svg 
