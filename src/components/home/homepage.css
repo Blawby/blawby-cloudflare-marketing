@@ -186,9 +186,6 @@
   font-size: 12px;
   border-radius: 2px;
   background: var(--paper);
-  text-decoration: line-through;
-  text-decoration-color: color-mix(in oklab, var(--accent) 70%, transparent);
-  text-decoration-thickness: 1px;
 }
 .home .stitched-x { color: var(--accent); text-decoration: none; }
 
