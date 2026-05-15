@@ -4,6 +4,7 @@
 
 title: "Descriptive Title"
 desc: "Meta description for SEO"
+
 ---
 
 Blawby's primary audience is lawyers and legal staff who are not technical. Write like Stripe docs — clear, confident, assumes the reader is smart but not a developer. If you're explaining a feature, explain WHY it matters to a law firm first, then HOW to use it. Never lead with technical details.
@@ -140,6 +141,17 @@ noindex: false
 - Use Next.js `<Image>` component
 - Always include width and height
 - Example: `![Alt text|1000x500](/path/to/image.png)`
+
+### Capturing Product Screenshots
+
+Need real product screenshots for documentation? See [`SCREENSHOT_CAPTURE_GUIDE.md`](./SCREENSHOT_CAPTURE_GUIDE.md) for step-by-step instructions on:
+
+- Starting the local dev environment
+- Logging into the test practice
+- Capturing screenshots from each product feature
+- Replacing `<DocPlaceholder>` components with real images
+
+The guide includes routes, conventions, and automation patterns using Playwright.
 
 ### Accuracy
 

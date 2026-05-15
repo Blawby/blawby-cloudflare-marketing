@@ -53,11 +53,7 @@ This page covers the operational flow. For the broader matter context — billin
 5. **Set the due date.** Defaults to your firm's invoice terms; can be changed per invoice.
 6. **Preview, then Send.** The client gets an email with a Stripe-hosted pay link.
 
-<DocPlaceholder
-  kind="screenshot"
-  src="/media/docs/billing/generate-invoice.png"
-  description="Billing tab on a matter — unbilled summary expanded, Generate invoice CTA highlighted, draft preview to the right."
-/>
+![Billing tab on a matter with the unbilled summary card and the Create Invoice CTA visible.|1280x720](/media/docs/billing/generate-invoice.png)
 
 ## What the client sees
 
@@ -83,7 +79,7 @@ A single invoice can mix types — common pattern: hourly time entries plus a fl
 
 ## Status lifecycle
 
-```
+```text
 Draft → Sent → (Pending) → Paid
                   ↓
                Overdue
@@ -115,7 +111,7 @@ Open the paid invoice → **Refund**. Refunds use Stripe's API; the invoice reco
 
 Invoices require a due date of at least the next day. If you need to collect immediately (consultation fee, retainer top-up, donation), use a pre-filled **payment link** instead:
 
-```
+```text
 https://blawby.com/your-firm-slug?amount=12500
 ```
 

@@ -42,11 +42,7 @@ Blawby uses **Stripe Connect** for payments. You don't enter bank account number
 
 This page covers both checkpoints, plus how to send your first invoice from a matter.
 
-<DocPlaceholder
-  kind="video"
-  src="/media/docs/payments/stripe-connect.mp4"
-  description="60-second walkthrough of the two Stripe Connect checkpoints in Blawby — link bank, enable charges — followed by sending the first invoice."
-/>
+![Settings → Payouts and Billing showing Stripe connected and ready with Charges and Payouts both enabled. Full video walkthrough coming soon.|1280x720](/media/docs/payments/stripe-connect.png)
 
 ## The two Stripe Connect checkpoints
 
@@ -76,11 +72,7 @@ When Stripe approves, the second checkpoint flips to **Charges enabled**. You ca
 
 If charges stay pending, open the Stripe dashboard — Stripe will list any documents it still needs. You don't need to re-do anything in Blawby; the checkpoint clears automatically once Stripe approves.
 
-<DocPlaceholder
-  kind="screenshot"
-  src="/media/docs/payments/stripe-checkpoints.png"
-  description="Stripe checkpoint card in Settings → Payments — checkpoint 1 (Linked), checkpoint 2 (Charges enabled)."
-/>
+![Payouts and Billing settings showing Stripe connected and ready, with Charges and Payouts both enabled.|1280x720](/media/docs/payments/stripe-checkpoints.png)
 
 ## Trust vs. operating routing
 
@@ -117,17 +109,13 @@ The simplest first-payment path: log a few minutes of time on a matter, then gen
 5. The client gets an email with a hosted Stripe pay link. They can pay by card or ACH without creating an account.
 6. The invoice flips to **Paid** automatically when payment clears. Notifications fire to your team via in-app, email, and push (OneSignal).
 
-<DocPlaceholder
-  kind="screenshot"
-  src="/media/docs/payments/first-invoice.png"
-  description="A draft invoice generated from unbilled time, with line items pulled from time entries and the Send button highlighted."
-/>
+![Invoice edit view with line items on the left and a live PDF preview on the right, showing total due and bill-to details.|1280x720](/media/docs/payments/first-invoice.png)
 
 ## Pre-filled payment links
 
 For quick collections that aren't a full invoice (consultation fees outside intake, donations, retainer top-ups), use a payment link:
 
-```
+```text
 https://blawby.com/your-firm-slug?amount=12500
 ```
 
