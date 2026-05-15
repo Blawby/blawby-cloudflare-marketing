@@ -1,5 +1,5 @@
 import { WORKFLOW_STEPS } from "@/data/home/workflow-steps";
-import { MediaCard } from "./media-card";
+import { MediaCard } from "../media-card";
 import { SectionLabel } from "./section-label";
 
 export function WorkflowDetail() {

@@ -21,7 +21,7 @@ export function PricingSection() {
             Pay only for users who logged in this month. No seats sitting idle,
             no annual contract, no setup fee.
           </p>
-          <Button href="https://ai.blawby.com/register">Start now</Button>
+          <Button href="https://ai.blawby.com/auth">Start now</Button>
         </div>
         <div className="pricing-side">
           <div className="pricing-row">

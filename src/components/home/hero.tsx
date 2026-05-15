@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "../button";
 import { WorkflowHero } from "./workflow-hero";
 
@@ -5,6 +6,14 @@ export function Hero() {
   return (
     <section className="hero">
       <div className="container">
+        <Link 
+          href="/ai-chat/ai-chat-client-acquisition" 
+          className="group mb-10 inline-flex items-center gap-x-2.5 rounded-full border border-rule bg-paper-2 px-3 py-1 text-xs transition-all hover:border-ink hover:bg-paper"
+        >
+          <span className="flex h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="font-semibold text-ink">New: AI Intake Chat</span>
+          <span className="text-dim group-hover:text-ink transition-colors">Read more →</span>
+        </Link>
         <div className="hero-meta">
           <span className="dot" />
           <span className="mono small-caps">Blawby · v. 2026.5</span>
@@ -25,7 +34,7 @@ export function Hero() {
             </p>
             <div className="hero-ctas">
               <Button
-                href="https://ai.blawby.com/register"
+                href="https://ai.blawby.com/auth"
                 size="lg"
                 variant="primary"
               >

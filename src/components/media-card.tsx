@@ -1,36 +1,46 @@
 "use client";
 
+import { clsx } from "clsx";
 import { useState } from "react";
 import Image from "next/image";
-import { MediaModal } from "../media-modal";
+import { MediaModal } from "./media-modal";
 
 export function MediaCard({
   caption,
   src,
   ratio = "16 / 9",
+  interactive = !!src,
 }: {
   caption: string;
   src?: string;
   ratio?: string;
+  interactive?: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const interactiveProps = interactive ? {
+    tabIndex: 0,
+    role: "button",
+    "aria-label": `Expand image: ${caption}`,
+    onClick: () => src && setIsOpen(true),
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (!src) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setIsOpen(true);
+      }
+    },
+  } : {};
 
   return (
     <>
       <div 
-        className="ph group cursor-zoom-in transition-all hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" 
+        className={clsx(
+          "ph group transition-all",
+          interactive ? "cursor-zoom-in hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" : "cursor-default"
+        )}
         style={{ aspectRatio: ratio }}
-        onClick={() => src && setIsOpen(true)}
-        onKeyDown={(e) => {
-          if (!src) return;
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            setIsOpen(true);
-          }
-        }}
-        tabIndex={0}
-        role="button"
-        aria-label={`Expand image: ${caption}`}
+        {...interactiveProps}
       >
         {!src && <div className="ph-stripes" />}
         
@@ -46,7 +56,7 @@ export function MediaCard({
         
         <div className="ph-caption mono small-caps flex items-center justify-between transition-colors group-hover:bg-paper-2">
           <span>{caption}</span>
-          {src && (
+          {interactive && src && (
             <span className="flex items-center gap-1.5 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">
               <span>Click to expand</span>
               <svg 

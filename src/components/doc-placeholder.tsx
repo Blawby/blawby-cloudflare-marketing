@@ -1,14 +1,15 @@
 import { clsx } from "clsx";
+import { MediaCard } from "./media-card";
 
 type DocPlaceholderKind = "screenshot" | "video" | "diagram";
 
 const KIND_STYLES: Record<
   DocPlaceholderKind,
-  { label: string; aspectClass: string; icon: React.ReactNode }
+  { label: string; aspect: string; icon: React.ReactNode }
 > = {
   screenshot: {
     label: "Screenshot",
-    aspectClass: "aspect-video",
+    aspect: "16 / 9",
     icon: (
       <svg
         viewBox="0 0 16 16"
@@ -22,7 +23,7 @@ const KIND_STYLES: Record<
   },
   video: {
     label: "Video",
-    aspectClass: "aspect-video",
+    aspect: "16 / 9",
     icon: (
       <svg
         viewBox="0 0 16 16"
@@ -36,7 +37,7 @@ const KIND_STYLES: Record<
   },
   diagram: {
     label: "Diagram",
-    aspectClass: "aspect-[16/9]",
+    aspect: "16 / 9",
     icon: (
       <svg
         viewBox="0 0 16 16"
@@ -50,15 +51,6 @@ const KIND_STYLES: Record<
   },
 };
 
-/**
- * Inline placeholder for a screenshot, video, or diagram that hasn't been
- * captured yet. Renders a styled stand-in with the eventual asset path so
- * the design team has a clear todo list, and removes the need for broken
- * <Image> tags or fragile markdown blockquotes.
- *
- * When the real asset lands at `src`, swap this for a normal MDX <img> or
- * <Video> tag — the path you wrote here matches what should ship.
- */
 export function DocPlaceholder({
   kind = "screenshot",
   src,
@@ -73,35 +65,30 @@ export function DocPlaceholder({
   const styles = KIND_STYLES[kind];
 
   return (
-    <figure className="my-6 not-prose">
-      <div
-        className={clsx(
-          "relative w-full overflow-hidden rounded-xl border border-dashed",
-          "border-gray-300 bg-gray-50 text-gray-500",
-          "dark:border-white/15 dark:bg-white/5 dark:text-gray-400",
-          styles.aspectClass,
-        )}
-        role="img"
-        aria-label={caption ?? `Placeholder for ${kind}: ${src}`}
-      >
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-2 p-6 text-center">
-          <div className="flex items-center gap-x-2 text-xs font-semibold uppercase tracking-wider">
-            {styles.icon}
-            <span>{styles.label} placeholder</span>
-          </div>
-          {description && (
-            <p className="max-w-sm text-sm leading-snug">{description}</p>
-          )}
-          <code className="mt-1 break-all rounded bg-gray-950/5 px-2 py-1 font-mono text-xs text-gray-700 dark:bg-white/10 dark:text-gray-200">
-            {src}
-          </code>
+    <div className="my-10 relative group/doc-ph">
+      <MediaCard
+        src={undefined} // Force placeholder state
+        caption={caption || `Placeholder: ${src}`}
+        ratio={styles.aspect}
+        interactive={false}
+      />
+      
+      {/* Overlay placeholder info */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-y-2 p-6 text-center pointer-events-none">
+        <div className="flex items-center gap-x-2 text-[10px] font-bold uppercase tracking-widest text-accent">
+          {styles.icon}
+          <span>{styles.label} TODO</span>
         </div>
+        {description && (
+          <p className="max-w-sm text-sm leading-snug text-ink-2 opacity-80">{description}</p>
+        )}
+        <code className="mt-1 break-all rounded bg-ink/5 px-2 py-1 font-mono text-[10px] text-ink-2 dark:bg-white/5">
+          {src}
+        </code>
       </div>
-      {caption && (
-        <figcaption className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-          {caption}
-        </figcaption>
-      )}
-    </figure>
+
+      {/* Warning border for development visibility */}
+      <div className="absolute inset-0 border-2 border-dashed border-accent/20 rounded-lg pointer-events-none group-hover/doc-ph:border-accent/40 transition-colors" />
+    </div>
   );
 }
